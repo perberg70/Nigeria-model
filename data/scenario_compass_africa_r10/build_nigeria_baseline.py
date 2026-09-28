@@ -23,7 +23,7 @@ SSP marker mapping. This deliberately avoids presenting an unverified
 regional carbon-intensity path as a Nigerian carbon-intensity forecast.
 
 Pass --update-prototype to copy the three generated blocks into the standalone
-05_ui_design/prototypes/africa-prototype.html file. The generated block remains
+prototype/africa-prototype.html file. The generated block remains
 the canonical data artifact; the HTML copy is kept in sync for the prototype.
 
 THE DENOMINATOR QUESTION, decided 2026-09-09. The by-fuel generation rows do
