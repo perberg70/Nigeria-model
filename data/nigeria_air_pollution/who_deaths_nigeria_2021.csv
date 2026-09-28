@@ -1,0 +1,13 @@
+indicator,pathway,year,cause_code,cause,deaths,uncertainty_low,uncertainty_high
+AIR_11,household,2021,GHE000000,"All causes",156483,131472,178292
+AIR_11,household,2021,GHE000390,"Acute lower respiratory infections",101401,78498,118836
+AIR_11,household,2021,GHE001130,"Ischaemic heart disease",26166,21251,31968
+AIR_11,household,2021,GHE001140,"Stroke",22383,13948,34314
+AIR_11,household,2021,GHE001180,"Chronic obstructive pulmonary disease",5650,3766,9050
+AIR_11,household,2021,GHE000680,"Trachea, bronchus, lung cancers",884,739,1005
+AIR_41,ambient,2021,GHE000000,"All causes",106962,83995,132590
+AIR_41,ambient,2021,GHE000390,"Acute lower respiratory infections",68123,49258,88607
+AIR_41,ambient,2021,GHE001130,"Ischaemic heart disease",20489,14725,26057
+AIR_41,ambient,2021,GHE001140,"Stroke",14928,8335,23209
+AIR_41,ambient,2021,GHE001180,"Chronic obstructive pulmonary disease",3045,1304,5476
+AIR_41,ambient,2021,GHE000680,"Trachea, bronchus, lung cancers",377,228,558

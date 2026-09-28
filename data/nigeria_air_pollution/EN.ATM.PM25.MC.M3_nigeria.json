@@ -1,0 +1,428 @@
+[
+    {
+        "page": 1,
+        "pages": 1,
+        "per_page": 60,
+        "total": 26,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+    },
+    [
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2025",
+            "value": null,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2024",
+            "value": null,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2023",
+            "value": 65.740618883028,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2022",
+            "value": 70.6169092406565,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2021",
+            "value": 63.7505486555452,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2020",
+            "value": 63.7025276792271,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2019",
+            "value": 56.1742360202495,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2018",
+            "value": 60.0682766381431,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2017",
+            "value": 68.2246345183228,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2016",
+            "value": 69.3722566585403,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2015",
+            "value": 75.1290695732099,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2014",
+            "value": 54.1305836870948,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2013",
+            "value": 52.2390699243857,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2012",
+            "value": 59.6227203937751,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2011",
+            "value": 60.5981870803509,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2010",
+            "value": 57.0453595776344,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2009",
+            "value": 59.9637374393469,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2008",
+            "value": 66.802718165195,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2007",
+            "value": 67.3061477374151,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2006",
+            "value": 63.273214898786,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2005",
+            "value": 57.1814452958929,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2004",
+            "value": 61.7935698630297,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2003",
+            "value": 51.4747260234232,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2002",
+            "value": 61.7052833837302,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2001",
+            "value": 58.1213895225908,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        },
+        {
+            "indicator": {
+                "id": "EN.ATM.PM25.MC.M3",
+                "value": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2000",
+            "value": 68.4230600395925,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 0
+        }
+    ]
+]

@@ -1,0 +1,1355 @@
+"Electricity capacity statistics by Country/area, Technology, Grid connection and Year"
+
+"Country/area","Technology","Grid connection","Year",Electricity capacity statistics
+"Nigeria","Total renewable energy","OnGrid","2000",2080.40
+"Nigeria","Total renewable energy","OnGrid","2001",2080.40
+"Nigeria","Total renewable energy","OnGrid","2002",2080.40
+"Nigeria","Total renewable energy","OnGrid","2003",2080.40
+"Nigeria","Total renewable energy","OnGrid","2004",2080.40
+"Nigeria","Total renewable energy","OnGrid","2005",2080.40
+"Nigeria","Total renewable energy","OnGrid","2006",2080.48
+"Nigeria","Total renewable energy","OnGrid","2007",2080.48
+"Nigeria","Total renewable energy","OnGrid","2008",2080.48
+"Nigeria","Total renewable energy","OnGrid","2009",2080.67
+"Nigeria","Total renewable energy","OnGrid","2010",2080.67
+"Nigeria","Total renewable energy","OnGrid","2011",2110.67
+"Nigeria","Total renewable energy","OnGrid","2012",2110.72
+"Nigeria","Total renewable energy","OnGrid","2013",2110.72
+"Nigeria","Total renewable energy","OnGrid","2014",2110.72
+"Nigeria","Total renewable energy","OnGrid","2015",2115.72
+"Nigeria","Total renewable energy","OnGrid","2016",2118.47
+"Nigeria","Total renewable energy","OnGrid","2017",2119.52
+"Nigeria","Total renewable energy","OnGrid","2018",2119.71
+"Nigeria","Total renewable energy","OnGrid","2019",2127.56
+"Nigeria","Total renewable energy","OnGrid","2020",2141.49
+"Nigeria","Total renewable energy","OnGrid","2021",2159.05
+"Nigeria","Total renewable energy","OnGrid","2022",2173.53
+"Nigeria","Total renewable energy","OnGrid","2023",2984.54
+"Nigeria","Total renewable energy","OnGrid","2024",3036.90
+"Nigeria","Total renewable energy","OnGrid","2025",3088.33
+"Nigeria","Total renewable energy","OffGrid","2000",4.80
+"Nigeria","Total renewable energy","OffGrid","2001",4.80
+"Nigeria","Total renewable energy","OffGrid","2002",4.80
+"Nigeria","Total renewable energy","OffGrid","2003",4.80
+"Nigeria","Total renewable energy","OffGrid","2004",4.80
+"Nigeria","Total renewable energy","OffGrid","2005",4.80
+"Nigeria","Total renewable energy","OffGrid","2006",4.88
+"Nigeria","Total renewable energy","OffGrid","2007",4.88
+"Nigeria","Total renewable energy","OffGrid","2008",4.88
+"Nigeria","Total renewable energy","OffGrid","2009",5.07
+"Nigeria","Total renewable energy","OffGrid","2010",6.28
+"Nigeria","Total renewable energy","OffGrid","2011",6.32
+"Nigeria","Total renewable energy","OffGrid","2012",7.43
+"Nigeria","Total renewable energy","OffGrid","2013",8.18
+"Nigeria","Total renewable energy","OffGrid","2014",11.36
+"Nigeria","Total renewable energy","OffGrid","2015",18.29
+"Nigeria","Total renewable energy","OffGrid","2016",22.56
+"Nigeria","Total renewable energy","OffGrid","2017",27.41
+"Nigeria","Total renewable energy","OffGrid","2018",31.26
+"Nigeria","Total renewable energy","OffGrid","2019",42.64
+"Nigeria","Total renewable energy","OffGrid","2020",57.36
+"Nigeria","Total renewable energy","OffGrid","2021",70.97
+"Nigeria","Total renewable energy","OffGrid","2022",89.27
+"Nigeria","Total renewable energy","OffGrid","2023",108.55
+"Nigeria","Total renewable energy","OffGrid","2024",118.05
+"Nigeria","Total renewable energy","OffGrid","2025",118.05
+"Nigeria","Solar energy","OnGrid","2000",-
+"Nigeria","Solar energy","OnGrid","2001",-
+"Nigeria","Solar energy","OnGrid","2002",-
+"Nigeria","Solar energy","OnGrid","2003",-
+"Nigeria","Solar energy","OnGrid","2004",-
+"Nigeria","Solar energy","OnGrid","2005",-
+"Nigeria","Solar energy","OnGrid","2006",0.08
+"Nigeria","Solar energy","OnGrid","2007",0.08
+"Nigeria","Solar energy","OnGrid","2008",0.08
+"Nigeria","Solar energy","OnGrid","2009",0.27
+"Nigeria","Solar energy","OnGrid","2010",0.27
+"Nigeria","Solar energy","OnGrid","2011",0.27
+"Nigeria","Solar energy","OnGrid","2012",0.29
+"Nigeria","Solar energy","OnGrid","2013",0.29
+"Nigeria","Solar energy","OnGrid","2014",0.30
+"Nigeria","Solar energy","OnGrid","2015",5.30
+"Nigeria","Solar energy","OnGrid","2016",8.04
+"Nigeria","Solar energy","OnGrid","2017",9.10
+"Nigeria","Solar energy","OnGrid","2018",9.29
+"Nigeria","Solar energy","OnGrid","2019",17.13
+"Nigeria","Solar energy","OnGrid","2020",27.30
+"Nigeria","Solar energy","OnGrid","2021",36.62
+"Nigeria","Solar energy","OnGrid","2022",51.11
+"Nigeria","Solar energy","OnGrid","2023",72.12
+"Nigeria","Solar energy","OnGrid","2024",124.47
+"Nigeria","Solar energy","OnGrid","2025",175.91
+"Nigeria","Solar energy","OffGrid","2000",-
+"Nigeria","Solar energy","OffGrid","2001",-
+"Nigeria","Solar energy","OffGrid","2002",-
+"Nigeria","Solar energy","OffGrid","2003",-
+"Nigeria","Solar energy","OffGrid","2004",-
+"Nigeria","Solar energy","OffGrid","2005",-
+"Nigeria","Solar energy","OffGrid","2006",0.08
+"Nigeria","Solar energy","OffGrid","2007",0.08
+"Nigeria","Solar energy","OffGrid","2008",0.08
+"Nigeria","Solar energy","OffGrid","2009",0.27
+"Nigeria","Solar energy","OffGrid","2010",0.28
+"Nigeria","Solar energy","OffGrid","2011",0.32
+"Nigeria","Solar energy","OffGrid","2012",1.43
+"Nigeria","Solar energy","OffGrid","2013",2.18
+"Nigeria","Solar energy","OffGrid","2014",3.86
+"Nigeria","Solar energy","OffGrid","2015",10.38
+"Nigeria","Solar energy","OffGrid","2016",13.14
+"Nigeria","Solar energy","OffGrid","2017",17.99
+"Nigeria","Solar energy","OffGrid","2018",21.85
+"Nigeria","Solar energy","OffGrid","2019",33.23
+"Nigeria","Solar energy","OffGrid","2020",47.94
+"Nigeria","Solar energy","OffGrid","2021",61.55
+"Nigeria","Solar energy","OffGrid","2022",79.85
+"Nigeria","Solar energy","OffGrid","2023",99.13
+"Nigeria","Solar energy","OffGrid","2024",108.63
+"Nigeria","Solar energy","OffGrid","2025",108.63
+"Nigeria","Solar photovoltaic","OnGrid","2000",-
+"Nigeria","Solar photovoltaic","OnGrid","2001",-
+"Nigeria","Solar photovoltaic","OnGrid","2002",-
+"Nigeria","Solar photovoltaic","OnGrid","2003",-
+"Nigeria","Solar photovoltaic","OnGrid","2004",-
+"Nigeria","Solar photovoltaic","OnGrid","2005",-
+"Nigeria","Solar photovoltaic","OnGrid","2006",0.08
+"Nigeria","Solar photovoltaic","OnGrid","2007",0.08
+"Nigeria","Solar photovoltaic","OnGrid","2008",0.08
+"Nigeria","Solar photovoltaic","OnGrid","2009",0.27
+"Nigeria","Solar photovoltaic","OnGrid","2010",0.27
+"Nigeria","Solar photovoltaic","OnGrid","2011",0.27
+"Nigeria","Solar photovoltaic","OnGrid","2012",0.29
+"Nigeria","Solar photovoltaic","OnGrid","2013",0.29
+"Nigeria","Solar photovoltaic","OnGrid","2014",0.30
+"Nigeria","Solar photovoltaic","OnGrid","2015",5.30
+"Nigeria","Solar photovoltaic","OnGrid","2016",8.04
+"Nigeria","Solar photovoltaic","OnGrid","2017",9.10
+"Nigeria","Solar photovoltaic","OnGrid","2018",9.29
+"Nigeria","Solar photovoltaic","OnGrid","2019",17.13
+"Nigeria","Solar photovoltaic","OnGrid","2020",27.30
+"Nigeria","Solar photovoltaic","OnGrid","2021",36.62
+"Nigeria","Solar photovoltaic","OnGrid","2022",51.11
+"Nigeria","Solar photovoltaic","OnGrid","2023",72.12
+"Nigeria","Solar photovoltaic","OnGrid","2024",124.47
+"Nigeria","Solar photovoltaic","OnGrid","2025",175.91
+"Nigeria","Solar photovoltaic","OffGrid","2000",-
+"Nigeria","Solar photovoltaic","OffGrid","2001",-
+"Nigeria","Solar photovoltaic","OffGrid","2002",-
+"Nigeria","Solar photovoltaic","OffGrid","2003",-
+"Nigeria","Solar photovoltaic","OffGrid","2004",-
+"Nigeria","Solar photovoltaic","OffGrid","2005",-
+"Nigeria","Solar photovoltaic","OffGrid","2006",0.08
+"Nigeria","Solar photovoltaic","OffGrid","2007",0.08
+"Nigeria","Solar photovoltaic","OffGrid","2008",0.08
+"Nigeria","Solar photovoltaic","OffGrid","2009",0.27
+"Nigeria","Solar photovoltaic","OffGrid","2010",0.28
+"Nigeria","Solar photovoltaic","OffGrid","2011",0.32
+"Nigeria","Solar photovoltaic","OffGrid","2012",1.43
+"Nigeria","Solar photovoltaic","OffGrid","2013",2.18
+"Nigeria","Solar photovoltaic","OffGrid","2014",3.86
+"Nigeria","Solar photovoltaic","OffGrid","2015",10.38
+"Nigeria","Solar photovoltaic","OffGrid","2016",13.14
+"Nigeria","Solar photovoltaic","OffGrid","2017",17.99
+"Nigeria","Solar photovoltaic","OffGrid","2018",21.85
+"Nigeria","Solar photovoltaic","OffGrid","2019",33.23
+"Nigeria","Solar photovoltaic","OffGrid","2020",47.94
+"Nigeria","Solar photovoltaic","OffGrid","2021",61.55
+"Nigeria","Solar photovoltaic","OffGrid","2022",79.85
+"Nigeria","Solar photovoltaic","OffGrid","2023",99.13
+"Nigeria","Solar photovoltaic","OffGrid","2024",108.63
+"Nigeria","Solar photovoltaic","OffGrid","2025",108.63
+"Nigeria","Solar thermal energy","OnGrid","2000",-
+"Nigeria","Solar thermal energy","OnGrid","2001",-
+"Nigeria","Solar thermal energy","OnGrid","2002",-
+"Nigeria","Solar thermal energy","OnGrid","2003",-
+"Nigeria","Solar thermal energy","OnGrid","2004",-
+"Nigeria","Solar thermal energy","OnGrid","2005",-
+"Nigeria","Solar thermal energy","OnGrid","2006",-
+"Nigeria","Solar thermal energy","OnGrid","2007",-
+"Nigeria","Solar thermal energy","OnGrid","2008",-
+"Nigeria","Solar thermal energy","OnGrid","2009",-
+"Nigeria","Solar thermal energy","OnGrid","2010",-
+"Nigeria","Solar thermal energy","OnGrid","2011",-
+"Nigeria","Solar thermal energy","OnGrid","2012",-
+"Nigeria","Solar thermal energy","OnGrid","2013",-
+"Nigeria","Solar thermal energy","OnGrid","2014",-
+"Nigeria","Solar thermal energy","OnGrid","2015",-
+"Nigeria","Solar thermal energy","OnGrid","2016",-
+"Nigeria","Solar thermal energy","OnGrid","2017",-
+"Nigeria","Solar thermal energy","OnGrid","2018",-
+"Nigeria","Solar thermal energy","OnGrid","2019",-
+"Nigeria","Solar thermal energy","OnGrid","2020",-
+"Nigeria","Solar thermal energy","OnGrid","2021",-
+"Nigeria","Solar thermal energy","OnGrid","2022",-
+"Nigeria","Solar thermal energy","OnGrid","2023",-
+"Nigeria","Solar thermal energy","OnGrid","2024",-
+"Nigeria","Solar thermal energy","OnGrid","2025",-
+"Nigeria","Solar thermal energy","OffGrid","2000",-
+"Nigeria","Solar thermal energy","OffGrid","2001",-
+"Nigeria","Solar thermal energy","OffGrid","2002",-
+"Nigeria","Solar thermal energy","OffGrid","2003",-
+"Nigeria","Solar thermal energy","OffGrid","2004",-
+"Nigeria","Solar thermal energy","OffGrid","2005",-
+"Nigeria","Solar thermal energy","OffGrid","2006",-
+"Nigeria","Solar thermal energy","OffGrid","2007",-
+"Nigeria","Solar thermal energy","OffGrid","2008",-
+"Nigeria","Solar thermal energy","OffGrid","2009",-
+"Nigeria","Solar thermal energy","OffGrid","2010",-
+"Nigeria","Solar thermal energy","OffGrid","2011",-
+"Nigeria","Solar thermal energy","OffGrid","2012",-
+"Nigeria","Solar thermal energy","OffGrid","2013",-
+"Nigeria","Solar thermal energy","OffGrid","2014",-
+"Nigeria","Solar thermal energy","OffGrid","2015",-
+"Nigeria","Solar thermal energy","OffGrid","2016",-
+"Nigeria","Solar thermal energy","OffGrid","2017",-
+"Nigeria","Solar thermal energy","OffGrid","2018",-
+"Nigeria","Solar thermal energy","OffGrid","2019",-
+"Nigeria","Solar thermal energy","OffGrid","2020",-
+"Nigeria","Solar thermal energy","OffGrid","2021",-
+"Nigeria","Solar thermal energy","OffGrid","2022",-
+"Nigeria","Solar thermal energy","OffGrid","2023",-
+"Nigeria","Solar thermal energy","OffGrid","2024",-
+"Nigeria","Solar thermal energy","OffGrid","2025",-
+"Nigeria","Wind energy","OnGrid","2000",-
+"Nigeria","Wind energy","OnGrid","2001",-
+"Nigeria","Wind energy","OnGrid","2002",-
+"Nigeria","Wind energy","OnGrid","2003",-
+"Nigeria","Wind energy","OnGrid","2004",-
+"Nigeria","Wind energy","OnGrid","2005",-
+"Nigeria","Wind energy","OnGrid","2006",-
+"Nigeria","Wind energy","OnGrid","2007",-
+"Nigeria","Wind energy","OnGrid","2008",-
+"Nigeria","Wind energy","OnGrid","2009",-
+"Nigeria","Wind energy","OnGrid","2010",-
+"Nigeria","Wind energy","OnGrid","2011",-
+"Nigeria","Wind energy","OnGrid","2012",-
+"Nigeria","Wind energy","OnGrid","2013",-
+"Nigeria","Wind energy","OnGrid","2014",-
+"Nigeria","Wind energy","OnGrid","2015",-
+"Nigeria","Wind energy","OnGrid","2016",-
+"Nigeria","Wind energy","OnGrid","2017",-
+"Nigeria","Wind energy","OnGrid","2018",-
+"Nigeria","Wind energy","OnGrid","2019",-
+"Nigeria","Wind energy","OnGrid","2020",-
+"Nigeria","Wind energy","OnGrid","2021",-
+"Nigeria","Wind energy","OnGrid","2022",-
+"Nigeria","Wind energy","OnGrid","2023",-
+"Nigeria","Wind energy","OnGrid","2024",-
+"Nigeria","Wind energy","OnGrid","2025",-
+"Nigeria","Wind energy","OffGrid","2000",-
+"Nigeria","Wind energy","OffGrid","2001",-
+"Nigeria","Wind energy","OffGrid","2002",-
+"Nigeria","Wind energy","OffGrid","2003",-
+"Nigeria","Wind energy","OffGrid","2004",-
+"Nigeria","Wind energy","OffGrid","2005",-
+"Nigeria","Wind energy","OffGrid","2006",-
+"Nigeria","Wind energy","OffGrid","2007",-
+"Nigeria","Wind energy","OffGrid","2008",-
+"Nigeria","Wind energy","OffGrid","2009",-
+"Nigeria","Wind energy","OffGrid","2010",-
+"Nigeria","Wind energy","OffGrid","2011",-
+"Nigeria","Wind energy","OffGrid","2012",-
+"Nigeria","Wind energy","OffGrid","2013",-
+"Nigeria","Wind energy","OffGrid","2014",-
+"Nigeria","Wind energy","OffGrid","2015",-
+"Nigeria","Wind energy","OffGrid","2016",-
+"Nigeria","Wind energy","OffGrid","2017",-
+"Nigeria","Wind energy","OffGrid","2018",-
+"Nigeria","Wind energy","OffGrid","2019",-
+"Nigeria","Wind energy","OffGrid","2020",-
+"Nigeria","Wind energy","OffGrid","2021",-
+"Nigeria","Wind energy","OffGrid","2022",-
+"Nigeria","Wind energy","OffGrid","2023",-
+"Nigeria","Wind energy","OffGrid","2024",-
+"Nigeria","Wind energy","OffGrid","2025",-
+"Nigeria","Onshore wind energy","OnGrid","2000",-
+"Nigeria","Onshore wind energy","OnGrid","2001",-
+"Nigeria","Onshore wind energy","OnGrid","2002",-
+"Nigeria","Onshore wind energy","OnGrid","2003",-
+"Nigeria","Onshore wind energy","OnGrid","2004",-
+"Nigeria","Onshore wind energy","OnGrid","2005",-
+"Nigeria","Onshore wind energy","OnGrid","2006",-
+"Nigeria","Onshore wind energy","OnGrid","2007",-
+"Nigeria","Onshore wind energy","OnGrid","2008",-
+"Nigeria","Onshore wind energy","OnGrid","2009",-
+"Nigeria","Onshore wind energy","OnGrid","2010",-
+"Nigeria","Onshore wind energy","OnGrid","2011",-
+"Nigeria","Onshore wind energy","OnGrid","2012",-
+"Nigeria","Onshore wind energy","OnGrid","2013",-
+"Nigeria","Onshore wind energy","OnGrid","2014",-
+"Nigeria","Onshore wind energy","OnGrid","2015",-
+"Nigeria","Onshore wind energy","OnGrid","2016",-
+"Nigeria","Onshore wind energy","OnGrid","2017",-
+"Nigeria","Onshore wind energy","OnGrid","2018",-
+"Nigeria","Onshore wind energy","OnGrid","2019",-
+"Nigeria","Onshore wind energy","OnGrid","2020",-
+"Nigeria","Onshore wind energy","OnGrid","2021",-
+"Nigeria","Onshore wind energy","OnGrid","2022",-
+"Nigeria","Onshore wind energy","OnGrid","2023",-
+"Nigeria","Onshore wind energy","OnGrid","2024",-
+"Nigeria","Onshore wind energy","OnGrid","2025",-
+"Nigeria","Onshore wind energy","OffGrid","2000",-
+"Nigeria","Onshore wind energy","OffGrid","2001",-
+"Nigeria","Onshore wind energy","OffGrid","2002",-
+"Nigeria","Onshore wind energy","OffGrid","2003",-
+"Nigeria","Onshore wind energy","OffGrid","2004",-
+"Nigeria","Onshore wind energy","OffGrid","2005",-
+"Nigeria","Onshore wind energy","OffGrid","2006",-
+"Nigeria","Onshore wind energy","OffGrid","2007",-
+"Nigeria","Onshore wind energy","OffGrid","2008",-
+"Nigeria","Onshore wind energy","OffGrid","2009",-
+"Nigeria","Onshore wind energy","OffGrid","2010",-
+"Nigeria","Onshore wind energy","OffGrid","2011",-
+"Nigeria","Onshore wind energy","OffGrid","2012",-
+"Nigeria","Onshore wind energy","OffGrid","2013",-
+"Nigeria","Onshore wind energy","OffGrid","2014",-
+"Nigeria","Onshore wind energy","OffGrid","2015",-
+"Nigeria","Onshore wind energy","OffGrid","2016",-
+"Nigeria","Onshore wind energy","OffGrid","2017",-
+"Nigeria","Onshore wind energy","OffGrid","2018",-
+"Nigeria","Onshore wind energy","OffGrid","2019",-
+"Nigeria","Onshore wind energy","OffGrid","2020",-
+"Nigeria","Onshore wind energy","OffGrid","2021",-
+"Nigeria","Onshore wind energy","OffGrid","2022",-
+"Nigeria","Onshore wind energy","OffGrid","2023",-
+"Nigeria","Onshore wind energy","OffGrid","2024",-
+"Nigeria","Onshore wind energy","OffGrid","2025",-
+"Nigeria","Offshore wind energy","OnGrid","2000",-
+"Nigeria","Offshore wind energy","OnGrid","2001",-
+"Nigeria","Offshore wind energy","OnGrid","2002",-
+"Nigeria","Offshore wind energy","OnGrid","2003",-
+"Nigeria","Offshore wind energy","OnGrid","2004",-
+"Nigeria","Offshore wind energy","OnGrid","2005",-
+"Nigeria","Offshore wind energy","OnGrid","2006",-
+"Nigeria","Offshore wind energy","OnGrid","2007",-
+"Nigeria","Offshore wind energy","OnGrid","2008",-
+"Nigeria","Offshore wind energy","OnGrid","2009",-
+"Nigeria","Offshore wind energy","OnGrid","2010",-
+"Nigeria","Offshore wind energy","OnGrid","2011",-
+"Nigeria","Offshore wind energy","OnGrid","2012",-
+"Nigeria","Offshore wind energy","OnGrid","2013",-
+"Nigeria","Offshore wind energy","OnGrid","2014",-
+"Nigeria","Offshore wind energy","OnGrid","2015",-
+"Nigeria","Offshore wind energy","OnGrid","2016",-
+"Nigeria","Offshore wind energy","OnGrid","2017",-
+"Nigeria","Offshore wind energy","OnGrid","2018",-
+"Nigeria","Offshore wind energy","OnGrid","2019",-
+"Nigeria","Offshore wind energy","OnGrid","2020",-
+"Nigeria","Offshore wind energy","OnGrid","2021",-
+"Nigeria","Offshore wind energy","OnGrid","2022",-
+"Nigeria","Offshore wind energy","OnGrid","2023",-
+"Nigeria","Offshore wind energy","OnGrid","2024",-
+"Nigeria","Offshore wind energy","OnGrid","2025",-
+"Nigeria","Offshore wind energy","OffGrid","2000",-
+"Nigeria","Offshore wind energy","OffGrid","2001",-
+"Nigeria","Offshore wind energy","OffGrid","2002",-
+"Nigeria","Offshore wind energy","OffGrid","2003",-
+"Nigeria","Offshore wind energy","OffGrid","2004",-
+"Nigeria","Offshore wind energy","OffGrid","2005",-
+"Nigeria","Offshore wind energy","OffGrid","2006",-
+"Nigeria","Offshore wind energy","OffGrid","2007",-
+"Nigeria","Offshore wind energy","OffGrid","2008",-
+"Nigeria","Offshore wind energy","OffGrid","2009",-
+"Nigeria","Offshore wind energy","OffGrid","2010",-
+"Nigeria","Offshore wind energy","OffGrid","2011",-
+"Nigeria","Offshore wind energy","OffGrid","2012",-
+"Nigeria","Offshore wind energy","OffGrid","2013",-
+"Nigeria","Offshore wind energy","OffGrid","2014",-
+"Nigeria","Offshore wind energy","OffGrid","2015",-
+"Nigeria","Offshore wind energy","OffGrid","2016",-
+"Nigeria","Offshore wind energy","OffGrid","2017",-
+"Nigeria","Offshore wind energy","OffGrid","2018",-
+"Nigeria","Offshore wind energy","OffGrid","2019",-
+"Nigeria","Offshore wind energy","OffGrid","2020",-
+"Nigeria","Offshore wind energy","OffGrid","2021",-
+"Nigeria","Offshore wind energy","OffGrid","2022",-
+"Nigeria","Offshore wind energy","OffGrid","2023",-
+"Nigeria","Offshore wind energy","OffGrid","2024",-
+"Nigeria","Offshore wind energy","OffGrid","2025",-
+"Nigeria","Renewable hydropower","OnGrid","2000",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2001",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2002",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2003",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2004",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2005",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2006",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2007",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2008",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2009",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2010",2080.40
+"Nigeria","Renewable hydropower","OnGrid","2011",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2012",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2013",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2014",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2015",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2016",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2017",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2018",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2019",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2020",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2021",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2022",2110.40
+"Nigeria","Renewable hydropower","OnGrid","2023",2900.40
+"Nigeria","Renewable hydropower","OnGrid","2024",2900.40
+"Nigeria","Renewable hydropower","OnGrid","2025",2900.40
+"Nigeria","Renewable hydropower","OffGrid","2000",-
+"Nigeria","Renewable hydropower","OffGrid","2001",-
+"Nigeria","Renewable hydropower","OffGrid","2002",-
+"Nigeria","Renewable hydropower","OffGrid","2003",-
+"Nigeria","Renewable hydropower","OffGrid","2004",-
+"Nigeria","Renewable hydropower","OffGrid","2005",-
+"Nigeria","Renewable hydropower","OffGrid","2006",-
+"Nigeria","Renewable hydropower","OffGrid","2007",-
+"Nigeria","Renewable hydropower","OffGrid","2008",-
+"Nigeria","Renewable hydropower","OffGrid","2009",-
+"Nigeria","Renewable hydropower","OffGrid","2010",-
+"Nigeria","Renewable hydropower","OffGrid","2011",-
+"Nigeria","Renewable hydropower","OffGrid","2012",-
+"Nigeria","Renewable hydropower","OffGrid","2013",-
+"Nigeria","Renewable hydropower","OffGrid","2014",-
+"Nigeria","Renewable hydropower","OffGrid","2015",0.40
+"Nigeria","Renewable hydropower","OffGrid","2016",0.40
+"Nigeria","Renewable hydropower","OffGrid","2017",0.40
+"Nigeria","Renewable hydropower","OffGrid","2018",0.40
+"Nigeria","Renewable hydropower","OffGrid","2019",0.40
+"Nigeria","Renewable hydropower","OffGrid","2020",0.40
+"Nigeria","Renewable hydropower","OffGrid","2021",0.40
+"Nigeria","Renewable hydropower","OffGrid","2022",0.40
+"Nigeria","Renewable hydropower","OffGrid","2023",0.40
+"Nigeria","Renewable hydropower","OffGrid","2024",0.40
+"Nigeria","Renewable hydropower","OffGrid","2025",0.40
+"Nigeria","Mixed hydropower","OnGrid","2000",-
+"Nigeria","Mixed hydropower","OnGrid","2001",-
+"Nigeria","Mixed hydropower","OnGrid","2002",-
+"Nigeria","Mixed hydropower","OnGrid","2003",-
+"Nigeria","Mixed hydropower","OnGrid","2004",-
+"Nigeria","Mixed hydropower","OnGrid","2005",-
+"Nigeria","Mixed hydropower","OnGrid","2006",-
+"Nigeria","Mixed hydropower","OnGrid","2007",-
+"Nigeria","Mixed hydropower","OnGrid","2008",-
+"Nigeria","Mixed hydropower","OnGrid","2009",-
+"Nigeria","Mixed hydropower","OnGrid","2010",-
+"Nigeria","Mixed hydropower","OnGrid","2011",-
+"Nigeria","Mixed hydropower","OnGrid","2012",-
+"Nigeria","Mixed hydropower","OnGrid","2013",-
+"Nigeria","Mixed hydropower","OnGrid","2014",-
+"Nigeria","Mixed hydropower","OnGrid","2015",-
+"Nigeria","Mixed hydropower","OnGrid","2016",-
+"Nigeria","Mixed hydropower","OnGrid","2017",-
+"Nigeria","Mixed hydropower","OnGrid","2018",-
+"Nigeria","Mixed hydropower","OnGrid","2019",-
+"Nigeria","Mixed hydropower","OnGrid","2020",-
+"Nigeria","Mixed hydropower","OnGrid","2021",-
+"Nigeria","Mixed hydropower","OnGrid","2022",-
+"Nigeria","Mixed hydropower","OnGrid","2023",-
+"Nigeria","Mixed hydropower","OnGrid","2024",-
+"Nigeria","Mixed hydropower","OnGrid","2025",-
+"Nigeria","Mixed hydropower","OffGrid","2000",-
+"Nigeria","Mixed hydropower","OffGrid","2001",-
+"Nigeria","Mixed hydropower","OffGrid","2002",-
+"Nigeria","Mixed hydropower","OffGrid","2003",-
+"Nigeria","Mixed hydropower","OffGrid","2004",-
+"Nigeria","Mixed hydropower","OffGrid","2005",-
+"Nigeria","Mixed hydropower","OffGrid","2006",-
+"Nigeria","Mixed hydropower","OffGrid","2007",-
+"Nigeria","Mixed hydropower","OffGrid","2008",-
+"Nigeria","Mixed hydropower","OffGrid","2009",-
+"Nigeria","Mixed hydropower","OffGrid","2010",-
+"Nigeria","Mixed hydropower","OffGrid","2011",-
+"Nigeria","Mixed hydropower","OffGrid","2012",-
+"Nigeria","Mixed hydropower","OffGrid","2013",-
+"Nigeria","Mixed hydropower","OffGrid","2014",-
+"Nigeria","Mixed hydropower","OffGrid","2015",-
+"Nigeria","Mixed hydropower","OffGrid","2016",-
+"Nigeria","Mixed hydropower","OffGrid","2017",-
+"Nigeria","Mixed hydropower","OffGrid","2018",-
+"Nigeria","Mixed hydropower","OffGrid","2019",-
+"Nigeria","Mixed hydropower","OffGrid","2020",-
+"Nigeria","Mixed hydropower","OffGrid","2021",-
+"Nigeria","Mixed hydropower","OffGrid","2022",-
+"Nigeria","Mixed hydropower","OffGrid","2023",-
+"Nigeria","Mixed hydropower","OffGrid","2024",-
+"Nigeria","Mixed hydropower","OffGrid","2025",-
+"Nigeria","Marine energy","OnGrid","2000",-
+"Nigeria","Marine energy","OnGrid","2001",-
+"Nigeria","Marine energy","OnGrid","2002",-
+"Nigeria","Marine energy","OnGrid","2003",-
+"Nigeria","Marine energy","OnGrid","2004",-
+"Nigeria","Marine energy","OnGrid","2005",-
+"Nigeria","Marine energy","OnGrid","2006",-
+"Nigeria","Marine energy","OnGrid","2007",-
+"Nigeria","Marine energy","OnGrid","2008",-
+"Nigeria","Marine energy","OnGrid","2009",-
+"Nigeria","Marine energy","OnGrid","2010",-
+"Nigeria","Marine energy","OnGrid","2011",-
+"Nigeria","Marine energy","OnGrid","2012",-
+"Nigeria","Marine energy","OnGrid","2013",-
+"Nigeria","Marine energy","OnGrid","2014",-
+"Nigeria","Marine energy","OnGrid","2015",-
+"Nigeria","Marine energy","OnGrid","2016",-
+"Nigeria","Marine energy","OnGrid","2017",-
+"Nigeria","Marine energy","OnGrid","2018",-
+"Nigeria","Marine energy","OnGrid","2019",-
+"Nigeria","Marine energy","OnGrid","2020",-
+"Nigeria","Marine energy","OnGrid","2021",-
+"Nigeria","Marine energy","OnGrid","2022",-
+"Nigeria","Marine energy","OnGrid","2023",-
+"Nigeria","Marine energy","OnGrid","2024",-
+"Nigeria","Marine energy","OnGrid","2025",-
+"Nigeria","Marine energy","OffGrid","2000",-
+"Nigeria","Marine energy","OffGrid","2001",-
+"Nigeria","Marine energy","OffGrid","2002",-
+"Nigeria","Marine energy","OffGrid","2003",-
+"Nigeria","Marine energy","OffGrid","2004",-
+"Nigeria","Marine energy","OffGrid","2005",-
+"Nigeria","Marine energy","OffGrid","2006",-
+"Nigeria","Marine energy","OffGrid","2007",-
+"Nigeria","Marine energy","OffGrid","2008",-
+"Nigeria","Marine energy","OffGrid","2009",-
+"Nigeria","Marine energy","OffGrid","2010",-
+"Nigeria","Marine energy","OffGrid","2011",-
+"Nigeria","Marine energy","OffGrid","2012",-
+"Nigeria","Marine energy","OffGrid","2013",-
+"Nigeria","Marine energy","OffGrid","2014",-
+"Nigeria","Marine energy","OffGrid","2015",-
+"Nigeria","Marine energy","OffGrid","2016",-
+"Nigeria","Marine energy","OffGrid","2017",-
+"Nigeria","Marine energy","OffGrid","2018",-
+"Nigeria","Marine energy","OffGrid","2019",-
+"Nigeria","Marine energy","OffGrid","2020",-
+"Nigeria","Marine energy","OffGrid","2021",-
+"Nigeria","Marine energy","OffGrid","2022",-
+"Nigeria","Marine energy","OffGrid","2023",-
+"Nigeria","Marine energy","OffGrid","2024",-
+"Nigeria","Marine energy","OffGrid","2025",-
+"Nigeria","Bioenergy","OnGrid","2000",-
+"Nigeria","Bioenergy","OnGrid","2001",-
+"Nigeria","Bioenergy","OnGrid","2002",-
+"Nigeria","Bioenergy","OnGrid","2003",-
+"Nigeria","Bioenergy","OnGrid","2004",-
+"Nigeria","Bioenergy","OnGrid","2005",-
+"Nigeria","Bioenergy","OnGrid","2006",-
+"Nigeria","Bioenergy","OnGrid","2007",-
+"Nigeria","Bioenergy","OnGrid","2008",-
+"Nigeria","Bioenergy","OnGrid","2009",-
+"Nigeria","Bioenergy","OnGrid","2010",-
+"Nigeria","Bioenergy","OnGrid","2011",-
+"Nigeria","Bioenergy","OnGrid","2012",0.03
+"Nigeria","Bioenergy","OnGrid","2013",0.03
+"Nigeria","Bioenergy","OnGrid","2014",0.03
+"Nigeria","Bioenergy","OnGrid","2015",0.03
+"Nigeria","Bioenergy","OnGrid","2016",0.03
+"Nigeria","Bioenergy","OnGrid","2017",0.03
+"Nigeria","Bioenergy","OnGrid","2018",0.03
+"Nigeria","Bioenergy","OnGrid","2019",0.03
+"Nigeria","Bioenergy","OnGrid","2020",3.78
+"Nigeria","Bioenergy","OnGrid","2021",12.03
+"Nigeria","Bioenergy","OnGrid","2022",12.03
+"Nigeria","Bioenergy","OnGrid","2023",12.03
+"Nigeria","Bioenergy","OnGrid","2024",12.03
+"Nigeria","Bioenergy","OnGrid","2025",12.03
+"Nigeria","Bioenergy","OffGrid","2000",4.80
+"Nigeria","Bioenergy","OffGrid","2001",4.80
+"Nigeria","Bioenergy","OffGrid","2002",4.80
+"Nigeria","Bioenergy","OffGrid","2003",4.80
+"Nigeria","Bioenergy","OffGrid","2004",4.80
+"Nigeria","Bioenergy","OffGrid","2005",4.80
+"Nigeria","Bioenergy","OffGrid","2006",4.80
+"Nigeria","Bioenergy","OffGrid","2007",4.80
+"Nigeria","Bioenergy","OffGrid","2008",4.80
+"Nigeria","Bioenergy","OffGrid","2009",4.80
+"Nigeria","Bioenergy","OffGrid","2010",6.00
+"Nigeria","Bioenergy","OffGrid","2011",6.00
+"Nigeria","Bioenergy","OffGrid","2012",6.00
+"Nigeria","Bioenergy","OffGrid","2013",6.00
+"Nigeria","Bioenergy","OffGrid","2014",7.51
+"Nigeria","Bioenergy","OffGrid","2015",7.51
+"Nigeria","Bioenergy","OffGrid","2016",9.02
+"Nigeria","Bioenergy","OffGrid","2017",9.02
+"Nigeria","Bioenergy","OffGrid","2018",9.02
+"Nigeria","Bioenergy","OffGrid","2019",9.02
+"Nigeria","Bioenergy","OffGrid","2020",9.02
+"Nigeria","Bioenergy","OffGrid","2021",9.02
+"Nigeria","Bioenergy","OffGrid","2022",9.02
+"Nigeria","Bioenergy","OffGrid","2023",9.02
+"Nigeria","Bioenergy","OffGrid","2024",9.02
+"Nigeria","Bioenergy","OffGrid","2025",9.02
+"Nigeria","Solid biofuels","OnGrid","2000",-
+"Nigeria","Solid biofuels","OnGrid","2001",-
+"Nigeria","Solid biofuels","OnGrid","2002",-
+"Nigeria","Solid biofuels","OnGrid","2003",-
+"Nigeria","Solid biofuels","OnGrid","2004",-
+"Nigeria","Solid biofuels","OnGrid","2005",-
+"Nigeria","Solid biofuels","OnGrid","2006",-
+"Nigeria","Solid biofuels","OnGrid","2007",-
+"Nigeria","Solid biofuels","OnGrid","2008",-
+"Nigeria","Solid biofuels","OnGrid","2009",-
+"Nigeria","Solid biofuels","OnGrid","2010",-
+"Nigeria","Solid biofuels","OnGrid","2011",-
+"Nigeria","Solid biofuels","OnGrid","2012",0.03
+"Nigeria","Solid biofuels","OnGrid","2013",0.03
+"Nigeria","Solid biofuels","OnGrid","2014",0.03
+"Nigeria","Solid biofuels","OnGrid","2015",0.03
+"Nigeria","Solid biofuels","OnGrid","2016",0.03
+"Nigeria","Solid biofuels","OnGrid","2017",0.03
+"Nigeria","Solid biofuels","OnGrid","2018",0.03
+"Nigeria","Solid biofuels","OnGrid","2019",0.03
+"Nigeria","Solid biofuels","OnGrid","2020",3.78
+"Nigeria","Solid biofuels","OnGrid","2021",12.03
+"Nigeria","Solid biofuels","OnGrid","2022",12.03
+"Nigeria","Solid biofuels","OnGrid","2023",12.03
+"Nigeria","Solid biofuels","OnGrid","2024",12.03
+"Nigeria","Solid biofuels","OnGrid","2025",12.03
+"Nigeria","Solid biofuels","OffGrid","2000",4.80
+"Nigeria","Solid biofuels","OffGrid","2001",4.80
+"Nigeria","Solid biofuels","OffGrid","2002",4.80
+"Nigeria","Solid biofuels","OffGrid","2003",4.80
+"Nigeria","Solid biofuels","OffGrid","2004",4.80
+"Nigeria","Solid biofuels","OffGrid","2005",4.80
+"Nigeria","Solid biofuels","OffGrid","2006",4.80
+"Nigeria","Solid biofuels","OffGrid","2007",4.80
+"Nigeria","Solid biofuels","OffGrid","2008",4.80
+"Nigeria","Solid biofuels","OffGrid","2009",4.80
+"Nigeria","Solid biofuels","OffGrid","2010",6.00
+"Nigeria","Solid biofuels","OffGrid","2011",6.00
+"Nigeria","Solid biofuels","OffGrid","2012",6.00
+"Nigeria","Solid biofuels","OffGrid","2013",6.00
+"Nigeria","Solid biofuels","OffGrid","2014",7.50
+"Nigeria","Solid biofuels","OffGrid","2015",7.50
+"Nigeria","Solid biofuels","OffGrid","2016",9.00
+"Nigeria","Solid biofuels","OffGrid","2017",9.00
+"Nigeria","Solid biofuels","OffGrid","2018",9.00
+"Nigeria","Solid biofuels","OffGrid","2019",9.00
+"Nigeria","Solid biofuels","OffGrid","2020",9.00
+"Nigeria","Solid biofuels","OffGrid","2021",9.00
+"Nigeria","Solid biofuels","OffGrid","2022",9.00
+"Nigeria","Solid biofuels","OffGrid","2023",9.00
+"Nigeria","Solid biofuels","OffGrid","2024",9.00
+"Nigeria","Solid biofuels","OffGrid","2025",9.00
+"Nigeria","Liquid biofuels","OnGrid","2000",-
+"Nigeria","Liquid biofuels","OnGrid","2001",-
+"Nigeria","Liquid biofuels","OnGrid","2002",-
+"Nigeria","Liquid biofuels","OnGrid","2003",-
+"Nigeria","Liquid biofuels","OnGrid","2004",-
+"Nigeria","Liquid biofuels","OnGrid","2005",-
+"Nigeria","Liquid biofuels","OnGrid","2006",-
+"Nigeria","Liquid biofuels","OnGrid","2007",-
+"Nigeria","Liquid biofuels","OnGrid","2008",-
+"Nigeria","Liquid biofuels","OnGrid","2009",-
+"Nigeria","Liquid biofuels","OnGrid","2010",-
+"Nigeria","Liquid biofuels","OnGrid","2011",-
+"Nigeria","Liquid biofuels","OnGrid","2012",-
+"Nigeria","Liquid biofuels","OnGrid","2013",-
+"Nigeria","Liquid biofuels","OnGrid","2014",-
+"Nigeria","Liquid biofuels","OnGrid","2015",-
+"Nigeria","Liquid biofuels","OnGrid","2016",-
+"Nigeria","Liquid biofuels","OnGrid","2017",-
+"Nigeria","Liquid biofuels","OnGrid","2018",-
+"Nigeria","Liquid biofuels","OnGrid","2019",-
+"Nigeria","Liquid biofuels","OnGrid","2020",-
+"Nigeria","Liquid biofuels","OnGrid","2021",-
+"Nigeria","Liquid biofuels","OnGrid","2022",-
+"Nigeria","Liquid biofuels","OnGrid","2023",-
+"Nigeria","Liquid biofuels","OnGrid","2024",-
+"Nigeria","Liquid biofuels","OnGrid","2025",-
+"Nigeria","Liquid biofuels","OffGrid","2000",-
+"Nigeria","Liquid biofuels","OffGrid","2001",-
+"Nigeria","Liquid biofuels","OffGrid","2002",-
+"Nigeria","Liquid biofuels","OffGrid","2003",-
+"Nigeria","Liquid biofuels","OffGrid","2004",-
+"Nigeria","Liquid biofuels","OffGrid","2005",-
+"Nigeria","Liquid biofuels","OffGrid","2006",-
+"Nigeria","Liquid biofuels","OffGrid","2007",-
+"Nigeria","Liquid biofuels","OffGrid","2008",-
+"Nigeria","Liquid biofuels","OffGrid","2009",-
+"Nigeria","Liquid biofuels","OffGrid","2010",-
+"Nigeria","Liquid biofuels","OffGrid","2011",-
+"Nigeria","Liquid biofuels","OffGrid","2012",-
+"Nigeria","Liquid biofuels","OffGrid","2013",-
+"Nigeria","Liquid biofuels","OffGrid","2014",-
+"Nigeria","Liquid biofuels","OffGrid","2015",-
+"Nigeria","Liquid biofuels","OffGrid","2016",-
+"Nigeria","Liquid biofuels","OffGrid","2017",-
+"Nigeria","Liquid biofuels","OffGrid","2018",-
+"Nigeria","Liquid biofuels","OffGrid","2019",-
+"Nigeria","Liquid biofuels","OffGrid","2020",-
+"Nigeria","Liquid biofuels","OffGrid","2021",-
+"Nigeria","Liquid biofuels","OffGrid","2022",-
+"Nigeria","Liquid biofuels","OffGrid","2023",-
+"Nigeria","Liquid biofuels","OffGrid","2024",-
+"Nigeria","Liquid biofuels","OffGrid","2025",-
+"Nigeria","Gas biofuels","OnGrid","2000",-
+"Nigeria","Gas biofuels","OnGrid","2001",-
+"Nigeria","Gas biofuels","OnGrid","2002",-
+"Nigeria","Gas biofuels","OnGrid","2003",-
+"Nigeria","Gas biofuels","OnGrid","2004",-
+"Nigeria","Gas biofuels","OnGrid","2005",-
+"Nigeria","Gas biofuels","OnGrid","2006",-
+"Nigeria","Gas biofuels","OnGrid","2007",-
+"Nigeria","Gas biofuels","OnGrid","2008",-
+"Nigeria","Gas biofuels","OnGrid","2009",-
+"Nigeria","Gas biofuels","OnGrid","2010",-
+"Nigeria","Gas biofuels","OnGrid","2011",-
+"Nigeria","Gas biofuels","OnGrid","2012",-
+"Nigeria","Gas biofuels","OnGrid","2013",-
+"Nigeria","Gas biofuels","OnGrid","2014",-
+"Nigeria","Gas biofuels","OnGrid","2015",-
+"Nigeria","Gas biofuels","OnGrid","2016",-
+"Nigeria","Gas biofuels","OnGrid","2017",-
+"Nigeria","Gas biofuels","OnGrid","2018",-
+"Nigeria","Gas biofuels","OnGrid","2019",-
+"Nigeria","Gas biofuels","OnGrid","2020",-
+"Nigeria","Gas biofuels","OnGrid","2021",-
+"Nigeria","Gas biofuels","OnGrid","2022",-
+"Nigeria","Gas biofuels","OnGrid","2023",-
+"Nigeria","Gas biofuels","OnGrid","2024",-
+"Nigeria","Gas biofuels","OnGrid","2025",-
+"Nigeria","Gas biofuels","OffGrid","2000",-
+"Nigeria","Gas biofuels","OffGrid","2001",-
+"Nigeria","Gas biofuels","OffGrid","2002",-
+"Nigeria","Gas biofuels","OffGrid","2003",-
+"Nigeria","Gas biofuels","OffGrid","2004",-
+"Nigeria","Gas biofuels","OffGrid","2005",-
+"Nigeria","Gas biofuels","OffGrid","2006",-
+"Nigeria","Gas biofuels","OffGrid","2007",-
+"Nigeria","Gas biofuels","OffGrid","2008",-
+"Nigeria","Gas biofuels","OffGrid","2009",-
+"Nigeria","Gas biofuels","OffGrid","2010",-
+"Nigeria","Gas biofuels","OffGrid","2011",-
+"Nigeria","Gas biofuels","OffGrid","2012",-
+"Nigeria","Gas biofuels","OffGrid","2013",-
+"Nigeria","Gas biofuels","OffGrid","2014",0.01
+"Nigeria","Gas biofuels","OffGrid","2015",0.01
+"Nigeria","Gas biofuels","OffGrid","2016",0.02
+"Nigeria","Gas biofuels","OffGrid","2017",0.02
+"Nigeria","Gas biofuels","OffGrid","2018",0.02
+"Nigeria","Gas biofuels","OffGrid","2019",0.02
+"Nigeria","Gas biofuels","OffGrid","2020",0.02
+"Nigeria","Gas biofuels","OffGrid","2021",0.02
+"Nigeria","Gas biofuels","OffGrid","2022",0.02
+"Nigeria","Gas biofuels","OffGrid","2023",0.02
+"Nigeria","Gas biofuels","OffGrid","2024",0.02
+"Nigeria","Gas biofuels","OffGrid","2025",0.02
+"Nigeria","Renewable waste","OnGrid","2000",-
+"Nigeria","Renewable waste","OnGrid","2001",-
+"Nigeria","Renewable waste","OnGrid","2002",-
+"Nigeria","Renewable waste","OnGrid","2003",-
+"Nigeria","Renewable waste","OnGrid","2004",-
+"Nigeria","Renewable waste","OnGrid","2005",-
+"Nigeria","Renewable waste","OnGrid","2006",-
+"Nigeria","Renewable waste","OnGrid","2007",-
+"Nigeria","Renewable waste","OnGrid","2008",-
+"Nigeria","Renewable waste","OnGrid","2009",-
+"Nigeria","Renewable waste","OnGrid","2010",-
+"Nigeria","Renewable waste","OnGrid","2011",-
+"Nigeria","Renewable waste","OnGrid","2012",-
+"Nigeria","Renewable waste","OnGrid","2013",-
+"Nigeria","Renewable waste","OnGrid","2014",-
+"Nigeria","Renewable waste","OnGrid","2015",-
+"Nigeria","Renewable waste","OnGrid","2016",-
+"Nigeria","Renewable waste","OnGrid","2017",-
+"Nigeria","Renewable waste","OnGrid","2018",-
+"Nigeria","Renewable waste","OnGrid","2019",-
+"Nigeria","Renewable waste","OnGrid","2020",-
+"Nigeria","Renewable waste","OnGrid","2021",-
+"Nigeria","Renewable waste","OnGrid","2022",-
+"Nigeria","Renewable waste","OnGrid","2023",-
+"Nigeria","Renewable waste","OnGrid","2024",-
+"Nigeria","Renewable waste","OnGrid","2025",-
+"Nigeria","Renewable waste","OffGrid","2000",-
+"Nigeria","Renewable waste","OffGrid","2001",-
+"Nigeria","Renewable waste","OffGrid","2002",-
+"Nigeria","Renewable waste","OffGrid","2003",-
+"Nigeria","Renewable waste","OffGrid","2004",-
+"Nigeria","Renewable waste","OffGrid","2005",-
+"Nigeria","Renewable waste","OffGrid","2006",-
+"Nigeria","Renewable waste","OffGrid","2007",-
+"Nigeria","Renewable waste","OffGrid","2008",-
+"Nigeria","Renewable waste","OffGrid","2009",-
+"Nigeria","Renewable waste","OffGrid","2010",-
+"Nigeria","Renewable waste","OffGrid","2011",-
+"Nigeria","Renewable waste","OffGrid","2012",-
+"Nigeria","Renewable waste","OffGrid","2013",-
+"Nigeria","Renewable waste","OffGrid","2014",-
+"Nigeria","Renewable waste","OffGrid","2015",-
+"Nigeria","Renewable waste","OffGrid","2016",-
+"Nigeria","Renewable waste","OffGrid","2017",-
+"Nigeria","Renewable waste","OffGrid","2018",-
+"Nigeria","Renewable waste","OffGrid","2019",-
+"Nigeria","Renewable waste","OffGrid","2020",-
+"Nigeria","Renewable waste","OffGrid","2021",-
+"Nigeria","Renewable waste","OffGrid","2022",-
+"Nigeria","Renewable waste","OffGrid","2023",-
+"Nigeria","Renewable waste","OffGrid","2024",-
+"Nigeria","Renewable waste","OffGrid","2025",-
+"Nigeria","Geothermal energy","OnGrid","2000",-
+"Nigeria","Geothermal energy","OnGrid","2001",-
+"Nigeria","Geothermal energy","OnGrid","2002",-
+"Nigeria","Geothermal energy","OnGrid","2003",-
+"Nigeria","Geothermal energy","OnGrid","2004",-
+"Nigeria","Geothermal energy","OnGrid","2005",-
+"Nigeria","Geothermal energy","OnGrid","2006",-
+"Nigeria","Geothermal energy","OnGrid","2007",-
+"Nigeria","Geothermal energy","OnGrid","2008",-
+"Nigeria","Geothermal energy","OnGrid","2009",-
+"Nigeria","Geothermal energy","OnGrid","2010",-
+"Nigeria","Geothermal energy","OnGrid","2011",-
+"Nigeria","Geothermal energy","OnGrid","2012",-
+"Nigeria","Geothermal energy","OnGrid","2013",-
+"Nigeria","Geothermal energy","OnGrid","2014",-
+"Nigeria","Geothermal energy","OnGrid","2015",-
+"Nigeria","Geothermal energy","OnGrid","2016",-
+"Nigeria","Geothermal energy","OnGrid","2017",-
+"Nigeria","Geothermal energy","OnGrid","2018",-
+"Nigeria","Geothermal energy","OnGrid","2019",-
+"Nigeria","Geothermal energy","OnGrid","2020",-
+"Nigeria","Geothermal energy","OnGrid","2021",-
+"Nigeria","Geothermal energy","OnGrid","2022",-
+"Nigeria","Geothermal energy","OnGrid","2023",-
+"Nigeria","Geothermal energy","OnGrid","2024",-
+"Nigeria","Geothermal energy","OnGrid","2025",-
+"Nigeria","Geothermal energy","OffGrid","2000",-
+"Nigeria","Geothermal energy","OffGrid","2001",-
+"Nigeria","Geothermal energy","OffGrid","2002",-
+"Nigeria","Geothermal energy","OffGrid","2003",-
+"Nigeria","Geothermal energy","OffGrid","2004",-
+"Nigeria","Geothermal energy","OffGrid","2005",-
+"Nigeria","Geothermal energy","OffGrid","2006",-
+"Nigeria","Geothermal energy","OffGrid","2007",-
+"Nigeria","Geothermal energy","OffGrid","2008",-
+"Nigeria","Geothermal energy","OffGrid","2009",-
+"Nigeria","Geothermal energy","OffGrid","2010",-
+"Nigeria","Geothermal energy","OffGrid","2011",-
+"Nigeria","Geothermal energy","OffGrid","2012",-
+"Nigeria","Geothermal energy","OffGrid","2013",-
+"Nigeria","Geothermal energy","OffGrid","2014",-
+"Nigeria","Geothermal energy","OffGrid","2015",-
+"Nigeria","Geothermal energy","OffGrid","2016",-
+"Nigeria","Geothermal energy","OffGrid","2017",-
+"Nigeria","Geothermal energy","OffGrid","2018",-
+"Nigeria","Geothermal energy","OffGrid","2019",-
+"Nigeria","Geothermal energy","OffGrid","2020",-
+"Nigeria","Geothermal energy","OffGrid","2021",-
+"Nigeria","Geothermal energy","OffGrid","2022",-
+"Nigeria","Geothermal energy","OffGrid","2023",-
+"Nigeria","Geothermal energy","OffGrid","2024",-
+"Nigeria","Geothermal energy","OffGrid","2025",-
+"Nigeria","Total non-renewable energy","OnGrid","2000",3500.00
+"Nigeria","Total non-renewable energy","OnGrid","2001",3500.00
+"Nigeria","Total non-renewable energy","OnGrid","2002",3500.00
+"Nigeria","Total non-renewable energy","OnGrid","2003",4700.00
+"Nigeria","Total non-renewable energy","OnGrid","2004",4700.00
+"Nigeria","Total non-renewable energy","OnGrid","2005",4900.00
+"Nigeria","Total non-renewable energy","OnGrid","2006",5502.00
+"Nigeria","Total non-renewable energy","OnGrid","2007",6022.00
+"Nigeria","Total non-renewable energy","OnGrid","2008",6531.00
+"Nigeria","Total non-renewable energy","OnGrid","2009",6764.00
+"Nigeria","Total non-renewable energy","OnGrid","2010",6487.00
+"Nigeria","Total non-renewable energy","OnGrid","2011",6972.00
+"Nigeria","Total non-renewable energy","OnGrid","2012",6972.00
+"Nigeria","Total non-renewable energy","OnGrid","2013",7892.00
+"Nigeria","Total non-renewable energy","OnGrid","2014",8458.00
+"Nigeria","Total non-renewable energy","OnGrid","2015",8458.00
+"Nigeria","Total non-renewable energy","OnGrid","2016",10403.00
+"Nigeria","Total non-renewable energy","OnGrid","2017",10433.00
+"Nigeria","Total non-renewable energy","OnGrid","2018",10894.00
+"Nigeria","Total non-renewable energy","OnGrid","2019",10917.00
+"Nigeria","Total non-renewable energy","OnGrid","2020",10982.00
+"Nigeria","Total non-renewable energy","OnGrid","2021",10982.00
+"Nigeria","Total non-renewable energy","OnGrid","2022",10987.00
+"Nigeria","Total non-renewable energy","OnGrid","2023",11307.60
+"Nigeria","Total non-renewable energy","OnGrid","2024",11448.60
+"Nigeria","Total non-renewable energy","OnGrid","2025",11448.60
+"Nigeria","Total non-renewable energy","OffGrid","2000",-
+"Nigeria","Total non-renewable energy","OffGrid","2001",-
+"Nigeria","Total non-renewable energy","OffGrid","2002",-
+"Nigeria","Total non-renewable energy","OffGrid","2003",-
+"Nigeria","Total non-renewable energy","OffGrid","2004",-
+"Nigeria","Total non-renewable energy","OffGrid","2005",-
+"Nigeria","Total non-renewable energy","OffGrid","2006",-
+"Nigeria","Total non-renewable energy","OffGrid","2007",-
+"Nigeria","Total non-renewable energy","OffGrid","2008",-
+"Nigeria","Total non-renewable energy","OffGrid","2009",-
+"Nigeria","Total non-renewable energy","OffGrid","2010",-
+"Nigeria","Total non-renewable energy","OffGrid","2011",-
+"Nigeria","Total non-renewable energy","OffGrid","2012",-
+"Nigeria","Total non-renewable energy","OffGrid","2013",-
+"Nigeria","Total non-renewable energy","OffGrid","2014",-
+"Nigeria","Total non-renewable energy","OffGrid","2015",-
+"Nigeria","Total non-renewable energy","OffGrid","2016",-
+"Nigeria","Total non-renewable energy","OffGrid","2017",-
+"Nigeria","Total non-renewable energy","OffGrid","2018",-
+"Nigeria","Total non-renewable energy","OffGrid","2019",19.50
+"Nigeria","Total non-renewable energy","OffGrid","2020",19.70
+"Nigeria","Total non-renewable energy","OffGrid","2021",19.70
+"Nigeria","Total non-renewable energy","OffGrid","2022",19.70
+"Nigeria","Total non-renewable energy","OffGrid","2023",19.70
+"Nigeria","Total non-renewable energy","OffGrid","2024",19.70
+"Nigeria","Total non-renewable energy","OffGrid","2025",19.70
+"Nigeria","Fossil fuels","OnGrid","2000",3500.00
+"Nigeria","Fossil fuels","OnGrid","2001",3500.00
+"Nigeria","Fossil fuels","OnGrid","2002",3500.00
+"Nigeria","Fossil fuels","OnGrid","2003",4700.00
+"Nigeria","Fossil fuels","OnGrid","2004",4700.00
+"Nigeria","Fossil fuels","OnGrid","2005",4900.00
+"Nigeria","Fossil fuels","OnGrid","2006",5502.00
+"Nigeria","Fossil fuels","OnGrid","2007",6022.00
+"Nigeria","Fossil fuels","OnGrid","2008",6531.00
+"Nigeria","Fossil fuels","OnGrid","2009",6764.00
+"Nigeria","Fossil fuels","OnGrid","2010",6487.00
+"Nigeria","Fossil fuels","OnGrid","2011",6972.00
+"Nigeria","Fossil fuels","OnGrid","2012",6972.00
+"Nigeria","Fossil fuels","OnGrid","2013",7892.00
+"Nigeria","Fossil fuels","OnGrid","2014",8458.00
+"Nigeria","Fossil fuels","OnGrid","2015",8458.00
+"Nigeria","Fossil fuels","OnGrid","2016",10403.00
+"Nigeria","Fossil fuels","OnGrid","2017",10433.00
+"Nigeria","Fossil fuels","OnGrid","2018",10894.00
+"Nigeria","Fossil fuels","OnGrid","2019",10917.00
+"Nigeria","Fossil fuels","OnGrid","2020",10982.00
+"Nigeria","Fossil fuels","OnGrid","2021",10982.00
+"Nigeria","Fossil fuels","OnGrid","2022",10987.00
+"Nigeria","Fossil fuels","OnGrid","2023",11307.60
+"Nigeria","Fossil fuels","OnGrid","2024",11448.60
+"Nigeria","Fossil fuels","OnGrid","2025",11448.60
+"Nigeria","Fossil fuels","OffGrid","2000",-
+"Nigeria","Fossil fuels","OffGrid","2001",-
+"Nigeria","Fossil fuels","OffGrid","2002",-
+"Nigeria","Fossil fuels","OffGrid","2003",-
+"Nigeria","Fossil fuels","OffGrid","2004",-
+"Nigeria","Fossil fuels","OffGrid","2005",-
+"Nigeria","Fossil fuels","OffGrid","2006",-
+"Nigeria","Fossil fuels","OffGrid","2007",-
+"Nigeria","Fossil fuels","OffGrid","2008",-
+"Nigeria","Fossil fuels","OffGrid","2009",-
+"Nigeria","Fossil fuels","OffGrid","2010",-
+"Nigeria","Fossil fuels","OffGrid","2011",-
+"Nigeria","Fossil fuels","OffGrid","2012",-
+"Nigeria","Fossil fuels","OffGrid","2013",-
+"Nigeria","Fossil fuels","OffGrid","2014",-
+"Nigeria","Fossil fuels","OffGrid","2015",-
+"Nigeria","Fossil fuels","OffGrid","2016",-
+"Nigeria","Fossil fuels","OffGrid","2017",-
+"Nigeria","Fossil fuels","OffGrid","2018",-
+"Nigeria","Fossil fuels","OffGrid","2019",19.50
+"Nigeria","Fossil fuels","OffGrid","2020",19.70
+"Nigeria","Fossil fuels","OffGrid","2021",19.70
+"Nigeria","Fossil fuels","OffGrid","2022",19.70
+"Nigeria","Fossil fuels","OffGrid","2023",19.70
+"Nigeria","Fossil fuels","OffGrid","2024",19.70
+"Nigeria","Fossil fuels","OffGrid","2025",19.70
+"Nigeria","Coal","OnGrid","2000",-
+"Nigeria","Coal","OnGrid","2001",-
+"Nigeria","Coal","OnGrid","2002",-
+"Nigeria","Coal","OnGrid","2003",-
+"Nigeria","Coal","OnGrid","2004",-
+"Nigeria","Coal","OnGrid","2005",-
+"Nigeria","Coal","OnGrid","2006",-
+"Nigeria","Coal","OnGrid","2007",-
+"Nigeria","Coal","OnGrid","2008",-
+"Nigeria","Coal","OnGrid","2009",-
+"Nigeria","Coal","OnGrid","2010",-
+"Nigeria","Coal","OnGrid","2011",-
+"Nigeria","Coal","OnGrid","2012",-
+"Nigeria","Coal","OnGrid","2013",-
+"Nigeria","Coal","OnGrid","2014",-
+"Nigeria","Coal","OnGrid","2015",-
+"Nigeria","Coal","OnGrid","2016",-
+"Nigeria","Coal","OnGrid","2017",-
+"Nigeria","Coal","OnGrid","2018",-
+"Nigeria","Coal","OnGrid","2019",-
+"Nigeria","Coal","OnGrid","2020",-
+"Nigeria","Coal","OnGrid","2021",-
+"Nigeria","Coal","OnGrid","2022",-
+"Nigeria","Coal","OnGrid","2023",-
+"Nigeria","Coal","OnGrid","2024",-
+"Nigeria","Coal","OnGrid","2025",-
+"Nigeria","Coal","OffGrid","2000",-
+"Nigeria","Coal","OffGrid","2001",-
+"Nigeria","Coal","OffGrid","2002",-
+"Nigeria","Coal","OffGrid","2003",-
+"Nigeria","Coal","OffGrid","2004",-
+"Nigeria","Coal","OffGrid","2005",-
+"Nigeria","Coal","OffGrid","2006",-
+"Nigeria","Coal","OffGrid","2007",-
+"Nigeria","Coal","OffGrid","2008",-
+"Nigeria","Coal","OffGrid","2009",-
+"Nigeria","Coal","OffGrid","2010",-
+"Nigeria","Coal","OffGrid","2011",-
+"Nigeria","Coal","OffGrid","2012",-
+"Nigeria","Coal","OffGrid","2013",-
+"Nigeria","Coal","OffGrid","2014",-
+"Nigeria","Coal","OffGrid","2015",-
+"Nigeria","Coal","OffGrid","2016",-
+"Nigeria","Coal","OffGrid","2017",-
+"Nigeria","Coal","OffGrid","2018",-
+"Nigeria","Coal","OffGrid","2019",-
+"Nigeria","Coal","OffGrid","2020",-
+"Nigeria","Coal","OffGrid","2021",-
+"Nigeria","Coal","OffGrid","2022",-
+"Nigeria","Coal","OffGrid","2023",-
+"Nigeria","Coal","OffGrid","2024",-
+"Nigeria","Coal","OffGrid","2025",-
+"Nigeria","Oil","OnGrid","2000",-
+"Nigeria","Oil","OnGrid","2001",-
+"Nigeria","Oil","OnGrid","2002",-
+"Nigeria","Oil","OnGrid","2003",-
+"Nigeria","Oil","OnGrid","2004",-
+"Nigeria","Oil","OnGrid","2005",-
+"Nigeria","Oil","OnGrid","2006",-
+"Nigeria","Oil","OnGrid","2007",-
+"Nigeria","Oil","OnGrid","2008",-
+"Nigeria","Oil","OnGrid","2009",-
+"Nigeria","Oil","OnGrid","2010",-
+"Nigeria","Oil","OnGrid","2011",-
+"Nigeria","Oil","OnGrid","2012",-
+"Nigeria","Oil","OnGrid","2013",-
+"Nigeria","Oil","OnGrid","2014",-
+"Nigeria","Oil","OnGrid","2015",-
+"Nigeria","Oil","OnGrid","2016",-
+"Nigeria","Oil","OnGrid","2017",-
+"Nigeria","Oil","OnGrid","2018",-
+"Nigeria","Oil","OnGrid","2019",23.00
+"Nigeria","Oil","OnGrid","2020",23.00
+"Nigeria","Oil","OnGrid","2021",23.00
+"Nigeria","Oil","OnGrid","2022",28.00
+"Nigeria","Oil","OnGrid","2023",78.00
+"Nigeria","Oil","OnGrid","2024",78.00
+"Nigeria","Oil","OnGrid","2025",78.00
+"Nigeria","Oil","OffGrid","2000",-
+"Nigeria","Oil","OffGrid","2001",-
+"Nigeria","Oil","OffGrid","2002",-
+"Nigeria","Oil","OffGrid","2003",-
+"Nigeria","Oil","OffGrid","2004",-
+"Nigeria","Oil","OffGrid","2005",-
+"Nigeria","Oil","OffGrid","2006",-
+"Nigeria","Oil","OffGrid","2007",-
+"Nigeria","Oil","OffGrid","2008",-
+"Nigeria","Oil","OffGrid","2009",-
+"Nigeria","Oil","OffGrid","2010",-
+"Nigeria","Oil","OffGrid","2011",-
+"Nigeria","Oil","OffGrid","2012",-
+"Nigeria","Oil","OffGrid","2013",-
+"Nigeria","Oil","OffGrid","2014",-
+"Nigeria","Oil","OffGrid","2015",-
+"Nigeria","Oil","OffGrid","2016",-
+"Nigeria","Oil","OffGrid","2017",-
+"Nigeria","Oil","OffGrid","2018",-
+"Nigeria","Oil","OffGrid","2019",10.00
+"Nigeria","Oil","OffGrid","2020",10.20
+"Nigeria","Oil","OffGrid","2021",10.20
+"Nigeria","Oil","OffGrid","2022",10.20
+"Nigeria","Oil","OffGrid","2023",10.20
+"Nigeria","Oil","OffGrid","2024",10.20
+"Nigeria","Oil","OffGrid","2025",10.20
+"Nigeria","Natural gas","OnGrid","2000",3500.00
+"Nigeria","Natural gas","OnGrid","2001",3500.00
+"Nigeria","Natural gas","OnGrid","2002",3500.00
+"Nigeria","Natural gas","OnGrid","2003",4700.00
+"Nigeria","Natural gas","OnGrid","2004",4700.00
+"Nigeria","Natural gas","OnGrid","2005",4900.00
+"Nigeria","Natural gas","OnGrid","2006",5502.00
+"Nigeria","Natural gas","OnGrid","2007",6022.00
+"Nigeria","Natural gas","OnGrid","2008",6531.00
+"Nigeria","Natural gas","OnGrid","2009",6764.00
+"Nigeria","Natural gas","OnGrid","2010",6487.00
+"Nigeria","Natural gas","OnGrid","2011",6972.00
+"Nigeria","Natural gas","OnGrid","2012",6972.00
+"Nigeria","Natural gas","OnGrid","2013",7892.00
+"Nigeria","Natural gas","OnGrid","2014",8458.00
+"Nigeria","Natural gas","OnGrid","2015",8458.00
+"Nigeria","Natural gas","OnGrid","2016",10403.00
+"Nigeria","Natural gas","OnGrid","2017",10433.00
+"Nigeria","Natural gas","OnGrid","2018",10894.00
+"Nigeria","Natural gas","OnGrid","2019",10894.00
+"Nigeria","Natural gas","OnGrid","2020",10959.00
+"Nigeria","Natural gas","OnGrid","2021",10959.00
+"Nigeria","Natural gas","OnGrid","2022",10959.00
+"Nigeria","Natural gas","OnGrid","2023",11229.60
+"Nigeria","Natural gas","OnGrid","2024",11370.60
+"Nigeria","Natural gas","OnGrid","2025",11370.60
+"Nigeria","Natural gas","OffGrid","2000",-
+"Nigeria","Natural gas","OffGrid","2001",-
+"Nigeria","Natural gas","OffGrid","2002",-
+"Nigeria","Natural gas","OffGrid","2003",-
+"Nigeria","Natural gas","OffGrid","2004",-
+"Nigeria","Natural gas","OffGrid","2005",-
+"Nigeria","Natural gas","OffGrid","2006",-
+"Nigeria","Natural gas","OffGrid","2007",-
+"Nigeria","Natural gas","OffGrid","2008",-
+"Nigeria","Natural gas","OffGrid","2009",-
+"Nigeria","Natural gas","OffGrid","2010",-
+"Nigeria","Natural gas","OffGrid","2011",-
+"Nigeria","Natural gas","OffGrid","2012",-
+"Nigeria","Natural gas","OffGrid","2013",-
+"Nigeria","Natural gas","OffGrid","2014",-
+"Nigeria","Natural gas","OffGrid","2015",-
+"Nigeria","Natural gas","OffGrid","2016",-
+"Nigeria","Natural gas","OffGrid","2017",-
+"Nigeria","Natural gas","OffGrid","2018",-
+"Nigeria","Natural gas","OffGrid","2019",9.50
+"Nigeria","Natural gas","OffGrid","2020",9.50
+"Nigeria","Natural gas","OffGrid","2021",9.50
+"Nigeria","Natural gas","OffGrid","2022",9.50
+"Nigeria","Natural gas","OffGrid","2023",9.50
+"Nigeria","Natural gas","OffGrid","2024",9.50
+"Nigeria","Natural gas","OffGrid","2025",9.50
+"Nigeria","Nuclear energy","OnGrid","2000",-
+"Nigeria","Nuclear energy","OnGrid","2001",-
+"Nigeria","Nuclear energy","OnGrid","2002",-
+"Nigeria","Nuclear energy","OnGrid","2003",-
+"Nigeria","Nuclear energy","OnGrid","2004",-
+"Nigeria","Nuclear energy","OnGrid","2005",-
+"Nigeria","Nuclear energy","OnGrid","2006",-
+"Nigeria","Nuclear energy","OnGrid","2007",-
+"Nigeria","Nuclear energy","OnGrid","2008",-
+"Nigeria","Nuclear energy","OnGrid","2009",-
+"Nigeria","Nuclear energy","OnGrid","2010",-
+"Nigeria","Nuclear energy","OnGrid","2011",-
+"Nigeria","Nuclear energy","OnGrid","2012",-
+"Nigeria","Nuclear energy","OnGrid","2013",-
+"Nigeria","Nuclear energy","OnGrid","2014",-
+"Nigeria","Nuclear energy","OnGrid","2015",-
+"Nigeria","Nuclear energy","OnGrid","2016",-
+"Nigeria","Nuclear energy","OnGrid","2017",-
+"Nigeria","Nuclear energy","OnGrid","2018",-
+"Nigeria","Nuclear energy","OnGrid","2019",-
+"Nigeria","Nuclear energy","OnGrid","2020",-
+"Nigeria","Nuclear energy","OnGrid","2021",-
+"Nigeria","Nuclear energy","OnGrid","2022",-
+"Nigeria","Nuclear energy","OnGrid","2023",-
+"Nigeria","Nuclear energy","OnGrid","2024",-
+"Nigeria","Nuclear energy","OnGrid","2025",-
+"Nigeria","Nuclear energy","OffGrid","2000",-
+"Nigeria","Nuclear energy","OffGrid","2001",-
+"Nigeria","Nuclear energy","OffGrid","2002",-
+"Nigeria","Nuclear energy","OffGrid","2003",-
+"Nigeria","Nuclear energy","OffGrid","2004",-
+"Nigeria","Nuclear energy","OffGrid","2005",-
+"Nigeria","Nuclear energy","OffGrid","2006",-
+"Nigeria","Nuclear energy","OffGrid","2007",-
+"Nigeria","Nuclear energy","OffGrid","2008",-
+"Nigeria","Nuclear energy","OffGrid","2009",-
+"Nigeria","Nuclear energy","OffGrid","2010",-
+"Nigeria","Nuclear energy","OffGrid","2011",-
+"Nigeria","Nuclear energy","OffGrid","2012",-
+"Nigeria","Nuclear energy","OffGrid","2013",-
+"Nigeria","Nuclear energy","OffGrid","2014",-
+"Nigeria","Nuclear energy","OffGrid","2015",-
+"Nigeria","Nuclear energy","OffGrid","2016",-
+"Nigeria","Nuclear energy","OffGrid","2017",-
+"Nigeria","Nuclear energy","OffGrid","2018",-
+"Nigeria","Nuclear energy","OffGrid","2019",-
+"Nigeria","Nuclear energy","OffGrid","2020",-
+"Nigeria","Nuclear energy","OffGrid","2021",-
+"Nigeria","Nuclear energy","OffGrid","2022",-
+"Nigeria","Nuclear energy","OffGrid","2023",-
+"Nigeria","Nuclear energy","OffGrid","2024",-
+"Nigeria","Nuclear energy","OffGrid","2025",-
+"Nigeria","Non-renewable waste","OnGrid","2000",-
+"Nigeria","Non-renewable waste","OnGrid","2001",-
+"Nigeria","Non-renewable waste","OnGrid","2002",-
+"Nigeria","Non-renewable waste","OnGrid","2003",-
+"Nigeria","Non-renewable waste","OnGrid","2004",-
+"Nigeria","Non-renewable waste","OnGrid","2005",-
+"Nigeria","Non-renewable waste","OnGrid","2006",-
+"Nigeria","Non-renewable waste","OnGrid","2007",-
+"Nigeria","Non-renewable waste","OnGrid","2008",-
+"Nigeria","Non-renewable waste","OnGrid","2009",-
+"Nigeria","Non-renewable waste","OnGrid","2010",-
+"Nigeria","Non-renewable waste","OnGrid","2011",-
+"Nigeria","Non-renewable waste","OnGrid","2012",-
+"Nigeria","Non-renewable waste","OnGrid","2013",-
+"Nigeria","Non-renewable waste","OnGrid","2014",-
+"Nigeria","Non-renewable waste","OnGrid","2015",-
+"Nigeria","Non-renewable waste","OnGrid","2016",-
+"Nigeria","Non-renewable waste","OnGrid","2017",-
+"Nigeria","Non-renewable waste","OnGrid","2018",-
+"Nigeria","Non-renewable waste","OnGrid","2019",-
+"Nigeria","Non-renewable waste","OnGrid","2020",-
+"Nigeria","Non-renewable waste","OnGrid","2021",-
+"Nigeria","Non-renewable waste","OnGrid","2022",-
+"Nigeria","Non-renewable waste","OnGrid","2023",-
+"Nigeria","Non-renewable waste","OnGrid","2024",-
+"Nigeria","Non-renewable waste","OnGrid","2025",-
+"Nigeria","Non-renewable waste","OffGrid","2000",-
+"Nigeria","Non-renewable waste","OffGrid","2001",-
+"Nigeria","Non-renewable waste","OffGrid","2002",-
+"Nigeria","Non-renewable waste","OffGrid","2003",-
+"Nigeria","Non-renewable waste","OffGrid","2004",-
+"Nigeria","Non-renewable waste","OffGrid","2005",-
+"Nigeria","Non-renewable waste","OffGrid","2006",-
+"Nigeria","Non-renewable waste","OffGrid","2007",-
+"Nigeria","Non-renewable waste","OffGrid","2008",-
+"Nigeria","Non-renewable waste","OffGrid","2009",-
+"Nigeria","Non-renewable waste","OffGrid","2010",-
+"Nigeria","Non-renewable waste","OffGrid","2011",-
+"Nigeria","Non-renewable waste","OffGrid","2012",-
+"Nigeria","Non-renewable waste","OffGrid","2013",-
+"Nigeria","Non-renewable waste","OffGrid","2014",-
+"Nigeria","Non-renewable waste","OffGrid","2015",-
+"Nigeria","Non-renewable waste","OffGrid","2016",-
+"Nigeria","Non-renewable waste","OffGrid","2017",-
+"Nigeria","Non-renewable waste","OffGrid","2018",-
+"Nigeria","Non-renewable waste","OffGrid","2019",-
+"Nigeria","Non-renewable waste","OffGrid","2020",-
+"Nigeria","Non-renewable waste","OffGrid","2021",-
+"Nigeria","Non-renewable waste","OffGrid","2022",-
+"Nigeria","Non-renewable waste","OffGrid","2023",-
+"Nigeria","Non-renewable waste","OffGrid","2024",-
+"Nigeria","Non-renewable waste","OffGrid","2025",-
+"Nigeria","Other non-renewable energy","OnGrid","2000",-
+"Nigeria","Other non-renewable energy","OnGrid","2001",-
+"Nigeria","Other non-renewable energy","OnGrid","2002",-
+"Nigeria","Other non-renewable energy","OnGrid","2003",-
+"Nigeria","Other non-renewable energy","OnGrid","2004",-
+"Nigeria","Other non-renewable energy","OnGrid","2005",-
+"Nigeria","Other non-renewable energy","OnGrid","2006",-
+"Nigeria","Other non-renewable energy","OnGrid","2007",-
+"Nigeria","Other non-renewable energy","OnGrid","2008",-
+"Nigeria","Other non-renewable energy","OnGrid","2009",-
+"Nigeria","Other non-renewable energy","OnGrid","2010",-
+"Nigeria","Other non-renewable energy","OnGrid","2011",-
+"Nigeria","Other non-renewable energy","OnGrid","2012",-
+"Nigeria","Other non-renewable energy","OnGrid","2013",-
+"Nigeria","Other non-renewable energy","OnGrid","2014",-
+"Nigeria","Other non-renewable energy","OnGrid","2015",-
+"Nigeria","Other non-renewable energy","OnGrid","2016",-
+"Nigeria","Other non-renewable energy","OnGrid","2017",-
+"Nigeria","Other non-renewable energy","OnGrid","2018",-
+"Nigeria","Other non-renewable energy","OnGrid","2019",-
+"Nigeria","Other non-renewable energy","OnGrid","2020",-
+"Nigeria","Other non-renewable energy","OnGrid","2021",-
+"Nigeria","Other non-renewable energy","OnGrid","2022",-
+"Nigeria","Other non-renewable energy","OnGrid","2023",-
+"Nigeria","Other non-renewable energy","OnGrid","2024",-
+"Nigeria","Other non-renewable energy","OnGrid","2025",-
+"Nigeria","Other non-renewable energy","OffGrid","2000",-
+"Nigeria","Other non-renewable energy","OffGrid","2001",-
+"Nigeria","Other non-renewable energy","OffGrid","2002",-
+"Nigeria","Other non-renewable energy","OffGrid","2003",-
+"Nigeria","Other non-renewable energy","OffGrid","2004",-
+"Nigeria","Other non-renewable energy","OffGrid","2005",-
+"Nigeria","Other non-renewable energy","OffGrid","2006",-
+"Nigeria","Other non-renewable energy","OffGrid","2007",-
+"Nigeria","Other non-renewable energy","OffGrid","2008",-
+"Nigeria","Other non-renewable energy","OffGrid","2009",-
+"Nigeria","Other non-renewable energy","OffGrid","2010",-
+"Nigeria","Other non-renewable energy","OffGrid","2011",-
+"Nigeria","Other non-renewable energy","OffGrid","2012",-
+"Nigeria","Other non-renewable energy","OffGrid","2013",-
+"Nigeria","Other non-renewable energy","OffGrid","2014",-
+"Nigeria","Other non-renewable energy","OffGrid","2015",-
+"Nigeria","Other non-renewable energy","OffGrid","2016",-
+"Nigeria","Other non-renewable energy","OffGrid","2017",-
+"Nigeria","Other non-renewable energy","OffGrid","2018",-
+"Nigeria","Other non-renewable energy","OffGrid","2019",-
+"Nigeria","Other non-renewable energy","OffGrid","2020",-
+"Nigeria","Other non-renewable energy","OffGrid","2021",-
+"Nigeria","Other non-renewable energy","OffGrid","2022",-
+"Nigeria","Other non-renewable energy","OffGrid","2023",-
+"Nigeria","Other non-renewable energy","OffGrid","2024",-
+"Nigeria","Other non-renewable energy","OffGrid","2025",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2000",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2001",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2002",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2003",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2004",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2005",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2006",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2007",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2008",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2009",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2010",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2011",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2012",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2013",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2014",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2015",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2016",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2017",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2018",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2019",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2020",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2021",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2022",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2023",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2024",-
+"Nigeria","Other non-renewable energy n.e.s.","OnGrid","2025",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2000",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2001",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2002",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2003",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2004",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2005",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2006",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2007",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2008",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2009",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2010",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2011",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2012",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2013",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2014",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2015",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2016",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2017",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2018",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2019",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2020",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2021",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2022",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2023",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2024",-
+"Nigeria","Other non-renewable energy n.e.s.","OffGrid","2025",-
+"Nigeria","Pumped hydro","OnGrid","2000",-
+"Nigeria","Pumped hydro","OnGrid","2001",-
+"Nigeria","Pumped hydro","OnGrid","2002",-
+"Nigeria","Pumped hydro","OnGrid","2003",-
+"Nigeria","Pumped hydro","OnGrid","2004",-
+"Nigeria","Pumped hydro","OnGrid","2005",-
+"Nigeria","Pumped hydro","OnGrid","2006",-
+"Nigeria","Pumped hydro","OnGrid","2007",-
+"Nigeria","Pumped hydro","OnGrid","2008",-
+"Nigeria","Pumped hydro","OnGrid","2009",-
+"Nigeria","Pumped hydro","OnGrid","2010",-
+"Nigeria","Pumped hydro","OnGrid","2011",-
+"Nigeria","Pumped hydro","OnGrid","2012",-
+"Nigeria","Pumped hydro","OnGrid","2013",-
+"Nigeria","Pumped hydro","OnGrid","2014",-
+"Nigeria","Pumped hydro","OnGrid","2015",-
+"Nigeria","Pumped hydro","OnGrid","2016",-
+"Nigeria","Pumped hydro","OnGrid","2017",-
+"Nigeria","Pumped hydro","OnGrid","2018",-
+"Nigeria","Pumped hydro","OnGrid","2019",-
+"Nigeria","Pumped hydro","OnGrid","2020",-
+"Nigeria","Pumped hydro","OnGrid","2021",-
+"Nigeria","Pumped hydro","OnGrid","2022",-
+"Nigeria","Pumped hydro","OnGrid","2023",-
+"Nigeria","Pumped hydro","OnGrid","2024",-
+"Nigeria","Pumped hydro","OnGrid","2025",-
+"Nigeria","Pumped hydro","OffGrid","2000",-
+"Nigeria","Pumped hydro","OffGrid","2001",-
+"Nigeria","Pumped hydro","OffGrid","2002",-
+"Nigeria","Pumped hydro","OffGrid","2003",-
+"Nigeria","Pumped hydro","OffGrid","2004",-
+"Nigeria","Pumped hydro","OffGrid","2005",-
+"Nigeria","Pumped hydro","OffGrid","2006",-
+"Nigeria","Pumped hydro","OffGrid","2007",-
+"Nigeria","Pumped hydro","OffGrid","2008",-
+"Nigeria","Pumped hydro","OffGrid","2009",-
+"Nigeria","Pumped hydro","OffGrid","2010",-
+"Nigeria","Pumped hydro","OffGrid","2011",-
+"Nigeria","Pumped hydro","OffGrid","2012",-
+"Nigeria","Pumped hydro","OffGrid","2013",-
+"Nigeria","Pumped hydro","OffGrid","2014",-
+"Nigeria","Pumped hydro","OffGrid","2015",-
+"Nigeria","Pumped hydro","OffGrid","2016",-
+"Nigeria","Pumped hydro","OffGrid","2017",-
+"Nigeria","Pumped hydro","OffGrid","2018",-
+"Nigeria","Pumped hydro","OffGrid","2019",-
+"Nigeria","Pumped hydro","OffGrid","2020",-
+"Nigeria","Pumped hydro","OffGrid","2021",-
+"Nigeria","Pumped hydro","OffGrid","2022",-
+"Nigeria","Pumped hydro","OffGrid","2023",-
+"Nigeria","Pumped hydro","OffGrid","2024",-
+"Nigeria","Pumped hydro","OffGrid","2025",-

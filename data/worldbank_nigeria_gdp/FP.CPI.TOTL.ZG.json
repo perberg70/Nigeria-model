@@ -1,0 +1,348 @@
+[
+    {
+        "page": 1,
+        "pages": 1,
+        "per_page": 80,
+        "total": 21,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+    },
+    [
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2025",
+            "value": 23.0101235833333,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2024",
+            "value": 33.2416590552749,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2023",
+            "value": 24.659550203114,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2022",
+            "value": 18.8471877843274,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2021",
+            "value": 16.9528457221608,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2020",
+            "value": 13.2460234276598,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2019",
+            "value": 11.3964223378115,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2018",
+            "value": 12.0951065173432,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2017",
+            "value": 16.5022662139641,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2016",
+            "value": 15.6968126387972,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2015",
+            "value": 9.00943498007706,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2014",
+            "value": 8.04741087967907,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2013",
+            "value": 8.49551838265678,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2012",
+            "value": 12.2242413020582,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2011",
+            "value": 10.8261371880018,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2010",
+            "value": 13.7400521363694,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2009",
+            "value": 12.5379242951095,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2008",
+            "value": 11.583054796681,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2007",
+            "value": 5.38610421570143,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2006",
+            "value": 8.22743678120907,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "FP.CPI.TOTL.ZG",
+                "value": "Inflation, consumer prices (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2005",
+            "value": 17.8634933661605,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        }
+    ]
+]
