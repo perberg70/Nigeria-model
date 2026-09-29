@@ -424,7 +424,7 @@ countries:Object.entries(AFRICA).map(([iso,c])=>({
        desc:"Share of all Nigeria's electricity generated from low-emission sources in 2050 — counting back-up diesel generators, which are never low-emission",
 
        min:0, max:100, step:2, value:16, reference:15.1,
-       referenceLabel:"Nigeria 2023: 15.1% of all electricity — hydro and solar, against 51.4% grid gas and 33.5% back-up diesel. Across the grid alone the same generation is 22.7%.",
+       referenceLabel:"Nigeria 2023: 15.1% of all electricity — hydro and solar, against 51.4% grid gas and 33.5% back-up diesel. Across the grid alone the same generation is 22.8%.",
        ticks:["0%","20%","40%","60%","80%","100%"],
        fmt:v=>v+"%", unit:"of electricity in 2050"},
 
@@ -846,12 +846,19 @@ const MODALS = {
   driverMix:{
     title:"How the generation mix is used",
     lede:"Electrifying an end use moves the combustion rather than ending it. This choice decides what is burning at the other end — and it is what separates a real climate benefit from a relocated one.",
-    body:`
+    body:()=>{
+      const P=NGA_DATA.power, gasGWh=31640, allGWh=P.gen2023GWh+P.genset2023GWh;
+      return `
       <ul class="chain">
-        <li><div class="ico">1</div><div><b>Start from what Nigeria's power stations burn</b>
-          <span>In 2023 Nigeria generated <b>40,958 GWh</b>: 31,640 from natural gas, 9,107 from
-          hydropower, 211 from solar. Low-emission sources are <b>22.7%</b> of the total, and gas is
-          <b>77%</b>.</span></div></li>
+        <li><div class="ico">1</div><div><b>Start from what Nigeria burns to make electricity</b>
+          <span>In 2023 the grid generated <b>${fmtN(P.gen2023GWh)} GWh</b>: ${fmtN(gasGWh)} from natural gas,
+          9,107 from hydropower, 211 from solar. Private back-up diesel generators add an estimated
+          <b>${fmtN(P.genset2023GWh)} GWh</b> on top, so all electricity was about
+          <b>${fmtN(Math.round(allGWh/100)*100)} GWh</b>. Across all of it, low-emission sources are
+          <b>${(P.lowShareAll2023*100).toFixed(1)}%</b>, grid gas <b>${(gasGWh/allGWh*100).toFixed(1)}%</b>
+          and back-up generators <b>${(P.genset2023GWh/allGWh*100).toFixed(1)}%</b> — the basis the slider
+          uses. On the grid alone the same generation is <b>${(P.gridLowShare2023*100).toFixed(1)}%</b>
+          low-emission and <b>${(gasGWh/P.gen2023GWh*100).toFixed(0)}%</b> gas.</span></div></li>
         <li><div class="ico">2</div><div><b>Electrification alone can move a problem instead of solving it</b>
           <span>If the electricity replacing a wood fire or a diesel generator is itself produced by
           burning fossil fuel, the household breathes cleaner air while the carbon dioxide is
@@ -862,18 +869,24 @@ const MODALS = {
           little electrification buys neither, because most energy never touches the grid. The
           combination is what produces both.</span></div></li>
         <li><div class="ico">4</div><div><b>Your target is a share for 2050</b>
-          <span>The slider sets how much of Nigeria's electricity should come from low-emission
-          sources by mid-century. Like electrification, it is treated as a policy target rather than
-          a forecast of what the market would build.</span></div></li>
+          <span>The slider sets how much of all Nigeria's electricity — the grid and private back-up
+          generators together — should come from low-emission sources by mid-century. Back-up diesel
+          generators are never low-emission, so they count against the target. Like electrification,
+          it is treated as a policy target rather than a forecast of what the market would build.</span></div></li>
       </ul>
-      <div class="paperrow"><span aria-hidden="true">🗄️</span> <span class="lbl2">On the generation mix:</span>
+      <div class="paperrow"><span aria-hidden="true">🗄️</span> <span class="lbl2">On the grid generation mix:</span>
         International Energy Agency, Nigeria country data, electricity generation, 2023 —
         <a class="paper" href="https://www.iea.org/countries/nigeria" target="_blank"
            rel="noopener noreferrer" title="Opens the IEA Nigeria page in a new tab">iea.org/countries/nigeria ↗</a>. Licence CC BY 4.0.</div>
+      <div class="paperrow"><span aria-hidden="true">⚠️</span> <span class="lbl2">On back-up generation:</span>
+        ${(P.genset2023GWh/1000).toFixed(1)} TWh in 2023, calculated as 296.3 PJ of oil allocated to
+        power in the Energy Transition Plan at 25% efficiency. This is a conditional estimate, not a
+        directly measured national statistic; the split between vehicle and generator diesel is not
+        observed separately.</div>
       <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">On growth and emissions:</span>
         Freire-González, Padilla Rosa and Raymond (2024), "World economies' progress in decoupling
-        from CO<sub>2</sub> emissions", <i>Scientific Reports</i>, Table 4, p. 9.</div>`,
-    note:`<b>Hydro and solar are counted as low-emission here; gas is not.</b> The slider is a share of generation, not a carbon intensity — a grid can be 80% low-emission and still carry very different emissions depending on what the other 20% burns. Low-emission is not zero-emission: the factors behind the results are life-cycle values, so building the dam and manufacturing the panels are counted, which is why hydropower and solar carry a small figure rather than none.`
+        from CO<sub>2</sub> emissions", <i>Scientific Reports</i>, Table 4, p. 9.</div>`; },
+    note:`<b>Hydro and solar are counted as low-emission here; gas and back-up diesel generators are not.</b> The slider is a share of generation, not a carbon intensity — a grid can be 80% low-emission and still carry very different emissions depending on what the other 20% burns. Low-emission is not zero-emission: the factors behind the results are life-cycle values, so building the dam and manufacturing the panels are counted, which is why hydropower and solar carry a small figure rather than none.`
   },
 
   emissionsChart:{
