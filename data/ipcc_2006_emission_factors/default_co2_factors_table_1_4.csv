@@ -1,0 +1,12 @@
+fuel,ncv_TJ_per_Gg,co2_kg_per_TJ,lower_95,upper_95,biogenic
+Crude Oil,20.0,73300,71100,75500,no
+Natural Gas Liquids,17.5,64200,58300,70400,no
+Motor Gasoline,18.9,69300,67500,73000,no
+Other Kerosene,19.6,71900,70800,73700,no
+Gas/Diesel Oil,20.2,74100,72600,74800,no
+Residual Fuel Oil,21.1,77400,75500,78800,no
+Liquefied Petroleum Gases,17.2,63100,61600,65600,no
+Other Bituminous Coal,25.8,94600,89500,99700,no
+Natural Gas,15.3,56100,54300,58300,no
+Wood/Wood Waste,30.5,112000,95000,132000,yes
+Charcoal,30.5,112000,95000,132000,yes

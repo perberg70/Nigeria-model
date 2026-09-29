@@ -1,0 +1,29 @@
+variable,definition,scenario,period,statistic,value,units
+hd35,days per year with daily maximum temperature above 35 C,historical,1995-2014,median,98.49,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp126,2040-2059,median,130.66,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp245,2040-2059,median,134.32,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp370,2040-2059,median,135.78,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp585,2040-2059,median,145.05,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp119,2080-2099,median,119.32,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp126,2080-2099,median,133.49,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp126,2080-2099,p10,102.34,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp126,2080-2099,p90,171.09,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp245,2080-2099,median,163.90,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp245,2080-2099,p10,122.98,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp245,2080-2099,p90,206.49,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp370,2080-2099,median,185.82,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp370,2080-2099,p10,124.17,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp370,2080-2099,p90,239.81,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp585,2080-2099,median,223.98,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp585,2080-2099,p10,137.09,days/yr
+hd35,days per year with daily maximum temperature above 35 C,ssp585,2080-2099,p90,281.25,days/yr
+hd40,days per year with daily maximum temperature above 40 C,historical,1995-2014,median,11.80,days/yr
+hd40,days per year with daily maximum temperature above 40 C,ssp126,2080-2099,median,26.04,days/yr
+hd40,days per year with daily maximum temperature above 40 C,ssp245,2080-2099,median,41.05,days/yr
+hd40,days per year with daily maximum temperature above 40 C,ssp370,2080-2099,median,54.11,days/yr
+hd40,days per year with daily maximum temperature above 40 C,ssp585,2080-2099,median,77.81,days/yr
+tas,annual mean near-surface air temperature,historical,1995-2014,median,27.42,degC
+tas,annual mean near-surface air temperature,ssp126,2080-2099,median,28.58,degC
+tas,annual mean near-surface air temperature,ssp245,2080-2099,median,29.62,degC
+tas,annual mean near-surface air temperature,ssp370,2080-2099,median,30.51,degC
+tas,annual mean near-surface air temperature,ssp585,2080-2099,median,31.45,degC

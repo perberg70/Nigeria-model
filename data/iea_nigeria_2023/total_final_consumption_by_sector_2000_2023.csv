@@ -1,0 +1,169 @@
+"total final energy consumption in Nigeria",Value,Year,Units
+"Industry",143771,2000, TJ
+"Industry",142372,2001, TJ
+"Industry",148088,2002, TJ
+"Industry",254557,2003, TJ
+"Industry",238454,2004, TJ
+"Industry",241635,2005, TJ
+"Industry",258974,2006, TJ
+"Industry",292641,2007, TJ
+"Industry",331715,2008, TJ
+"Industry",303588,2009, TJ
+"Industry",330332,2010, TJ
+"Industry",451422,2011, TJ
+"Industry",478582,2012, TJ
+"Industry",442738,2013, TJ
+"Industry",327767,2014, TJ
+"Industry",332375,2015, TJ
+"Industry",334458,2016, TJ
+"Industry",321843,2017, TJ
+"Industry",335815,2018, TJ
+"Industry",340920,2019, TJ
+"Industry",353474,2020, TJ
+"Industry",388133,2021, TJ
+"Industry",384948,2022, TJ
+"Industry",372159,2023, TJ
+"Transport",309475,2000, TJ
+"Transport",377469,2001, TJ
+"Transport",390758,2002, TJ
+"Transport",411171,2003, TJ
+"Transport",419215,2004, TJ
+"Transport",408368,2005, TJ
+"Transport",345515,2006, TJ
+"Transport",303531,2007, TJ
+"Transport",362709,2008, TJ
+"Transport",340719,2009, TJ
+"Transport",425263,2010, TJ
+"Transport",455671,2011, TJ
+"Transport",505422,2012, TJ
+"Transport",639562,2013, TJ
+"Transport",701075,2014, TJ
+"Transport",637671,2015, TJ
+"Transport",729143,2016, TJ
+"Transport",729775,2017, TJ
+"Transport",781601,2018, TJ
+"Transport",836030,2019, TJ
+"Transport",722179,2020, TJ
+"Transport",817842,2021, TJ
+"Transport",870332,2022, TJ
+"Transport",789364,2023, TJ
+"Residential",616795,2000, TJ
+"Residential",649380,2001, TJ
+"Residential",671997,2002, TJ
+"Residential",668234,2003, TJ
+"Residential",668796,2004, TJ
+"Residential",703232,2005, TJ
+"Residential",691622,2006, TJ
+"Residential",692911,2007, TJ
+"Residential",719176,2008, TJ
+"Residential",718708,2009, TJ
+"Residential",737051,2010, TJ
+"Residential",761379,2011, TJ
+"Residential",765795,2012, TJ
+"Residential",773520,2013, TJ
+"Residential",791189,2014, TJ
+"Residential",808082,2015, TJ
+"Residential",830218,2016, TJ
+"Residential",849264,2017, TJ
+"Residential",881418,2018, TJ
+"Residential",913261,2019, TJ
+"Residential",972888,2020, TJ
+"Residential",1028010,2021, TJ
+"Residential",1040313,2022, TJ
+"Residential",1075640,2023, TJ
+"Commercial and public services",67479,2000, TJ
+"Commercial and public services",65083,2001, TJ
+"Commercial and public services",63190,2002, TJ
+"Commercial and public services",63392,2003, TJ
+"Commercial and public services",59003,2004, TJ
+"Commercial and public services",57885,2005, TJ
+"Commercial and public services",53274,2006, TJ
+"Commercial and public services",64183,2007, TJ
+"Commercial and public services",58937,2008, TJ
+"Commercial and public services",61066,2009, TJ
+"Commercial and public services",84017,2010, TJ
+"Commercial and public services",96899,2011, TJ
+"Commercial and public services",149090,2012, TJ
+"Commercial and public services",121995,2013, TJ
+"Commercial and public services",135221,2014, TJ
+"Commercial and public services",137287,2015, TJ
+"Commercial and public services",138657,2016, TJ
+"Commercial and public services",140067,2017, TJ
+"Commercial and public services",141508,2018, TJ
+"Commercial and public services",142975,2019, TJ
+"Commercial and public services",144476,2020, TJ
+"Commercial and public services",146004,2021, TJ
+"Commercial and public services",147563,2022, TJ
+"Commercial and public services",149160,2023, TJ
+"Agriculture and forestry",260,2000, TJ
+"Agriculture and forestry",260,2001, TJ
+"Agriculture and forestry",390,2002, TJ
+"Agriculture and forestry",390,2003, TJ
+"Agriculture and forestry",433,2004, TJ
+"Agriculture and forestry",433,2005, TJ
+"Agriculture and forestry",476,2006, TJ
+"Agriculture and forestry",216,2007, TJ
+"Agriculture and forestry",434,2008, TJ
+"Agriculture and forestry",260,2009, TJ
+"Agriculture and forestry",434,2010, TJ
+"Agriculture and forestry",173,2011, TJ
+"Agriculture and forestry",173,2012, TJ
+"Agriculture and forestry",173,2013, TJ
+"Agriculture and forestry",173,2014, TJ
+"Agriculture and forestry",173,2015, TJ
+"Agriculture and forestry",173,2016, TJ
+"Agriculture and forestry",179,2017, TJ
+"Agriculture and forestry",182,2018, TJ
+"Agriculture and forestry",187,2019, TJ
+"Agriculture and forestry",191,2020, TJ
+"Agriculture and forestry",195,2021, TJ
+"Agriculture and forestry",199,2022, TJ
+"Agriculture and forestry",201,2023, TJ
+"Other non-specified",16030,2000, TJ
+"Other non-specified",9329,2001, TJ
+"Other non-specified",7796,2002, TJ
+"Other non-specified",8541,2003, TJ
+"Other non-specified",10205,2004, TJ
+"Other non-specified",31229,2005, TJ
+"Other non-specified",46077,2006, TJ
+"Other non-specified",45902,2007, TJ
+"Other non-specified",37492,2008, TJ
+"Other non-specified",16118,2009, TJ
+"Other non-specified",55231,2010, TJ
+"Other non-specified",45639,2011, TJ
+"Other non-specified",57913,2012, TJ
+"Other non-specified",73671,2013, TJ
+"Other non-specified",90228,2014, TJ
+"Other non-specified",73233,2015, TJ
+"Other non-specified",10599,2016, TJ
+"Other non-specified",11569,2017, TJ
+"Other non-specified",7327,2018, TJ
+"Other non-specified",7489,2019, TJ
+"Other non-specified",7354,2020, TJ
+"Other non-specified",7623,2021, TJ
+"Other non-specified",7871,2022, TJ
+"Other non-specified",8096,2023, TJ
+"Non-energy use",12878,2000, TJ
+"Non-energy use",24011,2001, TJ
+"Non-energy use",26558,2002, TJ
+"Non-energy use",46356,2003, TJ
+"Non-energy use",52242,2004, TJ
+"Non-energy use",51443,2005, TJ
+"Non-energy use",51499,2006, TJ
+"Non-energy use",38427,2007, TJ
+"Non-energy use",32458,2008, TJ
+"Non-energy use",46095,2009, TJ
+"Non-energy use",28007,2010, TJ
+"Non-energy use",40330,2011, TJ
+"Non-energy use",47001,2012, TJ
+"Non-energy use",49806,2013, TJ
+"Non-energy use",64830,2014, TJ
+"Non-energy use",64730,2015, TJ
+"Non-energy use",65760,2016, TJ
+"Non-energy use",57391,2017, TJ
+"Non-energy use",58299,2018, TJ
+"Non-energy use",54490,2019, TJ
+"Non-energy use",55671,2020, TJ
+"Non-energy use",61801,2021, TJ
+"Non-energy use",66851,2022, TJ
+"Non-energy use",71287,2023, TJ

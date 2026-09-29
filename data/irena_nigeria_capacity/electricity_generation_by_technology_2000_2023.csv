@@ -1,0 +1,507 @@
+"Electricity generation statistics by Country/area, Technology, Data Type, Grid connection and Year"
+
+"Country/area","Technology","Data Type","Grid connection","Year",Electricity generation statistics
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2000",6454.20
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2001",6206.13
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2002",6403.09
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2003",7765.36
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2004",8099.48
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2005",13082.79
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2006",10603.70
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2007",7788.85
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2008",7455.85
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2009",7452.40
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2010",7208.25
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2011",5244.78
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2012",5324.73
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2013",6140.93
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2014",6169.03
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2015",6465.81
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2016",8204.89
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2017",7816.45
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2018",7772.78
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2019",8536.80
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2020",8028.32
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2021",9378.53
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2022",9501.99
+"Nigeria","Total renewable","Electricity Generation (GWh)","All","2023",9756.43
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2005",0.00
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2006",0.25
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2007",0.25
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2008",0.25
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2009",0.80
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2010",0.85
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2011",2.29
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2012",2.57
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2013",3.74
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2014",6.30
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2015",23.48
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2016",31.95
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2017",41.33
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2018",47.89
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2019",76.99
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2020",115.62
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2021",163.60
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2022",207.13
+"Nigeria","Solar photovoltaic","Electricity Generation (GWh)","All","2023",267.96
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Solar thermal energy","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Onshore wind energy","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Offshore wind energy","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2000",6441.60
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2001",6193.53
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2002",6390.49
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2003",7752.76
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2004",8086.88
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2005",13070.19
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2006",10590.85
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2007",7776.00
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2008",7443.00
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2009",7439.00
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2010",7192.00
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2011",5227.09
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2012",5306.69
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2013",6121.72
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2014",6143.72
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2015",6423.32
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2016",8150.38
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2017",7746.76
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2018",7694.83
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2019",8433.18
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2020",7871.91
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2021",9153.81
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2022",9235.35
+"Nigeria","Renewable hydropower","Electricity Generation (GWh)","All","2023",9426.41
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Mixed Hydro Plants","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Marine energy","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2000",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2001",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2002",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2003",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2004",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2005",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2006",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2007",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2008",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2009",12.60
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2010",15.40
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2011",15.40
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2012",15.47
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2013",15.47
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2014",18.97
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2015",18.97
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2016",22.47
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2017",28.26
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2018",29.98
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2019",26.54
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2020",40.69
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2021",61.03
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2022",59.42
+"Nigeria","Solid biofuels","Electricity Generation (GWh)","All","2023",61.97
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Liquid biofuels","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2014",0.04
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2015",0.04
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2016",0.09
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2017",0.09
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2018",0.09
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2019",0.09
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2020",0.09
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2021",0.09
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2022",0.09
+"Nigeria","Biogas","Electricity Generation (GWh)","All","2023",0.09
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Renewable municipal waste","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Geothermal energy","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2000",9099.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2001",9553.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2002",13311.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2003",12736.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2004",16167.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2005",15771.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2006",16847.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2007",16751.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2008",15389.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2009",15248.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2010",19747.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2011",21151.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2012",23047.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2013",23557.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2014",25044.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2015",25708.00
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2016",20524.48
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2017",23949.91
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2018",26035.70
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2019",25084.79
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2020",27399.53
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2021",27453.53
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2022",25332.34
+"Nigeria","Total non-renewable","Electricity Generation (GWh)","All","2023",27645.60
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Coal and peat","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Oil","Electricity Generation (GWh)","All","2019",17.35
+"Nigeria","Oil","Electricity Generation (GWh)","All","2020",17.45
+"Nigeria","Oil","Electricity Generation (GWh)","All","2021",17.45
+"Nigeria","Oil","Electricity Generation (GWh)","All","2022",20.08
+"Nigeria","Oil","Electricity Generation (GWh)","All","2023",46.36
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2000",9099.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2001",9553.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2002",13311.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2003",12736.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2004",16167.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2005",15771.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2006",16847.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2007",16751.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2008",15389.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2009",15248.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2010",19747.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2011",21151.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2012",23047.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2013",23557.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2014",25044.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2015",25708.00
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2016",20524.48
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2017",23949.91
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2018",26035.70
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2019",25067.45
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2020",27382.08
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2021",27436.08
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2022",25312.27
+"Nigeria","Natural gas","Electricity Generation (GWh)","All","2023",27599.25
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Fossil fuels n.e.s.","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Nuclear","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Pumped storage","Electricity Generation (GWh)","All","2023",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2000",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2001",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2002",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2003",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2004",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2005",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2006",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2007",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2008",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2009",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2010",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2011",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2012",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2013",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2014",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2015",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2016",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2017",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2018",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2019",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2020",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2021",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2022",-
+"Nigeria","Other non-renewable energy","Electricity Generation (GWh)","All","2023",-

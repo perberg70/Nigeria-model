@@ -1,0 +1,348 @@
+[
+    {
+        "page": 1,
+        "pages": 1,
+        "per_page": 80,
+        "total": 21,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+    },
+    [
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2025",
+            "value": 13.8607162138823,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2024",
+            "value": 14.0801851089775,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2023",
+            "value": 10.8343175330536,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2022",
+            "value": 8.04664948979492,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2021",
+            "value": 12.6369125090853,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2020",
+            "value": 11.2524842438615,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2019",
+            "value": 55.4448840534868,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2018",
+            "value": 10.228485086598,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2017",
+            "value": 11.1189180817816,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2016",
+            "value": 9.54367006409065,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2015",
+            "value": 2.86366512300171,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2014",
+            "value": 4.66262291736628,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2013",
+            "value": 4.96474571559251,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2012",
+            "value": 9.94763670635734,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2011",
+            "value": 9.77845809671294,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2010",
+            "value": 16.342766325366,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2009",
+            "value": 0.686098874581916,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2008",
+            "value": 7.92138720232313,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2007",
+            "value": 7.09973099344892,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2006",
+            "value": 23.8643811265481,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        },
+        {
+            "indicator": {
+                "id": "NY.GDP.DEFL.KD.ZG",
+                "value": "Inflation, GDP deflator (annual %)"
+            },
+            "country": {
+                "id": "NG",
+                "value": "Nigeria"
+            },
+            "countryiso3code": "NGA",
+            "date": "2005",
+            "value": 19.8584947707793,
+            "unit": "",
+            "obs_status": "",
+            "decimal": 1
+        }
+    ]
+]
