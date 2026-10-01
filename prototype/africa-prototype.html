@@ -1422,17 +1422,47 @@ const MODALS = {
 
   uncertainty:{
     title:"How certain is any of this?",
-    lede:"Every number on the results screens is a single figure. None of them is exact, and this page explains what stands behind each one — and where it is weakest.",
-    body:`
+    lede:`Every number on the results screens is a single figure. None of them is exact. What moves a result falls into two groups: the choices you make on steps ${STEP.drivers} and ${STEP.ssp}, and the assumptions built into the model that you cannot change here.`,
+    body:()=>`
       <h3>Why some results have a range and others do not</h3>
       <p>The global climate-economic calculation uses <b>one</b> FaIR calibration member, so the global
        pathway and Social Cost of Carbon do not show climate-parameter spread. Step ${STEP.local} uses
       the separate CCKP CMIP6 ensemble for physical-climate conditions and shows its p10–p90 model
       range for national temperature, rainfall, hot days and—except SSP1-1.9—the regional maps.</p>
-      <h3>The four choices that move the answer most</h3>
+      <h3>Your choices: the ones you can change</h3>
+      <ul class="chain">
+        <li><div class="ico">🌍</div><div><b>Global scenario (step ${STEP.ssp})</b>
+          <span>The biggest single switch. It sets world emissions, warming and the size of the world economy,
+          and with them Nigeria's baseline emissions and population, its temperature, rainfall and hot-day
+          changes, and the Social Cost of Carbon. Your emissions result is measured against this baseline, so a
+          higher-emission scenario leaves more room to avoid — and a lower one less. The cost of carbon does
+          not simply rise with warming: SSP5-8.5 comes out lower than SSP3-7.0 because its richer world
+          discounts future damage harder.</span></div></li>
+        <li><div class="ico">🍃</div><div><b>National climate mitigation target (step ${STEP.drivers})</b>
+          <span>Where Nigeria's emissions should be in 2050 against observed 2024. The gap between this pathway
+          and the scenario baseline is the carbon avoided, so a deeper cut raises the benefit and a weaker one
+          lowers it — or turns it into extra emissions. It is a target, not a forecast: it does not say
+          whether policies to meet it exist.</span></div></li>
+        <li><div class="ico">📈</div><div><b>Income growth (step ${STEP.drivers})</b>
+          <span>Faster growth means more energy demand, and so more emissions unless the energy system is
+          cleaner. It also raises income per person, which lifts the money value placed on each avoided death
+          and speeds the move off wood for cooking. Slower growth does the reverse.</span></div></li>
+        <li><div class="ico">⚡</div><div><b>Electrification and low-emission generation (step ${STEP.drivers})</b>
+          <span>These work as a pair. Electrifying with a gas- and diesel-based supply moves emissions to the
+          power station instead of removing them; a clean grid with little electrification changes little,
+          because most energy never touches the grid. Together they set how much of the emissions gap is
+          closed.</span></div></li>
+        <li><div class="ico">🍳</div><div><b>Clean cooking (step ${STEP.drivers})</b>
+          <span>Sets the household air-pollution result on step ${STEP.air}: how many deaths are avoided and what
+          they are worth. It counts only what it adds on top of what income growth alone would bring.</span></div></li>
+      </ul>
+      <h3>Fixed assumptions: not choices in this tool</h3>
+      <p>The following are set inside the model. They move the answer a great deal, but there is no control
+      for them on any screen.</p>
       <ul class="chain">
         <li><div class="ico">🌡️</div><div><b>How strongly the planet responds to CO&#8322;</b>
-          is roughly 2 to 5&#8451;. Nearly every number downstream scales with this one choice.</span>
+          <span>Plausibly 2 to 5&#8451;; the model fixes it at 3.0&#8451;. Nearly every climate and cost
+          figure scales with it.</span>
           <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">On climate sensitivity:</span>
             Sherwood et al. (2020),
             "An assessment of Earth's climate sensitivity using multiple lines of evidence",
@@ -1441,7 +1471,8 @@ const MODALS = {
                rel="noopener noreferrer" title="Opens doi.org in a new tab">doi.org/10.1029/2019RG000678 ↗</a></div></div></li>
         <li><div class="ico">⚖️</div><div><b>How damage grows with warming</b>
           <span>The curve converting degrees into economic loss is the least settled part of the field.
-          Different published curves give substantially different costs from identical warming.</span>
+          The one used here is steeper than the classic quadratic, which pushes the cost of carbon up;
+          other published curves give substantially different costs from identical warming.</span>
           <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">On how much this moves the answer:</span>
             Moore et al. (2024),
             "Synthesis of evidence yields high social cost of carbon due to structural model variation and
@@ -1449,8 +1480,10 @@ const MODALS = {
             <a class="paper" href="https://doi.org/10.1073/pnas.2410733121" target="_blank"
                rel="noopener noreferrer" title="Opens doi.org in a new tab">doi.org/10.1073/pnas.2410733121 ↗</a></div></div></li>
         <li><div class="ico">⏳</div><div><b>How much the future counts</b>
-          <span>Damage centuries away has to be weighed against money today. This single choice can change
-          the cost of carbon several-fold, and it is an ethical judgement as much as an economic one.</span>
+          <span>Damage centuries away has to be weighed against money today. The model fixes this at a pure
+          time-preference rate of 0.5% with an elasticity of 1 (the Ramsey rule), the average view among
+          surveyed economists. You cannot change it here, yet it alone can change the cost of carbon
+          several-fold, and it is an ethical judgement as much as an economic one.</span>
           <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">On discounting:</span>
             Drupp, Freeman, Groom &amp; Nesje
             (2018), "Discounting disentangled",
@@ -1458,13 +1491,11 @@ const MODALS = {
             <a class="paper" href="https://doi.org/10.1257/pol.20160240" target="_blank"
                rel="noopener noreferrer" title="Opens doi.org in a new tab">doi.org/10.1257/pol.20160240 ↗</a></div></div></li>
         <li><div class="ico">🫁</div><div><b>What a life is worth</b>
-          death — US$0.485 million for Nigeria — which is transferred from an income relationship rather
-          than measured here. The money figure scales one-for-one with it. (The model's other health route,
-          the outdoor one, additionally assumes about 7% of air pollution comes from electricity; that
-          figure is European and step ${STEP.air} does not use it, because the outdoor route is not run for
-          Nigeria.)</span>
-            how such a value is carried across to countries at different income levels — the step that
-            matters most whenever the figure is applied outside the country it was measured in.
+          <span>Each avoided death is valued at US$0.485 million for Nigeria, transferred from an income
+          relationship rather than measured here, and it grows with income at an elasticity of 1.0. The money
+          figure on step ${STEP.air} scales one-for-one with it. Your growth choice moves it over time; the
+          starting value is fixed.</span>
+          <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">On carrying the value across countries:</span>
             Viscusi &amp; Masterman (2017),
             "Income elasticities and global values of a statistical life",
             <i>Journal of Benefit-Cost Analysis</i> 8(2), 226–250.
