@@ -1464,6 +1464,45 @@ const MODALS = {
       cost. Treat the direction and the rough size as meaningful, and the exact digits as not.</p>`
   },
 
+  uncertaintyHealth:{
+    title:"How certain are the health figures?",
+    lede:"The deaths and the money value on this screen are single figures, each resting on a short chain of assumptions. Here is what stands behind them, and what does not.",
+    body:()=>`
+      <h3>What does not affect these figures</h3>
+      <p>The climate model (FaIR), how strongly the planet responds to CO&#8322;, the damage function and
+      the discount rate do <b>not</b> enter this calculation. They shape the cost-of-carbon results on
+      the earlier screens, not household air pollution. Warming is not an input to the death count here.</p>
+      <h3>What does</h3>
+      <ul class="chain">
+        <li><div class="ico">🍳</div><div><b>How fast households leave wood, charcoal and kerosene</b>
+          <span>Income growth moves the clean-cooking share through one fitted relationship:
+          1% more income per person goes with about 0.67% less household wood use, taken from a
+          cross-country study (Burke and Csereklyei 2016), not measured in Nigeria. Your clean-cooking
+          target is counted only where it beats what income alone would bring. Clean cooking has also been
+          rising for other reasons, so the deaths avoided are an upper bound.</span></div></li>
+        <li><div class="ico">👥</div><div><b>How many Nigerians there will be</b>
+          <span>The death count rises in proportion to population. The scenario you choose at the
+          pathway step sets the population path, so the scenario matters here through people and income,
+          not through climate. Demographers single Nigeria out as a country where future levels are
+          especially uncertain.</span></div></li>
+        <li><div class="ico">🫁</div><div><b>The starting burden</b>
+          <span>${fmtN(NGA_DATA.health.D0)} deaths in 2021 (WHO), with a 95% interval of
+          ${fmtN(NGA_DATA.health.uiLow)}&ndash;${fmtN(NGA_DATA.health.uiHigh)}. This is a modelled attribution
+          from exposure and a risk relationship, not a count of death certificates. The projections are
+          drawn from the central figure; the interval is not carried forward.</span></div></li>
+        <li><div class="ico">💵</div><div><b>What a life is worth, and how that grows with income</b>
+          <span>US$0.485 million per death, transferred from an income relationship fitted across 189
+          countries (Viscusi &amp; Masterman 2017), then grown with income per person. Published income
+          elasticities for lower-income countries run from about 0.8 to 1.2. The money figure scales
+          directly with this choice; the number of lives does not.</span></div></li>
+      </ul>
+      <h3>What this tool is for, and not for</h3>
+      <p>It compares choices: how many more deaths a clean-cooking target would avoid than income growth
+      alone would. Treat the direction and rough size as meaningful, and the exact digits as not.
+      The step&nbsp;${STEP.air} explanation panel shows how each figure is worked out.</p>
+      <p><span class="info-link" data-modal="uncertainty" role="button" tabindex="0">The uncertainties behind the climate and cost-of-carbon results are explained here →</span></p>`
+  },
+
   method:{
     title:"Methodology",
     lede:"The detail behind the cost figure, for anyone who wants to check it.",
@@ -2708,7 +2747,7 @@ const VIEWS = {
      ],"tiles-2")}
      <p class="cap" style="font-size:14px;line-height:1.6;margin:4px 0 6px">${incomeLine}</p>
      <p class="cap" style="font-size:13px;line-height:1.55;margin:0 0 10px">${boundNote}</p>
-     <div class="help-row"><span class="info-link" data-modal="health" role="button" tabindex="0">ⓘ See how these health figures are worked out</span>${uncCue()}</div>
+     <div class="help-row"><span class="info-link" data-modal="health" role="button" tabindex="0">ⓘ See how these health figures are worked out</span>${uncCue("uncertaintyHealth")}</div>
      <div class="panel"><div class="chart-head legend-left"><div>
         <h3>Household air-pollution deaths per year</h3>
         <p class="cap">Deaths follow the share of Nigerians still cooking mainly with wood, charcoal or kerosene, and the
@@ -2812,8 +2851,8 @@ function render(){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function uncCue(){
-  return `<div class="unc" data-modal="uncertainty" role="button" tabindex="0">
+function uncCue(modal="uncertainty"){
+  return `<div class="unc" data-modal="${modal}" role="button" tabindex="0">
     <b>◈ This is one possible result.</b> See what could make it higher or lower &nbsp;›</div>`;
 }
 
