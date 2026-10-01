@@ -61,7 +61,7 @@ body{margin:0;background:#EDEFF1;color:var(--ink-2);
 .about b{display:block;color:var(--brand-green-dk);margin-bottom:6px;font-size:14.5px}
 .about p{margin:0;font-size:13.5px;color:var(--ink-2)}
 
-.about .info-link{display:block;margin-top:6px}
+.about p+p{margin-top:8px}
 .side-foot{margin-top:auto;display:flex;gap:20px;padding-top:22px;font-size:13.5px;color:var(--ink-2)}
 .side-foot span{display:flex;align-items:center;gap:7px;cursor:pointer}
 .side-foot:first-of-type{flex-direction:column;align-items:flex-start;gap:10px}
@@ -318,8 +318,13 @@ a.paper:focus-visible{outline:2px solid var(--brand-blue);outline-offset:3px;bor
       <ul class="steps" id="stepNav"></ul>
       <div class="about">
         <b>◍ About this tool</b>
-        <span class="info-link" data-modal="data" role="button" tabindex="0">🗄 Where the data comes from</span>
-        <span class="info-link" data-modal="engine" role="button" tabindex="0">⚙ What runs the calculations</span>
+        <p><strong>Transparent models.</strong> Every result comes from published methods, with the settings
+           stated in the tool: the FaIR climate model; a social cost of carbon found by adding one tonne of
+           CO&#8322; and tracing the damage it causes; and published estimates of how energy use grows with
+           income, how many deaths the WHO attributes to cooking smoke, and what an avoided death is worth.</p>
+        <p><strong>Open data.</strong> The inputs are public statistics, free to access, from the Global
+           Carbon Budget, the IEA, the World Bank, the WHO and IIASA. Licences differ by source. The exception
+           is the electricity emission factors, which come from ecoinvent, a paid database.</p>
       </div>
 
       <div class="about about-link" data-modal="ssp" role="button" tabindex="0">
@@ -1262,8 +1267,8 @@ const MODALS = {
       watts per square metre — how hard human influence, mainly the build-up of greenhouse gases, pushes
       the Earth's energy balance toward warming. A larger number generally means more warming.
       The same storyline can end in different places depending on policy — SSP1-1.9 keeps warming near
-      1.5&#8451;, SSP1-2.6 stays well below 2&#8451;. This tool offers
-      <b>${listLabels()}</b>. SSP4 has no standard forcing-level pathway and is not among them.</p>`,
+      1.5&#8451;, SSP1-2.6 is unlikely to exceed 2&#8451;. This tool offers
+      <b>${listLabels()}</b>. SSP4 is not among them: its two pathways, SSP4-3.4 and SSP4-6.0, are outside the five core scenarios of the IPCC's latest assessment, and this prototype carries no SSP4 data.</p>`,
 
     note:`<b>Your choice here sets the global backdrop — and it carries through to your
       country.</b> It fixes world emissions, temperature and the size of the world economy, and from
@@ -2936,6 +2941,9 @@ function uncCue(modal="uncertainty"){
       body:()=>`
       <h3>What the storyline assumes</h3>
       <p>${STORY[o.id]}</p>
+      <h3>What the number after the hyphen means</h3>
+      <p>It is the approximate radiative forcing in 2100 — how hard human influence, mainly the build-up of
+      greenhouse gases, pushes the Earth's energy balance toward warming, in watts per square
       metre — here <b>${f}&nbsp;W/m&#178;</b>. A larger number generally means more warming. The
       storyline decides how the world develops; the forcing level decides how much of that development
       reaches the atmosphere.</p>
