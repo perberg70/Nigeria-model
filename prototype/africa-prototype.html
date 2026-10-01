@@ -1466,13 +1466,8 @@ const MODALS = {
 
   uncertaintyHealth:{
     title:"How certain are the health figures?",
-    lede:"The deaths and the money value on this screen are single figures, each resting on a short chain of assumptions. Here is what stands behind them, and what does not.",
+    lede:"The deaths and the money value on this screen are single figures. Four things stand behind them.",
     body:()=>`
-      <h3>What does not affect these figures</h3>
-      <p>The climate model (FaIR), how strongly the planet responds to CO&#8322;, the damage function and
-      the discount rate do <b>not</b> enter this calculation. They shape the cost-of-carbon results on
-      the earlier screens, not household air pollution. Warming is not an input to the death count here.</p>
-      <h3>What does</h3>
       <ul class="chain">
         <li><div class="ico">🍳</div><div><b>How fast households leave wood, charcoal and kerosene</b>
           <span>Income growth moves the clean-cooking share through one fitted relationship:
@@ -1495,12 +1490,7 @@ const MODALS = {
           countries (Viscusi &amp; Masterman 2017), then grown with income per person. Published income
           elasticities for lower-income countries run from about 0.8 to 1.2. The money figure scales
           directly with this choice; the number of lives does not.</span></div></li>
-      </ul>
-      <h3>What this tool is for, and not for</h3>
-      <p>It compares choices: how many more deaths a clean-cooking target would avoid than income growth
-      alone would. Treat the direction and rough size as meaningful, and the exact digits as not.
-      The step&nbsp;${STEP.air} explanation panel shows how each figure is worked out.</p>
-      <p><span class="info-link" data-modal="uncertainty" role="button" tabindex="0">The uncertainties behind the climate and cost-of-carbon results are explained here →</span></p>`
+      </ul>`
   },
 
   method:{
