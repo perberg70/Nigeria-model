@@ -1493,6 +1493,29 @@ const MODALS = {
       </ul>`
   },
 
+  uncertaintyLocal:{
+    title:"How certain are the local climate figures?",
+    lede:"The temperature, rainfall and hot-day figures on this screen are medians. Three things stand behind them.",
+    body:()=>{
+      const HD=NGA_DATA.hotDays, H=HD[NGA.pathway()];
+      return `
+      <ul class="chain">
+        <li><div class="ico">🌐</div><div><b>Which climate model</b>
+          <span>The figures are the median across CMIP6 climate models, and the models disagree. The
+          10th&ndash;90th percentile range is that disagreement, not a confidence interval. For days above
+          35&deg;C under ${NGA.label()} the models span ${fmtN(H.p10,0)} to ${fmtN(H.p90,0)} days around a
+          central estimate of ${fmtN(H.d35,0)}; for this indicator the choice of climate model moves the
+          answer more than the choice of pathway.</span></div></li>
+        <li><div class="ico">🌧️</div><div><b>Whether it gets wetter or drier</b>
+          <span>Where the rainfall range crosses zero, the models disagree about the direction of change as
+          well as its size.</span></div></li>
+        <li><div class="ico">🛣️</div><div><b>Which pathway</b>
+          <span>Your choice at the pathway step sets the emissions the models are run under. The range
+          shown is spread across models within that one pathway, so changing the pathway shifts the whole
+          range.</span></div></li>
+      </ul>`; }
+  },
+
   method:{
     title:"Methodology",
     lede:"The detail behind the cost figure, for anyone who wants to check it.",
@@ -2792,7 +2815,7 @@ const VIEWS = {
         val:signed(Math.round(H.d35-HD.hist35)),
         unit:`days per year above 35°C (${fmtN(HD.hist35,0)} today → ${fmtN(H.d35,0)})`}
      ])}
-     <div class="help-row"><span class="info-link" data-modal="regionalUncertainty" role="button" tabindex="0">ⓘ What these ranges mean, and how the maps are built</span>${uncCue()}</div>
+     <div class="help-row"><span class="info-link" data-modal="regionalUncertainty" role="button" tabindex="0">ⓘ What these ranges mean, and how the maps are built</span>${uncCue("uncertaintyLocal")}</div>
      <div class="maprow">${regionalClimatePanel("temp",regional)}${regionalClimatePanel("rain",regional)}</div>
      <div class="panel"><h3 style="margin-top:0">Six geopolitical zones — selected pathway</h3>
        <p class="cap" style="font-size:14px;line-height:1.65">${regional[0].tempP10==null
