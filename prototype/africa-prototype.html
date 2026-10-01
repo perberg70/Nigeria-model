@@ -1440,24 +1440,28 @@ const MODALS = {
         <li><div class="ico">🌍</div><div><b>Global scenario (step ${STEP.ssp})</b>
           <span>The biggest single switch. It sets world emissions, warming and the size of the world economy,
           and with them Nigeria's baseline emissions and population, its temperature, rainfall and hot-day
-          changes, and the Social Cost of Carbon. Your emissions result is measured against this baseline, so a
-          higher-emission scenario leaves more room to avoid — and a lower one less. The cost of carbon does
+          changes, and the Social Cost of Carbon. Your emissions result is measured against Nigeria's baseline
+          under the scenario, and that baseline does not follow the order of world emissions: Nigeria's is
+          highest under SSP3-7.0, above SSP5-8.5, so SSP3-7.0 leaves the most room to avoid. The cost of carbon does
           not simply rise with warming: SSP5-8.5 comes out lower than SSP3-7.0 because its richer world
           discounts future damage harder.</span></div></li>
         <li><div class="ico">🍃</div><div><b>National climate mitigation target (step ${STEP.drivers})</b>
           <span>Where Nigeria's emissions should be in 2050 against observed 2024. The gap between this pathway
           and the scenario baseline is the carbon avoided, so a deeper cut raises the benefit and a weaker one
-          lowers it — or turns it into extra emissions. It is a target, not a forecast: it does not say
-          whether policies to meet it exist.</span></div></li>
+          lowers it — or turns it into extra emissions. It is the only choice on step ${STEP.drivers} that moves
+          the headline emissions gap and avoided-damage figures on step ${STEP.climate}. It is a target, not a
+          forecast: it does not say whether policies to meet it exist.</span></div></li>
         <li><div class="ico">📈</div><div><b>Income growth (step ${STEP.drivers})</b>
-          <span>Faster growth means more energy demand, and so more emissions unless the energy system is
-          cleaner. It also raises income per person, which lifts the money value placed on each avoided death
+          <span>Faster growth means more energy demand, which raises the electricity emissions on step
+          ${STEP.climate} unless generation is cleaner; it does not change the headline emissions gap, which
+          follows your mitigation target. It also raises income per person, which lifts the money value placed on each avoided death
           and speeds the move off wood for cooking. Slower growth does the reverse.</span></div></li>
         <li><div class="ico">⚡</div><div><b>Electrification and low-emission generation (step ${STEP.drivers})</b>
           <span>These work as a pair. Electrifying with a gas- and diesel-based supply moves emissions to the
           power station instead of removing them; a clean grid with little electrification changes little,
-          because most energy never touches the grid. Together they set how much of the emissions gap is
-          closed.</span></div></li>
+          because most energy never touches the grid. Together they set the separate electricity-emissions
+          results on step ${STEP.climate}; they do not change the headline emissions gap, which follows your
+          mitigation target alone.</span></div></li>
         <li><div class="ico">🍳</div><div><b>Clean cooking (step ${STEP.drivers})</b>
           <span>Sets the household air-pollution result on step ${STEP.air}: how many deaths are avoided and what
           they are worth. It counts only what it adds on top of what income growth alone would bring.</span></div></li>
