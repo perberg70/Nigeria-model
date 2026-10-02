@@ -2767,7 +2767,8 @@ const VIEWS = {
       years:pyrs, baseline:held, pathway:yours, xTicks:[2023,2040,2060,2080,2100],
       yMax:Math.max(1,Math.ceil(Math.max(...held,...yours)/10)*10),
       s1:`Today's mix (${(NGA_DATA.power.lowShareAll2023*100).toFixed(1)}% low-emission)`,
-      s2:`Your pathway — your mix (${state.drivers.mix}% low-emission)`, marks:[] };
+      s2:`Your pathway — your mix (${state.drivers.mix}% low-emission by 2050${(()=>{const d=NGA.lowShareAllAt(2100)-NGA.lowShareAllAt(2050);
+        return d>0.005?", still rising after":d<-0.005?", still falling after":""})()})`, marks:[] };
     const mixTable=(()=>{
       const keep=state.drivers.mix, rows=[0,15.3,30,50,80,100].map(m=>{
         state.drivers.mix=m;
