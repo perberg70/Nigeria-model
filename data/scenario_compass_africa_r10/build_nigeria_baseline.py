@@ -89,11 +89,17 @@ NGA_ELEC_2023 = NGA_ALL_GWH * 3.6 / NGA_TFE_TJ
 NGA_LOW_2023  = NGA_LOW_GWH / NGA_ALL_GWH
 NGA_FOSSIL_GWH = NGA_ALL_GWH - NGA_LOW_GWH            # 52,240 = grid gas 31,640 + gensets 20,600
 NGA_K0        = NGA_GENSET_GWH / NGA_FOSSIL_GWH       # 0.3943: gensets' share OF FOSSIL, 2023
-# Burke & Csereklyei (2016), Table 2, aggregate energy. The 25th-percentile
-# elasticity is the Nigeria anchor. The squared-log coefficient makes the
-# marginal elasticity rise with GDP per capita: beta(L) = 0.63 + 0.22 L.
-ELASTICITY    = 0.63
-ELASTICITY_Q  = 0.11
+# Burke & Csereklyei (2016), Table 5, column 7 (total energy): the 10-year
+# growth-rates model, estimated on within-country growth over 1960-2010. The
+# 10-year elasticity is 0.48 at the sample's mean t-10 log GDP per capita and
+# rises by eta = 0.13 per log unit of income (0.36 at the 25th percentile, 0.62
+# at the 75th). Nigeria's 2023 income is taken to sit near that sample mean (the
+# paper does not report its position). Integrating beta(L) = 0.48 + 0.13 L gives
+# ln(E/E0) = 0.48 L + 0.065 L^2. The Table 2 cross-section (0.63 at the 25th
+# percentile, 0.11 squared term) was used until 2026-10-02 and is not, because it
+# compares countries at one date rather than following growth over time.
+ELASTICITY    = 0.48
+ELASTICITY_Q  = 0.065
 
 # --- NIGERIA'S PHYSICAL ENVELOPE -------------------------------------------
 # Energy Transition Plan p.64, "Techno-economic assumptions in the power sector",
