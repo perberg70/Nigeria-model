@@ -129,6 +129,7 @@ h1{margin:0;font-size:31px;line-height:1.15;color:var(--ink);letter-spacing:-.4p
 .tile.decomp td.n{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:10px}
 .tile.decomp tr.tot td{border-top:1px solid #E9D3AA;font-weight:700;color:var(--ink)}
 .good-n{color:var(--brand-green-dk)}.bad-n{color:var(--danger)}
+.tile .val.bad-n{color:var(--danger)}
 .panel .more{margin-top:10px}
 .range-bar{margin:6px 0 4px}
 .tile.altsource{border-color:#1C6E8C;box-shadow:inset 0 -3px 0 #7FB2C7}
@@ -2296,7 +2297,7 @@ function head(step,title,subHtml,actionsHtml){
 
 const tiles = (arr,cls="") => `<div class="tiles ${cls}">${arr.map(t=> t.html!=null ? `<div class="tile ${t.cls||""}">${t.html}</div>` :
   `<div class="tile ${t.cls||(t.warn?'warn':'')} ${t.tip?'metric-tip':''}"${t.tip?` data-tip="${t.tip}" tabindex="0" aria-label="${T(t.lbl)}. ${t.tip}"`:""}><div class="lbl">${T(t.lbl)}${t.sub?`<small>${t.sub}</small>`:""}</div>
-   <div class="val">${t.val}</div><div class="unit ${t.unitCls||""}">${t.unit||""}</div></div>`).join("")}</div>`;
+   <div class="val ${t.valCls||""}">${t.val}</div><div class="unit ${t.unitCls||""}">${t.unit||""}</div></div>`).join("")}</div>`;
 
 function lineChart(c){
   const W=980,L=52,R=18,Tp=14,B=42, iw=W-L-R, ih=264;
@@ -2882,24 +2883,34 @@ const VIEWS = {
       ? ` At your growth setting income per person falls, so income alone holds clean cooking at today's ${pct(h23)};
          deaths still rise with the population.`
       : "";
-    const boundNote = `Deaths avoided are measured against income alone. Clean cooking has also been rising for
+    const boundNote = `Deaths avoided by your clean-cooking target are measured against income alone. Clean cooking has also been rising for
        reasons other than income — about 2.6 points a year since 2016 — so if that continued, fewer deaths would be
        due to your target: read the figure as an upper bound.${fallNote}`;
     const nCls=v=>v>0?"bad-n":v<0?"good-n":"";
     const sgn=v=>signed(Math.round(v)||0);
     const decomp = !hasBase ? null : {cls:"decomp", html:`<div class="lbl">Against the ${ssp} baseline, 2050</div>
-      <table><tr><td>From your clean-cooking target</td><td class="n ${nCls(-y2050.avoided)}">${sgn(-y2050.avoided)}</td></tr>
+      <table><tr><td>From your clean-cooking target${floor?'<small class="cap" style="display:block">below what income alone brings — no extra effect</small>':''}</td><td class="n ${nCls(-y2050.avoided)}">${sgn(-y2050.avoided)}</td></tr>
       <tr><td>From your income assumption</td><td class="n ${nCls(inc||0)}">${sgn(inc||0)}</td></tr>
       <tr class="tot"><td>Your pathway, in total</td><td class="n ${nCls(gap)}">${sgn(gap)} deaths</td></tr></table>`};
     const actions=`<span class="info-link" data-modal="health" role="button" tabindex="0">ⓘ See how these health figures are worked out</span>${uncCue("uncertaintyHealth")}`;
     return head(STEP.air,d.title,`<p class="sub">${T(d.sub)}</p>`,actions)+
     `<div class="body">${tiles([
-       {lbl:"Premature deaths avoided in 2050",
-        sub: floor ? "your target is below what your income alone would bring — no extra effect"
-                   : "by your clean-cooking target, against what your income alone would bring · an upper bound",
-        val:fmtN(Math.round(y2050.avoided)), unit:"lives per year"},
-       {lbl:"Value of those avoided deaths", sub:"welfare value, 2015 USD",
-        val:"US$"+fmtN(y2050.valueBn,1), unit:"billion per year (2015 USD)"},
+       ...(hasBase ? [
+         {lbl: tiny(gap) ? "Premature deaths in 2050" : gap>0 ? "Extra premature deaths in 2050" : "Premature deaths avoided in 2050",
+          sub: tiny(gap) ? `about the same as the ${ssp} baseline` : `${gap>0?"more":"fewer"} than in the ${ssp} baseline · breakdown on the right`,
+          val: tiny(gap) ? "±0" : fmtN(Math.round(Math.abs(gap))), unit:"deaths per year",
+          cls:`hero ${gap>0&&!tiny(gap)?"warn":""}`},
+         {lbl: gap>0&&!tiny(gap) ? "Welfare cost of those extra deaths" : "Value of those avoided deaths", sub:"welfare value, 2015 USD",
+          val:"US$"+fmtN(tiny(gap)?0:Math.abs(gap)*NGA.vslAt(2050)/1e9,1), unit:"billion per year (2015 USD)",
+          ...(gap>0&&!tiny(gap)?{valCls:"bad-n"}:{})}
+       ] : [
+         {lbl:"Premature deaths avoided in 2050",
+          sub: floor ? "your target is below what your income alone would bring — no extra effect"
+                     : "by your clean-cooking target, against what your income alone would bring · an upper bound",
+          val:fmtN(Math.round(y2050.avoided)), unit:"lives per year"},
+         {lbl:"Value of those avoided deaths", sub:"welfare value, 2015 USD",
+          val:"US$"+fmtN(y2050.valueBn,1), unit:"billion per year (2015 USD)"}
+       ]),
        ...(decomp?[decomp]:[])
      ], decomp?"":"tiles-2")}
      <details class="fold" data-keep="air-read"><summary>How to read these numbers</summary>
@@ -3055,8 +3066,15 @@ function outcomeRows(){
   add(S4,"If today's electricity mix stayed",fmtN(NGA.allElectricityIfUnchanged(2050),1)+" Mt","in 2050, same electricity");
 
   const S5="Air pollution (step "+STEP.air+")", h=NGA.healthAt(2050);
-  add(S5,"Premature deaths avoided in 2050",fmtN(Math.round(h.avoided)),"per year, by the clean-cooking target against income alone; an upper bound");
-  add(S5,"Value of those avoided deaths","US$"+fmtN(h.valueBn,1)+" bn","per year, welfare value, 2015 USD");
+  if(h.baseDeaths!=null){
+    const g=h.polDeaths-h.baseDeaths, more=g>=50, same=Math.abs(g)<50;
+    add(S5,same?"Premature deaths in 2050 against the baseline":more?"Extra premature deaths in 2050":"Premature deaths avoided in 2050",
+        same?"±0":fmtN(Math.round(Math.abs(g))),"per year, against the "+NGA.label()+" baseline");
+    add(S5,more?"Welfare cost of those extra deaths":"Value of those avoided deaths",
+        "US$"+fmtN(same?0:Math.abs(g)*NGA.vslAt(2050)/1e9,1)+" bn","per year, welfare value, 2015 USD");
+  }
+  add(S5,"Deaths avoided by the clean-cooking target",fmtN(Math.round(h.avoided)),"per year in 2050, against income alone; an upper bound");
+  if(h.baseDeaths==null) add(S5,"Value of those avoided deaths","US$"+fmtN(h.valueBn,1)+" bn","per year, welfare value, 2015 USD");
   add(S5,"Household air-pollution deaths in 2050",fmtN(Math.round(h.polDeaths)),
       h.baseDeaths==null?"your pathway":`your pathway; ${fmtN(Math.round(h.baseDeaths))} on the baseline`);
   add(S5,"Cooking mainly with clean fuel in 2050",fmtN(h.polClean*100,1)+"%",
