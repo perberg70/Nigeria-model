@@ -30,46 +30,64 @@ body{margin:0;background:#EDEFF1;color:var(--ink-2);
 .app{max-width:1400px;margin:20px auto;background:var(--panel);
   border:1px solid var(--line);border-radius:14px;overflow:hidden}
 
-.hdr{display:flex;align-items:center;gap:22px;padding:16px 26px;border-bottom:1px solid var(--line)}
+.hdr{display:flex;align-items:center;gap:16px;padding:12px 26px;border-bottom:1px solid var(--line)}
 .logo{display:flex;align-items:center;gap:11px}
-.logo-mark{width:42px;height:42px;flex:none}
+.logo-mark{width:38px;height:38px;flex:none}
 .logo-txt{font-weight:800;color:var(--ink);line-height:1.05;font-size:16px}
 .tagline{font-family:Georgia,"Times New Roman",serif;font-style:italic;
-  color:var(--brand-green);font-size:15px;line-height:1.3}
+  color:var(--brand-green);font-size:13px;line-height:1.3;white-space:nowrap}
 
-.hdr-right{flex:1;text-align:center;font-size:31px;font-weight:700;
-  line-height:1.15;letter-spacing:-.4px;color:var(--ink)}
-
-.main{display:flex;min-height:660px}
-.side{width:var(--sidebar-w);flex:none;border-right:1px solid var(--line);padding:22px 20px;
-  display:flex;flex-direction:column}
-.side h4{margin:0 0 16px;font-size:14px;font-weight:500;color:var(--ink-3)}
-.steps{list-style:none;margin:0;padding:0}
-.steps li{display:flex;align-items:center;gap:12px;padding:7px 0;cursor:pointer;
-  font-size:14.5px;color:var(--ink-3);border:0;background:none;width:100%;text-align:left;font-family:inherit}
 .pip{width:29px;height:29px;flex:none;border-radius:50%;display:grid;place-items:center;
   font-size:13px;font-weight:600;background:#F1F4F6;color:var(--ink-3);border:1px solid var(--line)}
-.steps li.on{color:var(--brand-green-dk);font-weight:700}
-.steps li.on .pip{background:var(--brand-green-dk);color:#fff;border-color:var(--brand-green-dk)}
-.steps li:hover:not(.on){color:var(--ink)}
-
-.steps li.step-group{cursor:default;padding:2px 0 8px;font-size:15.5px;font-weight:700;
-  color:var(--ink);text-decoration:underline;text-underline-offset:3px}
-.steps li.step-group.results{margin-top:14px;padding-top:16px;
-  border-top:1px solid var(--line)}
-.about{margin-top:26px;background:var(--tint);border-radius:var(--radius);padding:15px 16px}
-.about b{display:block;color:var(--brand-green-dk);margin-bottom:6px;font-size:14.5px}
-.about p{margin:0;font-size:13.5px;color:var(--ink-2)}
-
-.about p+p{margin-top:8px}
-.side-foot{margin-top:auto;display:flex;gap:20px;padding-top:22px;font-size:13.5px;color:var(--ink-2)}
-.side-foot span{display:flex;align-items:center;gap:7px;cursor:pointer}
-.side-foot:first-of-type{flex-direction:column;align-items:flex-start;gap:10px}
-
-.content{flex:1;padding:26px 34px 30px;min-width:0}
+.stepbar{flex:1;display:flex;justify-content:center;align-items:center;gap:2px;flex-wrap:wrap;min-width:0}
+.stepbar .st{display:flex;align-items:center;gap:7px;height:38px;padding:0 10px;border-radius:19px;border:0;
+  background:none;color:var(--ink-2);font:inherit;font-size:13.5px;cursor:pointer;white-space:nowrap}
+.stepbar .st:hover{background:var(--tint);color:var(--ink)}
+.stepbar .st .pip{width:22px;height:22px;font-size:11.5px}
+.stepbar .st.done .pip{background:var(--tint);color:var(--brand-green-dk);border-color:#CFE0D6}
+.stepbar .st.on{background:var(--brand-green-dk);color:#fff;font-weight:600}
+.stepbar .st.on .pip{background:#fff;color:var(--brand-green-dk);border-color:#fff}
+.stepbar .st:focus-visible{outline:3px solid var(--brand-blue);outline-offset:2px}
+.stepbar .sep{width:1px;height:22px;background:var(--line);margin:0 6px}
+.hdr-link{flex:none;border:1px solid var(--line);background:#fff;color:var(--link);font:inherit;font-size:13.5px;
+  font-weight:600;padding:8px 13px;border-radius:8px;cursor:pointer}
+.hdr-link:hover{border-color:var(--link)}
+.proto-badge{font-size:11px;font-weight:600;color:#8A4B12;background:#FFF1DE;padding:2px 6px;border-radius:5px;vertical-align:2px;margin-left:4px}
+.strip{display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap;padding:7px 26px;
+  background:#F7F9F8;border-bottom:1px solid var(--line);font-size:13px}
+.strip:empty{display:none}
+.save-box{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px;padding:16px 18px;
+  border:1.5px solid var(--brand-green-dk);border-radius:var(--radius);background:var(--tint)}
+.save-box .txt{flex:1 1 320px;font-size:14px;color:var(--ink-2)}
+.save-box .txt b{display:block;color:var(--ink);font-size:16px;margin-bottom:2px}
+.save-box .btns{display:flex;gap:10px;flex-wrap:wrap}
+#report{display:none}
+}
+@media(max-width:900px){
+  .app{margin:0;border-radius:0;border:0}
+  .hdr{flex-wrap:wrap;padding:10px 16px;gap:10px}
+  .hdr-link{margin-left:auto}
+  .stepbar{order:3;flex:1 0 100%;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+  .stepbar .st:not(.on) .lbl{display:none}
+  .stepbar .sep{display:none}
+  .strip{justify-content:flex-start;padding:6px 16px}
+  .content{padding:20px 16px 28px}
+  .title-ico{display:none}
+  .body{margin-left:0}
+}
+.strip .k{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-right:6px}
+.strip button{border:0;background:none;font:inherit;font-size:13px;color:var(--ink-3);padding:4px 9px;border-radius:6px;cursor:pointer}
+.strip button b{font-variant-numeric:tabular-nums}
+.strip button.use{background:var(--tint);color:var(--ink)}
+.strip button.use.ssp{background:#E6EFF6}
+.strip button:hover{text-decoration:underline}
+.strip .hint{margin-left:8px;font-size:12px;color:var(--ink-3)}
+.content{max-width:1180px;margin:0 auto;padding:28px 40px 40px}
 .eyebrow{color:var(--brand-green);font-size:14px;margin:0 0 4px}
-.title-row{display:flex;gap:18px;align-items:flex-start}
-.title-ico{width:52px;height:52px;flex:none;margin-top:6px}
+.title-row{display:flex;gap:16px;align-items:flex-start}
+.title-main{flex:1;min-width:0}
+.title-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:12px}
+.title-ico{width:40px;height:40px;flex:none;margin-top:4px}
 h1{margin:0;font-size:31px;line-height:1.15;color:var(--ink);letter-spacing:-.4px}
 .sub{margin:9px 0 0;color:var(--ink-2);font-size:15.5px}
 
@@ -79,12 +97,13 @@ h1{margin:0;font-size:31px;line-height:1.15;color:var(--ink);letter-spacing:-.4p
 .pathway-tag .k{font-size:12.5px;font-weight:700;letter-spacing:.6px;
   text-transform:uppercase;color:var(--ink-3)}
 .pathway-tag b{font-size:16.5px;color:var(--brand-green-dk)}
-.body{margin-left:70px}
+.body{margin-left:56px}
 @media(max-width:900px){.body{margin-left:0}}
 
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0 22px}
 
 .tiles.tiles-2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.tiles,.tiles.tiles-2{grid-template-columns:1fr}}
 .tile{border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px;text-align:center;background:var(--surface)}
 .tile .lbl{font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.3}
 .tile .lbl .bad{color:var(--danger)}
@@ -101,6 +120,17 @@ h1{margin:0;font-size:31px;line-height:1.15;color:var(--ink);letter-spacing:-.4p
 .tile.nodata .val{color:var(--ink-3);font-size:30px}
 .tile.nodata .lbl::before{content:"⃠ ";color:var(--ink-3);font-weight:700}
 
+.tile.hero{background:var(--brand-green-dk);border-color:var(--brand-green-dk)}
+.tile.hero .lbl,.tile.hero .val,.tile.hero .unit,.tile.hero .lbl small{color:#fff}
+.tile.hero.warn{background:var(--danger);border-color:var(--danger)}
+.tile.decomp{background:#FFF6E8;border-color:#E9D3AA;text-align:left}
+.tile.decomp table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px;color:var(--ink-2)}
+.tile.decomp td{padding:5px 0}
+.tile.decomp td.n{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:10px}
+.tile.decomp tr.tot td{border-top:1px solid #E9D3AA;font-weight:700;color:var(--ink)}
+.good-n{color:var(--brand-green-dk)}.bad-n{color:var(--danger)}
+.panel .more{margin-top:10px}
+.range-bar{margin:6px 0 4px}
 .tile.altsource{border-color:#1C6E8C;box-shadow:inset 0 -3px 0 #7FB2C7}
 .tile.altsource .lbl::before{content:"◆ ";color:#1C6E8C;font-weight:700}
 .tile .unit{font-size:13.5px;color:var(--ink-3)}
@@ -138,11 +168,32 @@ h1{margin:0;font-size:31px;line-height:1.15;color:var(--ink);letter-spacing:-.4p
 .card .nm{font-weight:700;color:var(--ink);font-size:14px;margin-bottom:7px}
 .card p{margin:0;font-size:12.8px;color:var(--ink-2);line-height:1.45}
 
-.driver{display:grid;grid-template-columns:64px 1fr 320px 118px;gap:18px;align-items:center;
-  border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:15px;background:var(--panel)}
-.driver .dico{width:52px;height:52px;border-radius:50%;background:var(--tint);display:grid;place-items:center;font-size:23px}
+.driver{display:grid;grid-template-columns:280px minmax(0,1fr) 118px;gap:10px 28px;align-items:center;
+  border:1px solid var(--line);border-radius:var(--radius);padding:16px 22px;margin-bottom:12px;background:var(--panel)}
 .driver .dname{font-weight:700;color:var(--ink);font-size:16px}
-.driver .ddesc{font-size:13.5px;color:var(--ink-2);margin-top:3px}
+.driver .dshort{font-size:13px;color:var(--ink-3);margin-top:2px}
+.driver>details{grid-column:1/-1}
+.more{font-size:13.5px;color:var(--ink-2)}
+.more>summary{cursor:pointer;color:var(--link);font-weight:600;font-size:13.5px}
+.more p{margin:6px 0 0;line-height:1.55}
+.fold{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 15px;font-size:14px;color:var(--ink-2)}
+.fold>summary{cursor:pointer;font-weight:700;color:var(--ink)}
+.fold>summary span{font-weight:400;color:var(--ink-3)}
+.fold p{margin:8px 0 0;line-height:1.55}
+.about-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0 14px}
+.mixpanel{grid-column:1/-1;background:#EEF4F9;border:1.5px solid #9DBBD3;border-radius:10px;padding:14px 18px;font-size:13.5px;color:var(--ink-2)}
+.mixpanel>summary{cursor:pointer;font-weight:700;color:#123E5C;font-size:15px}
+.mixpanel .badge{font-size:12px;font-weight:600;color:#fff;background:#1F5F8B;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.mixpanel .mixintro{margin:10px 0 12px;line-height:1.55}
+.mixbar-cap{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);margin-bottom:4px}
+.mixbar{display:flex;height:30px;border-radius:6px;overflow:hidden}
+.mixbar div{display:flex;align-items:center;justify-content:center;font-size:11.5px;white-space:nowrap;overflow:hidden;min-width:0}
+.mixgroups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.mixpanel>summary svg{display:inline-block}
+.default-line{display:flex;align-items:center;gap:10px;margin:14px 0 0;padding:10px 14px;border-radius:10px;background:#E6EFF6;color:#123E5C;font-size:14px}
+.card .sketch{width:100%;height:40px;margin:2px 0 10px}
+.sketch-note{font-size:12px;color:var(--ink-3);margin:-8px 0 0}
+@media(max-width:900px){.driver{grid-template-columns:1fr}.mixgroups,.about-row{grid-template-columns:1fr}}
 .ticks{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-3);margin-bottom:5px}
 .ticks .cur{color:var(--brand-green-dk);font-weight:700}
 input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:3px;background:#D9E0E4;outline:none}
@@ -281,8 +332,9 @@ a.paper:focus-visible{outline:2px solid var(--brand-blue);outline-offset:3px;bor
 .about-link:focus-visible{outline:3px solid var(--brand-blue);outline-offset:2px}
 .scenario-cue{margin:8px 0 0;font-size:13px;color:var(--ink-3)}
 .hover-instruction{display:inline-flex;align-items:center;gap:6px;color:var(--brand-blue);font-size:13px;font-weight:600;margin:8px 0 0}
-.info-actions{display:flex;flex-direction:column;gap:9px;margin:4px 0 20px;padding:16px;background:var(--tint);border-radius:var(--radius)}
-.info-action{display:flex;align-items:center;gap:12px;width:100%;padding:13px 15px;border:1.5px solid var(--brand-green-dk);border-radius:8px;background:#fff;color:var(--brand-green-dk);font:700 15px/1.35 inherit;cursor:pointer;text-align:left}
+.info-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 6px}
+@media(max-width:900px){.info-actions{grid-template-columns:1fr 1fr}}
+.info-action{display:flex;align-items:center;gap:10px;width:100%;min-height:58px;padding:10px 14px;border:1.5px solid var(--brand-green-dk);border-radius:10px;background:#fff;color:var(--brand-green-dk);font:700 14px/1.3 inherit;cursor:pointer;text-align:left}
 .info-action .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--brand-green-dk);color:#fff;display:grid;place-items:center;font:700 13.5px/1 inherit}
 .info-action .ic{flex:none;font-size:16px}
 .info-action:focus-visible{outline:3px solid var(--brand-blue);outline-offset:2px}
@@ -305,40 +357,17 @@ a.paper:focus-visible{outline:2px solid var(--brand-blue);outline-offset:3px;bor
         <path d="M9 29c2 8 9 13 17 13 3 0 6-1 9-2-3-7-10-12-18-12-3 0-6 .3-8 1z" fill="#1D6FB8"/>
         <path d="M10 27c-1 6 1 11 5 14" stroke="#0B3B54" stroke-width="1.4" fill="none" stroke-linecap="round"/>
       </svg>
-      <div class="logo-txt">EfD<br>Nigeria</div>
+      <div><div class="logo-txt">EfD Nigeria <span class="proto-badge">Prototype</span></div>
+      <div class="tagline">Environment for Development in Africa</div></div>
     </div>
-    <div class="tagline">Environment for<br>Development in Africa</div>
-    <div class="hdr-right" id="hdrRight">Prototype</div>
+    <nav class="stepbar" id="stepNav" aria-label="Steps"></nav>
+    <button class="hdr-link" data-modal="about">About this tool</button>
   </div>
-
-  <div class="main">
-
-    <aside class="side">
-      <h4>Your journey</h4>
-      <ul class="steps" id="stepNav"></ul>
-      <div class="about">
-        <b>◍ About this tool</b>
-        <p><strong>Transparent models.</strong> Every result comes from published methods, with the settings
-           stated in the tool: the FaIR climate model; a social cost of carbon found by adding one tonne of
-           CO&#8322; and tracing the damage it causes; and published estimates of how energy use grows with
-           income, how many deaths the WHO attributes to cooking smoke, and what an avoided death is worth.</p>
-        <p><strong>Open data.</strong> The inputs are public statistics, free to access, from the Global
-           Carbon Budget, the IEA, the World Bank, the WHO and IIASA. Licences differ by source. The exception
-           is the electricity emission factors, which come from ecoinvent, a paid database.</p>
-      </div>
-
-      <div class="about about-link" data-modal="ssp" role="button" tabindex="0">
-        <b>◍ About these scenarios</b>
-        <p>The five SSP pathways this tool offers, what the number after the hyphen
-           means, and how the choice carries through to Nigeria.</p>
-      </div>
-
-    </aside>
-
-    <section class="content" id="content"></section>
-  </div>
+  <div class="strip" id="strip"></div>
+  <section class="content" id="content"></section>
 </div>
 
+<div id="report" aria-hidden="true"></div>
 <div class="tt" id="tt"></div>
 <div class="ovl" id="ovl" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
@@ -369,12 +398,12 @@ countries:Object.entries(AFRICA).map(([iso,c])=>({
   country:null,
 
   steps:[
-    {n:1, nav:"Choose country",    key:"country"},
-    {n:2, nav:"Shape your country's future", key:"drivers"},
-    {n:3, nav:"Global scenario (SSP)",  key:"ssp"},
-    {n:4, nav:"Climate & SCC", key:"climate"},
-    {n:5, nav:"Air pollution", key:"air"},
-    {n:6, nav:"Local climate impact of global SSP", key:"local"}
+    {n:1, nav:"Choose country", short:"Country", key:"country"},
+    {n:2, nav:"Shape your country's future", short:"Your pathway", key:"drivers"},
+    {n:3, nav:"Global scenario (SSP)", short:"Global scenario", key:"ssp"},
+    {n:4, nav:"Climate & SCC", short:"Climate & SCC", key:"climate"},
+    {n:5, nav:"Air pollution", short:"Air pollution", key:"air"},
+    {n:6, nav:"Local climate impact of global SSP", short:"Local climate", key:"local"}
   ],
 
   ssp:{
@@ -397,7 +426,7 @@ countries:Object.entries(AFRICA).map(([iso,c])=>({
     title:"How do you see {country}'s future?", icon:"chart",
     sub:["Set your country pathway by adjusting key drivers.","These choices mirror your priorities and ambition."],
     items:[
-      {id:"mitigation", ico:"🍃", name:"National climate mitigation target", explain:"driverMitigation",
+      {id:"mitigation", ico:"🍃", name:"National climate mitigation target", explain:"driverMitigation", short:"CO₂ in 2050 against 2024 · today 135.8 Mt",
        desc:"Nigeria's carbon dioxide emissions in 2050 compared with its observed 2024 emissions (135.8 Mt, Global Carbon Budget)",
        min:-100, max:150, step:10, value:-50,
        reference:0,
@@ -405,7 +434,7 @@ countries:Object.entries(AFRICA).map(([iso,c])=>({
        ticks:["-100%","-50%","2024 level","+50%","+100%","+150%"],
        fmt:v=>v===0?"2024 level":(v>0?"+":"")+v+"%", unit:"in 2050"},
 
-      {id:"gdp", ico:"📈", name:"Income (GDP growth)", explain:"driverGdp",
+      {id:"gdp", ico:"📈", name:"Income (GDP growth)", explain:"driverGdp", short:"Real growth 2025–2050 · recent average 1.4% a year",
        desc:"Average annual real GDP growth 2025–2050",
        min:0, max:10, step:.5, value:2,
        reference:1.4,
@@ -413,7 +442,7 @@ countries:Object.entries(AFRICA).map(([iso,c])=>({
        ticks:["0%","2%","4%","6%","8%","10%+"],
        fmt:v=>v.toFixed(1)+"%", unit:"per year"},
 
-      {id:"elec", ico:"⚡", name:"Electrification of total final energy", explain:"driverElec",
+      {id:"elec", ico:"⚡", name:"Electrification of total final energy", explain:"driverElec", short:"Share of all energy used as electricity · today 9.0%",
        desc:"Share of all final energy used across Nigeria's households, industry, transport and services that arrives as electricity in 2050 — counting every source, including private back-up generators",
 
        min:0, max:100, step:1, value:9, reference:8.99,
@@ -421,7 +450,7 @@ countries:Object.entries(AFRICA).map(([iso,c])=>({
        ticks:["0%","20%","40%","60%","80%","100%"],
        fmt:v=>v+"%", unit:"of total final energy in 2050"},
 
-      {id:"mix", ico:"☀️", name:"Low-emission electricity generation", explain:"driverMix",
+      {id:"mix", ico:"☀️", name:"Low-emission electricity generation", explain:"driverMix", short:"Share of all electricity · today 15.1%",
        desc:"Share of all Nigeria's electricity generated from low-emission sources in 2050 — counting back-up diesel generators, which are never low-emission",
 
        min:0, max:100, step:2, value:16, reference:15.1,
@@ -429,7 +458,7 @@ countries:Object.entries(AFRICA).map(([iso,c])=>({
        ticks:["0%","20%","40%","60%","80%","100%"],
        fmt:v=>v+"%", unit:"of electricity in 2050"},
 
-      {id:"cooking", ico:"🍳", name:"Clean cooking", explain:"driverCooking",
+      {id:"cooking", ico:"🍳", name:"Clean cooking", explain:"driverCooking", short:"Share cooking mainly with clean fuels · today 26.2%",
        desc:"Share of Nigerians cooking mainly with clean fuels in 2050 — electricity, LPG, natural gas, biogas or ethanol. Wood, charcoal and kerosene count as polluting.",
        min:0, max:100, step:1, value:27, reference:26.2,
        referenceLabel:"Nigeria 2023: 26.2% cook mainly with clean fuels (World Bank / WHO, SDG 7.1.2). The National Clean Cooking Policy (2024) aims for universal access by 2030.",
@@ -679,6 +708,26 @@ const REGIONAL_STATE_CLIMATE={
 };
 
 const MODALS = {
+
+  about:{
+    title:"About this tool",
+    lede:"Explore climate-economic pathways for your country. You will make assumptions and the model will show the possible outcomes.",
+    body:`
+      <h3>Transparent models</h3>
+      <p>Every result comes from published methods, with the settings stated in the tool: the FaIR climate
+      model; a social cost of carbon found by adding one tonne of CO&#8322; and tracing the damage it causes;
+      and published estimates of how energy use grows with income, how many deaths the WHO attributes to
+      cooking smoke, and what an avoided death is worth.</p>
+      <h3>Open data</h3>
+      <p>The inputs are public statistics, free to access, from the Global Carbon Budget, the IEA, the World
+      Bank, the WHO and IIASA. Licences differ by source. The exception is the electricity emission factors,
+      which come from ecoinvent, a paid database.</p>
+      <h3>Go further</h3>
+      <p><span class="info-link" data-modal="journey" role="button" tabindex="0">How to navigate</span> ·
+      <span class="info-link" data-modal="data" role="button" tabindex="0">Where the data comes from</span> ·
+      <span class="info-link" data-modal="engine" role="button" tabindex="0">What runs the calculations</span> ·
+      <span class="info-link" data-modal="ssp" role="button" tabindex="0">About these scenarios</span></p>`
+  },
 
   driverMitigation:{
     title:"How your emissions target is used",
@@ -1165,8 +1214,9 @@ const MODALS = {
           most easily trusted too far.</span></div></li>
         <li><div class="ico">5</div><div><b>The full explanation</b>
           <span>The four panels on this first screen — how to navigate, where the data comes from, what
-          runs the calculations, and what can make results higher or lower — and the ⓘ links beside every
-          slider and every result. This panel is one of them.</span></div></li>
+          runs the calculations, and what can make results higher or lower — the "About this tool" button in the
+          header, the "About this lever" fold-out under every slider, and the ⓘ links beside every result. This panel
+          is one of them.</span></div></li>
         <li><div class="ico">6</div><div><b>The numbers, and the sources</b>
           <span>"Show data table" under each chart lists every plotted value. "Where the data comes from"
           links out to the databases behind the figures. The Methodology panel, the "Go deeper" link inside
@@ -2192,14 +2242,39 @@ const flag = iso => `<span class="aflag" aria-hidden="true">${AFRICA_FLAGS[iso]|
 
 function renderNav(){
   $("#stepNav").innerHTML = DATA.steps.map(s =>
-    `${s.n===1?'<li class="step-group">Settings</li>':''}${s.n===4?'<li class="step-group results">Results</li>':''}<li class="${s.n===state.step?'on':''}" data-go="${s.n}" role="button" tabindex="0">
-       <span class="pip">${s.n}</span><span>${T(s.nav)}</span></li>`).join("");
+    `${s.n===STEP.climate?'<span class="sep" aria-hidden="true"></span>':''}<button type="button" class="st ${s.n===state.step?'on':s.n<state.step?'done':''}" data-go="${s.n}"${s.n===state.step?' aria-current="step"':''} title="${T(s.nav)}"><span class="pip">${s.n<state.step?'✓':s.n}</span><span class="lbl">${T(s.short||s.nav)}</span></button>`).join("");
+}
 
+const STRIP_USES={climate:["mitigation","gdp","elec","mix","ssp"], air:["gdp","elec","cooking","ssp"], local:["ssp"]};
+const STRIP_LABEL={mitigation:"CO₂ 2050", gdp:"GDP", elec:"Electrification", mix:"Low-emission power", cooking:"Clean cooking"};
+function settingsStrip(){
+  if(state.step<STEP.ssp) return "";
+  const key=DATA.steps[state.step-1].key, uses=STRIP_USES[key];
+  const cls=id=>uses&&uses.includes(id)?"use":"";
+  const chips=DATA.drivers.items.map(it=>
+    `<button type="button" class="${cls(it.id)}" data-go="${STEP.drivers}">${STRIP_LABEL[it.id]||it.name} <b>${it.fmt(state.drivers[it.id])}</b></button>`).join("");
+  const sspLbl=NGA_DATA.pathwayLabel[state.ssp]||state.ssp;
+  const hint=!uses?"":key==="local"?"Only the global scenario drives this screen":"Shaded: the settings this screen uses";
+  return `<span class="k">Your settings</span>
+    <button type="button" data-go="${STEP.country}"><b>${DATA.country.name}</b></button>${chips}
+    <button type="button" class="ssp ${cls("ssp")}" data-go="${STEP.ssp}">SSP <b>${sspLbl}</b>${state.ssp===DATA.ssp.selected?" (default)":""}</button>
+    ${hint?`<span class="hint">${hint}</span>`:""}`;
 }
 
 function listLabels(){
   const L=DATA.ssp.options.map(o=>o.label);
   return L.length<2 ? (L[0]||"") : L.slice(0,-1).join(", ")+" and "+L[L.length-1];
+}
+
+const SSP_SKETCH={ssp119:["M4 24 C30 26 46 38 70 41 S110 42 116 42","#0E5C3F"],
+  ssp126:["M4 24 C34 24 56 32 80 36 S110 39 116 39","#0E5C3F"],
+  ssp245:["M4 24 C40 20 70 21 90 26 S110 32 116 34","#0E5C3F"],
+  ssp370:["M4 24 C40 19 76 11 116 6","#B4531B"],
+  ssp585:["M4 24 C30 17 60 6 116 2","#B4531B"]};
+function sspSketch(id){
+  const k=SSP_SKETCH[id]; if(!k) return "";
+  return `<svg class="sketch" viewBox="0 0 120 44" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M4 43H116" stroke="#DCE2DC" fill="none"/><path d="${k[0]}" stroke="${k[1]}" stroke-width="2.5" fill="none"/></svg>`;
 }
 
 function infoActions(){
@@ -2212,13 +2287,14 @@ function infoActions(){
   </div>`;
 }
 
-function head(step,title,subHtml){
+function head(step,title,subHtml,actionsHtml){
+  const grp=step<STEP.climate?"Settings":"Results";
   return `<div class="title-row">${icon(DATA[DATA.steps[step-1].key].icon)}
-    <div><p class="eyebrow">Step ${step} of ${DATA.steps.length}</p>
-    <h1>${T(title)}</h1>${subHtml||""}</div></div>`;
+    <div class="title-main"><p class="eyebrow">Step ${step} of ${DATA.steps.length} · ${grp}</p>
+    <h1>${T(title)}</h1>${subHtml||""}${actionsHtml?`<div class="title-actions">${actionsHtml}</div>`:""}</div></div>`;
 }
 
-const tiles = (arr,cls="") => `<div class="tiles ${cls}">${arr.map(t=>
+const tiles = (arr,cls="") => `<div class="tiles ${cls}">${arr.map(t=> t.html!=null ? `<div class="tile ${t.cls||""}">${t.html}</div>` :
   `<div class="tile ${t.cls||(t.warn?'warn':'')} ${t.tip?'metric-tip':''}"${t.tip?` data-tip="${t.tip}" tabindex="0" aria-label="${T(t.lbl)}. ${t.tip}"`:""}><div class="lbl">${T(t.lbl)}${t.sub?`<small>${t.sub}</small>`:""}</div>
    <div class="val">${t.val}</div><div class="unit ${t.unitCls||""}">${t.unit||""}</div></div>`).join("")}</div>`;
 
@@ -2554,10 +2630,13 @@ const VIEWS = {
     return head(STEP.ssp,d.title,`<p class="sub">${d.intro}</p>`)+
     `<div class="body">
      <p class="scenario-cue">Choose a scenario. Selecting a card also opens its panel — what it assumes, and what it means for Nigeria.</p>
+     <p class="default-line"><span aria-hidden="true">ⓘ</span><span><b>${NGA_DATA.pathwayLabel[DATA.ssp.selected]} is the default setting</b> if you prefer not to make a choice.
+       <span class="info-link" data-modal="ssp" role="button" tabindex="0" style="margin-left:6px">About these scenarios</span></span></p>
      <div class="cards">${d.options.map(o=>
        `<div class="card help-card ${o.id===state.ssp?'on':''}" data-ssp="${o.id}" data-tip="${o.desc}" role="button" tabindex="0" aria-label="${o.label}, ${o.name}. ${o.desc}. Select this scenario and open its panel."><span class="tick">✓</span>
-        <h5>${o.label}</h5><span class="ico">${o.ico}</span>
+        <h5>${o.label}</h5>${sspSketch(o.id)}
         <div class="nm">${o.name}</div><p>${o.tag}</p><p style="margin-top:8px">${o.desc}</p></div>`).join("")}</div>
+     <p class="sketch-note">The small curves sketch the direction of global emissions described on each card; they are not data.</p>
      <div class="actions"><button class="btn" data-go="${STEP.ssp+1}">See results &nbsp;→</button></div></div>`;
   },
 
@@ -2570,7 +2649,19 @@ const VIEWS = {
     return head(STEP.country,"Welcome to the climate-economic policy design tool",
       `<p class="sub">Explore climate-economic pathways for your country. You will make assumptions and the
        model will show the possible outcomes.</p>`)+
-    `<div class="body">${infoActions()}
+    `<div class="body">
+      <div class="about-row">
+        <details class="fold"><summary>Transparent models <span>— published methods, settings stated</span></summary>
+          <p>Every result comes from published methods, with the settings stated in the tool: the FaIR climate model;
+          a social cost of carbon found by adding one tonne of CO&#8322; and tracing the damage it causes; and published
+          estimates of how energy use grows with income, how many deaths the WHO attributes to cooking smoke, and what
+          an avoided death is worth.</p></details>
+        <details class="fold"><summary>Open data <span>— public statistics, free to access</span></summary>
+          <p>The inputs are public statistics, free to access, from the Global Carbon Budget, the IEA, the World Bank,
+          the WHO and IIASA. Licences differ by source. The exception is the electricity emission factors, which come
+          from ecoinvent, a paid database.</p></details>
+      </div>
+      ${infoActions()}
       <div class="section-label">Choose country
         <span>All 55 African Union member states. Select on the map, or use the list.</span></div>
       <div class="africa-picker"><div class="mapbox mapbig"><svg viewBox="0 0 ${AFRICA_VB[0]} ${AFRICA_VB[1]}" role="group" aria-label="Map of Africa, select a country">${paths}${marks}</svg></div>
@@ -2587,7 +2678,8 @@ const VIEWS = {
          <h3 style="margin-top:0">Results are available for Nigeria</h3>
          <p class="cap" style="font-size:14px;line-height:1.6">You have ${DATA.country.name}
          selected. This prototype carries results for Nigeria; choose it at step ${STEP.country} to continue.</p></div>`;
-    return head(STEP.drivers,d.title,d.sub.map(s=>`<p class="sub">${s}</p>`).join(""))+
+    return head(STEP.drivers,d.title,d.sub.map(s=>`<p class="sub">${s}</p>`).join("")+
+      `<p class="sub" style="font-size:14px;color:var(--ink-3)">The blue mark on each slider is where Nigeria is today.</p>`)+
     `<div class="body">${notNg}${d.items.map(it=>{
       const v=state.drivers[it.id], pct=((v-it.min)/(it.max-it.min))*100;
 
@@ -2601,16 +2693,16 @@ const VIEWS = {
       const refPct = hasRef ? Math.min(Math.max(((ref-it.min)/(it.max-it.min))*100, 0), 100) : 0;
       const note = it.inactive ? `<div class="reference-note">${it.inactive}</div>` : "";
       return `<div class="driver">
-        <div class="dico">${it.ico}</div>
-        <div><div class="dname">${it.name}</div><div class="ddesc">${it.desc}</div>
-          ${it.explain ? `<span class="info-link driver-explain" data-modal="${it.explain}" role="button" tabindex="0">ⓘ How this choice is used</span>` : ""}</div>
+        <div><h2 class="dname" style="margin:0">${it.name}</h2><div class="dshort">${it.short||""}</div></div>
         <div class="range-wrap"><div class="ticks">${it.ticks.map((t,ti)=>`<span class="${ti===near?'cur':''}">${t}</span>`).join("")}</div>
-          <input type="range" min="${it.min}" max="${it.max}" step="${it.step}" value="${v}"
+          <input type="range" min="${it.min}" max="${it.max}" step="${it.step}" value="${v}" aria-label="${it.name}"
             data-drv="${it.id}" style="background:linear-gradient(90deg,var(--brand-green-dk) ${pct}%,#D9E0E4 ${pct}%)">
-          ${hasRef ? `<span class="reference-mark" style="left:${refPct}%" aria-hidden="true"></span>` : ""}
-          <div class="reference-label">${hasRef?"● ":"— "}${refLabel}</div>${note}
-          ${it.id==="mix" ? sourceMixButton() : ""}</div>
-        <div class="dval"><b>${it.fmt(v)}</b><span>${it.unit}</span></div></div>`;
+          ${hasRef ? `<span class="reference-mark" style="left:${refPct}%" aria-hidden="true"></span>` : ""}${note}</div>
+        <div class="dval"><b>${it.fmt(v)}</b><span>${it.unit}</span></div>
+        <details class="more" data-keep="lever-${it.id}"><summary>About this lever</summary>
+          <p>${it.desc}</p><p>${hasRef?"● ":"— "}${refLabel}</p>
+          ${it.explain ? `<p><span class="info-link" data-modal="${it.explain}" role="button" tabindex="0">ⓘ How this choice is used</span></p>` : ""}</details>
+        ${it.id==="mix" ? mixPanel() : ""}</div>`;
     }).join("")}
     <div class="actions"><button class="btn" data-go="${STEP.drivers+1}">Continue &nbsp;→</button></div></div>`;
   },
@@ -2651,119 +2743,107 @@ const VIEWS = {
           cls:cum>=0?"":"warn" }
       ] };
 
-    return head(STEP.climate,d.title,`<p class="sub">${T(d.sub)}</p>`)+
+    c.marks=[];
+    const now=NGA.powerNow(2023),
+          allMine=NGA.allElectricityCO2(2050), allHeld=NGA.allElectricityIfUnchanged(2050),
+          allNow=NGA.allElectricityCO2(2023), allSaved=allHeld-allMine;
+    const gg=NGA.gensetCO2(2050), gr=NGA.powerNow(2050), ef=NGA.allElectricityEF(2050),
+          gwh=NGA.gensetGenerationAt(2050);
+    const pyrs=[2023,...NGA_DATA.emissions.years.filter(yr=>yr>2023)];
+    const held=pyrs.map(yr=>+NGA.allElectricityIfUnchanged(yr).toFixed(1));
+    const yours=pyrs.map(yr=>+NGA.allElectricityCO2(yr).toFixed(1));
+    const pc={ title:"Nigeria's electricity carbon dioxide emissions",
+      unit:"Mt carbon dioxide per year — all electricity, grid and back-up generators, 2023–2100",
+      years:pyrs, baseline:held, pathway:yours, xTicks:[2023,2040,2060,2080,2100],
+      yMax:Math.max(1,Math.ceil(Math.max(...held,...yours)/10)*10),
+      s1:"If today's mix stayed as it is", s2:"◐ Grid and back-up generators", marks:[] };
+    const mixTable=(()=>{
+      const keep=state.drivers.mix, rows=[0,15.3,30,50,80,100].map(m=>{
+        state.drivers.mix=m;
+        return [ m.toFixed(1)+"%", fmtN(NGA.allElectricityEFAt(2050)*1000),
+                 fmtN(NGA.gensetShareAt(2050)*100,1)+"%", fmtN(NGA.allElectricityCO2(2050),1) ]; });
+      state.drivers.mix=keep;
+      return dataTable(["Low-emission share OF ALL ELECTRICITY","Intensity (g/kWh)",
+                        "Back-up generators","All-electricity emissions 2050 (Mt)"], rows); })();
+    const savedTxt=(allSaved>=0?"−":"+")+fmtN(Math.abs(allSaved),1)+" Mt";
+    const actions=`<span class="info-link" data-modal="engine" role="button" tabindex="0">⚙ What runs the calculations</span>${uncCue()}`;
+
+    return head(STEP.climate,d.title,`<p class="sub">${T(d.sub)}</p>`,actions)+
     `<div class="body">
+     ${tiles([
+       {lbl:"Emissions in 2050", sub:`against ${fmtN(baselineVals[i50],1)} Mt on the ${NGA.label()} baseline`,
+        val:fmtN(pathwayVals[i50])+" Mt", unit:`${signed(Math.round(cut))}% compared with the baseline`,
+        unitCls:`outcome ${cut<0?"good":cut>0?"bad":""}`, cls:cut>0?"warn":""},
+       {lbl:cum>=0?"Cumulative emissions avoided":"Cumulative additional emissions",
+        sub:"2025–2100, against the selected baseline",
+        val:fmtN(Math.abs(cum)>=1000?Math.abs(cum)/1000:Math.abs(cum),2),
+        unit:Math.abs(cum)>=1000?"billion tonnes of carbon dioxide":"million tonnes of carbon dioxide",
+        cls:cum>=0?"":"warn"},
+       {lbl:dmg>=0?"Estimated global climate damage avoided":"Estimated additional global climate damage",
+        sub:"2025–2100, valued using the IAM Social Cost of Carbon",
+        val:"US$"+fmtN(Math.abs(dmg)/1000,2), unit:"trillion, present value in 2025",
+        cls:`hero ${dmg>=0?"":"warn"}`}
+     ])}
+     ${NGA.proxyNote()?`<div class="note"><span>⚠️</span><span>${NGA.proxyNote()}</span></div>`:""}
      <div class="panel"><div class="chart-head"><div><h3>${c.title}</h3><p class="cap">${c.unit}</p></div>
        <div class="legend">
          <span><i class="dotted"></i>National history 2005–2024</span>
          <span><i class="dashed"></i>${c.s1}</span>
          <span><i class="solid"></i>${c.s2}</span></div></div>
        ${lineChart(c)}
-       <div class="help-row"><span class="info-link" data-modal="emissionsChart" role="button" tabindex="0">ⓘ What the three lines are, and how this chart is computed</span></div>
-      <p class="cap" style="margin-top:10px">Nigeria's national profile is anchored at <b>${fmtN(NGA_DATA.observed[2024],1)} Mt</b>
-        of fossil-fuel and industrial carbon dioxide in 2024 and <b>${fmtN(NGA_DATA.observed[2005],1)} Mt</b> in 2005.
-        The dashed grey line is a Nigeria-specific socioeconomic-pressure construction: Nigeria's own
-        population and GDP-per-capita path enters the stage-sensitive Burke &amp; Csereklyei aggregate-energy
-        relation, anchored at the observed 2024 national value. A normalized Africa R10
-        final-energy-intensity path supplies an aggregate efficiency, structure and technology proxy;
-        R10 carbon intensity and an ETP fugitive/process decomposition are not applied to this line. The green line
-        follows the mitigation target you set at step ${STEP.drivers}. Land-use emissions and removals
-        are not included.</p>
-      ${dataTable(["Year",c.s1+" (Mt)",c.s2+" (Mt)","Baseline minus your pathway (Mt)"],
-         yrs.map((y,i)=>[y,fmtN(baselineVals[i],1),fmtN(pathwayVals[i],1),signed(baselineVals[i]-pathwayVals[i],1)]))}
-      ${dataTable(["Year","Nigeria's observed emissions (Mt)"],
-         c.observed.years.map((y,i)=>[y,fmtN(c.observed.values[i],1)]), "Show national history table")}</div>
-     ${tiles([
-       {lbl:dmg>=0?"Estimated global climate damage avoided":"Estimated additional global climate damage",
-        sub:"2025–2100, valued using the IAM Social Cost of Carbon",
-        val:"US$"+fmtN(Math.abs(dmg)/1000,2), unit:"trillion, present value in 2025",
-        cls:`tile-wide ${dmg>=0?"":"warn"}`.trim()}
-     ])}
-     ${NGA.proxyNote()?`<div class="note"><span>⚠️</span><span>${NGA.proxyNote()}</span></div>`:""}
-     <div class="help-row"><span class="info-link" data-modal="engine" role="button" tabindex="0">⚙ What runs the calculations</span>${uncCue()}</div>
-     ${(()=>{
-              const now=NGA.powerNow(2023),
-                 allMine=NGA.allElectricityCO2(2050), allHeld=NGA.allElectricityIfUnchanged(2050),
-                 allNow=NGA.allElectricityCO2(2023), allSaved=allHeld-allMine;
-       return `<div class="panel">
-         <h3 style="margin-top:0">Electricity emissions</h3>
-         ${tiles([
-           {lbl:"If today's mix stayed as it is",
-            sub:`same electricity, today's ${(NGA_DATA.power.lowShareAll2023*100).toFixed(1)}% mix`,
-            val:fmtN(allHeld,1)+" Mt", unit:"carbon dioxide per year"},
-           {lbl:"Difference the mix makes", sub:"in 2050, from cleaning generation alone",
-            val:(allSaved>=0?"−":"+")+fmtN(Math.abs(allSaved),1)+" Mt", unit:"carbon dioxide per year"}
-         ],"tiles-2")}
-         ${(()=>{
-           const gg=NGA.gensetCO2(2050), gr=NGA.powerNow(2050),
-                 all=NGA.allElectricityCO2(2050), ef=NGA.allElectricityEF(2050),
-                 gwh=NGA.gensetGenerationAt(2050);
-           return `<div class="panel" style="margin-top:14px">
-             <h3 style="margin-top:0">Estimated private back-up generation</h3>
-             <div class="note"><span>◐</span><span>Every figure on this screen counts
-               <b>both</b>: the IEA's published 40,958 GWh grid total for 2023 and an estimated
-               <b>20.6 TWh</b> of private back-up generation the official statistics do not record.
-               The tiles below split the 2050 figure into those two halves, and the chart further
-               below plots their sum across the whole 2023–2100 horizon. The back-up half is a
-               <b>conditional estimate</b> rather than a measurement — it is the one marked ◐; open
-               the info layer for its derivation and limits.</span></div>
-             ${tiles([
-               {lbl:"Grid, 2050", sub:"centralised generation only",
-                val:fmtN(gr,1)+" Mt", unit:"carbon dioxide per year"},
-               {lbl:"◐ Back-up generators, 2050", sub:`${fmtN(gwh)} GWh — conditional estimate`,
-                val:fmtN(gg,1)+" Mt", unit:"carbon dioxide per year"},
+       <details class="more" data-keep="em-explain"><summary>What the three lines are, and how this chart is computed</summary>
+         <p>Nigeria's national profile is anchored at <b>${fmtN(NGA_DATA.observed[2024],1)} Mt</b>
+         of fossil-fuel and industrial carbon dioxide in 2024 and <b>${fmtN(NGA_DATA.observed[2005],1)} Mt</b> in 2005.
+         The dashed grey line is a Nigeria-specific socioeconomic-pressure construction: Nigeria's own
+         population and GDP-per-capita path enters the stage-sensitive Burke &amp; Csereklyei aggregate-energy
+         relation, anchored at the observed 2024 national value. A normalized Africa R10
+         final-energy-intensity path supplies an aggregate efficiency, structure and technology proxy;
+         R10 carbon intensity and an ETP fugitive/process decomposition are not applied to this line. The green line
+         follows the mitigation target you set at step ${STEP.drivers}. Land-use emissions and removals
+         are not included.</p>
+         <p><span class="info-link" data-modal="emissionsChart" role="button" tabindex="0">ⓘ Full explanation of the three lines</span></p></details>
+       ${dataTable(["Year",c.s1+" (Mt)",c.s2+" (Mt)","Baseline minus your pathway (Mt)"],
+          yrs.map((y,i)=>[y,fmtN(baselineVals[i],1),fmtN(pathwayVals[i],1),signed(baselineVals[i]-pathwayVals[i],1)]))}
+       ${dataTable(["Year","Nigeria's observed emissions (Mt)"],
+          c.observed.years.map((y,i)=>[y,fmtN(c.observed.values[i],1)]), "Show national history table")}</div>
 
-               {lbl:"Both together, 2050", sub:ef===null?"no electricity at this target":`${fmtN(ef)} g per kWh across all electricity`,
-                val:fmtN(all,1)+" Mt", unit:"carbon dioxide per year"}
-             ])}
-             <div class="help-row"><span class="info-link" data-modal="powerChart" role="button" tabindex="0">ⓘ More about the estimate and its emission factor</span></div>
-           </div>`; })()}
-         ${(()=>{
-
-           const pyrs=[2023,...NGA_DATA.emissions.years.filter(yr=>yr>2023)];
-           const held=pyrs.map(yr=>+NGA.allElectricityIfUnchanged(yr).toFixed(1));
-           const yours=pyrs.map(yr=>+NGA.allElectricityCO2(yr).toFixed(1));
-
-           const pc={ title:"Nigeria's electricity carbon dioxide emissions",
-             unit:"Mt carbon dioxide per year — all electricity, grid and back-up generators, 2023–2100",
-             years:pyrs, baseline:held, pathway:yours,
-
-             xTicks:[2023,2040,2060,2080,2100],
-             yMax:Math.max(1,Math.ceil(Math.max(...held,...yours)/10)*10),
-
-             s1:"If today's mix stayed as it is", s2:"◐ Grid and back-up generators",
-
-             marks:[{ kind:"year", year:2050, lbl:"Electricity emissions in 2050",
-               sub:`grid and back-up generators: ${state.drivers.mix}% low-emission — ${allMine>allNow?"▲ above":"▼ below"} today's ${fmtN(allNow,1)} Mt`,
-               val:fmtN(allMine,1)+" Mt",
-               unit:`${allSaved>=0?"−":"+"}${fmtN(Math.abs(allSaved),1)} Mt against today's mix`,
-               unitCls:`outcome ${allSaved>0?"good":allSaved<0?"bad":""}`,
-               cls: allMine>allNow ? "warn" : "" }] };
-           return `<div class="chart-head" style="margin-top:22px"><div><h3>${pc.title}</h3><p class="cap">${pc.unit}</p></div>
-             <div class="legend">
-               <span><i class="dashed"></i>${pc.s1}</span>
-               <span><i class="solid"></i>${pc.s2}</span></div></div>
-             ${lineChart(pc)}
-             <div class="help-row"><span class="info-link" data-modal="powerChart" role="button" tabindex="0">ⓘ What the two lines are, and how this chart is computed</span></div>`;
-         })()}
-         <p class="cap" style="margin-top:12px;font-size:13.5px">
-           Nigeria's power stations emitted about <b>${fmtN(now,1)} Mt</b> in 2023; adding the
-           estimated private back-up fleet takes all Nigerian electricity to about
-           <b>${fmtN(allNow,1)} Mt</b>, beside a national total of
-           <b>${fmtN(NGA_DATA.observed[2023],1)} Mt</b> — a comparison to read as indicative rather
-           than as a share, because the electricity figures are life-cycle and the national total is
-           territorial. ${ allMine>allNow
-             ? `Your pathway raises that combined total to <b>${fmtN(allMine,1)} Mt</b> — more electricity is being generated than a cleaner mix offsets.`
-             : `Your pathway brings that combined total to <b>${fmtN(allMine,1)} Mt</b>, despite generating ${fmtN(NGA.allElectricityGWh(2050)/(NGA_DATA.power.gen2023GWh+NGA_DATA.power.genset2023GWh),1)}× more electricity.` }</p>
-         ${(()=>{
-           const keep=state.drivers.mix, rows=[0,15.3,30,50,80,100].map(m=>{
-             state.drivers.mix=m;
-             return [ m.toFixed(1)+"%", fmtN(NGA.allElectricityEFAt(2050)*1000),
-                      fmtN(NGA.gensetShareAt(2050)*100,1)+"%", fmtN(NGA.allElectricityCO2(2050),1) ]; });
-           state.drivers.mix=keep;
-           return dataTable(["Low-emission share OF ALL ELECTRICITY","Intensity (g/kWh)",
-                             "Back-up generators","All-electricity emissions 2050 (Mt)"], rows); })()}
-       </div>`; })()}
+     <div class="panel">
+       <div class="chart-head"><div><h3>Electricity emissions in 2050</h3>
+         <p class="cap" style="margin-bottom:4px">Grid and private back-up generators, carbon dioxide per year — ${state.drivers.mix}% low-emission</p>
+         <p class="cap" style="margin:0;font-size:13.5px;color:var(--ink-2)">If today's ${(NGA_DATA.power.lowShareAll2023*100).toFixed(1)}% mix stayed as it is:
+           <b>${fmtN(allHeld,1)} Mt</b> · Difference the mix makes, from cleaning generation alone: <b>${savedTxt}</b></p></div></div>
+       ${tiles([
+         {lbl:"Grid, 2050", sub:"centralised generation only", val:fmtN(gr,1)+" Mt", unit:"carbon dioxide per year"},
+         {lbl:"◐ Back-up generators, 2050", sub:`${fmtN(gwh)} GWh — conditional estimate`,
+          val:fmtN(gg,1)+" Mt", unit:"carbon dioxide per year"},
+         {lbl:"Both together, 2050",
+          sub:(ef===null?"no electricity at this target":`${fmtN(ef)} g per kWh across all electricity`)+
+              ` · ${allMine>allNow?"▲ above":"▼ below"} today's ${fmtN(allNow,1)} Mt`,
+          val:fmtN(allMine,1)+" Mt", unit:"carbon dioxide per year", cls:allMine>allNow?"warn":""}
+       ])}
+       <div class="chart-head"><div><h3>${pc.title}</h3><p class="cap">${pc.unit}</p></div>
+         <div class="legend">
+           <span><i class="dashed"></i>${pc.s1}</span>
+           <span><i class="solid"></i>${pc.s2}</span></div></div>
+       ${lineChart(pc)}
+       <details class="more" data-keep="el-backup"><summary>◐ About the back-up generation estimate</summary>
+         <p>Every figure on this screen counts <b>both</b>: the IEA's published 40,958 GWh grid total for 2023 and an
+         estimated <b>20.6 TWh</b> of private back-up generation the official statistics do not record. The tiles above
+         split the 2050 figure into those two halves, and the chart plots their sum across the whole 2023–2100 horizon.
+         The back-up half is a <b>conditional estimate</b> rather than a measurement — it is the one marked ◐.</p>
+         <p><span class="info-link" data-modal="powerChart" role="button" tabindex="0">ⓘ More about the estimate and its emission factor</span></p></details>
+       <details class="more" data-keep="el-explain"><summary>What the two lines are, and how this chart is computed</summary>
+         <p>Nigeria's power stations emitted about <b>${fmtN(now,1)} Mt</b> in 2023; adding the
+         estimated private back-up fleet takes all Nigerian electricity to about
+         <b>${fmtN(allNow,1)} Mt</b>, beside a national total of
+         <b>${fmtN(NGA_DATA.observed[2023],1)} Mt</b> — a comparison to read as indicative rather
+         than as a share, because the electricity figures are life-cycle and the national total is
+         territorial. ${ allMine>allNow
+           ? `Your pathway raises that combined total to <b>${fmtN(allMine,1)} Mt</b> — more electricity is being generated than a cleaner mix offsets.`
+           : `Your pathway brings that combined total to <b>${fmtN(allMine,1)} Mt</b>, despite generating ${fmtN(NGA.allElectricityGWh(2050)/(NGA_DATA.power.gen2023GWh+NGA_DATA.power.genset2023GWh),1)}× more electricity.` }</p>
+         <p><span class="info-link" data-modal="powerChart" role="button" tabindex="0">ⓘ Full explanation of the two lines</span></p></details>
+       ${mixTable}
+     </div>
      <div class="actions"><button class="btn" data-go="${STEP.air}">Next: Air pollution impacts &nbsp;→</button></div></div>`;
   },
 
@@ -2805,26 +2885,28 @@ const VIEWS = {
     const boundNote = `Deaths avoided are measured against income alone. Clean cooking has also been rising for
        reasons other than income — about 2.6 points a year since 2016 — so if that continued, fewer deaths would be
        due to your target: read the figure as an upper bound.${fallNote}`;
-    return head(STEP.air,d.title,`<p class="sub">${T(d.sub)}</p>`)+
+    const nCls=v=>v>0?"bad-n":v<0?"good-n":"";
+    const sgn=v=>signed(Math.round(v)||0);
+    const decomp = !hasBase ? null : {cls:"decomp", html:`<div class="lbl">Against the ${ssp} baseline, 2050</div>
+      <table><tr><td>From your clean-cooking target</td><td class="n ${nCls(-y2050.avoided)}">${sgn(-y2050.avoided)}</td></tr>
+      <tr><td>From your income assumption</td><td class="n ${nCls(inc||0)}">${sgn(inc||0)}</td></tr>
+      <tr class="tot"><td>Your pathway, in total</td><td class="n ${nCls(gap)}">${sgn(gap)} deaths</td></tr></table>`};
+    const actions=`<span class="info-link" data-modal="health" role="button" tabindex="0">ⓘ See how these health figures are worked out</span>${uncCue("uncertaintyHealth")}`;
+    return head(STEP.air,d.title,`<p class="sub">${T(d.sub)}</p>`,actions)+
     `<div class="body">${tiles([
        {lbl:"Premature deaths avoided in 2050",
         sub: floor ? "your target is below what your income alone would bring — no extra effect"
-                   : "by your clean-cooking target, against what your income alone would bring",
+                   : "by your clean-cooking target, against what your income alone would bring · an upper bound",
         val:fmtN(Math.round(y2050.avoided)), unit:"lives per year"},
        {lbl:"Value of those avoided deaths", sub:"welfare value, 2015 USD",
         val:"US$"+fmtN(y2050.valueBn,1), unit:"billion per year (2015 USD)"},
-     ],"tiles-2")}
-     <p class="cap" style="font-size:14px;line-height:1.6;margin:4px 0 6px">${incomeLine}</p>
-     <p class="cap" style="font-size:13px;line-height:1.55;margin:0 0 10px">${boundNote}</p>
-     <div class="help-row"><span class="info-link" data-modal="health" role="button" tabindex="0">ⓘ See how these health figures are worked out</span>${uncCue("uncertaintyHealth")}</div>
-     <div class="panel"><div class="chart-head legend-left"><div>
+       ...(decomp?[decomp]:[])
+     ], decomp?"":"tiles-2")}
+     <details class="fold" data-keep="air-read"><summary>How to read these numbers</summary>
+       <p>${incomeLine}</p><p>${boundNote}</p></details>
+     <div class="panel" style="margin-top:16px"><div class="chart-head legend-left"><div>
         <h3>Household air-pollution deaths per year</h3>
-        <p class="cap">Deaths follow the share of Nigerians still cooking mainly with wood, charcoal or kerosene, and the
-        ${NGA.narrative()} population path — ${fmtN(NGA.populationAt(2050)/1e6)} million Nigerians by 2050,
-        ${fmtN(NGA.popFactor(2050),2)}× the 2021 population. In 2050 ${pct(y2050.polClean)} cook mainly with clean fuel on your
-        pathway${hasBase?`, against ${pct(y2050.baseClean)} in the ${ssp} baseline`:""}. Roughly ${pct(y2050.elecCook)} of Nigerians would cook with
-        electricity at your electrification setting — an illustrative split, not part of the death count — and the rest of
-        the clean share is LPG and other clean fuels.</p></div>
+        <p class="cap">In 2050 ${pct(y2050.polClean)} cook mainly with clean fuel on your pathway${hasBase?`, against ${pct(y2050.baseClean)} in the ${ssp} baseline`:""}.</p></div>
        <div class="legend">
          <span><i class="hatch"></i>${ssp} baseline</span>
          <span><i style="background:var(--brand-green)"></i>Your pathway</span>
@@ -2836,6 +2918,13 @@ const VIEWS = {
                          maxDeaths, "deaths per year",
                          {val:h.D0, low:h.uiLow, high:h.uiHigh, name:"Today's household burden",
                           src:"WHO Global Health Observatory AIR_11, 2021"}, ssp+" baseline")}
+       <details class="more" data-keep="air-drivers"><summary>What drives this chart</summary>
+        <p>Deaths follow the share of Nigerians still cooking mainly with wood, charcoal or kerosene, and the
+        ${NGA.narrative()} population path — ${fmtN(NGA.populationAt(2050)/1e6)} million Nigerians by 2050,
+        ${fmtN(NGA.popFactor(2050),2)}× the 2021 population. In 2050 ${pct(y2050.polClean)} cook mainly with clean fuel on your
+        pathway${hasBase?`, against ${pct(y2050.baseClean)} in the ${ssp} baseline`:""}. Roughly ${pct(y2050.elecCook)} of Nigerians would cook with
+        electricity at your electrification setting — an illustrative split, not part of the death count — and the rest of
+        the clean share is LPG and other clean fuels.</p></details>
        ${dataTable(["Year","Population ("+NGA.narrative()+")","Clean cooking, baseline","Clean cooking, your income only","Clean cooking, yours","of which electric","Deaths, baseline","Deaths, your income only","Deaths, yours","Avoided by your target"],
           rows.map(([y,v])=>[y, fmtN(NGA.populationAt(y)/1e6)+" m",
             v.baseClean==null?"—":pct(v.baseClean), pct(v.cfClean), pct(v.polClean), pct(v.elecCook),
@@ -2857,10 +2946,24 @@ const VIEWS = {
     const HD=NGA_DATA.hotDays, H=HD[NGA.pathway()];
     const regional=NGA_DATA.regionalClimate[NGA.pathway()];
 
+    const maxD=Math.max(...Object.keys(NGA_DATA.pathwayLabel).map(k=>HD[k].p90), HD.hist35)*1.08;
+    const xd=v=>20+v/maxD*760;
+    const rangeBar=`<svg class="range-bar" width="100%" height="64" viewBox="0 0 800 64" role="img"
+        aria-label="Days above 35 degrees: ${fmtN(HD.hist35,0)} today; ${NGA.label()} model range ${fmtN(H.p10,0)} to ${fmtN(H.p90,0)}, central ${fmtN(H.d35,0)}">
+      <path d="M20 32H780" stroke="#DCE2DC" stroke-width="2"/>
+      <rect x="${xd(H.p10)}" y="20" width="${xd(H.p90)-xd(H.p10)}" height="24" rx="12" fill="#B4531B" fill-opacity=".18"/>
+      <circle cx="${xd(HD.hist35)}" cy="32" r="7" fill="#0B3B54"/>
+      <circle cx="${xd(H.d35)}" cy="32" r="8" fill="#B4531B"/>
+      <text x="${xd(HD.hist35)}" y="13" font-size="12" text-anchor="middle" fill="#0B3B54">Today ${fmtN(HD.hist35,0)}</text>
+      <text x="${xd(H.d35)}" y="13" font-size="12" font-weight="600" text-anchor="middle" fill="#B4531B">${fmtN(H.d35,0)}</text>
+      <text x="${xd(H.p10)}" y="61" font-size="12" text-anchor="middle" fill="#6B7C87">${fmtN(H.p10,0)}</text>
+      <text x="${xd(H.p90)}" y="61" font-size="12" text-anchor="middle" fill="#6B7C87">${fmtN(H.p90,0)}</text></svg>`;
+    const actions=`<span class="info-link" data-modal="regionalUncertainty" role="button" tabindex="0">ⓘ What these ranges mean, and how the maps are built</span>${uncCue("uncertaintyLocal")}`;
+
     return head(STEP.local,d.title,`<p class="sub">${T(d.sub)}</p>
-      <p class="pathway-tag"><span class="k">Global pathway</span><b>${NGA.label()}</b></p>`)+
+      <p class="pathway-tag"><span class="k">Global pathway</span><b>${NGA.label()}</b></p>`,actions)+
     `<div class="body">${NGA.proxyNote()?`<div class="note"><span>⚠️</span><span>${NGA.proxyNote()}</span></div>`:""}
-     <div class="hover-instruction">↗ Hover over or keyboard-focus a national climate tile to see the CMIP6 model range. On either map, select a region to open its states and state-level CCKP estimates.</div>${tiles([
+     ${tiles([
        {lbl:"National temperature", sub:`${NGA.label()}, CCKP ensemble median`,
          val:signed(C.temp,1)+"°C", unit:"2080–2099 against 1995–2014",
          tip:`10th–90th percentile across climate models: ${signed(C.tempP10,2)}°C to ${signed(C.tempP90,2)}°C. Median: ${signed(C.temp,2)}°C.`},
@@ -2871,20 +2974,35 @@ const VIEWS = {
         val:signed(Math.round(H.d35-HD.hist35)),
         unit:`days per year above 35°C (${fmtN(HD.hist35,0)} today → ${fmtN(H.d35,0)})`}
      ])}
-     <div class="help-row"><span class="info-link" data-modal="regionalUncertainty" role="button" tabindex="0">ⓘ What these ranges mean, and how the maps are built</span>${uncCue("uncertaintyLocal")}</div>
+     <p class="cap" style="margin:-10px 0 16px;font-size:13px">↗ Hover over or keyboard-focus a national climate tile to see the CMIP6 model range. On either map, select a region to open its states and state-level CCKP estimates.</p>
      <div class="maprow">${regionalClimatePanel("temp",regional)}${regionalClimatePanel("rain",regional)}</div>
-     <div class="panel"><h3 style="margin-top:0">Six geopolitical zones — selected pathway</h3>
-       <p class="cap" style="font-size:14px;line-height:1.65">${regional[0].tempP10==null
+
+     <div class="panel" style="margin-top:16px"><h3 style="margin-top:0">Days above 35&deg;C</h3>
+       ${rangeBar}
+       <p class="cap" style="font-size:14px;line-height:1.65;margin:4px 0 0">
+       Under ${NGA.label()} the models span ${fmtN(H.p10,0)} to ${fmtN(H.p90,0)} days around a
+       central estimate of ${fmtN(H.d35,0)} &mdash; a wider spread than the whole gap between the
+       lowest and highest pathway. For this indicator, which climate model you use moves the answer
+       more than which pathway the world follows.</p>
+       <details class="more" data-keep="hot-about"><summary>About the range, and data table</summary>
+         <p>Nigeria has about <b>${fmtN(HD.hist35,0)} days a year</b> above 35&deg;C today. The range shows
+         how much the climate models differ from one another for the same pathway.</p>
+         ${dataTable(["Pathway","Days above 35&deg;C by 2080&ndash;2099","Change","Range across models","Days above 40&deg;C"],
+           Object.keys(NGA_DATA.pathwayLabel).map(k=>[NGA_DATA.pathwayLabel[k],
+             fmtN(HD[k].d35,0), signed(Math.round(HD[k].d35-HD.hist35)),
+             `${fmtN(HD[k].p10,0)} &ndash; ${fmtN(HD[k].p90,0)}`, fmtN(HD[k].d40,0)]))}</details></div>
+
+     <details class="fold" data-keep="zones" style="margin-bottom:12px"><summary>Six geopolitical zones — selected pathway</summary>
+       <p>${regional[0].tempP10==null
          ? "CCKP's SSP1-1.9 regional ensemble median is shown, but a model range cannot be reconstructed because individual-model projections are not published for this pathway."
          : "Each climate model is first summarized across the states in a zone. The central figure and range are then the median and 10th–90th percentiles across those model-specific zone results."}</p>
        ${dataTable(["Zone","Temperature median","Temperature p10–p90","Rainfall median","Rainfall p10–p90"],
          regional.map(r=>[r.name,signed(r.temp,2)+"°C",
            r.tempP10==null?"Not available for SSP1-1.9":`${signed(r.tempP10,2)}°C to ${signed(r.tempP90,2)}°C (${r.tempModels} models)`,
            signed(r.rain,0)+" mm/yr",
-           r.rainP10==null?"Not available for SSP1-1.9":`${signed(r.rainP10,0)} to ${signed(r.rainP90,0)} mm/yr (${r.rainModels} models)`]))}</div>
-     <div class="panel"><h3 style="margin-top:0">National CCKP ensemble by pathway</h3>
-       <p class="cap" style="font-size:14px;line-height:1.65">
-       Under ${NGA.label()}, CCKP's Nigeria median is <b>${signed(C.temp,2)}&deg;C</b>, with a
+           r.rainP10==null?"Not available for SSP1-1.9":`${signed(r.rainP10,0)} to ${signed(r.rainP90,0)} mm/yr (${r.rainModels} models)`]))}</details>
+     <details class="fold" data-keep="national"><summary>National CCKP ensemble by pathway</summary>
+       <p>Under ${NGA.label()}, CCKP's Nigeria median is <b>${signed(C.temp,2)}&deg;C</b>, with a
        10th–90th percentile model range of <b>${signed(C.tempP10,2)}&deg;C to ${signed(C.tempP90,2)}&deg;C</b>.
        These local-climate headlines come directly from CCKP; they are not obtained by scaling the national economic calculation.</p>
        ${dataTable(["Pathway","Temperature median","Temperature p10–p90","Rainfall median","Rainfall p10–p90"],
@@ -2892,32 +3010,168 @@ const VIEWS = {
            const C2=NGA_DATA.cckpNationalClimate[o.id];
            return [o.label, signed(C2.temp,2)+"°C", `${signed(C2.tempP10,2)}°C to ${signed(C2.tempP90,2)}°C`,
              signed(C2.rain,1)+" mm/yr", `${signed(C2.rainP10,1)} to ${signed(C2.rainP90,1)} mm/yr`];
-         }))}</div>
+         }))}</details>
 
-     <div class="panel"><h3 style="margin-top:0">Days above 35&deg;C</h3>
-       <p class="cap" style="font-size:14px;line-height:1.65">
-       Nigeria has about <b>${fmtN(HD.hist35,0)} days a year</b> above 35&deg;C today. The range shows
-       how much the climate models differ from one another for the same pathway.</p>
-       ${dataTable(["Pathway","Days above 35&deg;C by 2080&ndash;2099","Change","Range across models","Days above 40&deg;C"],
-         Object.keys(NGA_DATA.pathwayLabel).map(k=>[NGA_DATA.pathwayLabel[k],
-           fmtN(HD[k].d35,0), signed(Math.round(HD[k].d35-HD.hist35)),
-           `${fmtN(HD[k].p10,0)} &ndash; ${fmtN(HD[k].p90,0)}`, fmtN(HD[k].d40,0)]))}
-       <p class="cap" style="font-size:14px;line-height:1.65;margin-top:12px">
-       Under ${NGA.label()} the models span ${fmtN(H.p10,0)} to ${fmtN(H.p90,0)} days around a
-       central estimate of ${fmtN(H.d35,0)} &mdash; a wider spread than the whole gap between the
-       lowest and highest pathway. For this indicator, which climate model you use moves the answer
-       more than which pathway the world follows.</p></div>
-
+     <div class="save-box">
+       <div class="txt"><b>Save this outcome</b>Your settings and the results of all three results screens — climate and
+         cost (step ${STEP.climate}), air pollution (step ${STEP.air}) and local climate (step ${STEP.local}) — with their charts and maps
+         and the fixed assumptions behind them, in one document.</div>
+       <div class="btns">
+         <button class="btn" data-save="pdf">⤓ &nbsp;Save as PDF</button>
+         <button class="btn ghost" data-save="csv">Download data (CSV)</button></div></div>
      <div class="actions"><button class="btn wide" data-go="${STEP.drivers}">⟳ &nbsp;Explore or change your pathway again</button></div></div>`;
   }
 };
 
+/* "Save this outcome": one list of rows feeds both the printable report (PDF) and the CSV. */
+function outcomeRows(){
+  const rows=[], add=(sec,lbl,val,unit="")=>rows.push({sec,lbl,val:String(val),unit});
+  const S1="Your settings";
+  add(S1,"Country",DATA.country.name);
+  DATA.drivers.items.forEach(it=>add(S1,it.name,it.fmt(state.drivers[it.id]),it.unit));
+  const o=DATA.ssp.options.find(x=>x.id===state.ssp);
+  add(S1,"Global scenario",NGA.label()+(o?" — "+o.name:""),state.ssp===DATA.ssp.selected?"default setting":"");
+  const pins=[];
+  // Report the share the model actually uses in 2050 (pins are rescaled when they exceed 100% and
+  // hydro/wind are capped at resource limits), plus the value set where the two differ.
+  ["low","fossil"].forEach(g=>{ const eff=NGA.resolveGroup(2050,g);
+    Object.entries((state.sourceMix||{})[g]||{}).forEach(([n,v])=>{
+      const e=eff[n]*100, set=v*100;
+      pins.push(`${SRC_LABEL[n]} ${fmtN(e,1)}% of the ${g==="low"?"low-emission":"fossil"} group in 2050`+
+        (Math.abs(e-set)>=0.05?` (you set ${fmtN(set,1)}%)`:""));
+    }); });
+  add(S1,"Energy mix set by you",pins.length?pins.join("; "):"none — the scenario's own mix");
+  if(!NGA.isCountry()||!NGA.pathway()) return rows;
+
+  const S4="Climate and cost (step "+STEP.climate+")";
+  const b50=NGA.baselineAt(2050), p50=NGA.pathAt(2050), cum=NGA.cumulativeAvoided(), dmg=NGA.avoidedDamageBn();
+  add(S4,"CO₂ emissions in 2050",fmtN(p50)+" Mt",`${signed(Math.round(100*(p50/b50-1)))}% against ${fmtN(b50,1)} Mt on the ${NGA.label()} baseline`);
+  add(S4,cum>=0?"Cumulative emissions avoided, 2025–2100":"Cumulative additional emissions, 2025–2100",
+      fmtN(Math.abs(cum)/1000,2)+" bn t CO₂","against the selected baseline");
+  add(S4,dmg>=0?"Global climate damage avoided":"Additional global climate damage",
+      "US$"+fmtN(Math.abs(dmg)/1000,2)+" trillion","present value in 2025, valued with the IAM social cost of carbon");
+  add(S4,"Electricity emissions in 2050",fmtN(NGA.allElectricityCO2(2050),1)+" Mt",
+      `grid ${fmtN(NGA.powerNow(2050),1)} Mt + back-up generators ${fmtN(NGA.gensetCO2(2050),1)} Mt (conditional estimate)`);
+  add(S4,"If today's electricity mix stayed",fmtN(NGA.allElectricityIfUnchanged(2050),1)+" Mt","in 2050, same electricity");
+
+  const S5="Air pollution (step "+STEP.air+")", h=NGA.healthAt(2050);
+  add(S5,"Premature deaths avoided in 2050",fmtN(Math.round(h.avoided)),"per year, by the clean-cooking target against income alone; an upper bound");
+  add(S5,"Value of those avoided deaths","US$"+fmtN(h.valueBn,1)+" bn","per year, welfare value, 2015 USD");
+  add(S5,"Household air-pollution deaths in 2050",fmtN(Math.round(h.polDeaths)),
+      h.baseDeaths==null?"your pathway":`your pathway; ${fmtN(Math.round(h.baseDeaths))} on the baseline`);
+  add(S5,"Cooking mainly with clean fuel in 2050",fmtN(h.polClean*100,1)+"%",
+      h.baseClean==null?"your pathway":`your pathway; ${fmtN(h.baseClean*100,1)}% on the baseline`);
+
+  const S6="Local climate, 2080–2099 against 1995–2014 (step "+STEP.local+")";
+  const C=NGA_DATA.cckpNationalClimate[NGA.pathway()], HD=NGA_DATA.hotDays, H=HD[NGA.pathway()];
+  add(S6,"National temperature change",signed(C.temp,2)+" °C",`CCKP median; models ${signed(C.tempP10,2)} to ${signed(C.tempP90,2)} °C`);
+  add(S6,"National rainfall change",signed(C.rain,1)+" mm/yr",`CCKP median; models ${signed(C.rainP10,1)} to ${signed(C.rainP90,1)} mm/yr`);
+  add(S6,"Days above 35 °C",fmtN(H.d35,0)+" days/yr",`${fmtN(HD.hist35,0)} today; models ${fmtN(H.p10,0)} to ${fmtN(H.p90,0)}`);
+
+  const S7="Fixed assumptions (not choices in this tool)";
+  add(S7,"Climate sensitivity","3.0 °C","FaIR climate model");
+  add(S7,"Discounting","Ramsey rule","pure time preference 0.5%, elasticity 1");
+  add(S7,"Value of a statistical life, Nigeria","US$"+fmtN(NGA_DATA.health.vsl/1e6,3)+" m",
+      `2015 USD, grows with income at elasticity ${fmtN(NGA_DATA.health.vslElasticity,1)}`);
+  return rows;
+}
+const REPORT_CSS=`@page{size:A4;margin:16mm 14mm}
+#report{color:#0B3B54;font:11pt/1.45 "Segoe UI",system-ui,Helvetica,Arial,sans-serif}
+#report h1{font-size:19pt;margin:0 0 2pt;letter-spacing:-.2px}
+#report .meta{color:#40525E;font-size:9.5pt;margin:0 0 10pt}
+#report h2{font-size:12.5pt;margin:14pt 0 4pt;color:#0E5C3F;border-bottom:1px solid #C9D2D7;padding-bottom:2pt}
+#report table{width:100%;border-collapse:collapse;font-size:10pt;table-layout:fixed}
+#report td{padding:3.5pt 4pt;border-bottom:1px solid #E3E8EB;vertical-align:top}
+#report td.v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+#report td.u{color:#40525E}
+#report .note{border:1px solid #C9D2D7;border-radius:6px;padding:7pt 9pt;margin-top:12pt;font-size:9.5pt;color:#40525E}
+#report h2,#report tr{break-inside:avoid}
+#report h2{break-after:avoid}
+#report .fig{margin:8pt 0 4pt}
+#report .fig .panel,#report .fig .mapbox{background:#fff;margin:0 0 8pt;break-inside:avoid}
+#report .fig .maprow{break-inside:avoid}
+#report .fig h3{font-size:11pt}`;
+// Fallback when the report window cannot open: print the report from this page.
+document.head.insertAdjacentHTML("beforeend",
+  `<style media="print">body{background:#fff!important}body>*:not(#report){display:none!important}#report{display:block!important}${REPORT_CSS}</style>`);
+
+// The charts and maps of a results screen, without its tiles, fold-outs, links and hover handlers.
+function reportFigures(key){
+  if(!NGA.isCountry()||!NGA.pathway()) return "";
+  const tmp=document.createElement("div");
+  tmp.innerHTML=VIEWS[key]();
+  tmp.querySelectorAll("details,.tiles,.help-row,.unc,.info-link,.actions,.save-box,.note").forEach(n=>n.remove());
+  tmp.querySelectorAll("*").forEach(n=>[...n.attributes].forEach(a=>{
+    if(/^on/.test(a.name)||["tabindex","data-modal","data-tooltip"].includes(a.name)) n.removeAttribute(a.name); }));
+  tmp.querySelectorAll(".mapbox p.cap").forEach(c=>{ c.textContent=c.textContent.trim().split(". ")[0].replace(/\.?$/,"."); });
+  // Unique ids, so the copies never clash with a chart still on the page (in-page print fallback).
+  const figs=[...tmp.querySelectorAll(".body > .panel, .body > .maprow")].map(n=>n.outerHTML).join("")
+    .replace(/nigeria-regional-/g,"rpt-nigeria-regional-").replace(/hatchTraj/g,"rptHatchTraj");
+  return figs?`<div class="fig">${figs}</div>`:"";
+}
+const REPORT_FIGS={"Climate and cost":"climate","Air pollution":"air","Local climate":"local"};
+
+function outcomeReport(){
+  const rows=outcomeRows(), secs=[...new Set(rows.map(r=>r.sec))];
+  const esc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  const when=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  return `<h1>Saved outcome — ${esc(DATA.country.name)}</h1>
+    <p class="meta">EfD Nigeria climate-economic policy design tool (prototype) · saved ${when}</p>
+    ${secs.map(sec=>`<h2>${esc(sec)}</h2><table><colgroup><col style="width:38%"><col style="width:24%"><col style="width:38%"></colgroup>${rows.filter(r=>r.sec===sec).map(r=>
+      `<tr><td>${esc(r.lbl)}</td><td class="v">${esc(r.val)}</td><td class="u">${esc(r.unit)}</td></tr>`).join("")}</table>
+      ${(k=>k?reportFigures(k):"")(Object.entries(REPORT_FIGS).find(([pre])=>sec.startsWith(pre))?.[1])}`).join("")}
+    <div class="note">Nothing here is a forecast. Each figure answers "if the world went this way, and the country made
+    these choices, what would follow?" Every number is a single estimate; the tool's panel "What can make results
+    higher or lower" explains what stands behind each one.</div>`;
+}
+function saveOutcome(kind){
+  const stamp=new Date().toISOString().slice(0,10), name=`EfD-${DATA.country.name}-outcome-${stamp}`;
+  if(kind==="csv"){
+    const q=v=>`"${String(v).replace(/"/g,'""')}"`;
+    const csv=["Section,Item,Value,Detail",...outcomeRows().map(r=>[r.sec,r.lbl,r.val,r.unit].map(q).join(","))].join("\r\n");
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));
+    a.download=name+".csv"; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    return;
+  }
+  // The report opens as its own page, readable on screen, and that page prints itself.
+  // Browsers suggest the page title as the PDF file name.
+  const doc=`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${name}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>${document.querySelector("head style:not([media])").textContent}</style>
+    <style>body{margin:0;background:#EDEFF1}
+      #report{display:block!important;max-width:760px;margin:24px auto;background:#fff;padding:32px 40px;border-radius:10px}
+      .printbar{max-width:760px;margin:16px auto 0;text-align:right}
+      .printbar button{font:600 14px system-ui,sans-serif;padding:10px 18px;border:0;border-radius:8px;background:#0E5C3F;color:#fff;cursor:pointer}
+      @media print{body{background:#fff}#report{margin:0;padding:0;max-width:none;border-radius:0}.printbar{display:none}}
+      ${REPORT_CSS}</style></head>
+    <body><div class="printbar"><button onclick="print()">Print / Save as PDF</button></div>
+    <div id="report">${outcomeReport()}</div></body></html>`;
+  const w=window.open("","_blank");
+  if(w){
+    w.document.open(); w.document.write(doc); w.document.close(); w.focus();
+    setTimeout(()=>w.print(),400);
+    return;
+  }
+  $("#report").innerHTML=outcomeReport();
+  const title=document.title; document.title=name;
+  window.addEventListener("afterprint",()=>{ document.title=title; },{once:true});
+  window.print();
+}
+
+let lastStep=null;
 function render(){
+  const kept=new Map([...document.querySelectorAll("#content details[data-keep]")].map(d=>[d.dataset.keep,d.open]));
   renderNav();
+  $("#strip").innerHTML = settingsStrip();
   $("#content").innerHTML = VIEWS[DATA.steps[state.step-1].key]();
+  if(lastStep===state.step)
+    document.querySelectorAll("#content details[data-keep]").forEach(d=>{ if(kept.has(d.dataset.keep)) d.open=kept.get(d.dataset.keep); });
   const finder=$("#finder");
   if(finder) finder.addEventListener("change",e=>{selectCountry(e.target.value);render();});
-  window.scrollTo({top:0,behavior:"smooth"});
+  if(lastStep!==state.step) window.scrollTo({top:0,behavior:"smooth"});
+  lastStep=state.step;
 }
 
 function uncCue(modal="uncertainty"){
@@ -3004,13 +3258,31 @@ const SRC_NOTE={Hydro:"reservoir row, alpine activity — see limitations",
                 Biomass:"global row, not Nigerian", Wind:"no Nigerian generation in 2023",
                 Nuclear:"no Nigerian generation in 2023"};
 
-function sourceMixButton(){
+const SRC_COLOR={Hydro:["#0E5C3F","#fff"], Solar:["#3E8E63","#fff"], Wind:["#5FA67F","#0B3B54"], Nuclear:["#8CC3A2","#0B3B54"],
+                 Biomass:["#B5D9C3","#0B3B54"], Gas:["#8FA6B5","#0B3B54"], Genset:["#5E6E78","#fff"]};
+function mixBar(){
+  const L=Math.min(Math.max(state.drivers.mix,0),100), parts=[];
+  ["low","fossil"].forEach(g=>{ const res=NGA.resolveGroup(2050,g), share=g==="low"?L:100-L;
+    NGA_DATA.power.groups[g].forEach(n=>parts.push([n,res[n]*share])); });
+  const lbl=parts.map(([n,v])=>`${SRC_LABEL[n]} ${v.toFixed(1)}%`).join(", ");
+  return `<div class="mixbar-cap"><span>Nigeria's electricity in 2050, by source</span><span>low-emission ${L.toFixed(0)}% · fossil ${(100-L).toFixed(0)}%</span></div>
+    <div class="mixbar" role="img" aria-label="Electricity in 2050: ${lbl}">${parts.map(([n,v])=>
+      `<div title="${SRC_LABEL[n]}: ${v.toFixed(1)}% of electricity" style="width:${v}%;background:${SRC_COLOR[n][0]};color:${SRC_COLOR[n][1]}">${v>=6?`${SRC_LABEL[n].split(",")[0]} ${v.toFixed(0)}%`:""}</div>`).join("")}</div>`;
+}
+function mixPanel(){
   if(!NGA.isCountry()) return "";
-  const n=["low","fossil"].reduce((a,g)=>a+Object.keys((state.sourceMix||{})[g]||{}).length,0);
-  return `<button type="button" class="btn" data-modal="sourceMixEditor"
-    style="margin-top:10px;width:100%;text-align:left;font-size:13.5px;padding:10px 12px">
-    ⚙ &nbsp;Choose which sources grow and which are phased out
-    <span style="opacity:.75">${n?` — ${n} set`:" — optional"}</span></button>`;
+  const nSrc=NGA_DATA.power.groups.low.length+NGA_DATA.power.groups.fossil.length;
+  const set=["low","fossil"].reduce((a,g)=>a+Object.keys((state.sourceMix||{})[g]||{}).length,0);
+  return `<details class="mixpanel" data-keep="mix" open>
+    <summary><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#1F5F8B" stroke-width="1.8" aria-hidden="true" style="vertical-align:-3px;margin-right:6px"><path d="M2 4h14M2 9h14M2 14h14"/><circle cx="6" cy="4" r="2" fill="#EEF4F9"/><circle cx="12" cy="9" r="2" fill="#EEF4F9"/><circle cx="8" cy="14" r="2" fill="#EEF4F9"/></svg>Set your energy mix — choose which sources grow and which are phased out
+      <span class="badge">${nSrc} sliders · ${set?set+" set by you":"optional"}</span></summary>
+    <p class="mixintro"><b style="color:#123E5C">Your choice:</b> tick a source, then move its slider to set its share yourself.
+      The slider above fixes how much of Nigeria's electricity is low-emission; these sliders decide which sources make up
+      each side of that split. Leave them alone and the scenario decides — currently <b>${NGA.label()}</b>.</p>
+    <div id="mixbar">${mixBar()}</div>
+    <div class="mixgroups">${sourceMixGroup("low","Low-emission sources")}${sourceMixGroup("fossil","Fossil sources")}</div>
+    <p style="margin:8px 0 0"><span class="info-link" data-modal="sourceMixInfo" role="button" tabindex="0">ⓘ How the two layers work, and where the baseline mix comes from</span></p>
+  </details>`;
 }
 
 function sourceCapPct(g,n,year){
@@ -3036,11 +3308,11 @@ function sourceMixRow(g,n){
   const fillPct=capMax>capMin ? (pct-capMin)/(capMax-capMin)*100 : 0;
   const isCappedSrc=(g==='low'&&(n==='Hydro'||n==='Wind'));
   const base=NGA.baseWithinAt(2050,g)[n]*100;
-  return `<div style="margin:16px 0">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px">
+  return `<div style="margin:14px 0">
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:2px 10px;margin-bottom:5px">
       <input type="checkbox" data-pin="${g}|${n}" ${pinned?"checked":""}
         aria-label="Set ${SRC_LABEL[n]} explicitly" style="flex:none">
-      <b style="flex:1;font-size:14px">${SRC_LABEL[n]}${SRC_NOTE[n]?" *":""}</b>
+      <b style="flex:1 1 150px;font-size:14px">${SRC_LABEL[n]}${SRC_NOTE[n]?" *":""}</b>
       <span data-srcval="${g}|${n}" style="font-size:13px;white-space:nowrap">
         <b>${resolved.toFixed(1)}%</b> of group · <b>${ofTotal.toFixed(1)}%</b> of electricity</span>
       <span style="font-size:12px;color:var(--ink-3);white-space:nowrap">${(NGA_DATA.power.ef[n]*1000).toFixed(1)} gCO₂/kWh</span>
@@ -3069,6 +3341,7 @@ function sourceMixLivePatch(activeKey){
       const key=g+"|"+n, v=res[n]*100;
       const lbl=document.querySelector(`[data-srcval="${key}"]`);
       if(lbl) lbl.innerHTML=`<b>${v.toFixed(1)}%</b> of group · <b>${(v*share/100).toFixed(1)}%</b> of electricity`;
+      const mb=document.getElementById("mixbar"); if(mb) mb.innerHTML=mixBar();
       const sl=document.querySelector(`[data-src="${key}"]`);
       if(!sl) return;
       const mn=parseFloat(sl.min)||0, mx=parseFloat(sl.max)||100;
@@ -3079,13 +3352,11 @@ function sourceMixLivePatch(activeKey){
   });
 }
 
-MODALS.sourceMixEditor={
-  title:"Which sources make up each group",
-  lede:"The slider above fixes how much of Nigeria's electricity is low-emission. This decides which sources make up each side of that split. Leave it alone and the chosen scenario decides.",
+MODALS.sourceMixInfo={
+  title:"How the energy mix works",
+  lede:"The low-emission slider on step 2 fixes how much of Nigeria's electricity is low-emission. The energy-mix sliders decide which sources make up each side of that split. Leave them alone and the chosen scenario decides.",
   body:()=>`
-    ${sourceMixGroup("low","Low-emission sources")}
-    ${sourceMixGroup("fossil","Fossil sources")}
-    <ul class="chain" style="margin-top:20px">
+    <ul class="chain">
       <li><div class="ico">1</div><div><b>The two layers multiply, so they cannot disagree</b>
         <span>A share you set here is a share <i>within</i> a group. Wind at 40% of a 30% low-emission
         share is 40% × 30% = <b>12% of all electricity</b>. Nothing here can override the slider above,
@@ -3140,8 +3411,7 @@ function openModal(key){
 function closeModal(){ $("#ovl").hidden=true; }
 
 document.addEventListener("click", e=>{
-  const mixSummary=e.target.closest("[data-mix-summary]");
-  if(mixSummary){ state.mixLayerOpen=!mixSummary.closest("details").open; return; }
+  const sv=e.target.closest("[data-save]"); if(sv){ saveOutcome(sv.dataset.save); return; }
   const md=e.target.closest("[data-modal]"); if(md){ openModal(md.dataset.modal); return; }
   if(e.target.closest("[data-close]") || e.target.id==="ovl"){ closeModal(); return; }
   const pk=e.target.closest("[data-pick]");
@@ -3182,18 +3452,26 @@ document.addEventListener("input", e=>{
     const box=document.querySelector(`[data-pin="${g}|${n}"]`); if(box) box.checked=true;
     sourceMixLivePatch(sc.dataset.src); return; }
   const r=e.target.closest("[data-drv]"); if(!r) return;
-  state.drivers[r.dataset.drv]=parseFloat(r.value); render();
-  const again=document.querySelector(`[data-drv="${r.dataset.drv}"]`); if(again) again.focus();
+  state.drivers[r.dataset.drv]=parseFloat(r.value);
+  // Light update while dragging; the full re-render waits for "change" so the drag is not interrupted.
+  const it=DATA.drivers.items.find(i=>i.id===r.dataset.drv), card=r.closest(".driver");
+  if(it && card){
+    const v=state.drivers[it.id], pct=((v-it.min)/(it.max-it.min))*100;
+    card.querySelector(".dval b").textContent=it.fmt(v);
+    r.style.background=`linear-gradient(90deg,var(--brand-green-dk) ${pct}%,#D9E0E4 ${pct}%)`;
+  }
 });
 
 document.addEventListener("change", e=>{
+  const r=e.target.closest("[data-drv]");
+  if(r){ render(); const again=document.querySelector(`[data-drv="${r.dataset.drv}"]`); if(again) again.focus({preventScroll:true}); return; }
   const cb=e.target.closest("[data-pin]"); if(!cb) return;
   const [g,n]=cb.dataset.pin.split("|");
   state.sourceMix[g]=state.sourceMix[g]||{};
   if(cb.checked) state.sourceMix[g][n]=NGA.resolveGroup(2050,g)[n];
   else delete state.sourceMix[g][n];
 
-  if(!$("#ovl").hidden) openModal("sourceMixEditor");
+  render();
 });
 render();
 </script>
