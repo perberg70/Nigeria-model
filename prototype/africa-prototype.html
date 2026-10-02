@@ -3032,8 +3032,14 @@ function outcomeRows(){
   const o=DATA.ssp.options.find(x=>x.id===state.ssp);
   add(S1,"Global scenario",NGA.label()+(o?" — "+o.name:""),state.ssp===DATA.ssp.selected?"default setting":"");
   const pins=[];
-  ["low","fossil"].forEach(g=>Object.entries((state.sourceMix||{})[g]||{}).forEach(([n,v])=>
-    pins.push(`${SRC_LABEL[n]} ${fmtN(v*100,1)}% of the ${g==="low"?"low-emission":"fossil"} group`)));
+  // Report the share the model actually uses in 2050 (pins are rescaled when they exceed 100% and
+  // hydro/wind are capped at resource limits), plus the value set where the two differ.
+  ["low","fossil"].forEach(g=>{ const eff=NGA.resolveGroup(2050,g);
+    Object.entries((state.sourceMix||{})[g]||{}).forEach(([n,v])=>{
+      const e=eff[n]*100, set=v*100;
+      pins.push(`${SRC_LABEL[n]} ${fmtN(e,1)}% of the ${g==="low"?"low-emission":"fossil"} group in 2050`+
+        (Math.abs(e-set)>=0.05?` (you set ${fmtN(set,1)}%)`:""));
+    }); });
   add(S1,"Energy mix set by you",pins.length?pins.join("; "):"none — the scenario's own mix");
   if(!NGA.isCountry()||!NGA.pathway()) return rows;
 
