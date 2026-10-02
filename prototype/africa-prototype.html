@@ -56,6 +56,28 @@ body{margin:0;background:#EDEFF1;color:var(--ink-2);
 .strip{display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap;padding:7px 26px;
   background:#F7F9F8;border-bottom:1px solid var(--line);font-size:13px}
 .strip:empty{display:none}
+.save-box{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px;padding:16px 18px;
+  border:1.5px solid var(--brand-green-dk);border-radius:var(--radius);background:var(--tint)}
+.save-box .txt{flex:1 1 320px;font-size:14px;color:var(--ink-2)}
+.save-box .txt b{display:block;color:var(--ink);font-size:16px;margin-bottom:2px}
+.save-box .btns{display:flex;gap:10px;flex-wrap:wrap}
+#report{display:none}
+@media print{
+  @page{size:A4;margin:16mm 14mm}
+  body{background:#fff}
+  body>*:not(#report){display:none!important}
+  #report{display:block!important;color:#0B3B54;font:11pt/1.45 "Segoe UI",system-ui,Helvetica,Arial,sans-serif}
+  #report h1{font-size:19pt;margin:0 0 2pt;letter-spacing:-.2px}
+  #report .meta{color:#40525E;font-size:9.5pt;margin:0 0 10pt}
+  #report h2{font-size:12.5pt;margin:14pt 0 4pt;color:#0E5C3F;border-bottom:1px solid #C9D2D7;padding-bottom:2pt}
+  #report table{width:100%;border-collapse:collapse;font-size:10pt;table-layout:fixed}
+  #report td{padding:3.5pt 4pt;border-bottom:1px solid #E3E8EB;vertical-align:top}
+  #report td.v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  #report td.u{color:#40525E}
+  #report .note{background:none;border:1px solid #C9D2D7;padding:7pt 9pt;margin-top:12pt;font-size:9.5pt;color:#40525E}
+  #report h2,#report tr{break-inside:avoid}
+  #report h2{break-after:avoid}
+}
 @media(max-width:900px){
   .app{margin:0;border-radius:0;border:0}
   .hdr{flex-wrap:wrap;padding:10px 16px;gap:10px}
@@ -360,6 +382,7 @@ a.paper:focus-visible{outline:2px solid var(--brand-blue);outline-offset:3px;bor
   <section class="content" id="content"></section>
 </div>
 
+<div id="report" aria-hidden="true"></div>
 <div class="tt" id="tt"></div>
 <div class="ovl" id="ovl" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
@@ -3004,9 +3027,90 @@ const VIEWS = {
              signed(C2.rain,1)+" mm/yr", `${signed(C2.rainP10,1)} to ${signed(C2.rainP90,1)} mm/yr`];
          }))}</details>
 
+     <div class="save-box">
+       <div class="txt"><b>Save this outcome</b>Your settings and the results from steps ${STEP.climate} to ${STEP.local}, with the
+         fixed assumptions behind them, in one document.</div>
+       <div class="btns">
+         <button class="btn" data-save="pdf">⤓ &nbsp;Save as PDF</button>
+         <button class="btn ghost" data-save="csv">Download data (CSV)</button></div></div>
      <div class="actions"><button class="btn wide" data-go="${STEP.drivers}">⟳ &nbsp;Explore or change your pathway again</button></div></div>`;
   }
 };
+
+/* "Save this outcome": one list of rows feeds both the printable report (PDF) and the CSV. */
+function outcomeRows(){
+  const rows=[], add=(sec,lbl,val,unit="")=>rows.push({sec,lbl,val:String(val),unit});
+  const S1="Your settings";
+  add(S1,"Country",DATA.country.name);
+  DATA.drivers.items.forEach(it=>add(S1,it.name,it.fmt(state.drivers[it.id]),it.unit));
+  const o=DATA.ssp.options.find(x=>x.id===state.ssp);
+  add(S1,"Global scenario",NGA.label()+(o?" — "+o.name:""),state.ssp===DATA.ssp.selected?"default setting":"");
+  const pins=[];
+  ["low","fossil"].forEach(g=>Object.entries((state.sourceMix||{})[g]||{}).forEach(([n,v])=>
+    pins.push(`${SRC_LABEL[n]} ${fmtN(v*100,1)}% of the ${g==="low"?"low-emission":"fossil"} group`)));
+  add(S1,"Energy mix set by you",pins.length?pins.join("; "):"none — the scenario's own mix");
+  if(!NGA.isCountry()||!NGA.pathway()) return rows;
+
+  const S4="Climate and cost (step "+STEP.climate+")";
+  const b50=NGA.baselineAt(2050), p50=NGA.pathAt(2050), cum=NGA.cumulativeAvoided(), dmg=NGA.avoidedDamageBn();
+  add(S4,"CO₂ emissions in 2050",fmtN(p50)+" Mt",`${signed(Math.round(100*(p50/b50-1)))}% against ${fmtN(b50,1)} Mt on the ${NGA.label()} baseline`);
+  add(S4,cum>=0?"Cumulative emissions avoided, 2025–2100":"Cumulative additional emissions, 2025–2100",
+      fmtN(Math.abs(cum)/1000,2)+" bn t CO₂","against the selected baseline");
+  add(S4,dmg>=0?"Global climate damage avoided":"Additional global climate damage",
+      "US$"+fmtN(Math.abs(dmg)/1000,2)+" trillion","present value in 2025, valued with the IAM social cost of carbon");
+  add(S4,"Electricity emissions in 2050",fmtN(NGA.allElectricityCO2(2050),1)+" Mt",
+      `grid ${fmtN(NGA.powerNow(2050),1)} Mt + back-up generators ${fmtN(NGA.gensetCO2(2050),1)} Mt (conditional estimate)`);
+  add(S4,"If today's electricity mix stayed",fmtN(NGA.allElectricityIfUnchanged(2050),1)+" Mt","in 2050, same electricity");
+
+  const S5="Air pollution (step "+STEP.air+")", h=NGA.healthAt(2050);
+  add(S5,"Premature deaths avoided in 2050",fmtN(Math.round(h.avoided)),"per year, by the clean-cooking target against income alone; an upper bound");
+  add(S5,"Value of those avoided deaths","US$"+fmtN(h.valueBn,1)+" bn","per year, welfare value, 2015 USD");
+  add(S5,"Household air-pollution deaths in 2050",fmtN(Math.round(h.polDeaths)),
+      h.baseDeaths==null?"your pathway":`your pathway; ${fmtN(Math.round(h.baseDeaths))} on the baseline`);
+  add(S5,"Cooking mainly with clean fuel in 2050",fmtN(h.polClean*100,1)+"%",
+      h.baseClean==null?"your pathway":`your pathway; ${fmtN(h.baseClean*100,1)}% on the baseline`);
+
+  const S6="Local climate, 2080–2099 against 1995–2014 (step "+STEP.local+")";
+  const C=NGA_DATA.cckpNationalClimate[NGA.pathway()], HD=NGA_DATA.hotDays, H=HD[NGA.pathway()];
+  add(S6,"National temperature change",signed(C.temp,2)+" °C",`CCKP median; models ${signed(C.tempP10,2)} to ${signed(C.tempP90,2)} °C`);
+  add(S6,"National rainfall change",signed(C.rain,1)+" mm/yr",`CCKP median; models ${signed(C.rainP10,1)} to ${signed(C.rainP90,1)} mm/yr`);
+  add(S6,"Days above 35 °C",fmtN(H.d35,0)+" days/yr",`${fmtN(HD.hist35,0)} today; models ${fmtN(H.p10,0)} to ${fmtN(H.p90,0)}`);
+
+  const S7="Fixed assumptions (not choices in this tool)";
+  add(S7,"Climate sensitivity","3.0 °C","FaIR climate model");
+  add(S7,"Discounting","Ramsey rule","pure time preference 0.5%, elasticity 1");
+  add(S7,"Value of a statistical life, Nigeria","US$"+fmtN(NGA_DATA.health.vsl/1e6,3)+" m",
+      `2015 USD, grows with income at elasticity ${fmtN(NGA_DATA.health.vslElasticity,1)}`);
+  return rows;
+}
+function outcomeReport(){
+  const rows=outcomeRows(), secs=[...new Set(rows.map(r=>r.sec))];
+  const esc=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+  const when=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  return `<h1>Saved outcome — ${esc(DATA.country.name)}</h1>
+    <p class="meta">EfD Nigeria climate-economic policy design tool (prototype) · saved ${when}</p>
+    ${secs.map(sec=>`<h2>${esc(sec)}</h2><table><colgroup><col style="width:38%"><col style="width:24%"><col style="width:38%"></colgroup>${rows.filter(r=>r.sec===sec).map(r=>
+      `<tr><td>${esc(r.lbl)}</td><td class="v">${esc(r.val)}</td><td class="u">${esc(r.unit)}</td></tr>`).join("")}</table>`).join("")}
+    <div class="note">Nothing here is a forecast. Each figure answers "if the world went this way, and the country made
+    these choices, what would follow?" Every number is a single estimate; the tool's panel "What can make results
+    higher or lower" explains what stands behind each one.</div>`;
+}
+function saveOutcome(kind){
+  const stamp=new Date().toISOString().slice(0,10), name=`EfD-${DATA.country.name}-outcome-${stamp}`;
+  if(kind==="csv"){
+    const q=v=>`"${String(v).replace(/"/g,'""')}"`;
+    const csv=["Section,Item,Value,Detail",...outcomeRows().map(r=>[r.sec,r.lbl,r.val,r.unit].map(q).join(","))].join("\r\n");
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));
+    a.download=name+".csv"; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    return;
+  }
+  $("#report").innerHTML=outcomeReport();
+  const title=document.title; document.title=name;   // browsers suggest the title as the PDF file name
+  window.addEventListener("afterprint",()=>{ document.title=title; },{once:true});
+  window.print();
+}
 
 let lastStep=null;
 function render(){
@@ -3259,6 +3363,7 @@ function openModal(key){
 function closeModal(){ $("#ovl").hidden=true; }
 
 document.addEventListener("click", e=>{
+  const sv=e.target.closest("[data-save]"); if(sv){ saveOutcome(sv.dataset.save); return; }
   const md=e.target.closest("[data-modal]"); if(md){ openModal(md.dataset.modal); return; }
   if(e.target.closest("[data-close]") || e.target.id==="ovl"){ closeModal(); return; }
   const pk=e.target.closest("[data-pick]");
