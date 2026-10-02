@@ -61,8 +61,7 @@ body{margin:0;background:#EDEFF1;color:var(--ink-2);
 .about b{display:block;color:var(--brand-green-dk);margin-bottom:6px;font-size:14.5px}
 .about p{margin:0;font-size:13.5px;color:var(--ink-2)}
 
-.about .term::after{left:0;transform:translate(0,5px)}
-.about .term:hover::after,.about .term:focus::after{transform:translate(0,0)}
+.about p+p{margin-top:8px}
 .side-foot{margin-top:auto;display:flex;gap:20px;padding-top:22px;font-size:13.5px;color:var(--ink-2)}
 .side-foot span{display:flex;align-items:center;gap:7px;cursor:pointer}
 .side-foot:first-of-type{flex-direction:column;align-items:flex-start;gap:10px}
@@ -319,11 +318,13 @@ a.paper:focus-visible{outline:2px solid var(--brand-blue);outline-offset:3px;bor
       <ul class="steps" id="stepNav"></ul>
       <div class="about">
         <b>◍ About this tool</b>
-        <p>We use <span class="term" tabindex="0" role="button" data-modal="engine"
-             data-tip="Four published sources: the standard SSP scenarios, FaIR for climate, DICE for the economy, and a peer-reviewed damage function. Click to open the paper behind each.">transparent
-             models</span> and <span class="term" tabindex="0" role="button" data-modal="data"
-             data-tip="Open sources include the World Bank Climate Change Knowledge Portal and its CMIP6 metadata, IIASA's SSP scenarios, Scenario Compass, WHO, Global Burden of Disease, Our World in Data and Natural Earth. Click to open the source layer.">open
-             data</span> to help you explore the impact of choices.</p>
+        <p><strong>Transparent models.</strong> Every result comes from published methods, with the settings
+           stated in the tool: the FaIR climate model; a social cost of carbon found by adding one tonne of
+           CO&#8322; and tracing the damage it causes; and published estimates of how energy use grows with
+           income, how many deaths the WHO attributes to cooking smoke, and what an avoided death is worth.</p>
+        <p><strong>Open data.</strong> The inputs are public statistics, free to access, from the Global
+           Carbon Budget, the IEA, the World Bank, the WHO and IIASA. Licences differ by source. The exception
+           is the electricity emission factors, which come from ecoinvent, a paid database.</p>
       </div>
 
       <div class="about about-link" data-modal="ssp" role="button" tabindex="0">
@@ -1136,15 +1137,16 @@ const MODALS = {
       <h3>What the model computes</h3>
       <p>${inOrder(RESULTS).map(line).join("<br>\n         ")}</p>
       <p>You can go back and change any choice at any point. Results update from the choice you changed onward.</p>
-      <h3>How much detail you see — two clicks deep, everywhere</h3>
+      <h3>How much detail you see</h3>
       <p>The steps above run left to right. There is a second direction, downward: every screen opens
       with the short version, and detail is folded away until you ask for it, so that a screen never
       opens with everything at once.</p>
       <p><b>One click</b> opens an explanation — what a slider does, what a scenario assumes, what runs
       the calculations, what could move the answer. <b>A second click</b>, on any source inside that
-      panel, goes out to the published paper or database behind it. Beyond that there is only the
-      model code itself.</p>
-      <p>The six kinds of detail below are what those two clicks reach. Which ones a screen carries
+      panel, goes out to the published paper or database behind it. A few panels also have a
+      <b>"Go deeper"</b> link to a more technical panel — the settings behind the cost of carbon, and
+      how the CCKP climate data is processed. Beyond that there is only the model code itself.</p>
+      <p>The six kinds of detail below are what those clicks reach. Which ones a screen carries
       depends on what is on it: the three results screens have all six, while the screens where you
       make choices have no headline figure, no uncertainty cue and no data table — there is no result
       yet to state, qualify or source.</p>
@@ -1162,13 +1164,14 @@ const MODALS = {
           waiting to be asked for, because a single number shown with no visible uncertainty is the thing
           most easily trusted too far.</span></div></li>
         <li><div class="ico">5</div><div><b>The full explanation</b>
-          <span>The four panels on this first screen, and the ⓘ links beside every slider and every
-          result — how to navigate, what runs the calculations, why the results rest on research, and
-          what moves them. This panel is one of them.</span></div></li>
+          <span>The four panels on this first screen — how to navigate, where the data comes from, what
+          runs the calculations, and what can make results higher or lower — and the ⓘ links beside every
+          slider and every result. This panel is one of them.</span></div></li>
         <li><div class="ico">6</div><div><b>The numbers, and the sources</b>
-          <span>"Show data table" under each chart lists every plotted value. The methodology panel gives
-          the settings used and links out to the published papers behind each main assumption. Below this
-          this there is only the model code itself.</span></div></li>
+          <span>"Show data table" under each chart lists every plotted value. "Where the data comes from"
+          links out to the databases behind the figures. The Methodology panel, the "Go deeper" link inside
+          "What runs the calculations", gives the settings used and links out to the published papers behind
+          each main assumption. Below this there is only the model code itself.</span></div></li>
       </ul>
       <p>You can stop at any point. Going deeper is always your choice, never a prerequisite for
       using the step you are on.</p>`;
@@ -1178,8 +1181,8 @@ const MODALS = {
   },
 
   engine:{
-    title:"What is running the predictions",
-    lede:"Three separate models do three different jobs. None of them predicts the future; each one works out the consequences of the choices you made.",
+    title:"What runs the calculations",
+    lede:`The global climate and cost results on step ${STEP.climate} start from a standard set of scenarios and run through three components, each doing a different job. None of them predicts the future; each one works out the consequences of the choices you made. The health and local-climate results on steps ${STEP.air} and ${STEP.local} are explained by the ⓘ links on those screens.`,
     body:`
       <ul class="chain">
         <li><div class="ico">🌍</div><div>
@@ -1227,11 +1230,12 @@ const MODALS = {
             <i>Environmental and Resource Economics</i> 88(12), 3289–3327.
             <a class="paper" href="https://doi.org/10.1007/s10640-025-01016-7" target="_blank"
                rel="noopener noreferrer" title="Opens doi.org in a new tab">doi.org/10.1007/s10640-025-01016-7 ↗</a></div></div></li>
-      </ul>`,
+      </ul>
+      <p><span class="info-link" data-modal="method" role="button" tabindex="0">Go deeper: Methodology — the settings used and the cost-of-carbon table →</span></p>`,
     note:`<b>What the four links are, and are not.</b> Each one is the published description of that
       component, or of the research literature it belongs to — background reading, so you can check the
       idea against its source. None of them documents the exact model version or the settings used in this
-      tool. Those are in the "Why the results are based on research and data" panel.`
+      tool. Those are in the Methodology panel — the "Go deeper" link above.`
   },
 
   ssp:{
@@ -1259,10 +1263,12 @@ const MODALS = {
           cost of the highest emissions. Widely used as a high-end stress test, not as a likely future.</span></div></li>
       </ul>
       <h3>Why you sometimes see two numbers, like SSP1-2.6</h3>
-      <p>The first number is the storyline; the second is the radiative forcing reached by 2100 — how much
+      <p>The first number is the storyline; the second is the approximate radiative forcing in 2100, in
+      watts per square metre — how hard human influence, mainly the build-up of greenhouse gases, pushes
+      the Earth's energy balance toward warming. A larger number generally means more warming.
       The same storyline can end in different places depending on policy — SSP1-1.9 keeps warming near
-      1.5&#8451;, SSP1-2.6 stays well below 2&#8451;. This tool offers
-      <b>${listLabels()}</b>. SSP4 has no standard forcing-level pathway and is not among them.</p>`,
+      1.5&#8451;, SSP1-2.6 is unlikely to exceed 2&#8451;. This tool offers
+      <b>${listLabels()}</b>. SSP4 is not among them: its two pathways, SSP4-3.4 and SSP4-6.0, are outside the five core scenarios of the IPCC's latest assessment, and this prototype carries no SSP4 data.</p>`,
 
     note:`<b>Your choice here sets the global backdrop — and it carries through to your
       country.</b> It fixes world emissions, temperature and the size of the world economy, and from
@@ -1422,17 +1428,51 @@ const MODALS = {
 
   uncertainty:{
     title:"How certain is any of this?",
-    lede:"Every number on the results screens is a single figure. None of them is exact, and this page explains what stands behind each one — and where it is weakest.",
-    body:`
+    lede:`Every number on the results screens is a single figure. None of them is exact. What moves a result falls into two groups: the choices you make on steps ${STEP.drivers} and ${STEP.ssp}, and the assumptions built into the model that you cannot change here.`,
+    body:()=>`
       <h3>Why some results have a range and others do not</h3>
       <p>The global climate-economic calculation uses <b>one</b> FaIR calibration member, so the global
        pathway and Social Cost of Carbon do not show climate-parameter spread. Step ${STEP.local} uses
       the separate CCKP CMIP6 ensemble for physical-climate conditions and shows its p10–p90 model
       range for national temperature, rainfall, hot days and—except SSP1-1.9—the regional maps.</p>
-      <h3>The four choices that move the answer most</h3>
+      <h3>Your choices: the ones you can change</h3>
+      <ul class="chain">
+        <li><div class="ico">🌍</div><div><b>Global scenario (step ${STEP.ssp})</b>
+          <span>The biggest single switch. It sets world emissions, warming and the size of the world economy,
+          and with them Nigeria's baseline emissions and population, its temperature, rainfall and hot-day
+          changes, and the Social Cost of Carbon. Your emissions result is measured against Nigeria's baseline
+          under the scenario, and that baseline does not follow the order of world emissions: Nigeria's is
+          highest under SSP3-7.0, above SSP5-8.5, so SSP3-7.0 leaves the most room to avoid. The cost of carbon does
+          not simply rise with warming: SSP5-8.5 comes out lower than SSP3-7.0 because its richer world
+          discounts future damage harder.</span></div></li>
+        <li><div class="ico">🍃</div><div><b>National climate mitigation target (step ${STEP.drivers})</b>
+          <span>Where Nigeria's emissions should be in 2050 against observed 2024. The gap between this pathway
+          and the scenario baseline is the carbon avoided, so a deeper cut raises the benefit and a weaker one
+          lowers it — or turns it into extra emissions. It is the only choice on step ${STEP.drivers} that moves
+          the headline emissions gap and avoided-damage figures on step ${STEP.climate}. It is a target, not a
+          forecast: it does not say whether policies to meet it exist.</span></div></li>
+        <li><div class="ico">📈</div><div><b>Income growth (step ${STEP.drivers})</b>
+          <span>Faster growth means more energy demand, which raises the electricity emissions on step
+          ${STEP.climate} unless generation is cleaner; it does not change the headline emissions gap, which
+          follows your mitigation target. It also raises income per person, which lifts the money value placed on each avoided death
+          and speeds the move off wood for cooking. Slower growth does the reverse.</span></div></li>
+        <li><div class="ico">⚡</div><div><b>Electrification and low-emission generation (step ${STEP.drivers})</b>
+          <span>These work as a pair. Electrifying with a gas- and diesel-based supply moves emissions to the
+          power station instead of removing them; a clean grid with little electrification changes little,
+          because most energy never touches the grid. Together they set the separate electricity-emissions
+          results on step ${STEP.climate}; they do not change the headline emissions gap, which follows your
+          mitigation target alone.</span></div></li>
+        <li><div class="ico">🍳</div><div><b>Clean cooking (step ${STEP.drivers})</b>
+          <span>Sets the household air-pollution result on step ${STEP.air}: how many deaths are avoided and what
+          they are worth. It counts only what it adds on top of what income growth alone would bring.</span></div></li>
+      </ul>
+      <h3>Fixed assumptions: not choices in this tool</h3>
+      <p>The following are set inside the model. They move the answer a great deal, but there is no control
+      for them on any screen.</p>
       <ul class="chain">
         <li><div class="ico">🌡️</div><div><b>How strongly the planet responds to CO&#8322;</b>
-          is roughly 2 to 5&#8451;. Nearly every number downstream scales with this one choice.</span>
+          <span>Plausibly 2 to 5&#8451;; the model fixes it at 3.0&#8451;. Nearly every climate and cost
+          figure scales with it.</span>
           <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">On climate sensitivity:</span>
             Sherwood et al. (2020),
             "An assessment of Earth's climate sensitivity using multiple lines of evidence",
@@ -1441,7 +1481,8 @@ const MODALS = {
                rel="noopener noreferrer" title="Opens doi.org in a new tab">doi.org/10.1029/2019RG000678 ↗</a></div></div></li>
         <li><div class="ico">⚖️</div><div><b>How damage grows with warming</b>
           <span>The curve converting degrees into economic loss is the least settled part of the field.
-          Different published curves give substantially different costs from identical warming.</span>
+          The one used here is steeper than the classic quadratic, which pushes the cost of carbon up;
+          other published curves give substantially different costs from identical warming.</span>
           <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">On how much this moves the answer:</span>
             Moore et al. (2024),
             "Synthesis of evidence yields high social cost of carbon due to structural model variation and
@@ -1449,8 +1490,10 @@ const MODALS = {
             <a class="paper" href="https://doi.org/10.1073/pnas.2410733121" target="_blank"
                rel="noopener noreferrer" title="Opens doi.org in a new tab">doi.org/10.1073/pnas.2410733121 ↗</a></div></div></li>
         <li><div class="ico">⏳</div><div><b>How much the future counts</b>
-          <span>Damage centuries away has to be weighed against money today. This single choice can change
-          the cost of carbon several-fold, and it is an ethical judgement as much as an economic one.</span>
+          <span>Damage centuries away has to be weighed against money today. The model fixes this at a pure
+          time-preference rate of 0.5% with an elasticity of 1 (the Ramsey rule), the average view among
+          surveyed economists. You cannot change it here, yet it alone can change the cost of carbon
+          several-fold, and it is an ethical judgement as much as an economic one.</span>
           <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">On discounting:</span>
             Drupp, Freeman, Groom &amp; Nesje
             (2018), "Discounting disentangled",
@@ -1458,13 +1501,11 @@ const MODALS = {
             <a class="paper" href="https://doi.org/10.1257/pol.20160240" target="_blank"
                rel="noopener noreferrer" title="Opens doi.org in a new tab">doi.org/10.1257/pol.20160240 ↗</a></div></div></li>
         <li><div class="ico">🫁</div><div><b>What a life is worth</b>
-          death — US$0.485 million for Nigeria — which is transferred from an income relationship rather
-          than measured here. The money figure scales one-for-one with it. (The model's other health route,
-          the outdoor one, additionally assumes about 7% of air pollution comes from electricity; that
-          figure is European and step ${STEP.air} does not use it, because the outdoor route is not run for
-          Nigeria.)</span>
-            how such a value is carried across to countries at different income levels — the step that
-            matters most whenever the figure is applied outside the country it was measured in.
+          <span>Each avoided death is valued at US$0.485 million for Nigeria, transferred from an income
+          relationship rather than measured here, and it grows with income at an elasticity of 1.0. The money
+          figure on step ${STEP.air} scales one-for-one with it. Your growth choice moves it over time; the
+          starting value is fixed.</span>
+          <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">On carrying the value across countries:</span>
             Viscusi &amp; Masterman (2017),
             "Income elasticities and global values of a statistical life",
             <i>Journal of Benefit-Cost Analysis</i> 8(2), 226–250.
@@ -1622,6 +1663,7 @@ const MODALS = {
           <span>Nigeria's measured carbon dioxide emissions. They draw the history line on step 4 and
           anchor both projections at 2024: 101.7 Mt in 2005, 129.4 Mt in 2023, 135.8 Mt in 2024.</span>
           <div class="paperrow"><span aria-hidden="true">🗄️</span> <span class="lbl2">Dataset:</span>
+            <a class="paper" href="https://ourworldindata.org/grapher/annual-co2-emissions-per-country" target="_blank"
                rel="noopener noreferrer" title="Opens Our World in Data in a new tab">ourworldindata.org ↗</a></div></div></li>
         <li><div class="ico">🌡️</div><div><b>World Bank Climate Change Knowledge Portal</b>
           <span>It supplies step ${STEP.local}'s national temperature and rainfall, hot-day count and
@@ -1737,6 +1779,7 @@ const MODALS = {
           <span>The flag for each country, MIT licence, used unmodified.</span>
           <div class="paperrow"><span aria-hidden="true">🗄️</span> <span class="lbl2">Dataset:</span>
             <a class="paper" href="https://github.com/lipis/flag-icons" target="_blank"
+               rel="noopener noreferrer" title="Opens flag-icons on GitHub in a new tab">github.com/lipis/flag-icons ↗</a></div></div></li>
       </ul>`,
     note:`<b>These are the sources behind the figures you see.</b> A tool that claims to use open
       data should be able to show you where that data comes from, and let you go and check it.`
@@ -2162,7 +2205,7 @@ function listLabels(){
 function infoActions(){
   return `<div class="info-actions" aria-label="Learn about this tool">
     ${[["journey","📖","First: learn how to navigate"],
-       ["method","ⓘ","Why the results are based on research and data"],
+       ["data","🗄","Where the data comes from"],
        ["engine","⚙","What runs the calculations"],
        ["uncertainty","◈","What can make results higher or lower"]].map(([k,ic,label],n)=>
       `<button class="info-action" data-modal="${k}"><span class="n">${n+1}</span><span class="ic" aria-hidden="true">${ic}</span><span>${label}</span></button>`).join("")}
@@ -2902,6 +2945,9 @@ function uncCue(modal="uncertainty"){
       body:()=>`
       <h3>What the storyline assumes</h3>
       <p>${STORY[o.id]}</p>
+      <h3>What the number after the hyphen means</h3>
+      <p>It is the approximate radiative forcing in 2100 — how hard human influence, mainly the build-up of
+      greenhouse gases, pushes the Earth's energy balance toward warming, in watts per square
       metre — here <b>${f}&nbsp;W/m&#178;</b>. A larger number generally means more warming. The
       storyline decides how the world develops; the forcing level decides how much of that development
       reaches the atmosphere.</p>
