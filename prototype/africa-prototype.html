@@ -2754,10 +2754,11 @@ const VIEWS = {
     const held=pyrs.map(yr=>+NGA.allElectricityIfUnchanged(yr).toFixed(1));
     const yours=pyrs.map(yr=>+NGA.allElectricityCO2(yr).toFixed(1));
     const pc={ title:"Nigeria's electricity carbon dioxide emissions",
-      unit:"Mt carbon dioxide per year — all electricity, grid and back-up generators, 2023–2100",
+      unit:"Mt carbon dioxide per year, 2023–2100 · grid and ◐ back-up generators · both lines carry the electricity your settings call for; only the mix differs",
       years:pyrs, baseline:held, pathway:yours, xTicks:[2023,2040,2060,2080,2100],
       yMax:Math.max(1,Math.ceil(Math.max(...held,...yours)/10)*10),
-      s1:"If today's mix stayed as it is", s2:"◐ Grid and back-up generators", marks:[] };
+      s1:`Today's mix (${(NGA_DATA.power.lowShareAll2023*100).toFixed(1)}% low-emission)`,
+      s2:`Your pathway — your mix (${state.drivers.mix}% low-emission)`, marks:[] };
     const mixTable=(()=>{
       const keep=state.drivers.mix, rows=[0,15.3,30,50,80,100].map(m=>{
         state.drivers.mix=m;
