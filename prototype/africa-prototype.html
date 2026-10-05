@@ -835,7 +835,8 @@ const MODALS = {
           electricity share. The path runs from <b>${(NGA_DATA.power.elecShare2023*100).toFixed(1)}%</b> in 2023 —
           both sources counted, not the IEA's grid-only 4.93% — to your target, then continues past 2050
           at the same proportional rate rather than holding flat. The next choice sets how that
-          electricity is generated.</span></div></li>
+          electricity is generated; this one also sets how its fossil part splits between grid gas
+          and back-up generators.</span></div></li>
         <li><div class="ico">4</div><div><b>Household health follows cooking fuel, not this target</b>
           <span>Smoke in the home comes from what people cook with, and in Nigeria very little household
           electricity goes to cooking: the Energy Transition Plan puts electricity for cooking at about
@@ -911,7 +912,7 @@ const MODALS = {
           uses. On the grid alone the same generation is <b>${(P.gridLowShare2023*100).toFixed(1)}%</b>
           low-emission and <b>${(gasGWh/P.gen2023GWh*100).toFixed(0)}%</b> gas.</span></div></li>
         <li><div class="ico">2</div><div><b>Electrification alone can move a problem instead of solving it</b>
-          <span>If the electricity replacing a wood fire or a diesel generator is itself produced by
+          <span>If the electricity replacing a wood fire is itself produced by
           burning fossil fuel, the household breathes cleaner air while the carbon dioxide is
           unchanged — the emissions have moved to the power station, not disappeared.</span></div></li>
         <li><div class="ico">3</div><div><b>The two choices only work together</b>
@@ -1079,11 +1080,19 @@ const MODALS = {
           grid-only basis the same 2023 figure is 4.93%.</span></div></li>
         <li><div class="ico">5</div><div><b>The generators take their share of whatever is still fossil</b>
           <span>A back-up generator is a fossil generator, so its share of the fossil group follows
-          <b>k = k₀ × e₀/e</b>, k₀ the estimated starting 2023 share of fossil generation, and e the
-          electrification path of the chosen SSP scenario. It is not driven directly by the
-          low-emission slider: changing the scenario changes k, while the low-emission target
-          determines how much of the remaining fossil group is used. Gas takes the residual. So your
-          <b>${state.drivers.mix}%</b> target moves its share of <i>all</i> electricity from
+          <b>k = k₀ × e₀/e</b>, k₀ the estimated starting 2023 share of fossil generation, e₀ the
+          2023 electrification share, and e the electrification path — the chosen SSP scenario's in
+          the baseline, the one you set on your pathway. It is not driven directly by the
+          low-emission slider: your electrification changes k, while the low-emission target
+          determines how much of the remaining fossil group is used. Gas takes the residual. Because
+          the rule holds k × e constant, electrification moves the generators' <i>share</i> but not
+          their <i>output</i>, which scales with total final energy and with the fossil part of
+          electricity. Two exceptions: if you set the gas–generator split yourself, and if
+          electrification falls below about
+          <b>${(P.within2023.fossil.Genset*P.elecShare2023*100).toFixed(1)}%</b>, where k reaches
+          100% and the generators supply all fossil electricity. Lower electrification raises k, so
+          below today's level grid gas is retired before the generators are. With your choices the
+          generators' share of <i>all</i> electricity moves from
           <b>${(gs23*100).toFixed(1)}%</b> in 2023 to <b>${(gs50*100).toFixed(1)}%</b> in 2050, or
           <b>${fmtN(NGA.gensetGenerationAt(2050))} GWh</b> against
           <b>${fmtN(P.genset2023GWh)} GWh</b> in 2023.${state.drivers.mix>=100?"":`
@@ -1092,10 +1101,10 @@ const MODALS = {
           residual fleet — a few tens of GWh, not the observed thousands, but not nothing.`}
           There is no diesel floor engineered into the slider on top of it. ${gg<g23
             ? `In <b>absolute</b> terms the layer falls from ${fmtN(g23,1)} Mt to ${fmtN(gg,1)} Mt.`
-            : `<b>But a falling share of a growing total can still grow.</b> Electrification sets
-               the volume even though it no longer sets the share, and at your target the layer
+            : `<b>But a falling share of a growing total can still grow.</b> Outside the two
+               exceptions above, total energy demand sets the volume, and at your settings the layer
                <b>rises</b> from ${fmtN(g23,1)} Mt in 2023 to ${fmtN(gg,1)} Mt in 2050 — more
-               diesel generators, not fewer, because electricity demand outruns the transition
+               diesel generators, not fewer, because energy demand outruns the transition
                you have asked for.`}
           The grid is what remains:
           <b>${fmtN(NGA.generationAt(2050))} GWh</b> in 2050 against
@@ -2054,10 +2063,15 @@ const NGA = {
       out[n] = (v==null ? P.within2023.low[n] : v); sum+=out[n]; });
     if(sum>0) P.groups.low.forEach(n=> out[n]/=sum);
     return out; },
+  /* Policy path only: reads the electrification slider. Never call from a base* function. */
+  gensetFossilAt(year){ const P=NGA_DATA.power, k0=P.within2023.fossil.Genset;
+    if(year<=2023) return k0;
+    return Math.min(Math.max(k0*P.elecShare2023/this.nationalElectrificationAt(year),0),1); },
 
   resolveGroupRaw(year, g, usePins){ const P=NGA_DATA.power;
     if(usePins===undefined) usePins=true;
-    const cur=this.baseWithinAt(year, g), names=P.groups[g];
+    const k=g==='fossil' ? this.gensetFossilAt(year) : null;
+    const cur=g==='fossil' ? {Gas:1-k, Genset:k} : this.baseWithinAt(year, g), names=P.groups[g];
     const pins=(usePins && state.sourceMix && state.sourceMix[g]) || {};
     const pinned=names.filter(n=>pins[n]!=null), free=names.filter(n=>pins[n]==null);
     if(!pinned.length) return cur;
@@ -3069,7 +3083,7 @@ function outcomeRows(){
       pins.push(`${SRC_LABEL[n]} ${fmtN(e,1)}% of the ${g==="low"?"low-emission":"fossil"} group in 2050`+
         (Math.abs(e-set)>=0.05?` (you set ${fmtN(set,1)}%)`:""));
     }); });
-  add(S1,"Energy mix set by you",pins.length?pins.join("; "):"none — the scenario's own mix");
+  add(S1,"Energy mix set by you",pins.length?pins.join("; "):"none — the scenario's low-emission mix; the gas–generator split follows your electrification");
   if(!NGA.isCountry()||!NGA.pathway()) return rows;
 
   const S4="Climate and cost (step "+STEP.climate+")";
@@ -3314,7 +3328,8 @@ function mixPanel(){
       <span class="badge">${nSrc} sliders · ${set?set+" set by you":"optional"}</span></summary>
     <p class="mixintro"><b style="color:#123E5C">Your choice:</b> tick a source, then move its slider to set its share yourself.
       The slider above fixes how much of Nigeria's electricity is low-emission; these sliders decide which sources make up
-      each side of that split. Leave them alone and the scenario decides — currently <b>${NGA.label()}</b>.</p>
+      each side of that split. Leave them alone and the scenario decides the low-emission sources — currently <b>${NGA.label()}</b> —
+      while the gas–generator split follows your electrification target.</p>
     <div id="mixbar">${mixBar()}</div>
     <div class="mixgroups">${sourceMixGroup("low","Low-emission sources")}${sourceMixGroup("fossil","Fossil sources")}</div>
     <p style="margin:8px 0 0"><span class="info-link" data-modal="sourceMixInfo" role="button" tabindex="0">ⓘ How the two layers work, and where the baseline mix comes from</span></p>
@@ -3335,6 +3350,7 @@ function sourceCapPct(g,n,year){
 function sourceMixRow(g,n){
   const P=NGA_DATA.power, pins=(state.sourceMix||{})[g]||{};
   const pinned=pins[n]!=null, resolved=NGA.resolveGroup(2050,g)[n]*100;
+  const otherPinned=Object.keys(pins).some(m=>m!==n && pins[m]!=null);
   const L=Math.min(Math.max(state.drivers.mix,0),100);
   const ofTotal=resolved*(g==="low"?L:100-L)/100;
   const [capMin,capMax]=sourceCapPct(g,n,2050);
@@ -3356,7 +3372,7 @@ function sourceMixRow(g,n){
     <input type="range" min="${capMin.toFixed(2)}" max="${capMax.toFixed(2)}" step="${isCappedSrc?'0.1':'1'}" value="${pct.toFixed(isCappedSrc?1:0)}" data-src="${g}|${n}"
       style="width:100%;background:linear-gradient(90deg,var(--brand-green-dk) ${fillPct}%,#D9E0E4 ${fillPct}%)">
     <div style="font-size:12px;color:var(--ink-3);margin-top:2px">
-      ${pinned?"set by you":"following the scenario"} · baseline ${base.toFixed(1)}% of group${SRC_NOTE[n]?" · * "+SRC_NOTE[n]:""}
+      ${pinned?"set by you":(g==="fossil"?(otherPinned?"the rest of the group":"following your electrification"):"following the scenario")} · baseline ${base.toFixed(1)}% of group${SRC_NOTE[n]?" · * "+SRC_NOTE[n]:""}
       ${(g==='low'&&(n==='Hydro'||n==='Wind'))?` · range limited to Nigeria's resource potential (${capMin.toFixed(0)}–${capMax.toFixed(0)}% of group)${capped?" — at its limit now":""}`:""}</div>
   </div>`;
 }
@@ -3390,18 +3406,20 @@ function sourceMixLivePatch(activeKey){
 
 MODALS.sourceMixInfo={
   title:"How the energy mix works",
-  lede:"The low-emission slider on step 2 fixes how much of Nigeria's electricity is low-emission. The energy-mix sliders decide which sources make up each side of that split. Leave them alone and the chosen scenario decides.",
+  lede:"The low-emission slider on step 2 fixes how much of Nigeria's electricity is low-emission. The energy-mix sliders decide which sources make up each side of that split. Leave them alone and the chosen scenario decides the low-emission sources, while the gas–generator split follows your electrification target.",
   body:()=>`
     <ul class="chain">
       <li><div class="ico">1</div><div><b>The two layers multiply, so they cannot disagree</b>
         <span>A share you set here is a share <i>within</i> a group. Wind at 40% of a 30% low-emission
         share is 40% × 30% = <b>12% of all electricity</b>. Nothing here can override the slider above,
         and the slider is never adjusted to accommodate anything here.</span></div></li>
-      <li><div class="ico">2</div><div><b>Sources you do not tick follow the scenario</b>
-        <span>Whatever is left in a group is divided among the unticked sources in the proportions the
-        <b>${NGA.label()}</b> baseline gives them for that year. Leaving a source alone keeps its
-        <i>relative</i> standing, not a frozen share. Tick nothing and this panel changes nothing —
-        the model returns the scenario's own composition.</span></div></li>
+      <li><div class="ico">2</div><div><b>Low-emission sources you do not tick follow the scenario</b>
+        <span>Whatever is left in the low-emission group is divided among the unticked sources in the
+        proportions the <b>${NGA.label()}</b> baseline gives them for that year. Leaving a source alone
+        keeps its <i>relative</i> standing, not a frozen share. The fossil group is different: unless
+        you tick one, gas and back-up generators split by the rule in item 4, run on your own
+        electrification path, so their shares can differ from the baseline figure shown beside each
+        slider. If you tick one of the two, the other takes the rest of the group.</span></div></li>
       <li><div class="ico">3</div><div><b>Every source carries its own emission factor</b>
         <span>Life-cycle carbon dioxide, not just what leaves a chimney. Solar at
         <b>${(NGA_DATA.power.ef.Solar*1000).toFixed(1)} g</b> is
@@ -3426,7 +3444,14 @@ MODALS.sourceMixInfo={
         <b>${(NGA_DATA.power.ef.Genset*1000).toFixed(0)} g</b> against gas at
         <b>${(NGA_DATA.power.ef.Gas*1000).toFixed(0)} g</b>, that substitution roughly halves each
         kilowatt-hour it touches — a decarbonisation the baseline performs on its own, before you
-        choose anything. You can still override the split here.</span></div></li>
+        choose anything. On your pathway the same rule runs on the electrification you set, so
+        your electrification target moves the generators' share of fossil generation; because the
+        rule holds that share × electrification constant, it does not change how many
+        kilowatt-hours they produce — on this rule the grid arriving retires the generators' share,
+        not their output. The exception is electrification below about
+        <b>${(NGA_DATA.power.within2023.fossil.Genset*NGA_DATA.power.elecShare2023*100).toFixed(1)}%</b>,
+        where the generators already supply all fossil electricity. You can still override the
+        split here.</span></div></li>
     </ul>`,
   note:`<b>Two things this panel cannot tell you.</b> The hydropower factor is ecoinvent's
     <i>alpine reservoir</i> activity and Nigeria's reservoirs are tropical lowland, where flooded
