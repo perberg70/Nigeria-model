@@ -44,8 +44,15 @@ Nigeria's own observed values:
 
 - electrification share of final energy and the low-emission share of electricity (power-sector
   baseline);
-- the final-energy-per-GDP trajectory, as an efficiency and structural-change factor in the
-  economy-wide CO₂ baseline.
+- an **efficiency residual**, as an efficiency, structure and fuel-switching factor in the
+  economy-wide CO₂ baseline and in final-energy demand (baseline and the user's pathway). It is
+  R10's final-energy path divided by what R10's own population and income per head give through the
+  same Burke & Csereklyei relation the prototype applies to Nigeria (`0.36L + 0.065L²`):
+  `T(y) = [FE(y)/FE(ref)] / [P(y)/P(ref) × exp(0.36L + 0.065L²)]`, `L = ln(GDPpc(y)/GDPpc(ref))`,
+  with `ref` 2023 for final energy and 2024 for CO₂ (`r10_efficiency()` in
+  `build_nigeria_baseline.py`). The raw `Final Energy/GDP` ratio was used until 2026-10-03; it
+  counted the income effect twice. The residual can exceed 1 (SSP3-7.0 and SSP5-8.5 in 2050),
+  meaning energy per unit of output rises once the income effect is removed.
 
 Nigeria's population and GDP come from `../iiasa_ssp_nigeria/`, not from this region.
 

@@ -1061,9 +1061,12 @@ const MODALS = {
           <span>By 2050 Nigeria's population reaches <b>${fmtN(NGA.populationAt(2050)/1e6)} million</b>
           on the ${NGA.label()} projection — <b>${fmtN(popR,3)}×</b> its 2023 level — while income per
           person reaches <b>${fmtN(ipc,3)}×</b>${ipc<1?" — that is, it <b>falls</b>, because your GDP growth is slower than population growth, which holds demand <i>below</i> what population alone would give":""}.
-          Together they give a demand factor of <b>${fmtN(df,3)}×</b>. Energy use per unit of output then
-          falls along the ${NGA.label()} efficiency path — the Africa R10 efficiency residual the
-          baseline also uses, with the income effect taken out so it is not counted twice — ${eff<1?`which multiplies demand by <b>${fmtN(eff,3)}</b> by 2050`:"which is not available here, so no efficiency gain is applied"},
+          Together they give a demand factor of <b>${fmtN(df,3)}×</b>. ${NGA.sspAt('r10EnergyIntensityFactor',2050)==null
+            ? `No ${NGA.label()} efficiency path is available here, so no efficiency change is applied,`
+            : `Energy use per unit of output then follows the ${NGA.label()} efficiency path — the Africa R10
+          efficiency residual the baseline also uses, with the income effect taken out so it is not counted
+          twice — which multiplies demand by <b>${fmtN(eff,3)}</b> by 2050${eff>1?`: above 1, so in this scenario
+          energy use per unit of output <b>rises</b> once the income effect is removed`:""},`}
           giving <b>${fmtN(NGA.totalEnergyTJ(2050))} TJ</b>.</span></div></li>
         <li><div class="ico">4</div><div><b>Your electrification target takes a share of it</b>
           <span>The electricity share moves from <b>${(P.elecShare2023*100).toFixed(2)}%</b>
