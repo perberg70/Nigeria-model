@@ -29,7 +29,7 @@ processing are described in each `data/<folder>/README.md`.
 | Parameter | Value | Source |
 |---|---|---|
 | Income elasticity of household solid-fuel use | −0.67 | Burke & Csereklyei (2016), Table 3 Panel C. https://doi.org/10.1016/j.eneco.2016.07.004 |
-| Income elasticity of total energy | 0.48, rising by 0.13 per log unit of income (integrated: 0.48L + 0.065L²) | Burke & Csereklyei (2016), Table 5 col. 7 (10-year growth rates, 1960–2010). https://doi.org/10.1016/j.eneco.2016.07.004 |
+| Income elasticity of total energy | 0.36 (25th income percentile), rising by 0.13 per log unit of income (integrated: 0.36L + 0.065L²) | Burke & Csereklyei (2016), Table 5 col. 7 (10-year growth rates, 1960–2010). https://doi.org/10.1016/j.eneco.2016.07.004 |
 | Value of a statistical life, Nigeria | US$0.485 million (2015 USD) | Viscusi & Masterman (2017). https://doi.org/10.1017/bca.2017.12 |
 | Life-cycle CO₂ emission factors for electricity (hydropower, nuclear, wind, biomass, solar, gas) | ecoinvent v3.10.1, allocation cut-off by classification — a licensed (paid) database, not open data | Wernet et al. (2016). https://doi.org/10.1007/s11367-016-1087-8 |
 | Diesel generator emission factor | 1.27 kg CO₂/kWh | Kambhampati et al. (2024), Table 8. https://doi.org/10.1088/1742-6596/2929/1/012008 |

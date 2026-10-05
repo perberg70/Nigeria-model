@@ -95,12 +95,16 @@ NGA_K0        = NGA_GENSET_GWH / NGA_FOSSIL_GWH       # 0.3943: gensets' share O
 # growth-rates model, estimated on within-country growth over 1960-2010. The
 # 10-year elasticity is 0.48 at the sample's mean t-10 log GDP per capita and
 # rises by eta = 0.13 per log unit of income (0.36 at the 25th percentile, 0.62
-# at the 75th). Nigeria's 2023 income is taken to sit near that sample mean (the
-# paper does not report its position). Integrating beta(L) = 0.48 + 0.13 L gives
-# ln(E/E0) = 0.48 L + 0.065 L^2. The Table 2 cross-section (0.63 at the 25th
+# at the 75th). Nigeria starts at the 25th-percentile value, 0.36 (Per's
+# decision, 2026-10-05), matching its 29th-percentile position in 2023 world
+# GDP per capita (MSc-thesis 03_models/2026-09-02 memo); the paper's percentiles
+# are for its 1960-2010 sample, so that match is approximate. Integrating
+# beta(L) = 0.36 + 0.13 L gives ln(E/E0) = 0.36 L + 0.065 L^2. The 10-year form
+# integrated over decades is a projection assumption, not the paper's dynamic
+# model. The Table 2 cross-section (0.63 at the 25th
 # percentile, 0.11 squared term) was used until 2026-10-02 and is not, because it
 # compares countries at one date rather than following growth over time.
-ELASTICITY    = 0.48
+ELASTICITY    = 0.36
 ELASTICITY_Q  = 0.065
 
 # --- NIGERIA'S PHYSICAL ENVELOPE -------------------------------------------
