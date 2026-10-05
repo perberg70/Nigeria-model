@@ -15,9 +15,11 @@ object holding, per SSP marker and per year to 2100:
 Nigeria's observed 2024 emissions set the position. Nigeria's population and
 GDP-per-capita paths set the macroeconomic pressure through the Burke &
 Csereklyei (2016) aggregate-energy relation, with the marginal income
-elasticity increasing as GDP per capita rises. A normalized Africa R10
-final-energy-intensity trajectory is applied as an aggregate efficiency,
-structure, and technology proxy. R10 carbon intensity is not transferred to
+elasticity increasing as GDP per capita rises. An Africa R10 efficiency
+residual -- R10's final-energy path divided by what its own population and
+income per head give through the same relation -- is applied as an aggregate
+efficiency, structure, and technology proxy, so the income effect is not
+counted twice. R10 carbon intensity is not transferred to
 Nigeria. R10 continues to supply the separate power-sector baseline and the
 SSP marker mapping. This deliberately avoids presenting an unverified
 regional carbon-intensity path as a Nigerian carbon-intensity forecast.
@@ -89,11 +91,21 @@ NGA_ELEC_2023 = NGA_ALL_GWH * 3.6 / NGA_TFE_TJ
 NGA_LOW_2023  = NGA_LOW_GWH / NGA_ALL_GWH
 NGA_FOSSIL_GWH = NGA_ALL_GWH - NGA_LOW_GWH            # 52,240 = grid gas 31,640 + gensets 20,600
 NGA_K0        = NGA_GENSET_GWH / NGA_FOSSIL_GWH       # 0.3943: gensets' share OF FOSSIL, 2023
-# Burke & Csereklyei (2016), Table 2, aggregate energy. The 25th-percentile
-# elasticity is the Nigeria anchor. The squared-log coefficient makes the
-# marginal elasticity rise with GDP per capita: beta(L) = 0.63 + 0.22 L.
-ELASTICITY    = 0.63
-ELASTICITY_Q  = 0.11
+# Burke & Csereklyei (2016), Table 5, column 7 (total energy): the 10-year
+# growth-rates model, estimated on within-country growth over 1960-2010. The
+# 10-year elasticity is 0.48 at the sample's mean t-10 log GDP per capita and
+# rises by eta = 0.13 per log unit of income (0.36 at the 25th percentile, 0.62
+# at the 75th). Nigeria starts at the 25th-percentile value, 0.36 (Per's
+# decision, 2026-10-05), matching its 29th-percentile position in 2023 world
+# GDP per capita (MSc-thesis 03_models/2026-09-02 memo); the paper's percentiles
+# are for its 1960-2010 sample, so that match is approximate. Integrating
+# beta(L) = 0.36 + 0.13 L gives ln(E/E0) = 0.36 L + 0.065 L^2. The 10-year form
+# integrated over decades is a projection assumption, not the paper's dynamic
+# model. The Table 2 cross-section (0.63 at the 25th
+# percentile, 0.11 squared term) was used until 2026-10-02 and is not, because it
+# compares countries at one date rather than following growth over time.
+ELASTICITY    = 0.36
+ELASTICITY_Q  = 0.065
 
 # --- NIGERIA'S PHYSICAL ENVELOPE -------------------------------------------
 # Energy Transition Plan p.64, "Techno-economic assumptions in the power sector",
@@ -279,6 +291,7 @@ def main():
     tot   = series('Secondary Energy - Electricity.csv')
     fe    = series('Final Energy.csv')
     r10_gdp = series('GDP - PPP.csv')
+    r10_pop = series('Population.csv')
     parts = {n: series('Secondary Energy - Electricity - %s.csv' % n) for n in ALLS}
     pop   = nigeria_series('Population', 'million', 1e6)
     gdp   = nigeria_series('GDP|PPP', 'billion USD_2015/yr', 1e9)
@@ -295,11 +308,23 @@ def main():
         # --- regional series, all on sum(parts) where a share is involved ----
         sumparts = {y: sum(parts[n][scen][y] for n in ALLS) for y in tot[scen]}
         gen_over_fe = {y: tot[scen][y] / fe[scen][y] for y in tot[scen]}
-        r10_final_energy_intensity = {
-            y: fe[scen][y] / r10_gdp[scen][y] for y in tot[scen]
-        }
-        r10_intensity_anchor = interp(ANCHOR_YEAR, r10_final_energy_intensity)
-        r10_intensity_base = interp(BASE_YEAR, r10_final_energy_intensity)
+        # R10 EFFICIENCY RESIDUAL. Africa R10's Final Energy/GDP falls for two
+        # reasons: energy grows more slowly than income (the income effect the
+        # Burke & Csereklyei relation already applies to Nigeria) and genuine
+        # efficiency, structure and technology change. Using the raw ratio
+        # counted the income effect twice (until 2026-10-03). The factor kept is
+        # the part of R10's own final-energy path that its population and income
+        # per head, run through the SAME relation, do not explain:
+        #   T(y, ref) = [FE(y)/FE(ref)] / [P(y)/P(ref) * exp(b L + q L^2)],
+        #   L = ln(GDPpc(y) / GDPpc(ref)), all Africa R10.
+        # It is referenced to the same year as the Nigerian factor it multiplies,
+        # since the quadratic makes it depend on the reference year.
+        def r10_efficiency(y, ref, scen=scen):
+            fr = interp(y, fe[scen]) / interp(ref, fe[scen])
+            pr = interp(y, r10_pop[scen]) / interp(ref, r10_pop[scen])
+            L = math.log((interp(y, r10_gdp[scen]) / interp(y, r10_pop[scen])) /
+                         (interp(ref, r10_gdp[scen]) / interp(ref, r10_pop[scen])))
+            return fr / (pr * math.exp(ELASTICITY * L + ELASTICITY_Q * L * L))
         # LAYER 1 IS A TWO-WAY SPLIT, so its denominator must be low+fossil only.
         # `Other` is IAMC's own catch-all -- "sources that do not fit any other
         # category" (common-definitions tag_secondary_electricity_sources.yaml)
@@ -337,9 +362,9 @@ def main():
             # 1. ECONOMY-WIDE EMISSIONS -- Nigeria-specific socioeconomic
             #    pressure construction. The observed 2024 fossil-and-industrial
             #    CO2 level is scaled by population and the integrated
-            #    Burke & Csereklyei aggregate-energy relation. The normalized
-            #    R10 Final Energy/GDP trajectory supplies an aggregate proxy
-            #    for efficiency, structure, and technology change. R10 carbon
+            #    Burke & Csereklyei aggregate-energy relation. The R10
+            #    efficiency residual (see r10_efficiency) supplies an aggregate
+            #    proxy for efficiency, structure, and technology change. R10 carbon
             #    intensity is deliberately not transferred.
             pt = interp(y, pop[narrative])
             yt = interp(y, gdp[narrative]) / pt
@@ -349,8 +374,7 @@ def main():
             demand_factor = p_factor * math.exp(
                 ELASTICITY * log_income + ELASTICITY_Q * log_income * log_income)
             marginal_beta = ELASTICITY + 2.0 * ELASTICITY_Q * log_income
-            r10_factor = (interp(y, r10_final_energy_intensity) /
-                          r10_intensity_anchor)
+            r10_factor = r10_efficiency(y, ANCHOR_YEAR)
             rec['populationFactor'].append(round(p_factor, 6))
             rec['gdpPerCapitaFactor'].append(round(y_factor, 6))
             rec['demandFactor'].append(round(demand_factor, 6))
@@ -382,7 +406,7 @@ def main():
             #        E(t) = E_2023 x (Pop_t/Pop_2023)
             #               x exp(B0 L + Q L^2), L = ln(y_t/y_2023),
             #    so the marginal beta is B0 + 2 Q L rather than one fixed B.
-            #    The same relative R10 Final Energy/GDP trajectory is then
+            #    The same R10 efficiency residual is then
             #    applied to this baseline energy path as a scenario-wide
             #    efficiency/structure/technology envelope. It is normalized
             #    separately to 2023 so the observed final-energy anchor stays
@@ -395,8 +419,7 @@ def main():
             yt = interp(y, gdp[narrative]) / pt
             L = math.log(yt / y0)
             income_factor = math.exp(ELASTICITY * L + ELASTICITY_Q * L * L)
-            r10_energy_factor = (interp(y, r10_final_energy_intensity) /
-                                 r10_intensity_base)
+            r10_energy_factor = r10_efficiency(y, BASE_YEAR)
             rec['energyTJ'].append(round(
                 NGA_TFE_TJ * (pt / p0) * income_factor * r10_energy_factor, 1))
             rec['r10EnergyIntensityFactor'].append(round(r10_energy_factor, 6))
@@ -511,7 +534,7 @@ def main():
                  '   build_nigeria_baseline.py -- do not hand-edit, re-run to regenerate.\n'
                  '   Economy-wide emissions are Nigeria national drivers through the\n'
                  '   stage-sensitive Burke & Csereklyei aggregate-energy relation;\n'
-                 '   normalized R10 Final Energy/GDP is an aggregate efficiency /\n'
+                 '   an R10 efficiency residual (income effect removed) is an efficiency /\n'
                  '   technology proxy; R10 carbon intensity is not transferred.\n'
                  '   Sources, the transfer rule, the denominator decision and what is\n'
                  '   deliberately NOT carried are in that script\'s docstring. */\n\n')
