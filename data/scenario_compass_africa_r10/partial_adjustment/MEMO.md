@@ -65,11 +65,20 @@ growth adjustment EMERGES from the dynamics. Solving the recursion's steady
 state under sustained growth gives n = b_target*x_bar + (eta/lambda)*x_bar^2
 = -(theta + eta*x_bar)*x_bar/kappa, so injecting the generalized slope into
 b_target as well would double-count the interaction and produce
--(theta + 2*eta*x_bar)/kappa. The decade recursion tracks the annual PA
-within ~0.007 in every window. The current construction fails the test in
-the opposite direction: its window elasticity, 0.36 + 0.065*(L1+L2), drifts
-upward linearly with cumulated income and never settles -- it is neither
-anchored at the decade value nor convergent to the long-run value.
+-(theta + 2*eta*x_bar)/kappa. Agreement between the annual PA and the
+decade recursion is NOT uniform across windows (Codex review, PR #9): the
+window-elasticity gap is 0.044 in 2023-2033, 0.025 in 2033-2043 and 0.011
+in 2043-2053, and only from 2053-2063 onward does it stay within ~0.007.
+The early gap is the same within-decade timing effect seen in Test 1: the
+annual grid responds to growth immediately, year by year, while the decade
+recursion completes each response at the decade boundary. The decade
+recursion remains the benchmark, and the reported 2050 scenario ratios sit
+inside the early period, so they inherit a mild front-loading of the
+adjustment from the annual approximation. The current construction fails
+the test in the opposite direction: its window elasticity,
+0.36 + 0.065*(L1+L2), drifts upward linearly with cumulated income and
+never settles -- it is neither anchored at the decade value nor convergent
+to the long-run value.
 
 ## Scenario runs (2100 final energy, variant / current)
 
@@ -175,7 +184,10 @@ withdrawn; its values (0.866-0.929) are superseded by the ones above.
   PPP demeaned sample is not performed.
 - LAMBDA = -kappa is an annual linearisation of a decade-sampled estimate;
   validated against the decade recursion in Test 1 (gap ~0.004 log points
-  after 2033) and Test 2 (window elasticities within ~0.007).
+  after 2033) and Test 2, where window elasticities agree within ~0.007
+  only from 2053-2063 onward; the 2023-2053 windows differ by 0.011-0.044
+  because the annual grid front-loads each decade's response (Codex review,
+  PR #9).
 - The region is run through the same law with the same anchor deviation,
   mirroring the baseline's symmetric assumption; R10's true position in the
   paper's income distribution is unmeasured.
