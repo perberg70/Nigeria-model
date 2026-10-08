@@ -40,6 +40,37 @@ have closed roughly 60-75% of the gap. The annual approximation tracks the
 decade recursion within ~0.001 log points by 2073, so the annual grid is
 acceptable for scenario use.
 
+## Test 2: sustained income growth (2.0%/yr, constant)
+
+Benchmark: footnote 3's generalized long-run elasticity under sustained
+growth, -(theta + eta*x_bar)/kappa = 0.809. Each path's elasticity is
+measured as the ratio of the log energy change to the log income change
+over a 10-year window.
+
+| window | current construction | annual PA | decade-step Eq 5 |
+|---|---:|---:|---:|
+| 2023-2033 | 0.373 | 0.404 | 0.360 |
+| 2033-2043 | 0.399 | 0.488 | 0.463 |
+| 2043-2053 | 0.425 | 0.554 | 0.543 |
+| 2053-2063 | 0.451 | 0.607 | 0.604 |
+| 2063-2073 | 0.477 | 0.649 | 0.651 |
+| 2073-2083 | 0.503 | 0.682 | 0.687 |
+| 2083-2093 | 0.529 | 0.708 | 0.715 |
+
+The annual PA is run with the PLAIN target (-theta/kappa = 0.696) and eta
+active, and its window elasticity converges toward the generalized value
+0.809 from below (0.708 by 2083-2093, ~88% of the asymptote at the ~30-year
+closing speed). This numerically verifies Codex review P1 (PR #9): the
+growth adjustment EMERGES from the dynamics. Solving the recursion's steady
+state under sustained growth gives n = b_target*x_bar + (eta/lambda)*x_bar^2
+= -(theta + eta*x_bar)*x_bar/kappa, so injecting the generalized slope into
+b_target as well would double-count the interaction and produce
+-(theta + 2*eta*x_bar)/kappa. The decade recursion tracks the annual PA
+within ~0.007 in every window. The current construction fails the test in
+the opposite direction: its window elasticity, 0.36 + 0.065*(L1+L2), drifts
+upward linearly with cumulated income and never settles -- it is neither
+anchored at the decade value nor convergent to the long-run value.
+
 ## Scenario runs (2100 final energy, variant / current)
 
 R recalibrated through the same variant law (closure-consistent):
@@ -55,15 +86,22 @@ R recalibrated through the same variant law (closure-consistent):
 \* Ratio of cumulative log changes in regional per-capita final energy and
 income, 2023-2100. Scenario-path association, not a structural elasticity.
 
-With b_target growth-adjusted per footnote 3, -(theta + eta x_bar)/kappa:
+Corrected growth-adjusted leg (Codex P1): the STATIC approximation -- the
+dynamic eta interaction switched off and the generalized slope
+-(theta + eta*x_bar)/kappa used as a static target (the region gets its own
+target from its own income growth):
 
-| marker | b_target | var/cur 2100 |
-|---|---:|---:|
-| ssp119 | 0.866 | 0.872 |
-| ssp126 | 0.866 | 0.872 |
-| ssp245 | 0.839 | 0.894 |
-| ssp370 | 0.758 | 0.929 |
-| ssp585 | 0.902 | 0.866 |
+| marker | b_target | var/cur 2050 | var/cur 2100 |
+|---|---:|---:|---:|
+| ssp119 | 0.866 | 0.934 | 0.867 |
+| ssp126 | 0.866 | 0.934 | 0.867 |
+| ssp245 | 0.839 | 0.948 | 0.901 |
+| ssp370 | 0.758 | 0.978 | 0.915 |
+| ssp585 | 0.902 | 0.928 | 0.864 |
+
+The pre-correction version of this table (eta active AND the generalized
+slope injected into b_target) double-counted the interaction and is
+withdrawn; its values (0.866-0.929) are superseded by the ones above.
 
 ## Findings
 
@@ -74,13 +112,23 @@ With b_target growth-adjusted per footnote 3, -(theta + eta x_bar)/kappa:
    and the decade recursion nearly coincide (0.0349 vs 0.0343), so the
    subsequent divergence is attributable to convergence machinery alone.
 
-2. **Under closure-consistent recalibration, the horizon correction is
-   small for the endpoint**: 2100 final energy moves to 0.87-0.98 of the
-   current path across markers and b_target modes. The dynamics change the
-   defended marginal response and the path shape more than the terminal
-   level, because R re-absorbs the shared regional income component.
+2. **The sustained-growth test (Test 2) confirms the emergent slope and
+   the current construction's second failure mode.** With the plain target
+   and eta active, both PA paths converge toward footnote 3's generalized
+   elasticity 0.809, verifying analytically and numerically that the growth
+   adjustment must not be injected into b_target. The current construction's
+   window elasticity drifts upward linearly with cumulated income without
+   bound: under a one-time shock it is permanently too small, under
+   sustained growth it never settles.
 
-3. **The decade time effects cancel exactly under recalibrated R.**
+3. **Under closure-consistent recalibration, the horizon correction is
+   small for the endpoint**: 2100 final energy moves to 0.86-0.98 of the
+   current path across markers and both corrected b_target modes (dynamic
+   plain and static-adjusted). The dynamics change the defended marginal
+   response and the path shape more than the terminal level, because R
+   re-absorbs the shared regional income component.
+
+4. **The decade time effects cancel exactly under recalibrated R.**
    Applying the paper's -0.021 to -0.029/yr decade effects to both Nigeria
    and the region leaves every output row unchanged (identical to the
    delta-off run). This is the cleanest demonstration yet of what the
@@ -88,14 +136,14 @@ With b_target growth-adjusted per footnote 3, -(theta + eta x_bar)/kappa:
    decade effects matter only if they are Nigeria-specific or if R is held
    fixed.
 
-4. **The residual convention dominates.** The conditional experiment with R
+5. **The residual convention dominates.** The conditional experiment with R
    frozen at the old law (fixed-old) plus decade effects puts 2100 demand
    at 0.41-0.48 of current. That spread is a statement about the modelling
    convention, not about Nigeria: it shows the elasticity-horizon debate is
    second-order relative to how R is defined and whether time trends are
    shared between the country and the region.
 
-5. **The IMAGE R10 embedded income response, as a scenario-path proxy, is
+6. **The IMAGE R10 embedded income response, as a scenario-path proxy, is
    0.18-0.56 depending on marker** -- well below the 0.48-0.62 law used to
    strip income out of the regional path, and far below the paper's 0.70
    long-run value. If the regional model's structural income response is
@@ -117,8 +165,8 @@ With b_target growth-adjusted per footnote 3, -(theta + eta x_bar)/kappa:
   units); income-unit conversion between USD_2015 PPP and the paper's 2005
   PPP demeaned sample is not performed.
 - LAMBDA = -kappa is an annual linearisation of a decade-sampled estimate;
-  validated against the decade recursion only in Test 1 (gap ~0.004 log
-  points after 2033).
+  validated against the decade recursion in Test 1 (gap ~0.004 log points
+  after 2033) and Test 2 (window elasticities within ~0.007).
 - The region is run through the same law with the same anchor deviation,
   mirroring the baseline's symmetric assumption; R10's true position in the
   paper's income distribution is unmeasured.

@@ -10,6 +10,20 @@ TEST 1: shock-then-flat income (+10% at 2024, then constant)
   the PA paths should keep moving toward 0.0663 with a
   half-life of about ln(2)/0.023 = 30 years.
 
+TEST 2: sustained income growth (2.0%/yr, constant)
+  footnote-3 long-run elasticity -(theta+eta*x_bar)/kappa: 0.8087
+  window              current      annual PA     decade Eq5
+  2023-2033            0.3730         0.4037         0.3600
+  2033-2043            0.3990         0.4878         0.4632
+  2043-2053            0.4250         0.5544         0.5427
+  2053-2063            0.4510         0.6072         0.6039
+  2063-2073            0.4770         0.6490         0.6510
+  2073-2083            0.5030         0.6822         0.6872
+  2083-2093            0.5290         0.7084         0.7152
+  READING: the PA window elasticities should converge toward
+  0.8087 from below; the current construction should drift upward
+  linearly with cumulated income and never settle.
+
 Variant run: delta_mode=off  eta=True  b_mode=plain  r_mode=recalibrated
 marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100
   (* R10 eps is the scenario-path proxy, not a structural elasticity)
@@ -19,14 +33,14 @@ ssp245         2.54      0.696      0.342     12173368     11573985      0.975  
 ssp370         1.11      0.696      0.559     17793940     16797979      0.990      0.944
 ssp585         3.65      0.696      0.376     11404694     11161354      0.959      0.979
 
-Variant run: delta_mode=off  eta=True  b_mode=growth-adjusted  r_mode=recalibrated
+Variant run: delta_mode=off  eta=True  b_mode=static-adjusted  r_mode=recalibrated
 marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100
   (* R10 eps is the scenario-path proxy, not a structural elasticity)
-ssp119         3.01      0.866      0.179      5501707      4795372      0.939      0.872
-ssp126         3.01      0.866      0.190      5680205      4950953      0.939      0.872
-ssp245         2.54      0.839      0.342     12173368     10883162      0.962      0.894
-ssp370         1.11      0.758      0.559     17793940     16523020      0.988      0.929
-ssp585         3.65      0.902      0.376     11404694      9880050      0.922      0.866
+ssp119         3.01      0.866      0.179      5501707      4767578      0.934      0.867
+ssp126         3.01      0.866      0.190      5680205      4922257      0.934      0.867
+ssp245         2.54      0.839      0.342     12173368     10973871      0.948      0.901
+ssp370         1.11      0.758      0.559     17793940     16283553      0.978      0.915
+ssp585         3.65      0.902      0.376     11404694      9850201      0.928      0.864
 
 Variant run: delta_mode=decade-effects  eta=True  b_mode=plain  r_mode=recalibrated
 marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100

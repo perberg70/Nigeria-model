@@ -30,9 +30,14 @@ per-capita income g_t in logs:
 Parameter mapping (declared assumptions, not estimates; Table 5, total):
   BETA_10  = 0.48 + ETA*(g_demeaned_t-1), ETA = 0.13     10-year elasticity
   LAMBDA   = -KAPPA = 0.023 /yr (annual linearisation of the decade form)
-  B_TARGET = -THETA/KAPPA = 0.016/0.023 ~= 0.70, optionally growth-adjusted
-             -(THETA + ETA*x_bar)/KAPPA with x_bar the scenario's mean
-             annual per-capita income growth (footnote 3)
+  B_TARGET = -THETA/KAPPA = 0.016/0.023 ~= 0.70. Footnote 3's generalized
+             long-run slope -(THETA + ETA*x_bar)/KAPPA under sustained
+             growth x_bar EMERGES from the dynamics once ETA is active
+             (steady state of the recursion: n = b*x_bar + (ETA/LAMBDA)*x_bar^2
+             = -(THETA + ETA*x_bar)*x_bar/KAPPA); injecting it into b_target
+             as well double-counts (Codex review P1, PR #9). The correct
+             growth-adjusted leg is the STATIC approximation: ETA switched
+             off dynamically and b_target = -(THETA + ETA*x_bar)/KAPPA.
   DELTA_t  = 0 by default; the paper's decade effects (-0.021 to -0.029/yr
              for total energy) are available as DELTA_MODE='decade-effects'
   alpha    calibrated so x_2023 equals the IEA anchor's log per-capita
@@ -168,6 +173,54 @@ def growth_adjusted_b(x_bar):
     return -(THETA + ETA * x_bar) / KAPPA
 
 
+def coherence_test_growth():
+    """TEST 2 (sustained growth): income per capita grows at a constant
+    2%/yr for the whole horizon. Benchmark: footnote 3's generalized
+    long-run elasticity -(THETA + ETA*x_bar)/KAPPA = 0.809. Each path's
+    elasticity is measured as the ratio of the log energy change to the log
+    income change over a window. The PA paths' window elasticities should
+    converge toward the benchmark; the current construction's window
+    elasticity, 0.36 + 0.065*(L1+L2), grows linearly with cumulated income
+    and never converges to anything. The annual PA is run with the PLAIN
+    target (-THETA/KAPPA) and ETA active: its convergence to 0.809 is the
+    numerical verification of the Codex P1 point that the growth adjustment
+    emerges from the dynamics and must not be injected into b_target."""
+    years = list(range(BASE_YEAR, END_YEAR + 1))
+    x_bar = 0.02
+    g0 = math.log(8000.0)
+    log_g = {y: g0 + x_bar * (y - BASE_YEAR) for y in years}
+
+    pa = pa_path(years, log_g, 0.0, g_dev0=NGA_2023_DEVIATION)
+
+    dec = {2023: 0.0}
+    for y in range(2033, END_YEAR + 1, 10):
+        dg = log_g[y] - log_g[y - 10]
+        beta = BETA_MEAN + ETA * (NGA_2023_DEVIATION + (log_g[y - 10] - g0))
+        dec[y] = ((1 + 10 * KAPPA) * dec[y - 10]
+                  + beta * dg
+                  + 10 * THETA * (log_g[y - 10] - g0))
+
+    def cur(y):
+        L = x_bar * (y - BASE_YEAR)
+        return 0.36 * L + 0.065 * L * L
+
+    target = growth_adjusted_b(x_bar)
+    print('TEST 2: sustained income growth (2.0%/yr, constant)')
+    print('  footnote-3 long-run elasticity -(theta+eta*x_bar)/kappa: %.4f' % target)
+    print('  %-12s %14s %14s %14s' % ('window', 'current', 'annual PA', 'decade Eq5'))
+    for y1 in range(2023, 2093, 10):
+        y2 = y1 + 10
+        w = '%d-%d' % (y1, y2)
+        pa_el = (pa[y2] - pa[y1]) / (x_bar * 10)
+        dec_el = (dec[y2] - dec[y1]) / (x_bar * 10)
+        cur_el = (cur(y2) - cur(y1)) / (x_bar * 10)
+        print('  %-12s %14.4f %14.4f %14.4f' % (w, cur_el, pa_el, dec_el))
+    print('  READING: the PA window elasticities should converge toward')
+    print('  %.4f from below; the current construction should drift upward' % target)
+    print('  linearly with cumulated income and never settle.')
+    print()
+
+
 def coherence_test_shock():
     """TEST 1 (shock-then-flat): income per capita +10% at 2024, then flat.
     Benchmark: the long-run-implied endpoint -THETA/KAPPA = 0.696 of the log
@@ -247,9 +300,16 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
         log_g = {y: math.log(interp(y, gdp[narrative]) / interp(y, pop[narrative]))
                  for y in years}
         x_bar = (log_g[END_YEAR] - log_g[BASE_YEAR]) / (END_YEAR - BASE_YEAR)
-        b_target = (growth_adjusted_b(x_bar) if b_mode == 'growth-adjusted'
-                    else -THETA / KAPPA)
-        nga_pa = pa_path(years, log_g, log_x0_nga, eta=ETA if eta else 0.0,
+        if b_mode == 'static-adjusted':
+            # Codex review P1 (PR #9): with ETA active the dynamics already
+            # produce footnote 3's asymptotic slope; injecting it into
+            # b_target double-counts. The correct growth-adjusted leg keeps
+            # the generalized slope STATIC and switches the dynamic ETA
+            # interaction off.
+            nga_eta, b_target = 0.0, growth_adjusted_b(x_bar)
+        else:
+            nga_eta, b_target = (ETA if eta else 0.0), -THETA / KAPPA
+        nga_pa = pa_path(years, log_g, log_x0_nga, eta=nga_eta,
                          b_target=b_target, delta_mode=delta_mode,
                          g_dev0=NGA_2023_DEVIATION)
 
@@ -272,9 +332,13 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
         # The region is run through the same law with the same 25th-
         # percentile anchor deviation as Nigeria, mirroring the baseline's
         # symmetric use of ELASTICITY for both. Flagged in the docstring as
-        # an approximation, not a measurement of R10's sample position.
-        r_pa = pa_path(years, r_log_g, r_log_x0, eta=ETA if eta else 0.0,
-                       b_target=b_target, delta_mode=delta_mode,
+        # an approximation, not a measurement of R10's sample position. In
+        # static-adjusted mode the region gets its OWN growth-adjusted
+        # target, from its own mean income growth.
+        r_x_bar = (r_log_g[END_YEAR] - r_log_g[BASE_YEAR]) / (END_YEAR - BASE_YEAR)
+        r_b = growth_adjusted_b(r_x_bar) if b_mode == 'static-adjusted' else b_target
+        r_pa = pa_path(years, r_log_g, r_log_x0, eta=nga_eta,
+                       b_target=r_b, delta_mode=delta_mode,
                        g_dev0=NGA_2023_DEVIATION)
 
         # Variant energy with R per r_mode
@@ -314,8 +378,9 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
 
 if __name__ == '__main__':
     coherence_test_shock()
+    coherence_test_growth()
     run_all(delta_mode='off', eta=True, b_mode='plain')
-    run_all(delta_mode='off', eta=True, b_mode='growth-adjusted')
+    run_all(delta_mode='off', eta=True, b_mode='static-adjusted')
     run_all(delta_mode='decade-effects', eta=True, b_mode='plain')
     run_all(delta_mode='decade-effects', eta=True, b_mode='plain',
             r_mode='fixed-old')
