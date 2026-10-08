@@ -18,18 +18,27 @@ Long-run-implied endpoint of the log energy gap: -theta/kappa x ln(1.1)
 
 | year | current construction | annual PA | decade-step Eq 5 |
 |---|---:|---:|---:|
-| 2033 | 0.0349 | 0.0496 | 0.0457 |
-| 2053 | 0.0349 | 0.0558 | 0.0541 |
-| 2073 | 0.0349 | 0.0597 | 0.0591 |
-| 2100 | 0.0349 | 0.0628 | n/a |
+| 2033 | 0.0349 | 0.0404 | 0.0343 |
+| 2053 | 0.0349 | 0.0500 | 0.0473 |
+| 2073 | 0.0349 | 0.0561 | 0.0551 |
+| 2100 | 0.0349 | 0.0608 | n/a |
 
-As predicted: the current construction jumps once and stops (it has no
-state variable), while both partial-adjustment paths keep converging toward
+Codex review P2 (PR #9) corrected the percentile alignment: all three paths
+now start from the same 25th-percentile marginal elasticity (0.36), so the
+path gap isolates convergence rather than conflating it with a different
+starting percentile. At 2033 the current construction (0.0349) and the
+decade recursion (0.0343) now nearly coincide, as they should: one decade
+in, almost no convergence has accumulated, and the annual PA's slightly
+higher 0.0404 reflects within-decade timing (it responds to the 2024 shock
+immediately, year by year, rather than completing its first response at the
+decade boundary). From then on only the PA paths move: the current
+construction stays at 0.0349 forever, while both PA paths converge toward
 0.0663 with the ~30-year half-life implied by kappa = -0.023/yr. The
 current construction permanently undershoots the paper's own long-run
-response to a lasting income difference by about half. The annual
-approximation tracks the decade recursion within ~0.004 log points after
-2033, so the annual grid is acceptable for scenario use.
+response to a lasting income difference by about half; at 2100 the PA paths
+have closed roughly 60-75% of the gap. The annual approximation tracks the
+decade recursion within ~0.001 log points by 2073, so the annual grid is
+acceptable for scenario use.
 
 ## Scenario runs (2100 final energy, variant / current)
 
@@ -60,7 +69,10 @@ With b_target growth-adjusted per footnote 3, -(theta + eta x_bar)/kappa:
 
 1. **The coherence-test prediction is confirmed numerically.** The current
    construction cannot approach its own source paper's long-run response;
-   the gap to the benchmark is permanent, not transitional.
+   the gap to the benchmark is permanent, not transitional. After the Codex
+   P2 percentile fix, the first-decade responses of the current construction
+   and the decade recursion nearly coincide (0.0349 vs 0.0343), so the
+   subsequent divergence is attributable to convergence machinery alone.
 
 2. **Under closure-consistent recalibration, the horizon correction is
    small for the endpoint**: 2100 final energy moves to 0.87-0.98 of the

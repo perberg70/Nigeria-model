@@ -2,10 +2,10 @@ TEST 1: shock-then-flat income (+10% at 2024, then constant)
   long-run-implied endpoint of log energy gap: 0.0663
   year          current      annual PA     decade Eq5
   2023           0.0000         0.0000         0.0000
-  2033           0.0349         0.0496         0.0457
-  2053           0.0349         0.0558         0.0541
-  2073           0.0349         0.0597         0.0591
-  2100           0.0349         0.0628            n/a
+  2033           0.0349         0.0404         0.0343
+  2053           0.0349         0.0500         0.0473
+  2073           0.0349         0.0561         0.0551
+  2100           0.0349         0.0608            n/a
   READING: the current construction should jump once and stop;
   the PA paths should keep moving toward 0.0663 with a
   half-life of about ln(2)/0.023 = 30 years.

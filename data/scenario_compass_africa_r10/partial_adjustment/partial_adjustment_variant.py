@@ -182,17 +182,22 @@ def coherence_test_shock():
     current = {y: 0.36 * (log_g[y] - g0) + 0.065 * (log_g[y] - g0) ** 2
                for y in years}
 
-    # Annual partial adjustment, calibrated alpha for a zero baseline
-    pa = pa_path(years, log_g, 0.0, g_dev0=0.0)
+    # Annual partial adjustment, calibrated alpha for a zero baseline.
+    # Codex review P2 (PR #9): both PA benchmarks must start from the SAME
+    # income-percentile elasticity as the current construction (0.36 at the
+    # 25th percentile), so the path gap isolates convergence rather than
+    # conflating it with a different starting percentile.
+    pa = pa_path(years, log_g, 0.0, g_dev0=NGA_2023_DEVIATION)
 
     # Decade-step recursion (faithful Equation 5 roll), x in deviations from
-    # the 2023 anchor: theta*(g_t-10 - g_2023) + kappa*(x_t-10 - x_2023)
+    # the 2023 anchor: theta*(g_t-10 - g_2023) + kappa*(x_t-10 - x_2023),
+    # with the same 25th-percentile anchor deviation.
     dec = {2023: 0.0}
     for y in range(2033, END_YEAR + 1, 10):
         if y - 10 not in dec:
             dec[y - 10] = dec.get(y - 10, 0.0)
         dg = log_g[y] - log_g[y - 10]
-        beta = BETA_MEAN + ETA * (log_g[y - 10] - (g0))
+        beta = BETA_MEAN + ETA * (NGA_2023_DEVIATION + (log_g[y - 10] - g0))
         dec[y] = ((1 + 10 * KAPPA) * dec[y - 10]
                   + beta * dg
                   + 10 * THETA * (log_g[y - 10] - g0))
