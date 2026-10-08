@@ -36,11 +36,11 @@ ssp585         3.65      0.696      0.376     11404694     11161354      0.959  
 Variant run: delta_mode=off  eta=True  b_mode=static-adjusted  r_mode=recalibrated
 marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100
   (* R10 eps is the scenario-path proxy, not a structural elasticity)
-ssp119         3.01      0.866      0.179      5501707      4767578      0.934      0.867
-ssp126         3.01      0.866      0.190      5680205      4922257      0.934      0.867
-ssp245         2.54      0.839      0.342     12173368     10973871      0.948      0.901
-ssp370         1.11      0.758      0.559     17793940     16283553      0.978      0.915
-ssp585         3.65      0.902      0.376     11404694      9850201      0.928      0.864
+ssp119         3.01      0.866      0.179      5501707      4865229      0.981      0.884
+ssp126         3.01      0.866      0.190      5680205      5023077      0.981      0.884
+ssp245         2.54      0.839      0.342     12173368     11313171      0.978      0.929
+ssp370         1.11      0.758      0.559     17793940     16866077      0.988      0.948
+ssp585         3.65      0.902      0.376     11404694     10014851      0.981      0.878
 
 Variant run: delta_mode=decade-effects  eta=True  b_mode=plain  r_mode=recalibrated
 marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100
@@ -54,9 +54,9 @@ ssp585         3.65      0.696      0.376     11404694     11161354      0.959  
 Variant run: delta_mode=decade-effects  eta=True  b_mode=plain  r_mode=fixed-old
 marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100
   (* R10 eps is the scenario-path proxy, not a structural elasticity)
-ssp119         3.01      0.696      0.179      5501707      2580462      0.631      0.469
-ssp126         3.01      0.696      0.190      5680205      2664183      0.631      0.469
-ssp245         2.54      0.696      0.342     12173368      5536463      0.625      0.455
-ssp370         1.11      0.696      0.559     17793940      7337683      0.618      0.412
-ssp585         3.65      0.696      0.376     11404694      5451623      0.635      0.478
+ssp119         3.01      0.696      0.179      5501707      2517323      0.583      0.458
+ssp126         3.01      0.696      0.190      5680205      2598995      0.583      0.458
+ssp245         2.54      0.696      0.342     12173368      5400995      0.577      0.444
+ssp370         1.11      0.696      0.559     17793940      7158142      0.571      0.402
+ssp585         3.65      0.696      0.376     11404694      5318231      0.586      0.466
 

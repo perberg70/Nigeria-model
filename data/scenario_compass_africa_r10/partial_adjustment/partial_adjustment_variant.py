@@ -38,8 +38,11 @@ Parameter mapping (declared assumptions, not estimates; Table 5, total):
              as well double-counts (Codex review P1, PR #9). The correct
              growth-adjusted leg is the STATIC approximation: ETA switched
              off dynamically and b_target = -(THETA + ETA*x_bar)/KAPPA.
-  DELTA_t  = 0 by default; the paper's decade effects (-0.021 to -0.029/yr
-             for total energy) are available as DELTA_MODE='decade-effects'
+  DELTA_t  = 0 by default; with DELTA_MODE='decade-effects' the most
+             recent observed decade dummy (-0.029/yr, 2001-2010 relative to
+             the 1970 base) is carried forward as a constant -- an explicit
+             "latest regime persists" assumption, not a replay of the
+             historical dummy sequence (Codex review P2b, PR #9)
   alpha    calibrated so x_2023 equals the IEA anchor's log per-capita
              final energy.
 
@@ -161,8 +164,13 @@ def pa_path(years, log_g, log_x0, beta_mean=BETA_MEAN, eta=ETA,
         x_star_prev = alpha + b_target * g_prev
         delta = 0.0
         if delta_mode == 'decade-effects':
-            d = min(len(DECADE_EFFECTS) - 1, (y_prev - BASE_YEAR) // 10)
-            delta = DECADE_EFFECTS[d]
+            # Codex review P2b (PR #9): Table 5's decade dummies are
+            # calendar-period intercepts relative to a 1970 base, not a
+            # sequence of shocks that can be shifted forward. The explicit
+            # forecast assumption made here: the most recent observed
+            # regime (the 2001-2010 dummy, -0.029/yr) persists over the
+            # whole projection horizon.
+            delta = DECADE_EFFECTS[-1]
         x = x + beta * (log_g[y] - g_prev) + lam * (x_star_prev - x) + delta
         out[y] = x
     return out
@@ -305,13 +313,18 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
             # produce footnote 3's asymptotic slope; injecting it into
             # b_target double-counts. The correct growth-adjusted leg keeps
             # the generalized slope STATIC and switches the dynamic ETA
-            # interaction off.
+            # interaction off. Codex review P2a (PR #9): switching ETA off
+            # must NOT silently revert beta to the sample mean 0.48; freeze
+            # it at the Nigeria 25th-percentile calibration 0.36 so this
+            # leg differs from the plain run only in the target.
             nga_eta, b_target = 0.0, growth_adjusted_b(x_bar)
+            nga_beta = BETA_MEAN + ETA * NGA_2023_DEVIATION
         else:
             nga_eta, b_target = (ETA if eta else 0.0), -THETA / KAPPA
-        nga_pa = pa_path(years, log_g, log_x0_nga, eta=nga_eta,
-                         b_target=b_target, delta_mode=delta_mode,
-                         g_dev0=NGA_2023_DEVIATION)
+            nga_beta = BETA_MEAN
+        nga_pa = pa_path(years, log_g, log_x0_nga, beta_mean=nga_beta,
+                         eta=nga_eta, b_target=b_target,
+                         delta_mode=delta_mode, g_dev0=NGA_2023_DEVIATION)
 
         # Scenario-path proxy for the income response embedded in the IMAGE
         # R10 scenario itself: the ratio of cumulative log changes in
@@ -337,8 +350,8 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
         # target, from its own mean income growth.
         r_x_bar = (r_log_g[END_YEAR] - r_log_g[BASE_YEAR]) / (END_YEAR - BASE_YEAR)
         r_b = growth_adjusted_b(r_x_bar) if b_mode == 'static-adjusted' else b_target
-        r_pa = pa_path(years, r_log_g, r_log_x0, eta=nga_eta,
-                       b_target=r_b, delta_mode=delta_mode,
+        r_pa = pa_path(years, r_log_g, r_log_x0, beta_mean=nga_beta,
+                       eta=nga_eta, b_target=r_b, delta_mode=delta_mode,
                        g_dev0=NGA_2023_DEVIATION)
 
         # Variant energy with R per r_mode

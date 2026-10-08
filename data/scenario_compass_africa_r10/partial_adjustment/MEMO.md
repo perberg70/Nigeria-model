@@ -89,15 +89,18 @@ income, 2023-2100. Scenario-path association, not a structural elasticity.
 Corrected growth-adjusted leg (Codex P1): the STATIC approximation -- the
 dynamic eta interaction switched off and the generalized slope
 -(theta + eta*x_bar)/kappa used as a static target (the region gets its own
-target from its own income growth):
+target from its own income growth). Per Codex P2a, beta in this leg is
+frozen at the Nigeria 25th-percentile calibration 0.36 (not the sample
+mean 0.48), so the table below differs from the plain run only in how the
+generalized target is represented:
 
 | marker | b_target | var/cur 2050 | var/cur 2100 |
 |---|---:|---:|---:|
-| ssp119 | 0.866 | 0.934 | 0.867 |
-| ssp126 | 0.866 | 0.934 | 0.867 |
-| ssp245 | 0.839 | 0.948 | 0.901 |
-| ssp370 | 0.758 | 0.978 | 0.915 |
-| ssp585 | 0.902 | 0.928 | 0.864 |
+| ssp119 | 0.866 | 0.981 | 0.884 |
+| ssp126 | 0.866 | 0.981 | 0.884 |
+| ssp245 | 0.839 | 0.978 | 0.929 |
+| ssp370 | 0.758 | 0.988 | 0.948 |
+| ssp585 | 0.902 | 0.981 | 0.878 |
 
 The pre-correction version of this table (eta active AND the generalized
 slope injected into b_target) double-counted the interaction and is
@@ -122,26 +125,32 @@ withdrawn; its values (0.866-0.929) are superseded by the ones above.
    sustained growth it never settles.
 
 3. **Under closure-consistent recalibration, the horizon correction is
-   small for the endpoint**: 2100 final energy moves to 0.86-0.98 of the
+   small for the endpoint**: 2100 final energy moves to 0.88-0.98 of the
    current path across markers and both corrected b_target modes (dynamic
-   plain and static-adjusted). The dynamics change the defended marginal
-   response and the path shape more than the terminal level, because R
-   re-absorbs the shared regional income component.
+   plain 0.94-0.98; static-adjusted 0.88-0.95). The dynamics change the
+   defended marginal response and the path shape more than the terminal
+   level, because R re-absorbs the shared regional income component.
 
 4. **The decade time effects cancel exactly under recalibrated R.**
-   Applying the paper's -0.021 to -0.029/yr decade effects to both Nigeria
-   and the region leaves every output row unchanged (identical to the
-   delta-off run). This is the cleanest demonstration yet of what the
-   residual absorbs: any common additive time trend is divided out, and
-   decade effects matter only if they are Nigeria-specific or if R is held
-   fixed.
+   Applying a decade time effect to both Nigeria and the region leaves
+   every output row unchanged (identical to the delta-off run). This is the
+   cleanest demonstration yet of what the residual absorbs: any common
+   additive time trend is divided out, and decade effects matter only if
+   they are Nigeria-specific or if R is held fixed. Following Codex P2b,
+   the forward time effect is no longer a replay of the historical dummy
+   sequence (calendar intercepts relative to a 1970 base cannot be shifted
+   forward); the explicit assumption is that the most recent observed
+   regime, the 2001-2010 dummy at -0.029/yr, persists over the horizon.
 
 5. **The residual convention dominates.** The conditional experiment with R
-   frozen at the old law (fixed-old) plus decade effects puts 2100 demand
-   at 0.41-0.48 of current. That spread is a statement about the modelling
-   convention, not about Nigeria: it shows the elasticity-horizon debate is
-   second-order relative to how R is defined and whether time trends are
-   shared between the country and the region.
+   frozen at the old law (fixed-old) plus the carried-forward -0.029/yr
+   decade effect puts 2100 demand at 0.40-0.47 of current. That spread is a
+   statement about the modelling convention, not about Nigeria: it shows
+   the elasticity-horizon debate is second-order relative to how R is
+   defined and whether time trends are shared between the country and the
+   region. Note this is a conditional result under the explicit
+   "2001-2010 regime persists" assumption, not a property of the paper's
+   estimates.
 
 6. **The IMAGE R10 embedded income response, as a scenario-path proxy, is
    0.18-0.56 depending on marker** -- well below the 0.48-0.62 law used to
@@ -171,4 +180,8 @@ withdrawn; its values (0.866-0.929) are superseded by the ones above.
   mirroring the baseline's symmetric assumption; R10's true position in the
   paper's income distribution is unmeasured.
 - The fixed-old run is a conditional experiment under an independent
-  structural assumption about R, not a confidence interval.
+  structural assumption about R, not a confidence interval; its magnitude
+  further depends on the explicit assumption that the 2001-2010 decade
+  regime (-0.029/yr) persists, since the paper's decade dummies are
+  historical calendar intercepts and say nothing about future time effects
+  (Codex review P2b, PR #9).
