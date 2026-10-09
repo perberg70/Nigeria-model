@@ -24,7 +24,7 @@ Nigeria. R10 continues to supply the separate power-sector baseline and the
 SSP marker mapping. This deliberately avoids presenting an unverified
 regional carbon-intensity path as a Nigerian carbon-intensity forecast.
 
-Pass --update-prototype to copy the three generated blocks into the standalone
+Pass --update-prototype to copy the four generated blocks into the standalone
 prototype/africa-prototype.html file. The generated block remains
 the canonical data artifact; the HTML copy is kept in sync for the prototype.
 
@@ -224,6 +224,48 @@ def nigeria_series(variable, unit=None, scale=1.0):
     return out
 
 
+# --- ONE INCOME-DRIVEN INDEX FOR HOUSEHOLD SOLID-FUEL USE, ported 2026-10-09 from MSc-thesis ---------
+# idx(t) = (income per head_t / income per head_BASE_YEAR) ** COOK_ELASTICITY, on Nigeria's own SSP
+# path (IIASA / OECD ENV-Growth export). The prototype's clean-cooking baseline reads it: the polluting
+# share of people is p_t = p_2023 x idx (emitted below as BLOCK 4, NGA_DATA.health.pollutingIdxSSP,
+# together with the elasticity, which the slider path also reads). It replaces the hand-pasted gdpSSP
+# table the prototype held until 2026-10-09; the baseline clean-cooking shares are unchanged by the
+# switch. The prototype holds a PASTED COPY of the block, spliced in by --update-prototype, so re-run
+# this script after any change. In MSc-thesis the same function also feeds the residential-biomass
+# bucket of an offline sector-split test; decision record there: 03_models/2026-10-09_shared-cooking-
+# index.md. -0.67: Burke & Csereklyei (2016), CAMA WP 45/2016, Table 3 Panel C col. 1, SE 0.22: the GDP
+# elasticity of residential primary solid-biofuel use per head in a 2010 cross-section of up to 132
+# countries. TRANSFERRED to Nigeria and applied as a time path, and applied to a SHARE OF PEOPLE rather
+# than energy per head (an assumption); not a Nigerian estimate.
+COOK_ELASTICITY = -0.67
+
+_INCOME_CACHE = {}
+
+
+def _income_series(narrative):
+    if not _INCOME_CACHE:
+        gdp = nigeria_series('GDP|PPP', 'billion USD_2015/yr', 1e9)
+        pop = nigeria_series('Population', 'million', 1e6)
+        for n in gdp:
+            _INCOME_CACHE[n] = (gdp[n], pop[n])
+    return _INCOME_CACHE[narrative]
+
+
+def cook_index(narrative, year):
+    """(income per head at `year` / income per head in BASE_YEAR) ** COOK_ELASTICITY.
+
+    Income per head is the narrative's GDP|PPP over its population, each linearly interpolated on the
+    export's grid exactly as nigeria_series() and interp() define them (2023 and 2024 are themselves
+    interpolated between the 2020 and 2025 historical anchors).
+    """
+    gdp, pop = _income_series(narrative)
+
+    def income(y):
+        return interp(y, gdp) / interp(y, pop)
+
+    return (income(year) / income(BASE_YEAR)) ** COOK_ELASTICITY
+
+
 def apply_envelope(lowmix_series, low_twh_series):
     """Nigeria's resource envelope, applied to the whole trajectory at once.
 
@@ -304,7 +346,18 @@ def update_prototype(out):
                  '/* ---- BLOCK 3: NGA_DATA.power.popSSP, historical reference plus forecasts ---- */'))
     html = replace_fragment(
         html, 'popSSP:{', '         elasticityTotal:',
-        fragment('/* ---- BLOCK 3: NGA_DATA.power.popSSP, historical reference plus forecasts ---- */\n'))
+        fragment('/* ---- BLOCK 3: NGA_DATA.power.popSSP, historical reference plus forecasts ---- */\n',
+                 '/* ---- BLOCK 4: NGA_DATA.health.pollutingIdxSSP ---- */'))
+    # BLOCK 4 ends at its OWN closing brace, not at a comment, because the prototype carries no
+    # comments to anchor on.
+    if 'pollutingIdxSSP:{' not in html:
+        raise ValueError('prototype has no pollutingIdxSSP block')
+    start = html.index('pollutingIdxSSP:{')
+    line_start = html.rfind('\n', 0, start) + 1
+    close = html.index('\n    },', start) + len('\n    },')
+    html = (html[:line_start]
+            + fragment('/* ---- BLOCK 4: NGA_DATA.health.pollutingIdxSSP ---- */\n').rstrip()
+            + html[close:])
 
     with io.open(prototype, 'w', encoding='utf-8', newline='\n') as fh:
         fh.write(html)
@@ -598,7 +651,13 @@ def main():
             ys = pop[narr]
             fh.write('           %s:{%s},\n' % (narr, ','.join(
                 '%d:%d' % (y, round(ys[y])) for y in sorted(ys))))
-        fh.write('         },\n')
+        fh.write('         },\n\n')
+
+        fh.write('/* ---- BLOCK 4: NGA_DATA.health.pollutingIdxSSP ---- */\n')
+        fh.write('    pollutingIdxSSP:{\n      eps:%s, years:%s,\n' % (COOK_ELASTICITY, json.dumps(years)))
+        for narr in ['SSP1', 'SSP2', 'SSP3', 'SSP5']:
+            fh.write('      %s:%s,\n' % (narr, json.dumps([round(cook_index(narr, y), 7) for y in years])))
+        fh.write('    },\n')
     if '--update-prototype' in sys.argv[1:]:
         update_prototype(out)
     print('written: %s  (%d bytes)' % (out, os.path.getsize(out)))
