@@ -13,8 +13,9 @@ the share-weighted result of sector-by-sector transitions.
 Nothing here changes the variant, the baseline builder or the prototype.
 
 Sections
-  1. Nigeria 2023 final energy by sector and carrier (UNSD; checked
-     against the IEA sector and fuel totals)
+  1. Nigeria 2023 final energy by sector and carrier: IEA current release
+     (28 Sep 2026) sector-by-fuel table, with UNSD splitting each IEA fuel
+     cell into the carriers the efficiency ratios need
   2. Primary-to-final factors by carrier, 2023, and the bottom-up P/F
   3. End-use efficiency ratios rho = eta_electric / eta_displaced, with
      the evidence behind each range
@@ -92,9 +93,53 @@ def iea_csv(name):
     return out
 
 
+IEA_CUR = 'iea_nigeria_2023_final_consumption_by_fuel_and_sector_current_release.csv'
+IEA_EL = 'iea_nigeria_2023_electricity_generation_and_consumption_current_release.csv'
+IEA_SECTOR = {'Industry': 'industry', 'Transport': 'transport', 'Residential': 'residential',
+              'Commercial and public services': 'commercial', 'Agriculture and forestry': 'agriculture',
+              'Other non-specified': 'other', 'Non-energy use': 'non_energy'}
+IEA_FUEL = {'coal_and_coal_products_TJ': 'coal', 'oil_products_TJ': 'oil', 'natural_gas_TJ': 'gas',
+            'biofuels_and_waste_TJ': 'bio', 'electricity_TJ': 'electricity'}
+FUEL_GROUP = {'wood': 'bio', 'charcoal': 'bio', 'lpg': 'oil', 'kerosene': 'oil', 'gasoline': 'oil',
+              'diesel': 'oil', 'jet': 'oil', 'fuel_oil': 'oil', 'other_oil': 'oil', 'gas': 'gas',
+              'coal': 'coal', 'electricity': 'electricity'}
+GROUP_DEFAULT = {'bio': 'wood', 'oil': 'diesel', 'gas': 'gas', 'coal': 'coal', 'electricity': 'electricity'}
+
+
+def iea_current(u):
+    """IEA current-release 2023 final consumption, {sector: {carrier: TJ}}.
+    The IEA table has five fuels; each cell is split into the carriers of
+    CARRIERS in proportion to the UNSD 2023 split of the same sector and fuel
+    group (wood vs charcoal; LPG, kerosene, petrol, diesel, jet, fuel oil).
+    The IEA cell sets the level, UNSD only the within-cell shares."""
+    m = {s: {c: 0.0 for c in CARRIERS} for s in SECTORS}
+    with io.open(os.path.join(IEA, IEA_CUR), encoding='utf-8-sig') as fh:
+        for r in csv.DictReader(fh):
+            if r['sector'] not in IEA_SECTOR:
+                continue
+            s = IEA_SECTOR[r['sector']]
+            for col, g in IEA_FUEL.items():
+                v = float(r[col]) if r[col].strip() else 0.0
+                members = [c for c in CARRIERS if FUEL_GROUP[c] == g]
+                base = sum(u[s][c] for c in members)
+                if base > 0:
+                    for c in members:
+                        m[s][c] += v * u[s][c] / base
+                else:
+                    m[s][GROUP_DEFAULT[g]] += v
+    return m
+
+
+def iea_electricity():
+    with io.open(os.path.join(IEA, IEA_EL), encoding='utf-8-sig') as fh:
+        return {r['line']: float(r['value_GWh']) for r in csv.DictReader(fh)}
+
+
 def section1():
-    m, extra = unsd_2023()
-    print('1. NIGERIA 2023 FINAL ENERGY BY SECTOR AND CARRIER (UNSD, PJ)')
+    u, extra = unsd_2023()
+    m = iea_current(u)
+    print('1. NIGERIA 2023 FINAL ENERGY BY SECTOR AND CARRIER (IEA current release, PJ;')
+    print('   UNSD 2023 splits each IEA fuel cell into carriers)')
     print('  %-12s' % '' + ''.join('%9s' % c[:8] for c in CARRIERS) + '%9s' % 'total')
     for s in SECTORS:
         print('  %-12s' % s + ''.join('%9.1f' % (m[s][c] / 1e3) for c in CARRIERS)
@@ -103,19 +148,18 @@ def section1():
     tot = sum(col.values())
     print('  %-12s' % 'total' + ''.join('%9.1f' % (col[c] / 1e3) for c in CARRIERS)
           + '%9.1f' % (tot / 1e3))
-    sec = iea_csv('total_final_consumption_by_sector_2023.csv')
-    iea_map = {'residential': 'Residential', 'commercial': 'Commercial and public services',
-               'industry': 'Industry', 'transport': 'Transport',
-               'agriculture': 'Agriculture and forestry', 'other': 'Other non-specified',
-               'non_energy': 'Non-energy use'}
-    print('  check against IEA sector totals (PJ, UNSD / IEA):')
-    print('   ' + '  '.join('%s %.0f/%.0f' % (s[:5], sum(m[s].values()) / 1e3, sec[iea_map[s]] / 1e3)
+    print('  check, sector totals PJ (UNSD / IEA current release):')
+    print('   ' + '  '.join('%s %.0f/%.0f' % (s[:5], sum(u[s].values()) / 1e3, sum(m[s].values()) / 1e3)
                            for s in SECTORS))
-    print('   total %.0f / %.0f PJ' % (tot / 1e3, sum(sec.values()) / 1e3))
+    ub = lambda s: (u[s]['wood'] + u[s]['charcoal']) / 1e3
+    mb = lambda s: (m[s]['wood'] + m[s]['charcoal']) / 1e3
+    print('   biomass by sector (UNSD / IEA): ' + '  '.join(
+        '%s %.0f/%.0f' % (s[:5], ub(s), mb(s)) for s in ('residential', 'commercial', 'industry')))
+    print('   total %.0f / %.0f PJ' % (sum(sum(u[s].values()) for s in SECTORS) / 1e3, tot / 1e3))
     bio = sum(m[s]['wood'] + m[s]['charcoal'] for s in SECTORS)
     print('  biomass (wood, residues, charcoal) %.0f PJ = %.1f%% of final energy; residential'
           % (bio / 1e3, 100 * bio / tot))
-    print('  %.0f PJ of it; electricity %.1f%% of final energy' %
+    print('  %.0f PJ of it; electricity %.2f%% of final energy' %
           ((m['residential']['wood'] + m['residential']['charcoal']) / 1e3, 100 * col['electricity'] / tot))
     print()
     return m, extra
@@ -124,16 +168,17 @@ def section1():
 # --------------------------------------------------------------------------
 # 2. PRIMARY-TO-FINAL FACTORS BY CARRIER, 2023
 def section2(m, extra):
-    gen_tj = extra[('7000', '01')]                    # gross generation
+    el = iea_electricity()                            # IEA current release, GWh
+    gen = el['Natural gas'] + el['Hydropower'] + el['Solar PV']
     fin_el = sum(m[s]['electricity'] for s in SECTORS)
-    gas_in = extra[('3000', '088')]                   # gas into power plants
-    gas_gen = extra[('7000T', '01')]                  # gas-fired output
-    hyd, sol = extra[('7000H', '01')], extra[('7000S', '01')]
+    gas_in = extra[('3000', '088')]                   # UNSD: gas into power plants
+    gas_gen = extra[('7000T', '01')]                  # UNSD: gas-fired output
     wood_in = extra[('5110', '085CH')]                # wood into charcoal kilns
     char_out = extra[('5160', '01')]                  # charcoal produced
-    eta_gas = gas_gen / gas_in
-    gap = gen_tj / fin_el                             # generation per final kWh
-    pef = {'electricity_2023': (gas_in + hyd + sol) / fin_el,
+    eta_gas = gas_gen / gas_in                        # UNSD pair, one source
+    gap = gen / el['Total final consumption']         # generation per final kWh
+    gas_sh = el['Natural gas'] / gen
+    pef = {'electricity_2023': gap * (gas_sh / eta_gas + (1 - gas_sh)),
            'electricity_all_gas': gap / eta_gas,
            'electricity_72pc_low': gap * (0.72 + 0.28 / eta_gas),
            'electricity_all_solar_hydro': gap}
@@ -141,23 +186,27 @@ def section2(m, extra):
     pef_fuel = {c: 1.0 for c in CARRIERS}
     pef_fuel['charcoal'] = 1 / kiln
     print('2. PRIMARY-TO-FINAL FACTORS (PEF, primary per unit of final), 2023')
-    print('  gas plants: %.0f TJ in -> %.0f TJ out, efficiency %.3f (UNSD 088)' % (gas_in, gas_gen, eta_gas))
-    print('  generation / final electricity = %.4f (losses and own use, IEA fixes losses at 15%%)' % gap)
+    print('  gas plants: %.0f TJ in -> %.0f TJ out, efficiency %.3f (UNSD 088 and output)' % (gas_in, gas_gen, eta_gas))
+    print('  generation / final electricity = %.0f / %.0f GWh = %.4f (IEA current release; exports,'
+          % (gen, el['Total final consumption'], gap))
+    print('  own use, losses fixed at 15%%, and a statistical difference); gas %.1f%% of generation' % (100 * gas_sh))
     print('  charcoal kilns: %.0f TJ wood -> %.0f TJ charcoal, efficiency %.3f -> PEF %.2f'
           % (wood_in, char_out, kiln, 1 / kiln))
     print('  electricity PEF per final unit (non-combustible renewables at output, the IEA')
     print('  physical-energy-content convention that the paper\'s TPES uses):')
     for k, v in pef.items():
         print('    %-30s %.3f' % (k, v))
-    tes = sum(iea_csv('total_energy_supply_2023.csv').values())
     tfc = sum(sum(m[s].values()) for s in SECTORS)
     bottom = sum(m[s][c] * pef_fuel[c] for s in SECTORS for c in CARRIERS if c != 'electricity') \
         + fin_el * pef['electricity_2023']
-    print('  P/F bottom-up %.3f (demand-linked conversion only) vs IEA TES/TFC %.3f; the'
-          % (bottom / tfc, tes / tfc))
-    print('  remaining %.0f PJ is mainly gas used by the oil and gas industry itself'
-          % ((tes - bottom) / 1e3))
-    print('  (UNSD 0912 %.0f PJ) and statistical differences, tied to production for export.'
+    # TES is held only for the older release, so it is compared with the older
+    # release's own TFC, never with the current-release matrix
+    tes_old = sum(iea_csv('total_energy_supply_2023.csv').values())
+    tfc_old = sum(iea_csv('total_final_consumption_by_sector_2023.csv').values())
+    print('  P/F bottom-up %.3f (demand-linked conversion only); IEA TES/TFC %.3f (older release,'
+          % (bottom / tfc, tes_old / tfc_old))
+    print('  the only TES held). The difference is mainly gas burned by the oil and gas industry')
+    print('  itself (UNSD 0912 %.0f PJ) and statistical differences, tied to production for export.'
           % (extra[('3000', '0912')] / 1e3))
     print()
     return pef, pef_fuel
@@ -403,9 +452,9 @@ def section5(m):
               % (100 * eta, fuel / 1e3, save / 1e3, 100 * save / F0))
     print('  ...if the fuel is inside final energy. If it is not recorded, final energy is')
     print('  understated today and nothing falls. The prototype\'s 2023 electrification share')
-    print('  (8.99%%) also uses gross generation (x1.2117) plus genset output, against %.1f%% final'
+    print('  (8.99%%, older release) also uses gross generation plus genset output, against %.2f%%'
           % (100 * sum(m[s]['electricity'] for s in SECTORS) / F0))
-    print('  electricity in the balance; the share definition is itself a boundary choice.')
+    print('  final electricity in the balance; the share definition is itself a boundary choice.')
     print()
 
 
@@ -531,7 +580,10 @@ def section7(m, results, rows):
     s_base = block_series('ssp245', 'elecShare')[years.index(2050)]
     F0 = sum(sum(m[s].values()) for s in SECTORS)
     E0 = sum(m[s]['electricity'] for s in SECTORS)
-    proto_to_final = (E0 / F0) / 0.0898693   # 2023 final share / prototype share
+    el = iea_electricity()
+    gen = el['Natural gas'] + el['Hydropower'] + el['Solar PV']
+    proto_2023 = (gen + 20600.0) * 3.6 / F0    # prototype definition, current release
+    proto_to_final = (E0 / F0) / proto_2023    # 2023 final share / prototype share
     print('  SSP2-4.5 in 2050 (baseline final energy %.2f EJ, prototype electrification %.1f%%).'
           % (tj / 1e6, 100 * s_base))
     print('  Approximation: 2050 has 2023\'s sector-carrier structure; prototype shares map to')

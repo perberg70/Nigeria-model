@@ -14,12 +14,14 @@ Observed data (2000-2024):
   * Commercial primary energy for Africa and South Africa: the same file
     (Energy Institute / EIA; excludes traditional biomass)
   * Nigeria final energy: IEA, ../../iea_nigeria_2023/
-  * Africa final energy (optional): IEA Africa chart exports, held in the
-    MSc-thesis repository; pass --iea-africa DIR to include them
+  * Africa final energy: IEA Africa chart exports, ../../iea_africa_2023/
+    (copied from MSc-thesis on 2026-10-09; --iea-africa DIR overrides)
 Model data: IMAGE 3.2 Africa R10, ../image32_ssp2021/ (2010-2020 rows are
 shared calibration values, not observations).
 
 Run: python carbon_intensity_check.py [--iea-africa DIR]
+Nigeria's final-energy series are the IEA older release throughout (the only
+2000-2023 series held); the current release covers 2023 alone.
 """
 import csv, io, json, math, os, sys
 
@@ -29,6 +31,7 @@ OWID = os.path.join(DATA, 'owid_co2_africa', 'owid_co2_africa_2000_2024.csv')
 IEA_NGA = os.path.join(DATA, 'iea_nigeria_2023')
 WDI_GROWTH = os.path.join(DATA, 'worldbank_nigeria_gdp', 'NY.GDP.MKTP.KD.ZG.json')
 SC = os.path.join(HERE, '..', 'image32_ssp2021')
+IEA_AFR = os.path.join(DATA, 'iea_africa_2023')
 
 YEARS = list(range(2000, 2025))
 KWH_PER_GJ = 1 / 3.6e-3        # 1 GJ = 277.8 kWh
@@ -184,7 +187,7 @@ SCEN = [('ssp119', 'SSP2021-SSP1-SPA1-19-Default'), ('ssp126', 'SSP2021-SSP1-SPA
 
 
 def main():
-    iea_africa = None
+    iea_africa = IEA_AFR if os.path.isdir(IEA_AFR) else None
     if '--iea-africa' in sys.argv:
         iea_africa = sys.argv[sys.argv.index('--iea-africa') + 1]
     by = load_owid()
@@ -272,7 +275,7 @@ def main():
         show('B5. Combustion CO2 per commercial final energy, like for like', 'kg/GJ', list(ci_e2.items()),
              ref=(('Nigeria', ci_e2['Nigeria, comb. per comm. final']), ('Africa excl. NGA', ci_e2['Africa excl. NGA, comb/comm.fin'])))
     else:
-        print('    (Africa final energy not loaded: pass --iea-africa DIR for B4/B5 Africa rows.)')
+        print('    (Africa final energy not found: pass --iea-africa DIR for B4/B5 Africa rows.)')
     print()
 
     # C. co-movement
@@ -307,9 +310,10 @@ def main():
         o1 = '%11.1f%%' % pct(ob[2010], ob[2015]) if ob else '%12s' % 'n/a'
         o2 = '%11.1f%%' % pct(ob[2015], ob[2020]) if ob else '%12s' % 'n/a'
         print('    %-22s %11.1f%% %s %11.1f%% %s' % (name, pct(im[2010], im[2015]), o1, pct(im[2015], im[2020]), o2))
-    print('    (IMAGE rows are identical across markers to <0.15%; SSP2-4.5 shown. Observed final-')
-    print('     energy rows need --iea-africa. IMAGE CO2/commercial final uses total, not')
-    print('     combustion, CO2, since IMAGE does not separate flaring and cement.)')
+    print('    (IMAGE rows are identical across markers to <0.15%; SSP2-4.5 shown. Observed')
+    print('     rows: GCB CO2, Maddison GDP, IEA Africa final energy. IMAGE CO2/commercial final')
+    print('     uses total CO2 and the observed row combustion CO2, since IMAGE does not separate')
+    print('     flaring and cement.)')
     print()
 
     # E. IMAGE forward: what an R10 carbon-intensity path would carry

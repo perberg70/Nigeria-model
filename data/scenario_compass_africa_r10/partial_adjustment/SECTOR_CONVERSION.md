@@ -30,10 +30,10 @@ products do. Its PEF depends on the power mix:
 
 | Power mix | PEF (primary per unit of final electricity) |
 |---|---:|
-| all gas (UNSD plant efficiency 34.8%) | 3.48 |
-| Nigeria's 2023 grid | 2.97 |
-| 72% low-emission, 28% gas | 1.85 |
-| all solar or hydro (grid losses only, ×1.21) | 1.21 |
+| all gas (UNSD plant efficiency 34.8%) | 3.55 |
+| Nigeria's 2023 grid | 3.02 |
+| 72% low-emission, 28% gas | 1.88 |
+| all solar or hydro (generation-to-final gap only, ×1.23) | 1.23 |
 
 So **P/F rises** with electrification, and how much depends on the mix.
 
@@ -42,32 +42,41 @@ electricity a growing share of it, so it captures neither layer.
 
 ## 1. Nigeria 2023, by sector and carrier
 
-| PJ (UNSD 2023) | biomass | LPG, kerosene | gas, coal, fuel oil | petrol, diesel | electricity | total |
+| PJ (IEA, current release) | biomass | LPG, kerosene | gas, coal, fuel oil | petrol, diesel | electricity | total |
 |---|---:|---:|---:|---:|---:|---:|
-| residential | 935 | 77 | — | — | 63 | 1,075 |
-| commercial | 119 | 0 | — | — | 29 | 148 |
-| industry | 178 | 0 | 178 | 0 | 30 | 386 |
-| transport | — | — | — | 772 (+9 jet) | — | 781 |
-| non-energy and other | — | 8 | 74 | — | — | 87 |
-| **total** | **1,232** | **85** | **252** | **772** | **122** | **2,477** |
+| residential | 921 | 76 | — | — | 62 | 1,059 |
+| commercial | 120 | 0 | — | — | 29 | 149 |
+| industry | 178 | 0 | 164 | 0 | 29 | 371 |
+| transport | — | — | — | 784 (+10 jet) | 0 | 793 |
+| non-energy and other | — | 8 | 66 | — | — | 79 |
+| **total** | **1,219** | **84** | **230** | **784** | **120** | **2,451** |
 
-- **Match with the IEA:** sector totals agree within 2–4% (industry 386 vs 372; total 2,477 vs
-  2,466 PJ). The labels for the UNSD codes 1234 and 1235 are assigned by matching them to IEA
-  rows.
+- **Source:** the IEA's own 2023 sector-by-fuel table (Data Browser, "Last updated 28 Sep
+  2026"), copied from MSc-thesis into `../../../iea_nigeria_2023/`.
+- **Finer split from UNSD:** the IEA table has five fuels. UNSD 2023 splits each IEA cell into
+  wood vs charcoal, and into LPG, kerosene, petrol, diesel, jet fuel and fuel oil. The IEA cell
+  sets the level; UNSD sets only the shares within it.
+- **Match between the sources:** UNSD alone gives nearly the same matrix. Biomass: residential 935
+  vs 921 PJ, commercial 119 vs 120, industry 178 vs 178. Total: 2,477 vs 2,451 PJ. The UNSD codes
+  1234 and 1235 are labelled by matching them to IEA rows.
 - **Biomass** is 50% of final energy, and residential biomass alone is 38%.
-- **Electricity** is 4.9% of final energy.
+- **Electricity** is 4.88% of final energy.
 
 Most of Nigeria's final energy therefore sits in the uses with the largest ρ: open-fire
 cooking and road transport.
 
 ## 2. Primary-to-final, 2023
 
-- **Gas power plants:** 327 PJ of gas in, 114 PJ of electricity out, an efficiency of 34.8%.
-- **Losses:** gross generation is 1.21 × final electricity (the IEA fixes losses at 15%).
+- **Gas power plants:** 327 PJ of gas in, 114 PJ of electricity out, an efficiency of 34.8% (UNSD
+  input and output, one source).
+- **Generation against final electricity:** 40,975 / 33,203 GWh = 1.234 (IEA current release).
+  The gap covers exports, own use, transmission losses fixed at 15%, and a statistical
+  difference.
 - **Charcoal kilns:** 186 PJ of wood makes 44 PJ of charcoal, an efficiency of 24% (PEF 4.18).
-- **P/F:** the demand-linked conversion alone gives **1.15**, against the IEA's TES/TFC of 1.24.
-  The remaining 203 PJ is mostly gas burned by the oil and gas industry (UNSD 0912, 118 PJ),
-  which is tied to export production rather than domestic demand.
+- **P/F:** the demand-linked conversion alone gives **1.16**, against the IEA's TES/TFC of 1.24.
+  The IEA figure uses the older release, the only TES held; the two releases are not mixed.
+  Most of the difference is gas burned by the oil and gas industry (UNSD 0912, 118 PJ), which is
+  tied to export production rather than domestic demand.
 
 ## 3. End-use efficiency ratios (ρ)
 
@@ -93,17 +102,17 @@ enter the overall factor.
 
 | Rule | e | F/F0, central ρ | F/F0, ρ range | P/F, 2023 grid | P/F, 72% low | P/P0, 2023 grid | P/P0, 72% low |
 |---|---:|---:|---|---:|---:|---:|---:|
-| pro rata | 0.20 | 0.78 | 0.67–0.84 | 1.44 | 1.22 | 0.97 | 0.82 |
-| cooking first | 0.20 | 0.67 | 0.58–0.72 | 1.44 | 1.21 | 0.83 | 0.70 |
-| transport first | 0.20 | 0.78 | 0.63–0.84 | 1.47 | 1.24 | 0.99 | 0.84 |
-| industry first | 0.20 | 0.88 | 0.77–0.95 | 1.46 | 1.23 | 1.12 | 0.95 |
-| IMAGE SSP2-4.5 pattern | 0.20 | 0.78 | 0.67–0.85 | 1.43 | 1.21 | 0.96 | 0.81 |
-| pro rata | 0.67 | 0.46 | 0.33–0.56 | 2.33 | 1.58 | 0.92 | 0.63 |
-| cooking first | 0.67 | 0.40 | 0.29–0.50 | 2.32 | 1.57 | 0.80 | 0.54 |
-| industry first | 0.67 | 0.46 | 0.33–0.57 | 2.38 | 1.63 | 0.95 | 0.65 |
-| IMAGE SSP2-4.5 pattern | 0.67 | 0.45 | 0.33–0.56 | 2.32 | 1.57 | 0.91 | 0.62 |
+| pro rata | 0.20 | 0.77 | 0.67–0.84 | 1.45 | 1.22 | 0.97 | 0.82 |
+| cooking first | 0.20 | 0.67 | 0.58–0.72 | 1.45 | 1.22 | 0.84 | 0.71 |
+| transport first | 0.20 | 0.78 | 0.63–0.84 | 1.48 | 1.25 | 1.00 | 0.85 |
+| industry first | 0.20 | 0.88 | 0.76–0.94 | 1.47 | 1.24 | 1.11 | 0.94 |
+| IMAGE SSP2-4.5 pattern | 0.20 | 0.77 | 0.67–0.85 | 1.44 | 1.21 | 0.96 | 0.81 |
+| pro rata | 0.67 | 0.45 | 0.33–0.56 | 2.37 | 1.61 | 0.93 | 0.63 |
+| cooking first | 0.67 | 0.40 | 0.29–0.49 | 2.35 | 1.59 | 0.81 | 0.55 |
+| industry first | 0.67 | 0.46 | 0.32–0.57 | 2.41 | 1.65 | 0.95 | 0.65 |
+| IMAGE SSP2-4.5 pattern | 0.67 | 0.45 | 0.33–0.56 | 2.35 | 1.59 | 0.91 | 0.62 |
 
-F0 = final energy in 2023, P0 = primary energy in 2023, P = primary energy. Today's P/F is 1.15
+F0 = final energy in 2023, P0 = primary energy in 2023, P = primary energy. Today's P/F is 1.16
 (bottom-up). The IMAGE pattern splits new electricity household 0.46, industry 0.50, transport
 0.05, as IMAGE R10 adds it over 2023–2050.
 
@@ -122,10 +131,10 @@ F0 = final energy in 2023, P0 = primary energy in 2023, P = primary energy. Toda
 
 **The overall P/F factor is not fixed.**
 
-- It rises from 1.15 to 1.2–2.4. The power mix drives it as much as electrification does.
-- Primary energy falls to 0.54–0.65 of today's when the power is mostly low-emission. With
-  today's gas-heavy grid, it falls only to 0.80–0.95.
-- With industry first at 20% on today's grid, primary energy *rises* (1.12).
+- It rises from 1.16 to 1.2–2.4. The power mix drives it as much as electrification does.
+- Primary energy falls to 0.55–0.65 of today's when the power is mostly low-emission. With
+  today's gas-heavy grid, it falls only to 0.81–0.95.
+- With industry first at 20% on today's grid, primary energy *rises* (1.11).
 
 ## 5. Back-up generators: a boundary term of the same size
 
@@ -140,8 +149,8 @@ service cuts final energy by **222–420 PJ, or 9–17% of the 2023 total**, at 
 efficiency. If the fuel is not recorded, today's final energy is understated instead.
 
 **The share definition is also a choice.** The prototype's 2023 electrification share of 8.99%
-uses gross generation plus generator output. The final-electricity share in the balance is
-4.9%.
+uses gross generation plus generator output (older IEA release). The final-electricity share in
+the balance is 4.88% (current release).
 
 ## 6. IMAGE Africa R10: the factor moves with each SSP's own transitions
 
@@ -204,13 +213,14 @@ technology choices:
 
      | Slider | K | Final electricity, one-for-one | Final electricity, converted | Final energy |
      |---|---:|---:|---:|---:|
-     | 20% | 0.96 | 157 TWh | 150 TWh | 5.16 → 4.93 EJ |
-     | 40% | 0.81 | 313 TWh | 252 TWh | 5.16 → 4.15 EJ |
-     | 67% | 0.66 | 525 TWh | 348 TWh | 5.16 → 3.42 EJ |
+     | 20% | 0.96 | 155 TWh | 148 TWh | 5.16 → 4.94 EJ |
+     | 40% | 0.81 | 309 TWh | 249 TWh | 5.16 → 4.16 EJ |
+     | 67% | 0.66 | 518 TWh | 344 TWh | 5.16 → 3.43 EJ |
 
-     The slider's share is mapped to a final-electricity share by the 2023 ratio of 0.547. The
-     prototype itself displays gross generation including generators, which is about 1.8 times
-     these figures on the 2023 definition.
+     The slider's share is mapped to a final-electricity share by the 2023 ratio of 0.539. The
+     prototype itself displays gross generation including generators, which is about 1.9 times
+     these figures on the 2023 definition. The 5.16 EJ baseline is from this repository's
+     baseline block, which is still on the older IEA release; K is a ratio and is not affected.
 3. **P/F** is needed only to report primary energy, or to convert the TPES elasticity (point
    above). Take it from the chosen power mix and allocation, not as a constant.
 
@@ -233,6 +243,9 @@ technology choices:
 - **Data:**
   - UNSD codes 1234 and 1235 are labelled by matching them to IEA rows.
   - The location of generator fuel is unknown.
-  - The older IEA release is used throughout. The ratios are insensitive to it.
+  - Sections 1–5 use the IEA current release (28 Sep 2026); UNSD sets only the shares within
+    each IEA cell. TES is held only for the older release and is compared only with that
+    release's own TFC. Moving from UNSD/older-release figures to the current release changed
+    the results by under 2% (first version of this memo, commit `7cf07ef`).
 - **IMAGE:** P/F for SSP3 is not formed. Primary energy is summed from eight sources; geothermal
   and "other" are not in the export.

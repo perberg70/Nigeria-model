@@ -16,15 +16,16 @@ carbon-intensity path could be a candidate for transfer. The baseline transfers 
 
 **Levels: no.** On every metric Nigeria sits below the rest of Africa:
 
-| Metric | Nigeria as a share of rest of Africa (excl. South Africa) |
+| Metric | Nigeria as a share of the rest of Africa |
 |---|---|
-| CO₂ per unit of GDP (fuel combustion only) | 0.5–0.6× |
-| CO₂ per unit of commercial energy (energy without traditional biomass) | about 0.85× (closest); from the like-for-like comparison marked `[Pending]` below |
+| CO₂ per unit of GDP (fuel combustion only), against Africa without South Africa and Nigeria | 0.48–0.60× (2010–2022) |
+| CO₂ per unit of commercial final energy (without traditional biomass), against Africa without Nigeria | 0.80–0.88× (2015–2023), the closest |
 
 **Trends since 2010: roughly yes, against Africa without South Africa.**
 
-- **The trends are close.** Both fall at about 0.5–1.2% a year. The year-to-year changes
-  correlate moderately (r ≈ 0.55–0.63 over 12 years).
+- **The trends are close.** Both fall at about 0.5–1.2% a year. Like for like on IEA final
+  energy, 2011–2023, commercial energy gives −1.2 vs −0.9%/yr and total energy −1.0 vs −0.6%/yr.
+  The year-to-year changes correlate moderately (r ≈ 0.53–0.63 over 12 years).
 - **Whole Africa does not fit.** Its CO₂/GDP falls faster (−1.5%/yr), pulled by South Africa's
   coal.
 - **Before 2010 nothing matches.** Nigeria's numbers are dominated by flaring cuts and by a data
@@ -43,7 +44,11 @@ The CO₂/GDP failure is the known IMAGE GDP artifact.
 
 - **Sources:** CO₂ by source (Global Carbon Budget 2025), GDP (Maddison 2023) and commercial
   primary energy (EIA/EI) for all 54 African countries come from Our World in Data
-  (`../../owid_co2_africa/`). Nigeria's final energy comes from the IEA (`../../iea_nigeria_2023/`).
+  (`../../owid_co2_africa/`). Final energy comes from the IEA: Nigeria from `../../iea_nigeria_2023/`
+  (older release, the only 2000–2023 series held), Africa from `../../iea_africa_2023/` (copied from
+  MSc-thesis on 2026-10-09).
+- **Africa's commercial final energy** is the IEA sector total minus "Biofuels and waste" in the
+  four by-source files (92% of final consumption).
 - **Nigeria's commercial final energy** is IEA total final consumption minus biomass. Biomass is
   estimated as biofuels-and-waste production × the 2023 final/supply ratio (0.899).
 - **Two "rest of Africa" regions** keep Nigeria out of its own comparison:
@@ -85,10 +90,23 @@ so compare these as rates, not levels.
 
 **Levels.** Combustion CO₂ per GDP: Nigeria is 0.48–0.60 of Africa excl. ZA+NGA over 2010–2022.
 
-**`[Pending]` Like-for-like final energy for Africa.** IEA Africa final consumption is held in
-the MSc-thesis repository (`02_literature/data/iea_africa_2023/`), not here. Run the script with
-`--iea-africa <that folder>` for the final-energy rows of sections B and C, and the observed
-final-energy rows in section D. Copying those files into this repository is Per's decision.
+**Like for like on IEA final energy (fitted trends, %/yr):**
+
+| Metric | Nigeria | Africa excl. NGA | Africa |
+|---|---:|---:|---:|
+| Combustion CO₂ / commercial final energy, 2010–2022 | −1.8 | −0.8 | −0.9 |
+| CO₂ / total final energy, 2010–2022 | −1.4 | −0.5 | −0.6 |
+| Combustion CO₂ / commercial final energy, 2011–2023 | −1.2 | −0.9 | |
+| CO₂ / total final energy, 2011–2023 | −1.0 | −0.6 | |
+
+- **Correlation of year-to-year changes, 2011–2023:** r = 0.62 for commercial energy and 0.53 for
+  total energy.
+- **Level, combustion CO₂ per commercial final energy, Nigeria vs Africa without Nigeria:**
+  0.69–0.72 over 2000–2009, 1.02 in the break year 2010, and 0.80–0.88 over 2015–2023 (87 vs
+  99 kg/GJ in 2023).
+- **South Africa is inside the comparison region here,** because its final energy is not held.
+  Its coal lifts the regional level, so the true gap to the rest of Africa without South Africa
+  is smaller than this.
 
 **IMAGE's 2010–2020 rows against observed Africa:**
 
@@ -96,10 +114,13 @@ final-energy rows in section D. Copying those files into this repository is Per'
 |---|---:|---:|---:|---:|
 | CO₂ | +9.3% | +9.8% | +10.2% | +2.5% |
 | CO₂ / GDP | −32.8% | −9.5% | −2.3% | −6.8% |
+| CO₂ / final energy | −4.7% | −3.6% | −3.1% | −3.5% |
+| CO₂ / commercial final energy | −2.7% | −6.9% | −4.5% | −1.4% |
 
 - **CO₂/GDP:** IMAGE fails, for the same GDP reason found on 2026-09-18.
-- **CO₂ per final energy:** IMAGE tracks observed Africa closely. This needs the `--iea-africa`
-  data; see the session report.
+- **CO₂ per final energy:** IMAGE tracks observed Africa closely in both windows.
+- **CO₂ per commercial final energy:** the windows differ, but the decade agrees (−7.1% vs
+  −8.2%). IMAGE's row uses total CO₂, and the observed row uses combustion CO₂.
 - **2015→2020:** the CO₂ gap reflects 2020, a COVID year that IMAGE's 2021 release does not
   contain.
 
@@ -150,8 +171,9 @@ final energy):**
   Common shocks (2020) raise r.
 - **Estimated biomass:** Nigeria's commercial final energy uses estimated biomass, so the
   charcoal-conversion share is held at its 2023 value.
-- **Mixed denominators:** the regional commercial-energy rows here are primary energy, Nigeria's
-  are final. Rates are comparable; levels are not.
+- **Mixed denominators in one table:** the commercial-energy rows from Our World in Data are
+  primary energy for the regions and final energy for Nigeria. Rates are comparable; levels are
+  not. The IEA rows are final energy on both sides.
 - **Data quality:** Maddison GDP is missing for four countries. Nigeria's EIA primary energy is not
   used because it is erratic.
 - **IMAGE:** its CO₂ is fossil-and-industry (total minus AFOLU), its final energy runs 9–17% above
