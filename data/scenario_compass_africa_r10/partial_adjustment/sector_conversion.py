@@ -271,7 +271,8 @@ def section3():
     print('    -> biomass/electric %.1f-%.1f, LPG/electric %.1f-%.1f, if service per stove is equal'
           % (bio20 / el50, bio20 / el20, lpg20 / el50, lpg20 / el20))
     print('    (an assumption; the ETP states no efficiencies and its PJ do not match IEA levels)')
-    print('  - Uganda controlled cooking test (2025, via web search, unverified): 1 kg beans,')
+    print('  - Uganda controlled cooking test (Ahimbisibwe et al. 2025, Archives of Agriculture and')
+    print('    Environmental Science 10(2):303-315, via web search; paper not reached, unverified): 1 kg beans,')
     print('    hotplate 10.42 MJ, LPG 13.28, improved wood 38.81, three-stone 102.44 MJ')
     print('    -> three-stone/electric 9.8, improved wood/electric 3.7, LPG/electric 1.27')
     print('  - Akpasoh & Edeminam 2023, Nigeria CCT (sources.yaml; LHVs assumed): electric pressure')
@@ -280,7 +281,8 @@ def section3():
     print('    older figure), gasoline vehicles 12-30% -> ratio about 2.3-5')
     print('  - Back-up gensets 15-25% fuel-to-electricity (2026-08-29 boundary memo) -> 4-6.7')
     print('  - Industry: no source held; boiler vs resistance heating assumed 1.0-1.5, fuelwood')
-    print('    process heat vs electric 1.5-4. ASSUMPTIONS, flagged.')
+    print('    process heat vs electric 1.5-4. ASSUMPTIONS, flagged. The ETP industry charts (pp.27-29)')
+    print('    switch fuels one-for-one, heat pumps included (rho = 1), so they give no basis either.')
     print('  Ranges used (low / central / high):')
     for k, v in RHO.items():
         print('    %-24s %4.1f %4.1f %4.1f' % ('%s, %s' % k, *v))

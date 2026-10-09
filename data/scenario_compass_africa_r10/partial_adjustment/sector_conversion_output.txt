@@ -37,7 +37,8 @@
     biomass 6.58 GJ, LPG 1.99 GJ (2020); electric 1.06 GJ (2020), 1.53 GJ (2050), LPG 2.02 GJ (2050)
     -> biomass/electric 4.3-6.2, LPG/electric 1.3-1.9, if service per stove is equal
     (an assumption; the ETP states no efficiencies and its PJ do not match IEA levels)
-  - Uganda controlled cooking test (2025, via web search, unverified): 1 kg beans,
+  - Uganda controlled cooking test (Ahimbisibwe et al. 2025, Archives of Agriculture and
+    Environmental Science 10(2):303-315, via web search; paper not reached, unverified): 1 kg beans,
     hotplate 10.42 MJ, LPG 13.28, improved wood 38.81, three-stone 102.44 MJ
     -> three-stone/electric 9.8, improved wood/electric 3.7, LPG/electric 1.27
   - Akpasoh & Edeminam 2023, Nigeria CCT (sources.yaml; LHVs assumed): electric pressure
@@ -46,7 +47,8 @@
     older figure), gasoline vehicles 12-30% -> ratio about 2.3-5
   - Back-up gensets 15-25% fuel-to-electricity (2026-08-29 boundary memo) -> 4-6.7
   - Industry: no source held; boiler vs resistance heating assumed 1.0-1.5, fuelwood
-    process heat vs electric 1.5-4. ASSUMPTIONS, flagged.
+    process heat vs electric 1.5-4. ASSUMPTIONS, flagged. The ETP industry charts (pp.27-29)
+    switch fuels one-for-one, heat pumps included (rho = 1), so they give no basis either.
   Ranges used (low / central / high):
     household, wood           4.0  6.0 10.0
     household, charcoal       2.0  3.0  4.0

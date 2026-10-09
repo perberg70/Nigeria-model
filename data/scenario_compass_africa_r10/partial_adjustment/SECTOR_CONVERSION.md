@@ -82,13 +82,13 @@ cooking and road transport.
 
 | Displaced use | Low / central / high | Evidence |
 |---|---|---|
-| Cooking on wood or residues | 4 / 6 / 10 | ETP 2.0 charts (pp. 37–40), per stove: biomass 6.6 GJ against electric 1.1–1.5 GJ, giving 4.3–6.2. This assumes equal service per stove and is our derivation. A Uganda controlled cooking test ("Techno-economic analysis of clean cooking technologies and fuels in Uganda", 2025, FAO AGRIS record; found by web search, **unverified**) uses 102.4 MJ (three-stone fire), 38.8 MJ (improved wood stove) and 10.4 MJ (hotplate) per kg of beans, giving three-stone fire / hotplate 9.8 and improved wood stove / hotplate 3.7 |
+| Cooking on wood or residues | 4 / 6 / 10 | ETP 2.0 charts (pp. 37–40), per stove: biomass 6.6 GJ against electric 1.1–1.5 GJ, giving 4.3–6.2. This assumes equal service per stove and is our derivation. A Uganda controlled cooking test (Ahimbisibwe et al., "Techno-economic analysis of clean cooking technologies and fuels in Uganda", *Archives of Agriculture and Environmental Science* 10(2): 303–315, 2025, as given by web search; the paper itself could not be reached from this session and is **not yet noted or verified**) uses 102.4 MJ (three-stone fire), 38.8 MJ (improved wood stove) and 10.4 MJ (hotplate) per kg of beans, giving three-stone fire / hotplate 9.8 and improved wood stove / hotplate 3.7 |
 | Charcoal | 2 / 3 / 4 | **Assumption** |
 | LPG | 1.2 / 1.5 / 2 | ETP per stove 1.3–1.9; Uganda test 1.27. Akpasoh & Edeminam (2023, Nigeria) give 3.7–7.1 for an electric pressure cooker, an upper bound |
 | Kerosene | 1.5 / 2 / 3 | Akpasoh & Edeminam 1.7–3.6 (upper bound, lower heating values assumed) |
 | Road fuels | 2.3 / 3 / 5 | US DOE (found by web search): electric vehicles about 60% grid-to-wheel (77% in an older figure), petrol vehicles 12–30% |
-| Industrial heat, fossil | 1.0 / 1.1 / 1.5 | **Assumption**: resistance heating against boilers; heat pumps at the high end |
-| Industrial heat, wood | 1.5 / 2.5 / 4 | **Assumption** |
+| Industrial heat, fossil | 1.0 / 1.1 / 1.5 | **Assumption**: resistance heating against boilers; heat pumps at the high end. The ETP's industry charts (pp. 27–29, checked 2026-10-09, `../../../seforall_nigeria_etp/etp_industry_PJ.csv`) give no basis: they switch fuels one-for-one, including heat pumps for low-temperature heat, i.e. ρ = 1, this range's low end |
+| Industrial heat, wood | 1.5 / 2.5 / 4 | **Assumption**. The ETP's industry charts also switch biomass one-for-one |
 | Back-up generators → grid | 4–6.7 | 15–25% generator efficiency (2026-08-29 boundary memo) |
 
 Aviation fuel, lubricants and non-energy use are treated as not electrifiable. This caps the

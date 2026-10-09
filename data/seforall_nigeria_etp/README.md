@@ -21,9 +21,11 @@ its text.
 | `etp_oil_BAU_demand_PJ.csv` | Oil demand by sector, business as usual, PJ | 22 |
 | `etp_gas_BAU_demand_PJ.csv` | Gas demand by sector, business as usual, PJ | 22 |
 | `etp_cooking.csv` | Cooking stoves by fuel (national, urban, rural, '000 units) and cooking fuel demand (PJ), 2020–2060 | 37–40 |
+| `etp_industry_PJ.csv` | Industry energy demand by fuel, PJ, 2020–2060: chemicals, high-temperature and low-temperature heat (added 2026-10-09) | 27–29 |
 | `extract_etp_charts.py` | Extracts the capacity and generation charts | |
 | `extract_etp_demand.py` | Extracts the oil and gas demand charts | |
 | `extract_etp_cooking.py` | Extracts the cooking charts | |
+| `extract_etp_industry.py` | Extracts the industry charts | |
 
 Reproduce (requires `pypdf`):
 
@@ -31,6 +33,7 @@ Reproduce (requires `pypdf`):
 python3 extract_etp_charts.py  Nigeria-ETIP-u.pdf .
 python3 extract_etp_demand.py  Nigeria-ETIP-u.pdf .
 python3 extract_etp_cooking.py Nigeria-ETIP-u.pdf .
+python3 extract_etp_industry.py Nigeria-ETIP-u.pdf .
 ```
 
 Each extractor checks its output against statements in the plan's text and writes no CSV if a
@@ -82,3 +85,18 @@ Cooking:
   ±25%.
 - Stove counts are not the same as people's main fuel: LPG plus electric stoves are 36.7% of
   stoves in 2020, while 18.9% of people mainly used clean fuel that year (World Bank / WHO).
+- **The industry charts (pp. 27–29) are checked against the growth rates printed on each chart**
+  (+4%, +3%, +2% a year; extracted 4.30, 2.66 and 2.20). Cement and steel (pp. 25–26) are
+  production in Mtpa, not energy, and are not extracted. The industry charts are the net-zero
+  pathway from 2025 on, and cover 109 PJ in 2020, against 371 PJ of industry final consumption in
+  the IEA's 2023 balance (178 PJ of it biomass). Use their shapes, not their levels.
+- **The industry charts switch fuels one-for-one.**
+  - **Low-temperature heat:** when heat pumps replace 28 PJ of biomass and gas between 2040 and
+    2045, the total keeps its trend (45.9 → 51.1 PJ, +11%, against +11% in the neighbouring
+    periods).
+  - **Chemicals (gas → hydrogen) and high-temperature heat:** totals are smooth through the
+    switches, except a 36% jump in 2055–2060 as biomass with CCS enters.
+
+  The plan does not say whether "heat pump" PJ is electricity in or heat out, so these charts
+  give no basis for an electric-versus-fuel efficiency ratio. By contrast, the plan's cooking
+  and transport demand charts do fall with electrification.
