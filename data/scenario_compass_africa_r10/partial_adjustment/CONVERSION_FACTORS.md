@@ -29,7 +29,7 @@ Each unit difference falls into one of three cases:
 
 | Conversion | Needed? | Recommendation | Effect on 2100 variant/current |
 |---|---|---|---|
-| TJ ↔ kgoe (1 kgoe = 41.868 MJ) | No: cancels | Do not apply | 0 (checked: ≤ 1e-15) |
+| TJ ↔ kgoe (1 kgoe = 41.868 MJ) | No: cancels | Do not apply | 0 (checked: about 1e-15) |
 | USD_2015 ↔ USD_2010/2017 ↔ 2005 I$, as a price-base factor | No for growth terms; **wrong tool** for the level | Do not apply | 0 for growth terms |
 | Decade κ, θ → annual λ | Optional | Keep λ = −κ = 0.023 | at most 0.005 |
 | Income **level** for the ETA term | **Yes** | Splice into PWT 7.1 units, then compute the sample mean | 0.944–0.979 → up to 0.976–0.994 |
@@ -198,8 +198,8 @@ so this conversion overlaps with Option D (MSc-thesis 2026-10-03 memo).
 
 Both checks run against the plain recalibrated variant:
 
-- **GDP:** switching to the USD_2010 rows changes 2100 var/cur by at most 3e-15.
-- **Energy:** switching the anchor to kgoe changes it by at most 1e-15.
+- **GDP:** switching to the USD_2010 rows changes 2100 var/cur by about 1e-15.
+- **Energy:** switching the anchor to kgoe changes it by under 1e-15.
 
 IMAGE's USD_2010 GDP enters only as log changes and through R, so it needs no conversion.
 
@@ -238,6 +238,7 @@ and the paper does not report the intercept and control coefficients needed to d
 - **Built here, not taken from the paper:**
   - the averaged "agreed-terms" values;
   - the split of IMAGE's Residential and Commercial using Nigeria's ratio.
-- **Unchanged inputs:** all runs use the variant's plain, recalibrated, no-decade-effects leg and
-  the older IEA release (2,465,907 TJ). The ratios do not depend on the anchor level; the sector
-  weights in section C would shift slightly with the 28 Sep 2026 release.
+- **Inputs:** all runs use the variant's plain, recalibrated, no-decade-effects leg. Since
+  2026-10-09 the variant's anchor is the IEA current release (2,450,511 TJ, was 2,465,907); the
+  ratios do not depend on the anchor level and did not change. The sector weights in section C
+  use the older release, the only one with total energy supply.

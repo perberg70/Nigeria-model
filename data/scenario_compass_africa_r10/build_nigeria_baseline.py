@@ -75,11 +75,11 @@ FOS  = ['Coal', 'Gas', 'Oil']
 ALLS = LOW + FOS + ['Other']
 
 # --- Nigeria's observed anchors, all already in the prototype ---------------
-NGA_GRID_GWH   = 40958.0          # IEA 2023 grid generation
+NGA_GRID_GWH   = 40975.0          # IEA 2023 grid generation: gas 31,601 + hydro 9,107 + solar 267 (page prints 40,976; its three lines sum to 40,975)
 NGA_GENSET_GWH = 20600.0          # ETP 296.3 PJ at 25% efficiency; conditional estimate
 NGA_HYDRO_GWH  = 9107.0
-NGA_SOLAR_GWH  = 211.0
-NGA_TFE_TJ     = 2465907.0        # IEA 2023 total final energy
+NGA_SOLAR_GWH  = 267.0            # IEA 2023, current release (211 in the older one)
+NGA_TFE_TJ     = 2450511.0        # IEA 2023 total final energy, current release, Total row (sector rows sum to 2,450,509)
 NGA_ANCHOR_MT  = 135.824          # Global Carbon Budget, 2024
 ANCHOR_YEAR    = 2024
 BASE_YEAR      = 2023
@@ -89,8 +89,32 @@ NGA_ALL_GWH   = NGA_GRID_GWH + NGA_GENSET_GWH
 NGA_LOW_GWH   = NGA_HYDRO_GWH + NGA_SOLAR_GWH
 NGA_ELEC_2023 = NGA_ALL_GWH * 3.6 / NGA_TFE_TJ
 NGA_LOW_2023  = NGA_LOW_GWH / NGA_ALL_GWH
-NGA_FOSSIL_GWH = NGA_ALL_GWH - NGA_LOW_GWH            # 52,240 = grid gas 31,640 + gensets 20,600
-NGA_K0        = NGA_GENSET_GWH / NGA_FOSSIL_GWH       # 0.3943: gensets' share OF FOSSIL, 2023
+NGA_FOSSIL_GWH = NGA_ALL_GWH - NGA_LOW_GWH            # 52,201 = grid gas 31,601 + gensets 20,600
+NGA_K0        = NGA_GENSET_GWH / NGA_FOSSIL_GWH       # 0.3946: gensets' share OF FOSSIL, 2023
+# IEA RELEASE. The 2023 anchors above come from the IEA Energy Statistics Data Browser tables for Nigeria
+# dated 28 Sep 2026, saved in data/iea_nigeria_2023/*_current_release.csv. Refreshed 2026-10-09 (ported
+# from MSc-thesis, where the same refresh was made on 2026-10-08) from an older release (total final energy
+# 2,465,907 TJ; grid 40,958 GWh = gas 31,640 + hydro 9,107 + solar 211). The older exports stay in that
+# folder as the audit trail; the two releases must not be mixed in one calculation. The check below ties
+# the typed constants to the saved tables, so the two cannot drift apart silently.
+def _check_iea_anchors():
+    d = os.path.join(HERE, '..', 'iea_nigeria_2023')
+    f1 = os.path.join(d, 'iea_nigeria_2023_final_consumption_by_fuel_and_sector_current_release.csv')
+    f2 = os.path.join(d, 'iea_nigeria_2023_electricity_generation_and_consumption_current_release.csv')
+    if not (os.path.exists(f1) and os.path.exists(f2)):
+        print('note: IEA current-release tables not found beside this script; anchors not cross-checked')
+        return
+    with io.open(f1, encoding='utf-8', newline='') as fh:
+        tot = {r['sector']: r for r in csv.DictReader(fh)}['Total final consumption']
+    with io.open(f2, encoding='utf-8', newline='') as fh:
+        gen = {r['line']: float(r['value_GWh']) for r in csv.DictReader(fh)}
+    assert float(tot['total_TJ']) == NGA_TFE_TJ, 'NGA_TFE_TJ differs from the saved IEA table'
+    assert gen['Hydropower'] == NGA_HYDRO_GWH and gen['Solar PV'] == NGA_SOLAR_GWH, 'hydro/solar differ'
+    assert gen['Natural gas'] + gen['Hydropower'] + gen['Solar PV'] == NGA_GRID_GWH, 'grid total differs'
+
+
+_check_iea_anchors()
+
 # Burke & Csereklyei (2016), Table 5, column 7 (total energy): the 10-year
 # growth-rates model, estimated on within-country growth over 1960-2010. The
 # 10-year elasticity is 0.48 at the sample's mean t-10 log GDP per capita and

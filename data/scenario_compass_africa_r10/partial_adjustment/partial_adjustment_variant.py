@@ -83,7 +83,7 @@ MARKERS = {
 }
 
 # Nigeria anchors, identical to build_nigeria_baseline.py
-NGA_TFE_TJ = 2465907.0
+NGA_TFE_TJ = 2450511.0   # IEA current release (28 Sep 2026), as in the builder since 2026-10-09
 BASE_YEAR, END_YEAR = 2023, 2100
 
 # Burke & Csereklyei (2016) Table 5, column "total energy"

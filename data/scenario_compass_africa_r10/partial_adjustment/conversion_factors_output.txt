@@ -112,7 +112,7 @@ C. BOUNDARY: Table 5 "total" is TPES; the variant drives IEA total final consump
   Nigeria's TFC, so the region must be stripped with the same final-energy law.
 
 D. PURE UNIT FACTORS CANCEL (numerical check)
-  GDP in USD_2010 instead of USD_2015 rows:   max |change| in var/cur 2100 = 3.3e-15
-  energy anchor in kgoe instead of TJ:          max |change| in var/cur 2100 = 1.4e-15
+  GDP in USD_2010 instead of USD_2015 rows:   max |change| in var/cur 2100 = 1.1e-15
+  energy anchor in kgoe instead of TJ:          max |change| in var/cur 2100 = 6.7e-16
   IMAGE R10 GDP stays in USD_2010: it enters only as log changes and in R.
 

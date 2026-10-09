@@ -9,7 +9,7 @@ processing are described in each `data/<folder>/README.md`.
 |---|---|---|---|
 | `iiasa_ssp_nigeria` | IIASA SSP Scenario Explorer: IIASA-WiC POP 2025 population, OECD ENV-Growth 2025 GDP\|PPP | Population by SSP; income per head | https://ssp.apps.ece.iiasa.ac.at/ |
 | `scenario_compass_africa_r10` | Scenario Compass, IMAGE 3.2 SSP2021, Africa R10 region | Baseline electrification, low-emission electricity share, final-energy intensity | https://scenariocompass.org/scenario-dashboard |
-| `iea_nigeria_2023` | International Energy Agency, Nigeria country data 2023 (CC BY 4.0) | Final energy consumption by sector and fuel; electricity generation | https://www.iea.org/countries/nigeria |
+| `iea_nigeria_2023` | International Energy Agency: Energy Statistics Data Browser, Nigeria 2023, "Last updated 28 Sep 2026" (CC BY 4.0), used since 2026-10-09; older country-page exports kept as the audit trail | Final energy consumption by sector and fuel; electricity generation | https://www.iea.org/data-and-statistics/data-tools/energy-statistics-data-browser |
 | `global_carbon_budget_nigeria` | Global Carbon Budget via Our World in Data | Observed CO₂ emissions | https://ourworldindata.org/grapher/annual-co2-emissions-per-country |
 | `worldbank_nigeria_gdp` | World Bank, World Development Indicators | GDP growth reference | https://datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators |
 | `wb_nigeria_clean_cooking` | World Bank EG.CFT.ACCS.ZS, Tracking SDG 7 (CC BY-NC 3.0 IGO) | Share of people mainly using clean cooking fuels | https://api.worldbank.org/v2/country/NGA/indicator/EG.CFT.ACCS.ZS |
@@ -30,7 +30,6 @@ processing are described in each `data/<folder>/README.md`.
 |---|---|---|---|
 | `iea_africa_2023` | International Energy Agency, Africa region chart exports, 2000–2023 (CC BY 4.0); copied from MSc-thesis | Africa final energy for the carbon-intensity check | https://www.iea.org |
 | `owid_co2_africa` | Our World in Data CO₂ dataset: Global Carbon Budget 2025, Maddison Project 2023 GDP, EIA/Energy Institute primary energy | African CO₂ by source, GDP and commercial primary energy for the carbon-intensity check | https://github.com/owid/co2-data |
-| `iea_nigeria_2023` (two `*_current_release.csv` tables) | IEA Energy Statistics Data Browser, Nigeria 2023, "Last updated 28 Sep 2026" (CC BY 4.0); copied from MSc-thesis | Sector-by-fuel final energy and electricity balance for the sector-conversion analysis | https://www.iea.org/data-and-statistics/data-tools/energy-statistics-data-browser |
 
 ## Parameters from publications
 

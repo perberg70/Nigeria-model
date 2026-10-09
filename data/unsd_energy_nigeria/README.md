@@ -39,7 +39,8 @@ Commodity `7000` = electricity (GWh); `3000` = natural gas (TJ); `4xxx` = oil pr
 ## Findings, 2023
 
 - Electricity output totals 40,959.6 GWh (combustible fuels 31,640.8, hydro 9,107.2, solar 211.6),
-  matching the IEA.
+  matching the IEA's older release (40,958 GWh). The current release (28 Sep 2026), which the
+  prototype now uses, differs from UNSD by gas −40, solar +55 and total +15 GWh.
 - All fuel input to electricity generation is natural gas (327,326 TJ). **No oil product is
   reported as input to electricity generation in any year 2020–2023** — back-up diesel and petrol
   generators are not in the reported electricity statistics.

@@ -148,13 +148,13 @@
   IMAGE R10, 2020 -> 2050: eps_P/F = ssp119 +0.043, ssp126 -0.005, ssp245 +0.017, ssp585 +0.102
   IMAGE R10, 2020 -> 2100: eps_P/F = ssp119 +0.036, ssp126 +0.033, ssp245 +0.053, ssp585 +0.077
 
-  SSP2-4.5 in 2050 (baseline final energy 5.16 EJ, prototype electrification 15.4%).
+  SSP2-4.5 in 2050 (baseline final energy 5.13 EJ, prototype electrification 15.5%).
   Approximation: 2050 has 2023's sector-carrier structure; prototype shares map to
   final-electricity shares by the 2023 ratio 0.539. TWh are final electricity.
   slider (prototype %)        1:1 TWh converted TWh     final EJ          K
-  20%                             155          148         4.94      0.957
-  40%                             309          249         4.16      0.806
-  67%                             518          344         3.43      0.664
+  20%                             154          147         4.91      0.958
+  40%                             307          248         4.14      0.807
+  67%                             515          342         3.41      0.665
   K = final energy at the user's electrification / at the baseline's, same service,
   IMAGE allocation, central rho. The prototype applies K = 1.
 

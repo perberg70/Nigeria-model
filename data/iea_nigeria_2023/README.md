@@ -63,11 +63,12 @@ The two releases must not be mixed within one calculation. The 2000–2022 annua
 current-release counterpart.
 
 **Which release this repository uses:**
-- **Current release:** MSc-thesis moved its build script and prototype to the current release on
-  2026-10-08. The sector-conversion analysis
-  (`../scenario_compass_africa_r10/partial_adjustment/sector_conversion.py`) uses it.
-- **Older release:** this repository's `build_nigeria_baseline.py` and prototype still use it, as
-  do the time-series analyses.
+- **Current release:** `build_nigeria_baseline.py`, the generated baseline block and the prototype
+  use it since 2026-10-09 (ported from the MSc-thesis refresh of 2026-10-08). So do the
+  partial-adjustment variant and the sector-conversion analysis. The build script asserts that its
+  typed anchors (2,450,511 TJ; 40,975 GWh; hydro 9,107; solar 267) equal these tables.
+- **Older release:** the time-series analyses (carbon-intensity check, the variant's unit-
+  conversion boundary weights) use it, because no current-release series exists before 2023.
 
 Cite as: IEA 2026; *Energy Statistics Data Browser, Balances, Nigeria, 2023*,
 https://www.iea.org/data-and-statistics/data-tools/energy-statistics-data-browser, Licence: CC BY 4.0
