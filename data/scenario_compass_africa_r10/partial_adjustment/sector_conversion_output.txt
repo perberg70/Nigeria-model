@@ -38,9 +38,13 @@
     -> biomass/electric 4.3-6.2, LPG/electric 1.3-1.9, if service per stove is equal
     (an assumption; the ETP states no efficiencies and its PJ do not match IEA levels)
   - Uganda controlled cooking test (Ahimbisibwe et al. 2025, Archives of Agriculture and
-    Environmental Science 10(2):303-315, via web search; paper not reached, unverified): 1 kg beans,
-    hotplate 10.42 MJ, LPG 13.28, improved wood 38.81, three-stone 102.44 MJ
-    -> three-stone/electric 9.8, improved wood/electric 3.7, LPG/electric 1.27
+    Environmental Science 10(2):303-315; read 2026-10-09, MSc-thesis sources.yaml), Table 2,
+    MJ per 0.5 kg test meal of beans (labelled per kg in the paper): hotplate 10.42 (rated
+    1000 W x 174 min, not metered), LPG 13.28, improved wood 38.81, three-stone 102.44,
+    charcoal 9.18 / 6.72, briquettes 5.18 / 3.75
+    -> three-stone/electric 9.8, improved wood/electric 3.7, LPG/electric 1.27,
+       charcoal/electric 0.64-0.88 (BELOW 1, against the charcoal range used)
+    Low confidence: single values, no variance, internal inconsistencies.
   - Akpasoh & Edeminam 2023, Nigeria CCT (sources.yaml; LHVs assumed): electric pressure
     cooker vs LPG 3.7-7.1, vs kerosene 1.7-3.6 -- an upper bound (sealed cooker)
   - US DOE (fueleconomy.gov / Fact #750, via web search): EV ~60% grid-to-wheel (77%

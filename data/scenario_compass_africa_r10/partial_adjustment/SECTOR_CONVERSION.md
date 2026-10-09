@@ -82,9 +82,9 @@ cooking and road transport.
 
 | Displaced use | Low / central / high | Evidence |
 |---|---|---|
-| Cooking on wood or residues | 4 / 6 / 10 | ETP 2.0 charts (pp. 37–40), per stove: biomass 6.6 GJ against electric 1.1–1.5 GJ, giving 4.3–6.2. This assumes equal service per stove and is our derivation. A Uganda controlled cooking test (Ahimbisibwe et al., "Techno-economic analysis of clean cooking technologies and fuels in Uganda", *Archives of Agriculture and Environmental Science* 10(2): 303–315, 2025, as given by web search; the paper itself could not be reached from this session and is **not yet noted or verified**) uses 102.4 MJ (three-stone fire), 38.8 MJ (improved wood stove) and 10.4 MJ (hotplate) per kg of beans, giving three-stone fire / hotplate 9.8 and improved wood stove / hotplate 3.7 |
-| Charcoal | 2 / 3 / 4 | **Assumption** |
-| LPG | 1.2 / 1.5 / 2 | ETP per stove 1.3–1.9; Uganda test 1.27. Akpasoh & Edeminam (2023, Nigeria) give 3.7–7.1 for an electric pressure cooker, an upper bound |
+| Cooking on wood or residues | 4 / 6 / 10 | ETP 2.0 charts (pp. 37–40), per stove: biomass 6.6 GJ against electric 1.1–1.5 GJ, giving 4.3–6.2. This assumes equal service per stove and is our derivation. A Uganda controlled cooking test (Ahimbisibwe et al. 2025, *Archives of Agriculture and Environmental Science* 10(2): 303–315, https://doi.org/10.26832/24566632.2025.1002017; read in full 2026-10-09 and noted in MSc-thesis `research/sources.yaml` as `ahimbisibwe_2025_uganda_clean_cooking`) gives 102.4 MJ (three-stone fire), 38.8 MJ (improved wood stove) and 10.4 MJ (1000 W hotplate) per test meal of beans (Table 2, p.307): three-stone fire / hotplate 9.8, improved wood stove / hotplate 3.7. The paper labels these MJ per kg, but every test cooked 0.5 kg; the ratios are unaffected. **Low confidence:** single values with no variance, internal inconsistencies (its own p.305 cites 4.5–5.3 MJ/kg for three-stone fires), and the hotplate energy is rated power × 174 min, not metered. If the plate was turned down or cycled, which we cannot check, its energy is overstated and every ratio from this test is too low |
+| Charcoal | 2 / 3 / 4 | **Assumption**, and the one test held contradicts it: in the Uganda test the charcoal stoves used *less* final energy than the hotplate (9.18 and 6.72 MJ against 10.42, Table 2 p.307), ρ = 0.64–0.88; briquette stoves 0.36–0.50. Not adopted, given the test's low confidence (above); whether to lower this range is **Per's decision** |
+| LPG | 1.2 / 1.5 / 2 | ETP per stove 1.3–1.9; Uganda test 1.27 (low confidence, above). Akpasoh & Edeminam (2023, Nigeria) give 3.7–7.1 for an electric pressure cooker, an upper bound |
 | Kerosene | 1.5 / 2 / 3 | Akpasoh & Edeminam 1.7–3.6 (upper bound, lower heating values assumed) |
 | Road fuels | 2.3 / 3 / 5 | US DOE (found by web search): electric vehicles about 60% grid-to-wheel (77% in an older figure), petrol vehicles 12–30% |
 | Industrial heat, fossil | 1.0 / 1.1 / 1.5 | **Assumption**: resistance heating against boilers; heat pumps at the high end. The ETP's industry charts (pp. 27–29, checked 2026-10-09, `../../../seforall_nigeria_etp/etp_industry_PJ.csv`) give no basis: they switch fuels one-for-one, including heat pumps for low-temperature heat, i.e. ρ = 1, this range's low end |
@@ -237,8 +237,9 @@ technology choices:
 ## Limits
 
 - **Industry and charcoal ρ are assumptions.** The cooking evidence is a derived ETP ratio
-  (equal service per stove assumed), a Uganda test found by web search and not verified, and an
-  upper-bound Nigerian test. The transport ratio comes from US DOE figures found by web search.
+  (equal service per stove assumed), one low-confidence Uganda test (read 2026-10-09; it puts
+  charcoal *below* the hotplate, against the charcoal range used here), and an upper-bound
+  Nigerian test. The transport ratio comes from US DOE figures found by web search.
 - **The structure is static.** 2050 is given 2023's sector-carrier structure. There is no rebound
   effect: cheaper service may raise demand for it. Within a sector, fuels are displaced pro rata.
 - **Data:**
