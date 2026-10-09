@@ -24,7 +24,7 @@ Nigeria. R10 continues to supply the separate power-sector baseline and the
 SSP marker mapping. This deliberately avoids presenting an unverified
 regional carbon-intensity path as a Nigerian carbon-intensity forecast.
 
-Pass --update-prototype to copy the three generated blocks into the standalone
+Pass --update-prototype to copy the four generated blocks into the standalone
 prototype/africa-prototype.html file. The generated block remains
 the canonical data artifact; the HTML copy is kept in sync for the prototype.
 
@@ -75,11 +75,11 @@ FOS  = ['Coal', 'Gas', 'Oil']
 ALLS = LOW + FOS + ['Other']
 
 # --- Nigeria's observed anchors, all already in the prototype ---------------
-NGA_GRID_GWH   = 40958.0          # IEA 2023 grid generation
+NGA_GRID_GWH   = 40975.0          # IEA 2023 grid generation: gas 31,601 + hydro 9,107 + solar 267 (page prints 40,976; its three lines sum to 40,975)
 NGA_GENSET_GWH = 20600.0          # ETP 296.3 PJ at 25% efficiency; conditional estimate
 NGA_HYDRO_GWH  = 9107.0
-NGA_SOLAR_GWH  = 211.0
-NGA_TFE_TJ     = 2465907.0        # IEA 2023 total final energy
+NGA_SOLAR_GWH  = 267.0            # IEA 2023, current release (211 in the older one)
+NGA_TFE_TJ     = 2450511.0        # IEA 2023 total final energy, current release, Total row (sector rows sum to 2,450,509)
 NGA_ANCHOR_MT  = 135.824          # Global Carbon Budget, 2024
 ANCHOR_YEAR    = 2024
 BASE_YEAR      = 2023
@@ -89,8 +89,32 @@ NGA_ALL_GWH   = NGA_GRID_GWH + NGA_GENSET_GWH
 NGA_LOW_GWH   = NGA_HYDRO_GWH + NGA_SOLAR_GWH
 NGA_ELEC_2023 = NGA_ALL_GWH * 3.6 / NGA_TFE_TJ
 NGA_LOW_2023  = NGA_LOW_GWH / NGA_ALL_GWH
-NGA_FOSSIL_GWH = NGA_ALL_GWH - NGA_LOW_GWH            # 52,240 = grid gas 31,640 + gensets 20,600
-NGA_K0        = NGA_GENSET_GWH / NGA_FOSSIL_GWH       # 0.3943: gensets' share OF FOSSIL, 2023
+NGA_FOSSIL_GWH = NGA_ALL_GWH - NGA_LOW_GWH            # 52,201 = grid gas 31,601 + gensets 20,600
+NGA_K0        = NGA_GENSET_GWH / NGA_FOSSIL_GWH       # 0.3946: gensets' share OF FOSSIL, 2023
+# IEA RELEASE. The 2023 anchors above come from the IEA Energy Statistics Data Browser tables for Nigeria
+# dated 28 Sep 2026, saved in data/iea_nigeria_2023/*_current_release.csv. Refreshed 2026-10-09 (ported
+# from MSc-thesis, where the same refresh was made on 2026-10-08) from an older release (total final energy
+# 2,465,907 TJ; grid 40,958 GWh = gas 31,640 + hydro 9,107 + solar 211). The older exports stay in that
+# folder as the audit trail; the two releases must not be mixed in one calculation. The check below ties
+# the typed constants to the saved tables, so the two cannot drift apart silently.
+def _check_iea_anchors():
+    d = os.path.join(HERE, '..', 'iea_nigeria_2023')
+    f1 = os.path.join(d, 'iea_nigeria_2023_final_consumption_by_fuel_and_sector_current_release.csv')
+    f2 = os.path.join(d, 'iea_nigeria_2023_electricity_generation_and_consumption_current_release.csv')
+    if not (os.path.exists(f1) and os.path.exists(f2)):
+        print('note: IEA current-release tables not found beside this script; anchors not cross-checked')
+        return
+    with io.open(f1, encoding='utf-8', newline='') as fh:
+        tot = {r['sector']: r for r in csv.DictReader(fh)}['Total final consumption']
+    with io.open(f2, encoding='utf-8', newline='') as fh:
+        gen = {r['line']: float(r['value_GWh']) for r in csv.DictReader(fh)}
+    assert float(tot['total_TJ']) == NGA_TFE_TJ, 'NGA_TFE_TJ differs from the saved IEA table'
+    assert gen['Hydropower'] == NGA_HYDRO_GWH and gen['Solar PV'] == NGA_SOLAR_GWH, 'hydro/solar differ'
+    assert gen['Natural gas'] + gen['Hydropower'] + gen['Solar PV'] == NGA_GRID_GWH, 'grid total differs'
+
+
+_check_iea_anchors()
+
 # Burke & Csereklyei (2016), Table 5, column 7 (total energy): the 10-year
 # growth-rates model, estimated on within-country growth over 1960-2010. The
 # 10-year elasticity is 0.48 at the sample's mean t-10 log GDP per capita and
@@ -200,6 +224,48 @@ def nigeria_series(variable, unit=None, scale=1.0):
     return out
 
 
+# --- ONE INCOME-DRIVEN INDEX FOR HOUSEHOLD SOLID-FUEL USE, ported 2026-10-09 from MSc-thesis ---------
+# idx(t) = (income per head_t / income per head_BASE_YEAR) ** COOK_ELASTICITY, on Nigeria's own SSP
+# path (IIASA / OECD ENV-Growth export). The prototype's clean-cooking baseline reads it: the polluting
+# share of people is p_t = p_2023 x idx (emitted below as BLOCK 4, NGA_DATA.health.pollutingIdxSSP,
+# together with the elasticity, which the slider path also reads). It replaces the hand-pasted gdpSSP
+# table the prototype held until 2026-10-09; the baseline clean-cooking shares are unchanged by the
+# switch. The prototype holds a PASTED COPY of the block, spliced in by --update-prototype, so re-run
+# this script after any change. In MSc-thesis the same function also feeds the residential-biomass
+# bucket of an offline sector-split test; decision record there: 03_models/2026-10-09_shared-cooking-
+# index.md. -0.67: Burke & Csereklyei (2016), CAMA WP 45/2016, Table 3 Panel C col. 1, SE 0.22: the GDP
+# elasticity of residential primary solid-biofuel use per head in a 2010 cross-section of up to 132
+# countries. TRANSFERRED to Nigeria and applied as a time path, and applied to a SHARE OF PEOPLE rather
+# than energy per head (an assumption); not a Nigerian estimate.
+COOK_ELASTICITY = -0.67
+
+_INCOME_CACHE = {}
+
+
+def _income_series(narrative):
+    if not _INCOME_CACHE:
+        gdp = nigeria_series('GDP|PPP', 'billion USD_2015/yr', 1e9)
+        pop = nigeria_series('Population', 'million', 1e6)
+        for n in gdp:
+            _INCOME_CACHE[n] = (gdp[n], pop[n])
+    return _INCOME_CACHE[narrative]
+
+
+def cook_index(narrative, year):
+    """(income per head at `year` / income per head in BASE_YEAR) ** COOK_ELASTICITY.
+
+    Income per head is the narrative's GDP|PPP over its population, each linearly interpolated on the
+    export's grid exactly as nigeria_series() and interp() define them (2023 and 2024 are themselves
+    interpolated between the 2020 and 2025 historical anchors).
+    """
+    gdp, pop = _income_series(narrative)
+
+    def income(y):
+        return interp(y, gdp) / interp(y, pop)
+
+    return (income(year) / income(BASE_YEAR)) ** COOK_ELASTICITY
+
+
 def apply_envelope(lowmix_series, low_twh_series):
     """Nigeria's resource envelope, applied to the whole trajectory at once.
 
@@ -280,7 +346,18 @@ def update_prototype(out):
                  '/* ---- BLOCK 3: NGA_DATA.power.popSSP, historical reference plus forecasts ---- */'))
     html = replace_fragment(
         html, 'popSSP:{', '         elasticityTotal:',
-        fragment('/* ---- BLOCK 3: NGA_DATA.power.popSSP, historical reference plus forecasts ---- */\n'))
+        fragment('/* ---- BLOCK 3: NGA_DATA.power.popSSP, historical reference plus forecasts ---- */\n',
+                 '/* ---- BLOCK 4: NGA_DATA.health.pollutingIdxSSP ---- */'))
+    # BLOCK 4 ends at its OWN closing brace, not at a comment, because the prototype carries no
+    # comments to anchor on.
+    if 'pollutingIdxSSP:{' not in html:
+        raise ValueError('prototype has no pollutingIdxSSP block')
+    start = html.index('pollutingIdxSSP:{')
+    line_start = html.rfind('\n', 0, start) + 1
+    close = html.index('\n    },', start) + len('\n    },')
+    html = (html[:line_start]
+            + fragment('/* ---- BLOCK 4: NGA_DATA.health.pollutingIdxSSP ---- */\n').rstrip()
+            + html[close:])
 
     with io.open(prototype, 'w', encoding='utf-8', newline='\n') as fh:
         fh.write(html)
@@ -574,7 +651,13 @@ def main():
             ys = pop[narr]
             fh.write('           %s:{%s},\n' % (narr, ','.join(
                 '%d:%d' % (y, round(ys[y])) for y in sorted(ys))))
-        fh.write('         },\n')
+        fh.write('         },\n\n')
+
+        fh.write('/* ---- BLOCK 4: NGA_DATA.health.pollutingIdxSSP ---- */\n')
+        fh.write('    pollutingIdxSSP:{\n      eps:%s, years:%s,\n' % (COOK_ELASTICITY, json.dumps(years)))
+        for narr in ['SSP1', 'SSP2', 'SSP3', 'SSP5']:
+            fh.write('      %s:%s,\n' % (narr, json.dumps([round(cook_index(narr, y), 7) for y in years])))
+        fh.write('    },\n')
     if '--update-prototype' in sys.argv[1:]:
         update_prototype(out)
     print('written: %s  (%d bytes)' % (out, os.path.getsize(out)))

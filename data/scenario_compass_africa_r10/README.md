@@ -14,7 +14,7 @@ Regional energy and emissions scenarios used for the prototype's no-policy basel
 | `image32_ssp2021/` | One CSV per variable (filename = IAMC variable name), IMAGE 3.2, five CMIP6 marker scenarios |
 | `scenario_metadata.csv` | Scenario-level metadata (climate category, vetting), one row per marker |
 | `build_nigeria_baseline.py` | Builds the prototype's Nigeria baseline series from these files and `../iiasa_ssp_nigeria/` |
-| `nigeria_baseline_block.js` | Output of the builder; the same block sits in the prototype |
+| `nigeria_baseline_block.js` | Output of the builder: four blocks (emissions baseline, power-sector baseline, population, and the clean-cooking income index `pollutingIdxSSP`), copied into the prototype by `--update-prototype` |
 
 Run `python3 build_nigeria_baseline.py` to regenerate `nigeria_baseline_block.js`, or
 `python3 build_nigeria_baseline.py --update-prototype` to also write it into

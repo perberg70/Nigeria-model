@@ -1,0 +1,166 @@
+1. NIGERIA 2023 FINAL ENERGY BY SECTOR AND CARRIER (IEA current release, PJ;
+   UNSD 2023 splits each IEA fuel cell into carriers)
+                   wood charcoal      lpg kerosene      gas     coal fuel_oil gasoline   diesel      jet other_oi electric    total
+  residential     899.4     21.8     50.1     26.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0     61.8   1059.2
+  commercial       98.0     22.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0     28.6    148.6
+  industry        177.1      0.5      0.1      0.0    117.2     27.2     19.1      0.0      0.2      0.0      0.0     29.1    370.6
+  transport         0.0      0.0      0.0      0.0      0.0      0.0      0.0    602.4    181.1      9.6      0.0      0.0    793.1
+  agriculture       0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.2      0.0      0.0      0.0      0.2
+  other             0.0      0.0      0.0      7.6      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      7.6
+  non_energy        0.0      0.0      0.0      0.0     66.4      0.0      0.0      0.0      0.0      0.0      4.9      0.0     71.3
+  total          1174.5     44.3     50.2     33.7    183.6     27.2     19.1    602.4    181.5      9.6      4.9    119.5   2450.5
+  check, sector totals PJ (UNSD / IEA current release):
+   resid 1075/1059  comme 148/149  indus 386/371  trans 781/793  agric 0/0  other 8/8  non_e 78/71
+   biomass by sector (UNSD / IEA): resid 935/921  comme 119/120  indus 178/178
+   total 2477 / 2451 PJ
+  biomass (wood, residues, charcoal) 1219 PJ = 49.7% of final energy; residential
+  921 PJ of it; electricity 4.88% of final energy
+
+2. PRIMARY-TO-FINAL FACTORS (PEF, primary per unit of final), 2023
+  gas plants: 327326 TJ in -> 113907 TJ out, efficiency 0.348 (UNSD 088 and output)
+  generation / final electricity = 40975 / 33203 GWh = 1.2341 (IEA current release; exports,
+  own use, losses fixed at 15%, and a statistical difference); gas 77.1% of generation
+  charcoal kilns: 185673 TJ wood -> 44459 TJ charcoal, efficiency 0.239 -> PEF 4.18
+  electricity PEF per final unit (non-combustible renewables at output, the IEA
+  physical-energy-content convention that the paper's TPES uses):
+    electricity_2023               3.017
+    electricity_all_gas            3.546
+    electricity_72pc_low           1.881
+    electricity_all_solar_hydro    1.234
+  P/F bottom-up 1.156 (demand-linked conversion only); IEA TES/TFC 1.241 (older release,
+  the only TES held). The difference is mainly gas burned by the oil and gas industry
+  itself (UNSD 0912 118 PJ) and statistical differences, tied to production for export.
+
+3. END-USE EFFICIENCY RATIOS rho = eta_electric / eta_displaced
+  Evidence (final energy for the same service; ratios derived here unless stated):
+  - ETP 2.0 cooking charts (Nigeria, net-zero pathway, pp. 37-40), per stove per year:
+    biomass 6.58 GJ, LPG 1.99 GJ (2020); electric 1.06 GJ (2020), 1.53 GJ (2050), LPG 2.02 GJ (2050)
+    -> biomass/electric 4.3-6.2, LPG/electric 1.3-1.9, if service per stove is equal
+    (an assumption; the ETP states no efficiencies and its PJ do not match IEA levels)
+  - Uganda controlled cooking test (Ahimbisibwe et al. 2025, Archives of Agriculture and
+    Environmental Science 10(2):303-315; read 2026-10-09, MSc-thesis sources.yaml), Table 2,
+    MJ per 0.5 kg test meal of beans (labelled per kg in the paper): hotplate 10.42 (rated
+    1000 W x 174 min, not metered), LPG 13.28, improved wood 38.81, three-stone 102.44,
+    charcoal 9.18 / 6.72, briquettes 5.18 / 3.75
+    -> three-stone/electric 9.8, improved wood/electric 3.7, LPG/electric 1.27,
+       charcoal/electric 0.64-0.88 (BELOW 1, against the charcoal range used)
+    Low confidence: single values, no variance, internal inconsistencies.
+  - Akpasoh & Edeminam 2023, Nigeria CCT (sources.yaml; LHVs assumed): electric pressure
+    cooker vs LPG 3.7-7.1, vs kerosene 1.7-3.6 -- an upper bound (sealed cooker)
+  - US DOE (fueleconomy.gov / Fact #750, via web search): EV ~60% grid-to-wheel (77%
+    older figure), gasoline vehicles 12-30% -> ratio about 2.3-5
+  - Back-up gensets 15-25% fuel-to-electricity (2026-08-29 boundary memo) -> 4-6.7
+  - Industry: no source held; boiler vs resistance heating assumed 1.0-1.5, fuelwood
+    process heat vs electric 1.5-4. ASSUMPTIONS, flagged. The ETP industry charts (pp.27-29)
+    switch fuels one-for-one, heat pumps included (rho = 1), so they give no basis either.
+  Ranges used (low / central / high):
+    household, wood           4.0  6.0 10.0
+    household, charcoal       2.0  3.0  4.0
+    household, lpg            1.2  1.5  2.0
+    household, kerosene       1.5  2.0  3.0
+    household, gas            1.2  1.5  2.0
+    industry, wood            1.5  2.5  4.0
+    industry, charcoal        1.5  2.0  3.0
+    industry, fossil          1.0  1.1  1.5
+    transport, road           2.3  3.0  5.0
+  Not electrifiable here: aviation fuel, lubricants/bitumen, non-energy use.
+
+4. NATIONAL ELECTRIFICATION AT CONSTANT ENERGY SERVICE, 2023 STRUCTURE
+  Target: electricity share of final energy (e). Displaced fuel d becomes d/rho of
+  electricity. The prototype converts 1:1 (rho = 1). IMAGE pattern = new electricity
+  split as IMAGE R10 SSP2-4.5 adds it 2023-2050: household 0.46, industry 0.50, transport 0.05
+  2023: final energy 2451 PJ, electricity 120 PJ (4.9%)
+
+  F/F0 = final energy relative to 2023 at the same service (central rho; lo/hi =
+  high/low rho). The 1:1 model keeps F/F0 = 1, so its electricity at the same share is
+  1/(F/F0) times this. P/F and P/P0 (primary relative to 2023) with the 2023 grid and
+  with 72% low-emission power (bottom-up convention of section 2).
+  rule                 e     F/F0  F/F0 lo   F/F0 hi   P/F 23   P/F 72  P/P0 23  P/P0 72
+  pro rata          0.20    0.772    0.668     0.839    1.451    1.224    0.969    0.817
+  pro rata          0.40    0.593    0.464     0.693    1.841    1.387    0.945    0.712
+  pro rata          0.67    0.452    0.329     0.560    2.368    1.607    0.926    0.628
+  cooking first     0.20    0.668    0.576     0.721    1.447    1.220    0.836    0.705
+  cooking first     0.40    0.512    0.398     0.605    1.808    1.354    0.801    0.600
+  cooking first     0.67    0.397    0.289     0.494    2.353    1.592    0.809    0.547
+  transport first   0.20    0.782    0.628     0.844    1.477    1.250    0.999    0.845
+  transport first   0.40    0.521    0.399     0.628    1.917    1.463    0.864    0.660
+  transport first   0.67    0.397    0.289     0.494    2.353    1.592    0.809    0.547
+  industry first    0.20    0.877    0.761     0.944    1.468    1.241    1.114    0.942
+  industry first    0.40    0.660    0.493     0.775    1.850    1.395    1.056    0.796
+  industry first    0.67    0.455    0.323     0.571    2.414    1.653    0.950    0.650
+  IMAGE pattern     0.20    0.774    0.672     0.850    1.440    1.212    0.964    0.812
+  IMAGE pattern     0.40    0.590    0.466     0.708    1.813    1.359    0.926    0.694
+  IMAGE pattern     0.67    0.449    0.329     0.558    2.352    1.591    0.914    0.618
+  maximum reachable share (all electrifiable uses switched, central rho): 91.1%, final energy 0.373 of 2023
+  P/F today (bottom-up, same convention): 1.156
+
+5. BACK-UP GENERATORS: THE BOUNDARY TERM
+  The prototype counts an estimated 20.6 TWh of genset output as electricity, while
+  the fuel stays in final energy if it is recorded at all (UNSD books all petrol and
+  almost all diesel to road transport; the IEA says genset inputs and outputs "may not be
+  properly reported", p. 502). Replacing that output with grid power at constant service:
+    genset efficiency 15%: fuel 494 PJ, final energy falls by 420 PJ (17.1% of 2023)
+    genset efficiency 20%: fuel 371 PJ, final energy falls by 297 PJ (12.1% of 2023)
+    genset efficiency 25%: fuel 297 PJ, final energy falls by 222 PJ (9.1% of 2023)
+  ...if the fuel is inside final energy. If it is not recorded, final energy is
+  understated today and nothing falls. The prototype's 2023 electrification share
+  (8.99%, older release) also uses gross generation plus genset output, against 4.88%
+  final electricity in the balance; the share definition is itself a boundary choice.
+
+6. IMAGE 3.2 AFRICA R10: P/F MOVES WITH THE SSP'S OWN SECTOR TRANSITIONS
+  P = sum of primary energy by source (IAMC direct-equivalent convention);
+  F = final energy. eps = d ln(per-head quantity) / d ln(income per head).
+  marker   year     P/F    el/F   bio/F low/gen Pbio/Fbio |   eps_F   eps_P eps_P/F
+  ssp119   2020   1.330   0.098   0.506   0.236     1.07 | 
+  ssp119   2050   1.410   0.317   0.204   0.840     2.61 |   0.056   0.099   0.043
+  ssp119   2100   1.485   0.605   0.098   0.936     4.94 |   0.177   0.213   0.036
+  ssp126   2020   1.330   0.098   0.506   0.236     1.07 | 
+  ssp126   2050   1.321   0.299   0.184   0.738     1.83 |   0.147   0.143  -0.005
+  ssp126   2100   1.474   0.588   0.081   0.926     5.59 |   0.188   0.221   0.033
+  ssp245   2020   1.331   0.098   0.506   0.236     1.07 | 
+  ssp245   2050   1.352   0.191   0.268   0.438     1.57 |   0.324   0.340   0.017
+  ssp245   2100   1.535   0.527   0.104   0.636     2.47 |   0.338   0.391   0.053
+  ssp370   2020     nan   0.098   0.507   0.236      nan | 
+  ssp370   2050     nan   0.146   0.320   0.304      nan |   0.510     nan     nan
+  ssp370   2100     nan   0.279   0.186   0.273      nan |   0.561     nan     nan
+  ssp585   2020   1.330   0.098   0.506   0.236     1.07 | 
+  ssp585   2050   1.568   0.249   0.137   0.210     1.78 |   0.572   0.674   0.102
+  ssp585   2100   1.756   0.613   0.076   0.500     2.97 |   0.382   0.460   0.077
+  (SSP3 primary biomass is missing from the export, so its P is not formed.
+  Pbio/Fbio = primary biomass per unit of final solid biomass: above 1 it carries
+  modern bioenergy conversion -- biofuels, biomass power, BECCS in SSP1-1.9.)
+
+  Useful-energy check, Residential and Commercial (central rho: electricity
+  eta 0.70, other fuels 0.70/1.5, solid biomass 0.70/6):
+  marker      to  eps_final eps_useful   useful/F
+  ssp119    2050     -0.300      0.276      0.451
+  ssp119    2100      0.055      0.398      0.590
+  ssp126    2050     -0.264      0.334      0.465
+  ssp126    2100      0.084      0.439      0.614
+  ssp245    2050     -0.143      0.351      0.329
+  ssp245    2100      0.154      0.556      0.601
+  ssp370    2050     -0.196      0.256      0.258
+  ssp370    2100      0.064      0.553      0.416
+  ssp585    2050      0.067      0.612      0.492
+  ssp585    2100      0.243      0.568      0.656
+  Reading: where eps_useful sits well above eps_final, IMAGE's R&C final-energy path
+  is shaped by conversion (fuel switching), not by falling service per head.
+
+7. WHAT IT MEANS FOR THE DEMAND LAW
+  eps_final = eps_primary - eps_P/F. The paper estimates eps_primary on 1960-2010 data,
+  when electrification was thermal and raised P/F with income. Its own sector columns
+  imply eps_P/F of about +0.07 at Nigeria's percentile and +0.12 to +0.19 in the long
+  run (CONVERSION_FACTORS.md section C: final 0.28-0.30 vs total 0.36; 0.52-0.59 vs 0.71).
+  IMAGE R10, 2020 -> 2050: eps_P/F = ssp119 +0.043, ssp126 -0.005, ssp245 +0.017, ssp585 +0.102
+  IMAGE R10, 2020 -> 2100: eps_P/F = ssp119 +0.036, ssp126 +0.033, ssp245 +0.053, ssp585 +0.077
+
+  SSP2-4.5 in 2050 (baseline final energy 5.13 EJ, prototype electrification 15.5%).
+  Approximation: 2050 has 2023's sector-carrier structure; prototype shares map to
+  final-electricity shares by the 2023 ratio 0.539. TWh are final electricity.
+  slider (prototype %)        1:1 TWh converted TWh     final EJ          K
+  20%                             154          147         4.91      0.958
+  40%                             307          248         4.14      0.807
+  67%                             515          342         3.41      0.665
+  K = final energy at the user's electrification / at the baseline's, same service,
+  IMAGE allocation, central rho. The prototype applies K = 1.
+

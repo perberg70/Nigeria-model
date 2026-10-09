@@ -35,3 +35,41 @@ Chart exports from the IEA's Nigeria country pages, plus the IEA balance documen
   countries"* (p. 502).
 - *"Electricity losses have been fixed at 15% starting from 2007"* (p. 503) — an assumption, not a
   measurement.
+
+## Addendum 2026-10-09: two tables from a later IEA release
+
+Copied on 2026-10-09 from MSc-thesis `02_literature/data/iea_nigeria_2023/` (commit `1c58444`),
+at Per's request; byte-identical. Both tables were transcribed by hand in MSc-thesis on
+2026-10-08 from the IEA Energy Statistics Data Browser ("Browse as tables", Nigeria, 2023). The
+page stated "Last updated 28 Sep 2026" and Licence CC BY 4.0, with no edition name. An
+independent subagent checked every cell against the live page the same day, with no mismatches.
+No capture of the page is saved.
+
+| File | Contents |
+|---|---|
+| `iea_nigeria_2023_final_consumption_by_fuel_and_sector_current_release.csv` | 2023 total final consumption, every sector by fuel (coal, oil products, gas, biofuels and waste, electricity), TJ. The only IEA source here that splits biomass by sector |
+| `iea_nigeria_2023_electricity_generation_and_consumption_current_release.csv` | 2023 electricity balance, GWh: generation by technology, exports, own use, losses, final consumption by sector |
+
+**They are a different release from the files above** and do not agree with them:
+
+| 2023 | Files above | Current release |
+|---|---|---|
+| Total final consumption | 2,465,907 TJ | 2,450,511 TJ |
+| Biofuels and waste | 1,233,622 TJ | 1,218,797 TJ |
+| Electricity, final | 121,690 TJ | 119,530 TJ |
+| Generation | 40,958 GWh | 40,975 GWh |
+
+The two releases must not be mixed within one calculation. The 2000–2022 annual files have no
+current-release counterpart.
+
+**Which release this repository uses:**
+- **Current release:** `build_nigeria_baseline.py`, the generated baseline block and the prototype
+  use it since 2026-10-09 (ported from the MSc-thesis refresh of 2026-10-08). So do the
+  partial-adjustment variant and the sector-conversion analysis. The build script asserts that its
+  typed anchors (2,450,511 TJ; 40,975 GWh; hydro 9,107; solar 267) equal these tables.
+- **Older release:** the time-series analyses (carbon-intensity check, the variant's unit-
+  conversion boundary weights) use it, because no current-release series exists before 2023.
+
+Cite as: IEA 2026; *Energy Statistics Data Browser, Balances, Nigeria, 2023*,
+https://www.iea.org/data-and-statistics/data-tools/energy-statistics-data-browser, Licence: CC BY 4.0
+(as stated on the page).
