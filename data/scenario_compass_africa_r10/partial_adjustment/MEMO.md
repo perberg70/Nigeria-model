@@ -177,11 +177,15 @@ withdrawn; its values (0.866-0.929) are superseded by the ones above.
 ## Limits of this experiment
 
 - Table 5 "total" is a primary-energy elasticity applied to a final-energy
-  anchor; the variant inherits the mismatch and does not resolve it.
+  anchor; the variant inherits the mismatch and does not resolve it. A
+  boundary re-weighting via Eq. 3 is quantified in `CONVERSION_FACTORS.md`
+  (2026-10-09), section C.
 - The ETA interaction is evaluated with the baseline's own approximation
   (Nigeria 2023 mapped to the paper's 25th-percentile deviation, -0.923 log
   units); income-unit conversion between USD_2015 PPP and the paper's 2005
-  PPP demeaned sample is not performed.
+  PPP demeaned sample is not performed. `CONVERSION_FACTORS.md` section B
+  shows it needs a splice into PWT 7.1 units rather than a price-base factor,
+  and that Nigeria likely sits below the 25th percentile in the paper's units.
 - LAMBDA = -kappa is an annual linearisation of a decade-sampled estimate;
   validated against the decade recursion in Test 1 (gap ~0.004 log points
   after 2033) and Test 2, where window elasticities agree within ~0.007

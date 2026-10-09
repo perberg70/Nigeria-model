@@ -1,0 +1,118 @@
+A. TIME SCALE: decade coefficients -> annual closing speed
+  Eq. 5 is in annual-average growth units on decade-start levels, so a
+  level gap is retained 1+10*kappa = 0.770 per decade. Candidate annual
+  closing speeds (theta scales with lambda; b = -theta/kappa = 0.6957 fixed):
+    linear  -kappa             lambda = 0.02300  decade retention 0.7924  annual theta 0.01600  half-life 29.8 yr
+    geometric 1-(1+10k)^0.1    lambda = 0.02580  decade retention 0.7700  annual theta 0.01795  half-life 26.5 yr
+    log  -ln(1+10k)/10         lambda = 0.02614  decade retention 0.7673  annual theta 0.01818  half-life 26.2 yr
+  beta, eta and the decade dummies need no time conversion: beta and eta
+  are growth-on-growth ratios and the dummies are already in annual-
+  growth units (Table 5 notes: "differenced logs divided by 10").
+
+  Test 1 (shock) and Test 2 (2%/yr growth): annual PA minus decade recursion
+  lambda                        T1 2033    T1 2063  T1 max|.| |   T2 23-33   T2 63-73  T2 max|.|
+  linear  -kappa                 0.0060     0.0017     0.0060 |     0.0437    -0.0019     0.0437
+  geometric 1-(1+10k)^0.1        0.0067     0.0031     0.0067 |     0.0473     0.0087     0.0473
+  log  -ln(1+10k)/10             0.0068     0.0032     0.0068 |     0.0478     0.0099     0.0478
+  (T1 in log points of energy; T2 in window-elasticity units)
+
+  Scenario runs (plain target, eta active, R recalibrated):
+  leg                                       ssp119        ssp126        ssp245        ssp370        ssp585
+                                     v/c50  v/c100 v/c50  v/c100 v/c50  v/c100 v/c50  v/c100 v/c50  v/c100
+  linear  -kappa                      0.964  0.958  0.964  0.958  0.975  0.951  0.990  0.944  0.959  0.979
+  geometric 1-(1+10k)^0.1             0.960  0.958  0.960  0.958  0.973  0.949  0.989  0.940  0.955  0.980
+  log  -ln(1+10k)/10                  0.960  0.958  0.960  0.958  0.973  0.949  0.989  0.940  0.954  0.980
+
+B. INCOME LEVEL: only the ETA interaction reads the level of income
+  beta*dg and the target slope use log DIFFERENCES (any constant price-base
+  factor cancels) and alpha absorbs the level, so the income conversion
+  only enters through d = ln Y_NGA - mean_463(ln Y_t-10) in PWT 7.1 units.
+  Nigeria GDP per head, OECD ENV-Growth 2025 (IIASA export), PPP:
+    USD_2010/yr            2010    4759   2023    4793
+    USD_2015/yr            2010    4922   2023    4958
+    USD_2017/yr            2010    5002   2023    5038
+    real growth per head 2010->2023: x1.0072 (0.71 log points); identical in all three
+    rows: the three price bases differ by a constant factor
+  Nigeria, PWT 7.1 rgdpch (2005 I$), FRED RGDPCHNGA625NUPN [via web search, unverified]:
+    2006 1649  2007 1913  2008 1931  2009 1685  2010 1695
+    spliced 2023 = PWT 7.1 2010 x OECD growth since 2010 = 1708 (2006-2010 base range 1661-1944)
+    level gap in 2010, OECD USD_2010 PPP vs PWT 7.1: 1.03 log units (x2.81) --
+    before any 2010->2005 deflation; a price-base conversion factor cannot close it
+
+  The sample mean of ln Y_t-10 is not reported. Table 5 fixes the 25th percentile
+  at mean - 0.923. Only reference point for its level: Table 2 col. 7 (2010
+  cross-section, undemeaned): 25th percentile = exp((0.63+1.20)/0.22) = $4098
+  (coefficient rounding alone spans $2733-$6386). The pooled t-10 sample
+  (start years 1960-2000) sits lower, by an unmeasured amount.
+  d for Nigeria 2023 (spliced PWT 7.1 value $1708) as a function of the unknown
+  25th percentile of the t-10 sample, and the starting 10-year elasticity:
+  assumed 25th pct (2005 I$)            d   beta_0
+  = Nigeria (current assumption)   -0.923    0.360
+  $2000                            -1.081    0.339
+  $2500                            -1.304    0.310
+  $3000                            -1.487    0.287
+  $3500                            -1.641    0.267
+  $4098 (Table 2, 2010)            -1.798    0.246
+
+  Scenario runs, Nigeria AND region at the same d (as in the variant):
+  leg                                       ssp119        ssp126        ssp245        ssp370        ssp585
+                                     v/c50  v/c100 v/c50  v/c100 v/c50  v/c100 v/c50  v/c100 v/c50  v/c100
+  d -0.92  (= Nigeria (current)       0.964  0.958  0.964  0.958  0.975  0.951  0.990  0.944  0.959  0.979
+  d -1.08  ($2000)                    0.972  0.961  0.972  0.961  0.980  0.956  0.992  0.950  0.968  0.981
+  d -1.30  ($2500)                    0.984  0.966  0.984  0.966  0.988  0.963  0.994  0.958  0.981  0.985
+  d -1.49  ($3000)                    0.994  0.970  0.994  0.970  0.994  0.969  0.996  0.965  0.992  0.989
+  d -1.64  ($3500)                    1.002  0.973  1.002  0.973  0.999  0.974  0.998  0.970  1.001  0.991
+  d -1.80  ($4098 (Table 2, 20)       1.011  0.976  1.011  0.976  1.004  0.979  1.000  0.976  1.011  0.994
+
+  Region at its own position: d_R = d + ln(R10 GDP per head / Nigeria), 2023,
+  both in USD_2010 PPP (IMAGE SSP2021 vs OECD ENV-Growth 2025, different vintages):
+    ssp119  R10   4406  Nigeria   4793  ln ratio -0.084
+    ssp126  R10   4406  Nigeria   4793  ln ratio -0.084
+    ssp245  R10   4405  Nigeria   4793  ln ratio -0.084
+    ssp370  R10   4402  Nigeria   4793  ln ratio -0.085
+    ssp585  R10   4407  Nigeria   4793  ln ratio -0.084
+  leg                                       ssp119        ssp126        ssp245        ssp370        ssp585
+                                     v/c50  v/c100 v/c50  v/c100 v/c50  v/c100 v/c50  v/c100 v/c50  v/c100
+  same d (variant)                    0.964  0.958  0.964  0.958  0.975  0.951  0.990  0.944  0.959  0.979
+  region d_R = d -0.084               0.975  0.971  0.975  0.971  0.983  0.963  0.994  0.951  0.971  0.995
+
+C. BOUNDARY: Table 5 "total" is TPES; the variant drives IEA total final consumption
+  Nigeria 2023 (IEA): TES 3060508 TJ, TFC 2465907 TJ, TES/TFC 1.241; five paper sectors
+  2386524 TJ (96.8% of TFC; non-energy use and non-specified are "Other" in the paper)
+  per head: TES 330 kgoe, TFC 266 kgoe (1 kgoe = 41.868 MJ); paper 2010 cross-section
+  means: all 2,725.8, low-income 396.2 kgoe TPES (Appendix A3)
+  weights, share of TES:   indus 0.122  trans 0.258  resid 0.351  servi 0.049  agric 0.000  other 0.220
+  weights, share of five:  indus 0.156  trans 0.331  resid 0.451  servi 0.063  agric 0.000
+
+                                                  beta     b25     b75     eta   kappa      lr
+  Table 5 total (published)                      0.480   0.360   0.620   0.130  -0.023   0.710
+  Eq. 3 check: six sectors weighted by TES       0.434   0.369   0.510   0.072  -0.032   0.657
+  final, bottom-up: five sectors by TFC share    0.390   0.295   0.499   0.104  -0.033   0.517
+  final, top-down: (total - s_O*other)/(1-s_O)   0.449   0.284   0.640   0.178  -0.022   0.586
+  (lr is the share-weighted reported long-run elasticity; kappa the share-weighted
+   convergence coefficient. Shares are 2023 values held fixed, Eq. 3 is exact only
+   for small changes; a sector-by-sector PA would let them drift.)
+
+  agreed-terms leg: beta_0 0.289 (mean of the two routes), b_target 0.552; eta 0.13
+  and lambda 0.023 unconverted
+  region bottom-up at its own 2023 mix (SSP2-4.5): beta 0.357, b25 0.250, eta 0.116,
+  kappa -0.032, lr 0.465
+
+  Scenario runs (R recalibrated through whichever law the region is given):
+  leg                                       ssp119        ssp126        ssp245        ssp370        ssp585
+                                     v/c50  v/c100 v/c50  v/c100 v/c50  v/c100 v/c50  v/c100 v/c50  v/c100
+  TPES total (variant)                0.964  0.958  0.964  0.958  0.975  0.951  0.990  0.944  0.959  0.979
+  final bottom-up, both               1.024  1.098  1.024  1.098  1.009  1.067  1.001  1.012  1.032  1.135
+  final bottom-up, region own mix     1.079  1.243  1.079  1.243  1.050  1.191  1.021  1.074  1.085  1.277
+  final top-down, both                0.991  0.988  0.991  0.988  0.996  0.975  0.999  0.976  0.985  1.004
+  final agreed terms, both            1.015  1.050  1.015  1.050  1.007  1.030  1.001  1.001  1.019  1.076
+  final bottom-up, Nigeria only       0.905  0.707  0.905  0.707  0.931  0.745  0.962  0.855  0.887  0.665
+
+  The last leg breaks closure: IMAGE "Final Energy" has the same boundary as
+  Nigeria's TFC, so the region must be stripped with the same final-energy law.
+
+D. PURE UNIT FACTORS CANCEL (numerical check)
+  GDP in USD_2010 instead of USD_2015 rows:   max |change| in var/cur 2100 = 3.3e-15
+  energy anchor in kgoe instead of TJ:          max |change| in var/cur 2100 = 1.4e-15
+  IMAGE R10 GDP stays in USD_2010: it enters only as log changes and in R.
+
