@@ -179,7 +179,8 @@ withdrawn; its values (0.866-0.929) are superseded by the ones above.
 - Table 5 "total" is a primary-energy elasticity applied to a final-energy
   anchor; the variant inherits the mismatch and does not resolve it. A
   boundary re-weighting via Eq. 3 is quantified in `CONVERSION_FACTORS.md`
-  (2026-10-09), section C.
+  (2026-10-09), section C. How the primary-to-final factor and final energy
+  move with sector-wise electrification is explored in `SECTOR_CONVERSION.md`.
 - The ETA interaction is evaluated with the baseline's own approximation
   (Nigeria 2023 mapped to the paper's 25th-percentile deviation, -0.923 log
   units); income-unit conversion between USD_2015 PPP and the paper's 2005

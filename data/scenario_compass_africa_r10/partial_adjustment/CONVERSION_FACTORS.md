@@ -1,4 +1,8 @@
-# Conversion factors for the partial-adjustment variant
+# Unit conversions for the Table 5 coefficients
+
+> **Pointer (2026-10-09):** this memo covers unit, time-scale and boundary conversions of the
+> paper's coefficients. The physical conversion factors that change as end uses move from fuels
+> to electricity are explored in `SECTOR_CONVERSION.md`.
 
 Branch `experiment/partial-adjustment`, 2026-10-09. Asks which conversion factors the variant in
 `partial_adjustment_variant.py` needs to carry Burke & Csereklyei (2016) Table 5 into the
