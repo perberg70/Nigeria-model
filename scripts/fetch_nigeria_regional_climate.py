@@ -20,7 +20,6 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import date
 from pathlib import Path
 
-
 API = (
     "https://cckpapi.worldbank.org/cckp/v1/"
     "cmip6-x0.25_climatology_tas,pr_anomaly_annual_2080-2099_"
@@ -37,8 +36,7 @@ MODEL_API = (
     "mean_{pathway}_{model}_{variant}_mean/all_countries_subnationals?_format=json"
 )
 S3_DATASETS = (
-    "https://wbg-cckp.s3.amazonaws.com/?list-type=2&"
-    "prefix=data/cmip6-x0.25/{variable}/&delimiter=/"
+    "https://wbg-cckp.s3.amazonaws.com/?list-type=2&prefix=data/cmip6-x0.25/{variable}/&delimiter=/"
 )
 PATHWAYS = ("ssp119", "ssp126", "ssp245", "ssp370", "ssp585")
 PERCENTILES = ("median", "p10", "p90")
@@ -87,9 +85,15 @@ CODE_TO_STATE = {
 }
 
 STATE_TO_ZONE = {
-    **{s: "North Central" for s in ("Benue", "Kogi", "Kwara", "Nassarawa", "Niger", "Plateau", "Abuja")},
+    **{
+        s: "North Central"
+        for s in ("Benue", "Kogi", "Kwara", "Nassarawa", "Niger", "Plateau", "Abuja")
+    },
     **{s: "North East" for s in ("Adamawa", "Bauchi", "Borno", "Gombe", "Taraba", "Yobe")},
-    **{s: "North West" for s in ("Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Sokoto", "Zamfara")},
+    **{
+        s: "North West"
+        for s in ("Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Sokoto", "Zamfara")
+    },
     **{s: "South East" for s in ("Abia", "Anambra", "Ebonyi", "Enugu", "Imo")},
     **{s: "South South" for s in ("Akwa Ibom", "Bayelsa", "Cross River", "Delta", "Edo", "Rivers")},
     **{s: "South West" for s in ("Ekiti", "Lagos", "Ogun", "Ondo", "Osun", "Oyo")},
@@ -104,7 +108,9 @@ def scalar(record: dict[str, float]) -> float:
 
 def fetch(pathway: str) -> list[dict[str, object]]:
     url = API.format(pathway=pathway)
-    request = urllib.request.Request(url, headers={"User-Agent": "MSc-thesis climate-data retrieval/1.0"})
+    request = urllib.request.Request(
+        url, headers={"User-Agent": "MSc-thesis climate-data retrieval/1.0"}
+    )
     with urllib.request.urlopen(request, timeout=120) as response:
         payload = json.load(response)
     if payload.get("metadata", {}).get("status") != "success":
@@ -164,9 +170,7 @@ def discover_model_runs(variable: str) -> dict[str, set[tuple[str, str]]]:
     for node in root.findall("s3:CommonPrefixes/s3:Prefix", namespace):
         match = pattern.match(node.text or "")
         if match:
-            output[match.group("pathway")].add(
-                (match.group("model"), match.group("variant"))
-            )
+            output[match.group("pathway")].add((match.group("model"), match.group("variant")))
     return output
 
 

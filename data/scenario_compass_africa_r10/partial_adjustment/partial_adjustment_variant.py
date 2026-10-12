@@ -67,31 +67,36 @@ KNOWN LIMITS (stated here so they are not rediscovered downstream):
   * Prices omitted, as in the baseline (weak average evidence for non-OECD;
     unresolved).
 """
-import csv, io, math, os, sys
+
+import csv
+import io
+import math
+import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SC   = os.path.join(HERE, '..', 'image32_ssp2021')
-POP  = os.path.join(HERE, '..', '..', 'iiasa_ssp_nigeria',
-                    'Population_GDP_PPP_IIASA_SSP_15_Nigeria.csv')
+SC = os.path.join(HERE, "..", "image32_ssp2021")
+POP = os.path.join(
+    HERE, "..", "..", "iiasa_ssp_nigeria", "Population_GDP_PPP_IIASA_SSP_15_Nigeria.csv"
+)
 
 MARKERS = {
-    'ssp119': ('SSP2021-SSP1-SPA1-19-Default', 'SSP1'),
-    'ssp126': ('SSP2021-SSP1-SPA1-26-Default', 'SSP1'),
-    'ssp245': ('SSP2021-SSP2-SPA2-45-Default', 'SSP2'),
-    'ssp370': ('SSP2021-SSP3-Baseline',        'SSP3'),
-    'ssp585': ('SSP2021-SSP5-Baseline',        'SSP5'),
+    "ssp119": ("SSP2021-SSP1-SPA1-19-Default", "SSP1"),
+    "ssp126": ("SSP2021-SSP1-SPA1-26-Default", "SSP1"),
+    "ssp245": ("SSP2021-SSP2-SPA2-45-Default", "SSP2"),
+    "ssp370": ("SSP2021-SSP3-Baseline", "SSP3"),
+    "ssp585": ("SSP2021-SSP5-Baseline", "SSP5"),
 }
 
 # Nigeria anchors, identical to build_nigeria_baseline.py
-NGA_TFE_TJ = 2450511.0   # IEA current release (28 Sep 2026), as in the builder since 2026-10-09
+NGA_TFE_TJ = 2450511.0  # IEA current release (28 Sep 2026), as in the builder since 2026-10-09
 BASE_YEAR, END_YEAR = 2023, 2100
 
 # Burke & Csereklyei (2016) Table 5, column "total energy"
-BETA_MEAN = 0.48      # 10-year elasticity at mean initial log income
-ETA       = 0.13      # interaction per log unit of (demeaned) initial income
-THETA     = 0.016     # initial log income level
-KAPPA     = -0.023    # initial log energy level (conditional convergence)
-LAMBDA    = -KAPPA    # annual closing speed, linearisation
+BETA_MEAN = 0.48  # 10-year elasticity at mean initial log income
+ETA = 0.13  # interaction per log unit of (demeaned) initial income
+THETA = 0.016  # initial log income level
+KAPPA = -0.023  # initial log energy level (conditional convergence)
+LAMBDA = -KAPPA  # annual closing speed, linearisation
 # Nigeria's 2023 income is mapped to the paper's 25th-percentile deviation:
 # (0.36 - 0.48) / 0.13 = -0.923 log units below the sample mean. Same
 # approximation as the baseline; flagged in the module docstring.
@@ -102,35 +107,40 @@ DECADE_EFFECTS = [-0.021, -0.025, -0.029, -0.029]
 
 def series(fn):
     out = {}
-    with io.open(os.path.join(SC, fn), encoding='utf-8-sig') as fh:
+    with io.open(os.path.join(SC, fn), encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
-            out.setdefault(r['Scenario name'], {})[int(r['year'])] = float(r['value'])
+            out.setdefault(r["Scenario name"], {})[int(r["year"])] = float(r["value"])
     return out
 
 
 def interp(y, d):
     ys = sorted(d)
-    if y <= ys[0]:  return d[ys[0]]
-    if y >= ys[-1]: return d[ys[-1]]
-    for a, b in zip(ys, ys[1:]):
+    if y <= ys[0]:
+        return d[ys[0]]
+    if y >= ys[-1]:
+        return d[ys[-1]]
+    for a, b in zip(ys, ys[1:], strict=False):
         if a <= y <= b:
             return d[a] + (d[b] - d[a]) * (y - a) / (b - a)
 
 
 def nigeria_series(variable, unit=None, scale=1.0):
     historical, forecasts = None, {}
-    with io.open(POP, encoding='utf-8-sig') as fh:
+    with io.open(POP, encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
-            if r['variable'] != variable:
+            if r["variable"] != variable:
                 continue
-            if unit is not None and r['unit'] != unit:
+            if unit is not None and r["unit"] != unit:
                 continue
-            yrs = {int(k): float(v) * scale for k, v in r.items()
-                   if k.strip().isdigit() and v not in ('', None)}
-            if r['scenario'] == 'Historical Reference':
+            yrs = {
+                int(k): float(v) * scale
+                for k, v in r.items()
+                if k.strip().isdigit() and v not in ("", None)
+            }
+            if r["scenario"] == "Historical Reference":
                 historical = yrs
-            elif r['scenario'] in {n for _, n in MARKERS.values()}:
-                forecasts[r['scenario']] = yrs
+            elif r["scenario"] in {n for _, n in MARKERS.values()}:
+                forecasts[r["scenario"]] = yrs
     out = {}
     for narrative, forecast in forecasts.items():
         yrs = {y: v for y, v in historical.items() if y <= 2025}
@@ -142,8 +152,17 @@ def nigeria_series(variable, unit=None, scale=1.0):
     return out
 
 
-def pa_path(years, log_g, log_x0, beta_mean=BETA_MEAN, eta=ETA,
-            b_target=None, lam=LAMBDA, delta_mode='off', g_dev0=0.0):
+def pa_path(
+    years,
+    log_g,
+    log_x0,
+    beta_mean=BETA_MEAN,
+    eta=ETA,
+    b_target=None,
+    lam=LAMBDA,
+    delta_mode="off",
+    g_dev0=0.0,
+):
     """Annual partial-adjustment path. Returns dict year -> log per-capita
     energy. g_dev0 is the anchor-year income's deviation from the paper's
     sample mean (log units), for the ETA interaction; the deviation at time
@@ -163,7 +182,7 @@ def pa_path(years, log_g, log_x0, beta_mean=BETA_MEAN, eta=ETA,
         beta = beta_mean + eta * deviation if eta else beta_mean
         x_star_prev = alpha + b_target * g_prev
         delta = 0.0
-        if delta_mode == 'decade-effects':
+        if delta_mode == "decade-effects":
             # Codex review P2b (PR #9): Table 5's decade dummies are
             # calendar-period intercepts relative to a 1970 base, not a
             # sequence of shocks that can be shifted forward. The explicit
@@ -204,28 +223,26 @@ def coherence_test_growth():
     for y in range(2033, END_YEAR + 1, 10):
         dg = log_g[y] - log_g[y - 10]
         beta = BETA_MEAN + ETA * (NGA_2023_DEVIATION + (log_g[y - 10] - g0))
-        dec[y] = ((1 + 10 * KAPPA) * dec[y - 10]
-                  + beta * dg
-                  + 10 * THETA * (log_g[y - 10] - g0))
+        dec[y] = (1 + 10 * KAPPA) * dec[y - 10] + beta * dg + 10 * THETA * (log_g[y - 10] - g0)
 
     def cur(y):
         L = x_bar * (y - BASE_YEAR)
         return 0.36 * L + 0.065 * L * L
 
     target = growth_adjusted_b(x_bar)
-    print('TEST 2: sustained income growth (2.0%/yr, constant)')
-    print('  footnote-3 long-run elasticity -(theta+eta*x_bar)/kappa: %.4f' % target)
-    print('  %-12s %14s %14s %14s' % ('window', 'current', 'annual PA', 'decade Eq5'))
+    print("TEST 2: sustained income growth (2.0%/yr, constant)")
+    print("  footnote-3 long-run elasticity -(theta+eta*x_bar)/kappa: %.4f" % target)
+    print("  %-12s %14s %14s %14s" % ("window", "current", "annual PA", "decade Eq5"))
     for y1 in range(2023, 2093, 10):
         y2 = y1 + 10
-        w = '%d-%d' % (y1, y2)
+        w = "%d-%d" % (y1, y2)
         pa_el = (pa[y2] - pa[y1]) / (x_bar * 10)
         dec_el = (dec[y2] - dec[y1]) / (x_bar * 10)
         cur_el = (cur(y2) - cur(y1)) / (x_bar * 10)
-        print('  %-12s %14.4f %14.4f %14.4f' % (w, cur_el, pa_el, dec_el))
-    print('  READING: the PA window elasticities should converge toward')
-    print('  %.4f from below; the current construction should drift upward' % target)
-    print('  linearly with cumulated income and never settle.')
+        print("  %-12s %14.4f %14.4f %14.4f" % (w, cur_el, pa_el, dec_el))
+    print("  READING: the PA window elasticities should converge toward")
+    print("  %.4f from below; the current construction should drift upward" % target)
+    print("  linearly with cumulated income and never settle.")
     print()
 
 
@@ -235,13 +252,12 @@ def coherence_test_shock():
     income gap. The current construction and the decade recursion and the
     annual approximation are all run so they can be compared directly."""
     years = list(range(BASE_YEAR, END_YEAR + 1))
-    g0 = math.log(8000.0)          # arbitrary level; only changes matter
+    g0 = math.log(8000.0)  # arbitrary level; only changes matter
     shock = math.log(1.10)
     log_g = {y: g0 + (shock if y >= 2024 else 0.0) for y in years}
 
     # Current construction (integrated 10-year elasticity, quadratic form)
-    current = {y: 0.36 * (log_g[y] - g0) + 0.065 * (log_g[y] - g0) ** 2
-               for y in years}
+    current = {y: 0.36 * (log_g[y] - g0) + 0.065 * (log_g[y] - g0) ** 2 for y in years}
 
     # Annual partial adjustment, calibrated alpha for a zero baseline.
     # Codex review P2 (PR #9): both PA benchmarks must start from the SAME
@@ -259,26 +275,25 @@ def coherence_test_shock():
             dec[y - 10] = dec.get(y - 10, 0.0)
         dg = log_g[y] - log_g[y - 10]
         beta = BETA_MEAN + ETA * (NGA_2023_DEVIATION + (log_g[y - 10] - g0))
-        dec[y] = ((1 + 10 * KAPPA) * dec[y - 10]
-                  + beta * dg
-                  + 10 * THETA * (log_g[y - 10] - g0))
+        dec[y] = (1 + 10 * KAPPA) * dec[y - 10] + beta * dg + 10 * THETA * (log_g[y - 10] - g0)
 
     lr = -THETA / KAPPA * shock
-    print('TEST 1: shock-then-flat income (+10% at 2024, then constant)')
-    print('  long-run-implied endpoint of log energy gap: %.4f' % lr)
-    print('  %-6s %14s %14s %14s' % ('year', 'current', 'annual PA', 'decade Eq5'))
+    print("TEST 1: shock-then-flat income (+10% at 2024, then constant)")
+    print("  long-run-implied endpoint of log energy gap: %.4f" % lr)
+    print("  %-6s %14s %14s %14s" % ("year", "current", "annual PA", "decade Eq5"))
     for y in (2023, 2033, 2053, 2073, 2100):
-        row = [y, current[y], pa[y], dec.get(y, float('nan'))]
-        print('  %-6d %14.4f %14.4f %14s' %
-              (row[0], row[1], row[2],
-               ('%.4f' % row[3]) if row[3] == row[3] else 'n/a'))
-    print('  READING: the current construction should jump once and stop;')
-    print('  the PA paths should keep moving toward %.4f with a' % lr)
-    print('  half-life of about ln(2)/%.3f = %.0f years.' % (LAMBDA, math.log(2) / LAMBDA))
+        row = [y, current[y], pa[y], dec.get(y, float("nan"))]
+        print(
+            "  %-6d %14.4f %14.4f %14s"
+            % (row[0], row[1], row[2], ("%.4f" % row[3]) if row[3] == row[3] else "n/a")
+        )
+    print("  READING: the current construction should jump once and stop;")
+    print("  the PA paths should keep moving toward %.4f with a" % lr)
+    print("  half-life of about ln(2)/%.3f = %.0f years." % (LAMBDA, math.log(2) / LAMBDA))
     print()
 
 
-def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
+def run_all(delta_mode="off", eta=True, b_mode="plain", r_mode="recalibrated"):
     """Run the variant on all five SSP markers and print the comparison
     against the current construction.
 
@@ -288,27 +303,38 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
     conditional experiment under an independent structural assumption about
     R, NOT a confidence interval. Common time effects (delta_mode) cancel
     exactly under 'recalibrated' and survive only under 'fixed-old'."""
-    fe      = series('Final Energy.csv')
-    r10_gdp = series('GDP - PPP.csv')
-    r10_pop = series('Population.csv')
-    pop     = nigeria_series('Population', 'million', 1e6)
-    gdp     = nigeria_series('GDP|PPP', 'billion USD_2015/yr', 1e9)
-    years   = list(range(BASE_YEAR, END_YEAR + 1))
+    fe = series("Final Energy.csv")
+    r10_gdp = series("GDP - PPP.csv")
+    r10_pop = series("Population.csv")
+    pop = nigeria_series("Population", "million", 1e6)
+    gdp = nigeria_series("GDP|PPP", "billion USD_2015/yr", 1e9)
+    years = list(range(BASE_YEAR, END_YEAR + 1))
 
-    log_x0_nga = math.log(NGA_TFE_TJ / pop['SSP2'][BASE_YEAR])
-    print('Variant run: delta_mode=%s  eta=%s  b_mode=%s  r_mode=%s' %
-          (delta_mode, eta, b_mode, r_mode))
-    print('%-8s %10s %10s %10s %12s %12s %10s %10s' %
-          ('marker', 'x_bar %/yr', 'b_target', 'R10 eps*',
-           'cur 2100 TJ', 'var 2100 TJ', 'var/cur50', 'var/cur100'))
-    print('  (* R10 eps is the scenario-path proxy, not a structural elasticity)')
+    log_x0_nga = math.log(NGA_TFE_TJ / pop["SSP2"][BASE_YEAR])
+    print(
+        "Variant run: delta_mode=%s  eta=%s  b_mode=%s  r_mode=%s"
+        % (delta_mode, eta, b_mode, r_mode)
+    )
+    print(
+        "%-8s %10s %10s %10s %12s %12s %10s %10s"
+        % (
+            "marker",
+            "x_bar %/yr",
+            "b_target",
+            "R10 eps*",
+            "cur 2100 TJ",
+            "var 2100 TJ",
+            "var/cur50",
+            "var/cur100",
+        )
+    )
+    print("  (* R10 eps is the scenario-path proxy, not a structural elasticity)")
     for pid, (scen, narrative) in MARKERS.items():
         # Nigeria paths
         p0 = pop[narrative][BASE_YEAR]
-        log_g = {y: math.log(interp(y, gdp[narrative]) / interp(y, pop[narrative]))
-                 for y in years}
+        log_g = {y: math.log(interp(y, gdp[narrative]) / interp(y, pop[narrative])) for y in years}
         x_bar = (log_g[END_YEAR] - log_g[BASE_YEAR]) / (END_YEAR - BASE_YEAR)
-        if b_mode == 'static-adjusted':
+        if b_mode == "static-adjusted":
             # Codex review P1 (PR #9): with ETA active the dynamics already
             # produce footnote 3's asymptotic slope; injecting it into
             # b_target double-counts. The correct growth-adjusted leg keeps
@@ -322,9 +348,16 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
         else:
             nga_eta, b_target = (ETA if eta else 0.0), -THETA / KAPPA
             nga_beta = BETA_MEAN
-        nga_pa = pa_path(years, log_g, log_x0_nga, beta_mean=nga_beta,
-                         eta=nga_eta, b_target=b_target,
-                         delta_mode=delta_mode, g_dev0=NGA_2023_DEVIATION)
+        nga_pa = pa_path(
+            years,
+            log_g,
+            log_x0_nga,
+            beta_mean=nga_beta,
+            eta=nga_eta,
+            b_target=b_target,
+            delta_mode=delta_mode,
+            g_dev0=NGA_2023_DEVIATION,
+        )
 
         # Scenario-path proxy for the income response embedded in the IMAGE
         # R10 scenario itself: the ratio of cumulative log changes in
@@ -333,14 +366,20 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
         # elasticity (structural change, prices and policy assumptions move
         # with income along the path); printed as the diagnostic the report
         # calls the single most consequential unverified number.
-        r_eps_path = (math.log(interp(END_YEAR, fe[scen]) / interp(BASE_YEAR, fe[scen])
-                             / (interp(END_YEAR, r10_pop[scen]) / interp(BASE_YEAR, r10_pop[scen])))
-                      / (math.log(interp(END_YEAR, r10_gdp[scen]) / interp(END_YEAR, r10_pop[scen])
-                                / (interp(BASE_YEAR, r10_gdp[scen]) / interp(BASE_YEAR, r10_pop[scen])))))
+        r_eps_path = math.log(
+            interp(END_YEAR, fe[scen])
+            / interp(BASE_YEAR, fe[scen])
+            / (interp(END_YEAR, r10_pop[scen]) / interp(BASE_YEAR, r10_pop[scen]))
+        ) / (
+            math.log(
+                interp(END_YEAR, r10_gdp[scen])
+                / interp(END_YEAR, r10_pop[scen])
+                / (interp(BASE_YEAR, r10_gdp[scen]) / interp(BASE_YEAR, r10_pop[scen]))
+            )
+        )
 
         # Regional paths through the SAME law (for R recalibration)
-        r_log_g = {y: math.log(interp(y, r10_gdp[scen]) / interp(y, r10_pop[scen]))
-                   for y in years}
+        r_log_g = {y: math.log(interp(y, r10_gdp[scen]) / interp(y, r10_pop[scen])) for y in years}
         r_log_x0 = math.log(interp(BASE_YEAR, fe[scen]) / interp(BASE_YEAR, r10_pop[scen]))
         # The region is run through the same law with the same 25th-
         # percentile anchor deviation as Nigeria, mirroring the baseline's
@@ -349,10 +388,17 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
         # static-adjusted mode the region gets its OWN growth-adjusted
         # target, from its own mean income growth.
         r_x_bar = (r_log_g[END_YEAR] - r_log_g[BASE_YEAR]) / (END_YEAR - BASE_YEAR)
-        r_b = growth_adjusted_b(r_x_bar) if b_mode == 'static-adjusted' else b_target
-        r_pa = pa_path(years, r_log_g, r_log_x0, beta_mean=nga_beta,
-                       eta=nga_eta, b_target=r_b, delta_mode=delta_mode,
-                       g_dev0=NGA_2023_DEVIATION)
+        r_b = growth_adjusted_b(r_x_bar) if b_mode == "static-adjusted" else b_target
+        r_pa = pa_path(
+            years,
+            r_log_g,
+            r_log_x0,
+            beta_mean=nga_beta,
+            eta=nga_eta,
+            b_target=r_b,
+            delta_mode=delta_mode,
+            g_dev0=NGA_2023_DEVIATION,
+        )
 
         # Variant energy with R per r_mode
         cur_2100 = var_2100 = cur_2050 = var_2050 = None
@@ -361,39 +407,43 @@ def run_all(delta_mode='off', eta=True, b_mode='plain', r_mode='recalibrated'):
             fe_ratio = interp(y, fe[scen]) / interp(BASE_YEAR, fe[scen])
             pop_ratio = interp(y, r10_pop[scen]) / interp(BASE_YEAR, r10_pop[scen])
             Lr = r_log_g[y] - r_log_g[BASE_YEAR]
-            if r_mode == 'recalibrated':
+            if r_mode == "recalibrated":
                 # R10 residual: observed regional FE ratio divided by what
                 # the region's own population and income give through the
                 # variant law
-                r10_residual = fe_ratio / (pop_ratio * math.exp(
-                    r_pa[y] - r_pa[BASE_YEAR]))
+                r10_residual = fe_ratio / (pop_ratio * math.exp(r_pa[y] - r_pa[BASE_YEAR]))
             else:
                 # conditional experiment: R from the CURRENT law
-                r10_residual = fe_ratio / (pop_ratio * math.exp(
-                    0.36 * Lr + 0.065 * Lr * Lr))
-            E = NGA_TFE_TJ * (pt / p0) * math.exp(
-                nga_pa[y] - nga_pa[BASE_YEAR]) * r10_residual
+                r10_residual = fe_ratio / (pop_ratio * math.exp(0.36 * Lr + 0.065 * Lr * Lr))
+            E = NGA_TFE_TJ * (pt / p0) * math.exp(nga_pa[y] - nga_pa[BASE_YEAR]) * r10_residual
             if y in (2050, END_YEAR):
                 L = log_g[y] - log_g[BASE_YEAR]
-                r10_old = fe_ratio / (pop_ratio * math.exp(
-                    0.36 * Lr + 0.065 * Lr * Lr))
-                cur = NGA_TFE_TJ * (pt / p0) * math.exp(
-                    0.36 * L + 0.065 * L * L) * r10_old
+                r10_old = fe_ratio / (pop_ratio * math.exp(0.36 * Lr + 0.065 * Lr * Lr))
+                cur = NGA_TFE_TJ * (pt / p0) * math.exp(0.36 * L + 0.065 * L * L) * r10_old
                 if y == 2050:
                     cur_2050, var_2050 = cur, E
                 else:
                     cur_2100, var_2100 = cur, E
-        print('%-8s %10.2f %10.3f %10.3f %12.0f %12.0f %10.3f %10.3f' %
-              (pid, x_bar * 100, b_target, r_eps_path,
-               cur_2100, var_2100, var_2050 / cur_2050, var_2100 / cur_2100))
+        print(
+            "%-8s %10.2f %10.3f %10.3f %12.0f %12.0f %10.3f %10.3f"
+            % (
+                pid,
+                x_bar * 100,
+                b_target,
+                r_eps_path,
+                cur_2100,
+                var_2100,
+                var_2050 / cur_2050,
+                var_2100 / cur_2100,
+            )
+        )
     print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     coherence_test_shock()
     coherence_test_growth()
-    run_all(delta_mode='off', eta=True, b_mode='plain')
-    run_all(delta_mode='off', eta=True, b_mode='static-adjusted')
-    run_all(delta_mode='decade-effects', eta=True, b_mode='plain')
-    run_all(delta_mode='decade-effects', eta=True, b_mode='plain',
-            r_mode='fixed-old')
+    run_all(delta_mode="off", eta=True, b_mode="plain")
+    run_all(delta_mode="off", eta=True, b_mode="static-adjusted")
+    run_all(delta_mode="decade-effects", eta=True, b_mode="plain")
+    run_all(delta_mode="decade-effects", eta=True, b_mode="plain", r_mode="fixed-old")
