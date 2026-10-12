@@ -103,3 +103,10 @@ def test_iiasa_repeated_row_is_an_error(tmp_path):
             history_end=2025,
             fill_years=(2023,),
         )
+
+
+def test_fill_year_beyond_history_is_an_error(config):
+    # A fill year after history_end would be clamped to the last historical value.
+    iiasa = IiasaExport.from_config(config)
+    with pytest.raises(ValueError, match="outside the Historical Reference span"):
+        iiasa.series(iiasa.population, ["SSP2"], (2023, iiasa.history_end + 1))

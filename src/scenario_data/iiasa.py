@@ -122,10 +122,14 @@ def country_series(
     fill = list(fill_years)
     if historical is None:
         raise ValueError("%s: Historical Reference row is missing" % variable)
-    if history_end not in historical or not any(y <= min(fill) for y in historical):
+    if history_end not in historical:
+        raise ValueError("%s: Historical Reference must contain %d" % (variable, history_end))
+    outside = [y for y in fill if not min(historical) <= y <= history_end]
+    if outside:
+        # interp() would clamp these to an end of the historical row instead of interpolating.
         raise ValueError(
-            "%s: Historical Reference must bracket %s and contain %d"
-            % (variable, fill, history_end)
+            "%s: fill years %s lie outside the Historical Reference span %d-%d"
+            % (variable, outside, min(historical), history_end)
         )
 
     out = {}

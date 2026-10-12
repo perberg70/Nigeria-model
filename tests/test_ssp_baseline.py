@@ -36,11 +36,13 @@ def test_prototype_splice_is_idempotent_on_committed_html(params, block_text):
     assert update_prototype_html(html, block_text) == html
 
 
-def test_splice_replaces_a_stale_block(params, block_text):
+@pytest.mark.parametrize(
+    "anchor", ["emissions:{", "sspBaseline:{", "popSSP:{", "pollutingIdxSSP:{"]
+)
+def test_splice_replaces_a_stale_block(params, block_text, anchor):
     html = params.prototype_html.read_text(encoding="utf-8")
-    stale = html.replace(
-        "pollutingIdxSSP:{\n      eps:-0.67", "pollutingIdxSSP:{\n      eps:-0.99", 1
-    )
+    assert html.count(anchor) == 1
+    stale = html.replace(anchor, anchor + "\n           staleKey:1,", 1)
     assert stale != html
     assert update_prototype_html(stale, block_text) == html
 

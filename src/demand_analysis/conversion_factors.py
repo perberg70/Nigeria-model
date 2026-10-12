@@ -241,7 +241,7 @@ def section_a(c: ConversionFactorsParams):
     d1 = decade_recursion(t5, dev, shock, g0, b, p.end_year)
     d2 = decade_recursion(t5, dev, growth, g0, b, p.end_year)
     print(
-        "  Test 1 (shock) and Test 2 (%.0f%%/yr growth): annual PA minus decade recursion"
+        "  Test 1 (shock) and Test 2 (%g%%/yr growth): annual PA minus decade recursion"
         % (100 * tests.sustained_growth)
     )
     print(
