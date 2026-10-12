@@ -82,6 +82,7 @@ from typing import Any
 from config_paths import ConfigError, require, require_path
 from scenario_data import IiasaExport, Marker, interp, load_markers, narratives, read_series
 
+from .reporting import short_year
 from .table5 import CurrentLaw, Table5Column, load_current_law, load_table5
 
 DELTA_MODES = ("off", "decade-effects")
@@ -113,6 +114,7 @@ class PartialAdjustmentParams:
     current: CurrentLaw
     tests: CoherenceTestDesign
     runs: tuple[dict[str, Any], ...]
+    comparison_year: int  # printed beside the end year (var/cur ratios)
 
     @classmethod
     def from_config(cls, config: Mapping[str, Any]) -> PartialAdjustmentParams:
@@ -126,11 +128,16 @@ class PartialAdjustmentParams:
                 or not isinstance(r.get("eta"), bool)
             ):
                 raise ConfigError(f"partial_adjustment.runs: invalid leg {r!r}")
+        base_year = int(require(config, "time_horizon.base_year"))
+        end_year = int(require(config, "time_horizon.end_year"))
+        comparison_year = int(require(config, "partial_adjustment.comparison_year"))
+        if not base_year < comparison_year < end_year:
+            raise ConfigError("partial_adjustment.comparison_year must lie inside time_horizon")
         return cls(
             markers=load_markers(config),
-            base_year=int(require(config, "time_horizon.base_year")),
+            base_year=base_year,
             anchor_year=int(require(config, "time_horizon.anchor_year")),
-            end_year=int(require(config, "time_horizon.end_year")),
+            end_year=end_year,
             image_dir=require_path(config, "inputs.image_dir"),
             iiasa=IiasaExport.from_config(config),
             tfe_tj=require(config, "ssp_baseline.anchors.total_final_energy_tj"),
@@ -146,6 +153,7 @@ class PartialAdjustmentParams:
                 shock_year=int(require(config, f"{t}.shock_year")),
             ),
             runs=runs,
+            comparison_year=comparison_year,
         )
 
     @property
@@ -349,7 +357,7 @@ def run_all(
     exactly under 'recalibrated' and survive only under 'fixed-old'."""
     t5, cur_law, dev = p.t5, p.current, p.deviation
     b0, q0 = cur_law.elasticity, cur_law.quadratic
-    base_year, end_year = p.base_year, p.end_year
+    base_year, end_year, mid = p.base_year, p.end_year, p.comparison_year
     fe = read_series(p.image_dir, "Final Energy.csv")
     r10_gdp = read_series(p.image_dir, "GDP - PPP.csv")
     r10_pop = read_series(p.image_dir, "Population.csv")
@@ -372,10 +380,10 @@ def run_all(
             "x_bar %/yr",
             "b_target",
             "R10 eps*",
-            "cur 2100 TJ",
-            "var 2100 TJ",
-            "var/cur50",
-            "var/cur100",
+            "cur %d TJ" % end_year,
+            "var %d TJ" % end_year,
+            "var/cur" + short_year(mid),
+            "var/cur" + short_year(end_year),
         )
     )
     print("  (* R10 eps is the scenario-path proxy, not a structural elasticity)")
@@ -456,7 +464,7 @@ def run_all(
         )
 
         # Variant energy with R per r_mode
-        cur_2100 = var_2100 = cur_2050 = var_2050 = None
+        cur_end = var_end = cur_mid = var_mid = None
         for y in years:
             pt = interp(y, pop[narrative])
             fe_ratio = interp(y, fe[scen]) / interp(base_year, fe[scen])
@@ -471,14 +479,14 @@ def run_all(
                 # conditional experiment: R from the CURRENT law
                 r10_residual = fe_ratio / (pop_ratio * math.exp(b0 * Lr + q0 * Lr * Lr))
             E = p.tfe_tj * (pt / p0) * math.exp(nga_pa[y] - nga_pa[base_year]) * r10_residual
-            if y in (2050, end_year):
+            if y in (mid, end_year):
                 L = log_g[y] - log_g[base_year]
                 r10_old = fe_ratio / (pop_ratio * math.exp(b0 * Lr + q0 * Lr * Lr))
                 cur = p.tfe_tj * (pt / p0) * math.exp(b0 * L + q0 * L * L) * r10_old
-                if y == 2050:
-                    cur_2050, var_2050 = cur, E
+                if y == mid:
+                    cur_mid, var_mid = cur, E
                 else:
-                    cur_2100, var_2100 = cur, E
+                    cur_end, var_end = cur, E
         print(
             "%-8s %10.2f %10.3f %10.3f %12.0f %12.0f %10.3f %10.3f"
             % (
@@ -486,10 +494,10 @@ def run_all(
                 x_bar * 100,
                 b_target,
                 r_eps_path,
-                cur_2100,
-                var_2100,
-                var_2050 / cur_2050,
-                var_2100 / cur_2100,
+                cur_end,
+                var_end,
+                var_mid / cur_mid,
+                var_end / cur_end,
             )
         )
     print()

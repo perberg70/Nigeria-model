@@ -18,6 +18,12 @@ def capture(report: Callable[..., Any], *args: Any, **kwargs: Any) -> str:
     return buffer.getvalue()
 
 
+def short_year(year: int) -> str:
+    """The short year the report headers print: 2000 -> "00", 2050 -> "50", 2100 -> "100"."""
+
+    return "%02d" % (year % 1000)
+
+
 def write_report(path: Path, text: str) -> None:
     """Write a report with LF line endings, as the committed reports are stored."""
 

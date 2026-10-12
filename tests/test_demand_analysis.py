@@ -83,3 +83,18 @@ def test_sector_conversion_rejects_an_unquoted_unsd_code(config):
     }
     with pytest.raises(ConfigError, match="must be quoted"):
         sc.SectorConversionParams.from_config(cfg)
+
+
+def test_comparison_year_must_lie_inside_the_horizon(config):
+    end = config["time_horizon"]["end_year"]
+    cfg = {**config, "partial_adjustment": {**config["partial_adjustment"], "comparison_year": end}}
+    with pytest.raises(ConfigError, match="comparison_year"):
+        pa.PartialAdjustmentParams.from_config(cfg)
+
+
+def test_conversion_factors_price_bases_include_the_model_row(config):
+    c = config["conversion_factors"]
+    bases = [u for u in c["gdp_price_bases"] if u != config["inputs"]["iiasa"]["gdp"]["unit"]]
+    cfg = {**config, "conversion_factors": {**c, "gdp_price_bases": bases}}
+    with pytest.raises(ConfigError, match="must be one of them"):
+        cf.ConversionFactorsParams.from_config(cfg)

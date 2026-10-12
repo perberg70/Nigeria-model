@@ -7,7 +7,7 @@ from .partial_adjustment import (
     growth_adjusted_b,
     pa_path,
 )
-from .reporting import capture, write_report
+from .reporting import capture, short_year, write_report
 from .table5 import CurrentLaw, Table5Column, load_current_law, load_table5
 
 __all__ = [
@@ -20,5 +20,6 @@ __all__ = [
     "load_current_law",
     "load_table5",
     "pa_path",
+    "short_year",
     "write_report",
 ]

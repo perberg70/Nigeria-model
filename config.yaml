@@ -161,6 +161,9 @@ partial_adjustment:
     sustained_growth: 0.02   # TEST 2: constant growth of income per head, /yr
     shock: 1.10              # TEST 1: income per head x1.10 ...
     shock_year: 2024         # ... from this year, then flat
+  # Mid-horizon year whose variant/current energy ratio is printed beside the end
+  # year's (this report and the conversion_factors report).
+  comparison_year: 2050
   # Leg sequence of the report (run_all arguments).
   runs:
     - {delta_mode: "off", eta: true, b_mode: plain, r_mode: recalibrated}
@@ -179,6 +182,17 @@ conversion_factors:
     2008: 1930.60455
     2009: 1684.59140
     2010: 1695.45250
+  # PWT 7.1 year the country's income level is spliced from (PWT 7.1's last year): a
+  # year of pwt71_rgdpch and of the IIASA Historical Reference grid.
+  pwt71_splice_year: 2010
+  # Section B. IIASA GDP|PPP rows compared, one per price base (inputs.iiasa.gdp.unit
+  # must be one of them), and the row in IMAGE R10's price base (USD_2010), in which
+  # the PWT 7.1 level gap and the region's own position are measured.
+  gdp_price_bases: [billion USD_2010/yr, billion USD_2015/yr, billion USD_2017/yr]
+  image_price_base: billion USD_2010/yr
+  # Assumed 25th percentile of the paper's pooled t-10 income sample, 2005 I$: the
+  # paper does not report it, so these are a sensitivity grid, not estimates.
+  sample_p25_cases: [2000, 2500, 3000, 3500]
   # IMAGE marker whose own 2023 sector mix is reported for the region.
   region_mix_pathway: ssp245
 

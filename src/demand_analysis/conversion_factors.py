@@ -44,11 +44,12 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
-from config_paths import require, require_path
+from config_paths import ConfigError, require, require_path
 from scenario_data import historical_series, interp, narratives, read_label_values, read_series
 from units import MJ_PER_KGOE
 
 from .partial_adjustment import PartialAdjustmentParams, decade_recursion, pa_path
+from .reporting import short_year
 from .table5 import Table5Column, load_table5
 
 # IEA sector names -> paper sectors (Appendix A1). Non-energy use and
@@ -77,6 +78,10 @@ class ConversionFactorsParams:
     table5: dict[str, Table5Column]
     table2: Table2Col7
     pwt71: dict[int, float]
+    pwt71_splice_year: int
+    gdp_price_bases: tuple[str, ...]  # IIASA GDP|PPP rows compared in section B
+    image_price_base: str  # the row in IMAGE R10's price base
+    sample_p25_cases: tuple[float, ...]  # assumed 25th percentiles, 2005 I$
     iea_tes_2023: Path
     iea_tfc_2023: Path
     region_mix_pathway: str
@@ -84,25 +89,42 @@ class ConversionFactorsParams:
     @classmethod
     def from_config(cls, config: Mapping[str, Any]) -> ConversionFactorsParams:
         t2 = "parameters.burke_csereklyei_2016.table2_col7"
-        pathway = require(config, "conversion_factors.region_mix_pathway")
+        c = "conversion_factors"
+        pathway = require(config, f"{c}.region_mix_pathway")
         require(config, f"scenarios.{pathway}")
+        pa = PartialAdjustmentParams.from_config(config)
+        pwt71 = {int(y): float(v) for y, v in require(config, f"{c}.pwt71_rgdpch").items()}
+        splice = int(require(config, f"{c}.pwt71_splice_year"))
+        if splice not in pwt71:
+            raise ConfigError(f"{c}.pwt71_splice_year: {splice} is not in {c}.pwt71_rgdpch")
+        bases = tuple(require(config, f"{c}.gdp_price_bases"))
+        image_base = require(config, f"{c}.image_price_base")
+        for unit in (pa.iiasa.gdp.unit, image_base):
+            if unit not in bases:
+                raise ConfigError(f"{c}.gdp_price_bases: {unit!r} must be one of them")
         return cls(
             region_name=require(config, "region.name"),
-            pa=PartialAdjustmentParams.from_config(config),
+            pa=pa,
             table5=load_table5(config),
             table2=Table2Col7(
                 b1=require(config, f"{t2}.b1"),
                 b2=require(config, f"{t2}.b2"),
                 e25=require(config, f"{t2}.e25"),
             ),
-            pwt71={
-                int(y): float(v)
-                for y, v in require(config, "conversion_factors.pwt71_rgdpch").items()
-            },
+            pwt71=pwt71,
+            pwt71_splice_year=splice,
+            gdp_price_bases=bases,
+            image_price_base=image_base,
+            sample_p25_cases=tuple(require(config, f"{c}.sample_p25_cases")),
             iea_tes_2023=require_path(config, "inputs.iea.total_energy_supply_2023"),
             iea_tfc_2023=require_path(config, "inputs.iea.final_by_sector_2023"),
             region_mix_pathway=pathway,
         )
+
+
+def price_base(unit: str) -> str:
+    """The price base an IIASA GDP unit names: "billion USD_2010/yr" -> "USD_2010"."""
+    return unit.replace("billion ", "").replace("/yr", "")
 
 
 # --------------------------------------------------------------------------
@@ -110,12 +132,13 @@ class ConversionFactorsParams:
 # parameter exposed, so each conversion can be switched on by itself.
 def run_markers(c: ConversionFactorsParams, nga, reg=None, gdp_unit=None, anchor_tj=None):
     """nga/reg: dicts with beta_mean, eta, b_target, lam, g_dev0. Returns
-    {pid: (var/cur 2050, var/cur 2100, var 2100 TJ)}; 'cur' is the current
+    {pid: (var/cur at the comparison year, var/cur at the end year, var end-year TJ)},
+    the comparison year being partial_adjustment.comparison_year; 'cur' is the current
     construction, unchanged (0.36 L + 0.065 L^2, old-law R). reg may also be
     a function of the marker id, for region parameters that vary by marker."""
     p = c.pa
     b0, q0 = p.current.elasticity, p.current.quadratic
-    base_year, end_year = p.base_year, p.end_year
+    base_year, end_year, mid = p.base_year, p.end_year, p.comparison_year
     anchor_tj = p.tfe_tj if anchor_tj is None else anchor_tj
     gdp_spec = p.iiasa.gdp if gdp_unit is None else replace(p.iiasa.gdp, unit=gdp_unit)
     reg = reg or nga
@@ -161,7 +184,7 @@ def run_markers(c: ConversionFactorsParams, nga, reg=None, gdp_unit=None, anchor
             g_dev0=rp["g_dev0"],
         )
         res = {}
-        for y in (2050, end_year):
+        for y in (mid, end_year):
             pt = interp(y, pop[narrative])
             fe_ratio = interp(y, fe[scen]) / interp(base_year, fe[scen])
             pop_ratio = interp(y, r10_pop[scen]) / interp(base_year, r10_pop[scen])
@@ -173,7 +196,7 @@ def run_markers(c: ConversionFactorsParams, nga, reg=None, gdp_unit=None, anchor
             cur = anchor_tj * (pt / p0) * math.exp(b0 * L + q0 * L * L) * r_old
             res[y] = (var, cur)
         out[pid] = (
-            res[2050][0] / res[2050][1],
+            res[mid][0] / res[mid][1],
             res[end_year][0] / res[end_year][1],
             res[end_year][0],
         )
@@ -189,8 +212,9 @@ def base_params(c: ConversionFactorsParams, **kw):
 
 def print_runs(c: ConversionFactorsParams, label_runs):
     markers = c.pa.markers
+    head = "v/c%s  v/c%s" % (short_year(c.pa.comparison_year), short_year(c.pa.end_year))
     print("  %-34s" % "leg" + "".join("%14s" % pid for pid in markers))
-    print("  %-34s" % "" + "".join("%14s" % "v/c50  v/c100" for _ in markers))
+    print("  %-34s" % "" + "".join("%14s" % head for _ in markers))
     for label, runs in label_runs:
         print(
             "  %-34s" % label
@@ -294,26 +318,28 @@ def section_b(c: ConversionFactorsParams):
     print("  beta*dg and the target slope use log DIFFERENCES (any constant price-base")
     print("  factor cancels) and alpha absorbs the level, so the income conversion")
     print("  only enters through d = ln Y_NGA - mean_463(ln Y_t-10) in PWT 7.1 units.")
+    splice = c.pwt71_splice_year
     pop = historical_series(iiasa, popspec.variable, popspec.unit, model=popspec.model, **where)
+
+    def at(series, y):
+        # A year off the export's grid is interpolated on it, as country_series fills it.
+        return series[y] if y in series else interp(y, series)
+
     pc = {}
-    for unit in ("billion USD_2010/yr", "billion USD_2015/yr", "billion USD_2017/yr"):
+    for unit in c.gdp_price_bases:
         g = historical_series(iiasa, gdpspec.variable, unit, model=gdpspec.model, **where)
-        pc[unit] = {y: g[y] / pop[y] * 1e3 for y in (2010, 2020, 2025)}
-        pc[unit][base] = (
-            interp(base, {y: g[y] for y in (2020, 2025)})
-            / interp(base, {y: pop[y] for y in (2020, 2025)})
-            * 1e3
-        )
-    growth_10_23 = pc["billion USD_2015/yr"][base] / pc["billion USD_2015/yr"][2010]
+        pc[unit] = {splice: g[splice] / pop[splice] * 1e3, base: at(g, base) / at(pop, base) * 1e3}
+    growth_since = pc[gdpspec.unit][base] / pc[gdpspec.unit][splice]
+    image_unit = c.image_price_base
     print("  %s GDP per head, OECD ENV-Growth 2025 (IIASA export), PPP:" % c.region_name)
     for unit, v in pc.items():
         print(
-            "    %-22s 2010 %7.0f   %d %7.0f"
-            % (unit.replace("billion ", ""), v[2010], base, v[base])
+            "    %-22s %d %7.0f   %d %7.0f"
+            % (unit.replace("billion ", ""), splice, v[splice], base, v[base])
         )
     print(
-        "    real growth per head 2010->%d: x%.4f (%.2f log points); identical in all three"
-        % (base, growth_10_23, math.log(growth_10_23) * 100)
+        "    real growth per head %d->%d: x%.4f (%.2f log points); identical in all three"
+        % (splice, base, growth_since, math.log(growth_since) * 100)
     )
     print("    rows: the three price bases differ by a constant factor")
     print(
@@ -321,17 +347,18 @@ def section_b(c: ConversionFactorsParams):
         % c.region_name
     )
     print("    " + "  ".join("%d %.0f" % kv for kv in sorted(c.pwt71.items())))
-    pwt10 = c.pwt71[2010]
-    pwt23 = pwt10 * growth_10_23
-    lo, hi = min(c.pwt71.values()) * growth_10_23, max(c.pwt71.values()) * growth_10_23
+    pwt_splice = c.pwt71[splice]
+    pwt23 = pwt_splice * growth_since
+    lo, hi = min(c.pwt71.values()) * growth_since, max(c.pwt71.values()) * growth_since
     print(
-        "    spliced %d = PWT 7.1 2010 x OECD growth since 2010 = %.0f "
-        "(%d-2010 base range %.0f-%.0f)" % (base, pwt23, min(c.pwt71), lo, hi)
+        "    spliced %d = PWT 7.1 %d x OECD growth since %d = %.0f "
+        "(%d-%d base range %.0f-%.0f)"
+        % (base, splice, splice, pwt23, min(c.pwt71), max(c.pwt71), lo, hi)
     )
-    gap = math.log(pc["billion USD_2010/yr"][2010] / pwt10)
+    gap = math.log(pc[image_unit][splice] / pwt_splice)
     print(
-        "    level gap in 2010, OECD USD_2010 PPP vs PWT 7.1: %.2f log units (x%.2f) --"
-        % (gap, math.exp(gap))
+        "    level gap in %d, OECD %s PPP vs PWT 7.1: %.2f log units (x%.2f) --"
+        % (splice, price_base(image_unit), gap, math.exp(gap))
     )
     print("    before any 2010->2005 deflation; a price-base conversion factor cannot close it")
     print()
@@ -365,7 +392,7 @@ def section_b(c: ConversionFactorsParams):
     print("  %-30s %8s %8s" % ("assumed 25th pct (2005 I$)", "d", "beta_0"))
     cases = (
         [("= %s (current assumption)" % c.region_name, pwt23)]
-        + [("$%d" % p25, p25) for p25 in (2000, 2500, 3000, 3500)]
+        + [("$%d" % p25, p25) for p25 in c.sample_p25_cases]
         + [("$%.0f (Table 2, 2010)" % p25_2010, p25_2010)]
     )
     ds = []
@@ -387,12 +414,15 @@ def section_b(c: ConversionFactorsParams):
     # USD_2010 row (different vintages of the same price base).
     r_gdp = read_series(p.image_dir, "GDP - PPP.csv")
     r_pop = read_series(p.image_dir, "Population.csv")
-    nga_10 = pc["billion USD_2010/yr"][base]
+    nga_10 = pc[image_unit][base]
     print(
         "  Region at its own position: d_R = d + ln(R10 GDP per head / %s), %d,"
         % (c.region_name, base)
     )
-    print("  both in USD_2010 PPP (IMAGE SSP2021 vs OECD ENV-Growth 2025, different vintages):")
+    print(
+        "  both in %s PPP (IMAGE SSP2021 vs OECD ENV-Growth 2025, different vintages):"
+        % price_base(image_unit)
+    )
     rows = []
     for pid, marker in p.markers.items():
         scen = marker.key
@@ -578,15 +608,18 @@ def section_c(c: ConversionFactorsParams):
 def section_d(c: ConversionFactorsParams):
     print("D. PURE UNIT FACTORS CANCEL (numerical check)")
     ref = run_markers(c, base_params(c))
-    alt_gdp = run_markers(c, base_params(c), gdp_unit="billion USD_2010/yr")
+    alt_gdp = run_markers(c, base_params(c), gdp_unit=c.image_price_base)
     alt_e = run_markers(c, base_params(c), anchor_tj=c.pa.tfe_tj * 1e6 / MJ_PER_KGOE)
     d_gdp = max(abs(alt_gdp[p][1] - ref[p][1]) for p in ref)
     d_e = max(abs(alt_e[p][1] - ref[p][1]) for p in ref)
+    end = c.pa.end_year
     print(
-        "  GDP in USD_2010 instead of USD_2015 rows:   max |change| in var/cur 2100 = %.1e" % d_gdp
+        "  GDP in %s instead of %s rows:   max |change| in var/cur %d = %.1e"
+        % (price_base(c.image_price_base), price_base(c.pa.iiasa.gdp.unit), end, d_gdp)
     )
     print(
-        "  energy anchor in kgoe instead of TJ:          max |change| in var/cur 2100 = %.1e" % d_e
+        "  energy anchor in kgoe instead of TJ:          max |change| in var/cur %d = %.1e"
+        % (end, d_e)
     )
     print("  IMAGE R10 GDP stays in USD_2010: it enters only as log changes and in R.")
     print()
