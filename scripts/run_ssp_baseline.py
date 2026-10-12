@@ -26,7 +26,7 @@ from ssp_baseline import (
     build_baseline,
     print_diagnostics,
     render_block,
-    update_prototype_html,
+    write_prototype,
 )
 
 
@@ -50,11 +50,8 @@ def main() -> int:
     with out.open("w", encoding="utf-8", newline="\n") as fh:
         fh.write(text)
     if args.update_prototype:
-        html_path = params.prototype_html
-        html = html_path.read_text(encoding="utf-8")
-        with html_path.open("w", encoding="utf-8", newline="\n") as fh:
-            fh.write(update_prototype_html(html, text))
-        print("updated: %s" % html_path)
+        write_prototype(params.prototype_html, text)
+        print("updated: %s" % params.prototype_html)
     print("written: %s  (%d bytes)" % (out, out.stat().st_size))
     return 0
 
