@@ -14,7 +14,9 @@ module docstring of `builder.py`.
   GDP|PPP, population.
 - IIASA SSP export for Nigeria (`inputs.iiasa`): population and GDP|PPP by SSP narrative.
 - IEA 2023 current-release tables (`inputs.iea.*_current`): the anchors are cross-checked
-  against them on every run; a mismatch or a missing table is an error.
+  against them on every run; a mismatch or a missing table is an error. Grid generation is
+  read by source: `inputs.iea_generation_lines` names the IEA line of each IAMC source, and a
+  source without a line must be an observed zero in `ssp_baseline.anchors.generation_gwh`.
 
 ## Key Equations
 
@@ -28,8 +30,11 @@ module docstring of `builder.py`.
 
 ## Configuration (`config.yaml`)
 
-`ssp_baseline.anchors`, `ssp_baseline.demand`, `ssp_baseline.envelope`, plus `scenarios`,
-`time_horizon`, `inputs`. Each value carries its source and gap notes in the file.
+`ssp_baseline.anchors` (base-year generation by source, back-up generators, final energy,
+emissions), `ssp_baseline.demand`, `ssp_baseline.envelope`,
+`ssp_baseline.cumulative_start_year` (start of BLOCK 1's `cum`, the prototype's 2025–2100
+window) and `ssp_baseline.diagnostics_year` (stdout only), plus `scenarios`, `time_horizon`,
+`inputs`. Each value carries its source and gap notes in the file.
 
 ## Outputs
 

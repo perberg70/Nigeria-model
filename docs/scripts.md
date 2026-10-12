@@ -8,7 +8,7 @@ Every script is run from the repository root, requires `--config <file>` (normal
 
 - `scripts/run_ssp_baseline.py --config config.yaml [--update-prototype]`
   - Reads `ssp_baseline`, `scenarios`, `time_horizon`, `inputs.image_dir`, `inputs.iiasa`,
-    `inputs.iea` (anchor cross-check).
+    `inputs.iea` and `inputs.iea_generation_lines` (anchor cross-check).
   - Writes `data/scenario_compass_africa_r10/nigeria_baseline_block.js`; with
     `--update-prototype` also splices its four blocks into `prototype/africa-prototype.html`.
   - Prints self-checks, the resource envelope at its caps and the four candidate fossil-split

@@ -37,13 +37,22 @@ docstring of `partial_adjustment.py`).
 
 ## Configuration (`config.yaml`)
 
-`partial_adjustment` (test design, leg sequence), `conversion_factors` (PWT 7.1 values,
-region-mix marker), `sector_conversion` (rho ranges, targets, genset efficiencies,
-illustration marker and year), `carbon_intensity` (compared countries, windows, coal factor,
-biomass ratio), plus `parameters` and `ssp_baseline.demand`.
+`partial_adjustment` (test design, leg sequence, comparison year), `conversion_factors`
+(PWT 7.1 values and splice year, GDP price bases, assumed 25th-percentile cases, region-mix
+marker), `sector_conversion` (UNSD code maps and flows, rho ranges, targets, genset
+efficiencies, the low-emission power case, ETP and IMAGE years, illustration marker and
+year), `carbon_intensity` (compared countries and their printed labels, observed, trend,
+co-movement and IMAGE years, coal factor, biomass ratio), plus `parameters`,
+`ssp_baseline.demand` and `inputs.iea_generation_lines`.
 
 ## Units and Conventions
 
-Report text describes the configured comparison (Nigeria, South Africa, Africa); the codes
-that select the data are configuration (`region.iso3`, `carbon_intensity.exclude_iso3`,
-`carbon_intensity.owid_aggregate`).
+Every year, code and share that selects data or enters a calculation is configuration.
+Report labels that name one of them (column years such as `var/cur50`, `tr 00-09`, the 72%
+power case, the compared countries) are formatted from the same keys; the carbon-intensity
+labels come from `region.name`, `region.iso3`, `carbon_intensity.owid_aggregate` and
+`carbon_intensity.labels`. What stays in code: the years that only choose which levels are
+printed (carbon intensity `show()` columns and section A rows), row and column offsets from
+the base year, the paper's 10-year windows, prose about the committed data (the 2010 break,
+the "2023" snapshot labels of `sector_conversion`), and schema labels that are the same for
+any country (IEA row and column names, ETP chart and series names, IMAGE variables).
