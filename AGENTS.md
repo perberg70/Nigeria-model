@@ -13,7 +13,7 @@ its config-driven, region-agnostic architecture.
 - Make the smallest change that satisfies the task.
 - Do not silently invent, interpolate, or substitute missing research data. Flag gaps explicitly in code, logs, configuration, or documentation.
 - Keep modelling logic separate from thesis interpretation and user-interface presentation.
-- Do not change `.claude/agents/`; those files are maintained for Claude Code.
+- Codex: do not edit `.claude/agents/`; those files are maintained with Claude Code. When a shared rule changes, update this file and the matching agent together (see `.codex/README.md`).
 
 ## Mandatory architecture checks
 
@@ -43,6 +43,7 @@ For changes to Python, YAML, configuration loading, demand equations, electrific
 
 - `data/scenario_compass_africa_r10/nigeria_baseline_block.js`, the four spliced blocks of `prototype/africa-prototype.html`, the analysis reports (`*output*.txt`) and the ETP CSVs are outputs of `scripts/`. Regenerate them; never hand-edit them.
 - A change that moves any committed output must regenerate and commit that output in the same change; the regression tests in `tests/` compare them byte for byte.
+- The ETP CSVs are compared after line-ending normalisation: the extractors write CRLF while two committed files are stored with LF. Extract to a scratch `--output-dir` and keep the committed files unless the change is meant to move them (`data/seforall_nigeria_etp/README.md`).
 - `docs/ssp_baseline.md` lists the prototype data that are still hand-pasted; keep them consistent by hand or extend the splice.
 
 ## Validation

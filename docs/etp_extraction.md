@@ -22,5 +22,5 @@ the chart module that reads them.
 
 ## Outputs
 
-`etp_*.csv` in `data/seforall_nigeria_etp/`. Validation results and the known differences
-between a fresh extraction and the committed CSVs are in that folder's README.
+`etp_*.csv` in `data/seforall_nigeria_etp/`. Validation results, and why a fresh extraction is compared after line-ending normalisation, are
+in that folder's README.

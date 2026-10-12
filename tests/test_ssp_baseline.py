@@ -13,6 +13,7 @@ from ssp_baseline import (
     check_iea_anchors,
     render_block,
     update_prototype_html,
+    write_prototype,
 )
 
 
@@ -35,11 +36,13 @@ def test_prototype_splice_is_idempotent_on_committed_html(params, block_text):
     assert update_prototype_html(html, block_text) == html
 
 
-def test_splice_replaces_a_stale_block(params, block_text):
+@pytest.mark.parametrize(
+    "anchor", ["emissions:{", "sspBaseline:{", "popSSP:{", "pollutingIdxSSP:{"]
+)
+def test_splice_replaces_a_stale_block(params, block_text, anchor):
     html = params.prototype_html.read_text(encoding="utf-8")
-    stale = html.replace(
-        "pollutingIdxSSP:{\n      eps:-0.67", "pollutingIdxSSP:{\n      eps:-0.99", 1
-    )
+    assert html.count(anchor) == 1
+    stale = html.replace(anchor, anchor + "\n           staleKey:1,", 1)
     assert stale != html
     assert update_prototype_html(stale, block_text) == html
 
@@ -70,3 +73,24 @@ def test_missing_iea_table_is_an_error(params, tmp_path):
     missing = dataclasses.replace(params, iea_final_current=tmp_path / "absent.csv")
     with pytest.raises(FileNotFoundError, match="anchors unchecked"):
         check_iea_anchors(missing)
+
+
+def test_write_prototype_reproduces_committed_html(params, block_text, tmp_path):
+    target = tmp_path / "africa-prototype.html"
+    target.write_bytes(params.prototype_html.read_bytes())
+    write_prototype(target, block_text)
+    assert target.read_bytes() == params.prototype_html.read_bytes()
+    assert not list(tmp_path.glob("*.tmp"))
+
+
+def test_failed_splice_leaves_prototype_untouched(params, block_text, tmp_path):
+    html = params.prototype_html.read_bytes()
+    anchor = b"  /* --- Social Cost of Carbon"
+    assert html.count(anchor) == 1
+    broken = html.replace(anchor, b"  /* --- SCC", 1)
+    target = tmp_path / "africa-prototype.html"
+    target.write_bytes(broken)
+    with pytest.raises(ValueError):
+        write_prototype(target, block_text)
+    assert target.read_bytes() == broken
+    assert not list(tmp_path.glob("*.tmp"))

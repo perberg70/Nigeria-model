@@ -313,7 +313,7 @@ def coherence_test_shock(p: PartialAdjustmentParams) -> None:
 
     lr = t5.long_run * shock
     print(
-        "TEST 1: shock-then-flat income (+%.0f%% at %d, then constant)"
+        "TEST 1: shock-then-flat income (+%g%% at %d, then constant)"
         % (100 * (p.tests.shock - 1), p.tests.shock_year)
     )
     print("  long-run-implied endpoint of log energy gap: %.4f" % lr)

@@ -22,6 +22,7 @@ its text.
 | `etp_gas_BAU_demand_PJ.csv` | Gas demand by sector, business as usual, PJ | 22 |
 | `etp_cooking.csv` | Cooking stoves by fuel (national, urban, rural, '000 units) and cooking fuel demand (PJ), 2020–2060 | 37–40 |
 | `etp_industry_PJ.csv` | Industry energy demand by fuel, PJ, 2020–2060: chemicals, high-temperature and low-temperature heat (added 2026-10-09) | 27–29 |
+
 The extractors are `src/etp_extraction/` (`power.py` capacity and generation, `demand.py` oil and
 gas demand, `cooking.py`, `industry.py`). Reproduce (requires `pypdf`), from the repository root:
 
@@ -33,14 +34,13 @@ python scripts/run_etp_extraction.py --config config.yaml [--chart power demand 
 Each extractor checks its output against statements in the plan's text and writes no CSV if a
 check fails.
 
-**A fresh extraction does not reproduce every committed CSV byte for byte** (checked 2026-10-12
-with pypdf 6.17.0; the pypdf version that produced the committed files was not recorded):
-`etp_capacity_GW.csv`, `etp_cooking.csv` and `etp_industry_PJ.csv` match exactly once line
-endings are normalised; `etp_generation_TWh.csv` differs in one cell (2030 TOTAL 140.62 against
-the committed 140.63, a rounding-boundary difference inside the ±1.48 TWh drawing quantum); the
-extractors write CRLF line endings while `etp_oil_BAU_demand_PJ.csv` and
-`etp_gas_BAU_demand_PJ.csv` are stored with LF. The committed files are kept as they are;
-`tests/test_etp_extraction.py` pins both the exact and the within-0.01 cases.
+**A fresh extraction reproduces every committed CSV once line endings are normalised** (checked
+2026-10-12 with pypdf 6.17.0 on Python 3.13): the extractors write CRLF, while
+`etp_oil_BAU_demand_PJ.csv` and `etp_gas_BAU_demand_PJ.csv` are stored with LF, so extract to a
+scratch `--output-dir` rather than over the committed files. The generation and capacity TOTAL
+rows are summed left to right: Python 3.12+ `sum()` compensates rounding error and otherwise moves
+the 2030 generation TOTAL from the committed 140.63 to 140.62. `tests/test_etp_extraction.py`
+pins every file.
 
 ## Method
 

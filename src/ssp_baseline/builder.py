@@ -157,8 +157,8 @@ class BaselineParams:
     def elec_base(self) -> float:
         """Electrification in the base year: (grid + gensets) / total final energy.
 
-        BOUNDARY: genset output is counted as electricity while the gensets' fuel stays in
-        total final energy (see the genset_gwh note in config.yaml).
+        BOUNDARY: genset output is counted as electricity while the gensets' fuel, if it is
+        recorded at all, stays in total final energy (see the genset_gwh note in config.yaml).
         """
         return self.all_gwh * TJ_PER_GWH / self.tfe_tj
 
