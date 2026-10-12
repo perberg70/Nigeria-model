@@ -210,21 +210,21 @@ def test_coverage_gaps_and_blank_parts():
 
 
 def test_africa_final_flags_blank_biomass_years(tmp_path, caplog):
+    files = ci.AggregateFiles(
+        total_by_sector="total.csv",
+        by_source="{sector}_by_source.csv",
+        sectors=("residential", "commercial", "industry", "transport"),
+    )
+
     def write(name, rows):
         body = "".join(f"{label},{v},{y}, TJ\n" for label, v, y in rows)
         (tmp_path / name).write_text("label,value,year,unit\n" + body, encoding="utf-8")
 
-    write("total_final_consumption_by_sector_africa_2000_2023.csv", [("Total", 100, 2000)] * 1)
+    write("total.csv", [("Total", 100, 2000)] * 1)
     for s in ("residential", "commercial", "industry"):
-        write(
-            f"{s}_final_consumption_by_source_africa_2000_2023.csv",
-            [("Biofuels and waste", 10, 2000)],
-        )
-    write(
-        "transport_final_consumption_by_source_africa_2000_2023.csv",
-        [("Biofuels and waste", "", 2000)],
-    )
-    tfc, com = ci.africa_final(tmp_path)
+        write(f"{s}_by_source.csv", [("Biofuels and waste", 10, 2000)])
+    write("transport_by_source.csv", [("Biofuels and waste", "", 2000)])
+    tfc, com = ci.africa_final(tmp_path, files)
     assert com[2000] == pytest.approx(70.0)
     assert _warnings(caplog) == [
         "IEA Africa transport biofuels and waste blank in 2000; commercial final energy "

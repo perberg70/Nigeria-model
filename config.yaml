@@ -54,6 +54,13 @@ inputs:
   # IEA Africa chart exports, copied from MSc-thesis on 2026-10-09. Used only by
   # the carbon-intensity check; null skips its Africa final-energy rows.
   iea_africa_dir: data/iea_africa_2023
+  # File names inside inputs.iea_africa_dir (or --iea-africa DIR): total final
+  # consumption by sector, and final consumption by source for each listed sector
+  # ({sector} is replaced by its name; their biofuels and waste rows are summed).
+  iea_africa_files:
+    total_by_sector: total_final_consumption_by_sector_africa_2000_2023.csv
+    by_source: "{sector}_final_consumption_by_source_africa_2000_2023.csv"
+    sectors: [residential, commercial, industry, transport]
   ipcc_emission_factors: data/ipcc_2006_emission_factors/default_co2_factors_table_1_4.csv
   etp_cooking: data/seforall_nigeria_etp/etp_cooking.csv
 

@@ -83,6 +83,27 @@ def _year_pair(pair: Any, key: str) -> tuple[int, int]:
 
 
 @dataclass(frozen=True)
+class AggregateFiles:
+    """File names of the aggregate's IEA exports (inputs.iea_africa_files)."""
+
+    total_by_sector: str
+    by_source: str  # with a {sector} placeholder
+    sectors: tuple[str, ...]
+
+    @classmethod
+    def from_config(cls, config: Mapping[str, Any]) -> AggregateFiles:
+        k = "inputs.iea_africa_files"
+        by_source = require(config, f"{k}.by_source")
+        if "{sector}" not in by_source:
+            raise ConfigError(f"{k}.by_source must contain {{sector}}")
+        return cls(
+            total_by_sector=require(config, f"{k}.total_by_sector"),
+            by_source=by_source,
+            sectors=tuple(require(config, f"{k}.sectors")),
+        )
+
+
+@dataclass(frozen=True)
 class CarbonIntensityParams:
     region_name: str
     iso3: str
@@ -96,6 +117,7 @@ class CarbonIntensityParams:
     iea_tfc_series: Path
     iea_production_series: Path
     iea_africa_dir: Path | None
+    iea_africa_files: AggregateFiles
     first_year: int
     last_year: int
     gdp_first_year: int
@@ -151,6 +173,7 @@ class CarbonIntensityParams:
             iea_tfc_series=require_path(config, "inputs.iea.final_by_sector_2000_2023"),
             iea_production_series=require_path(config, "inputs.iea.domestic_production_2000_2023"),
             iea_africa_dir=africa,
+            iea_africa_files=AggregateFiles.from_config(config),
             first_year=int(first),
             last_year=int(last),
             gdp_first_year=int(gdp_first),
@@ -290,14 +313,11 @@ def country_final(p: CarbonIntensityParams):
     return tfc, com
 
 
-def africa_final(d: Path):
-    tfc = read_year_totals(d / "total_final_consumption_by_sector_africa_2000_2023.csv")
+def africa_final(d: Path, files: AggregateFiles):
+    tfc = read_year_totals(d / files.total_by_sector)
     bio = {}
-    for s in ("residential", "commercial", "industry", "transport"):
-        part = read_year_totals(
-            d / ("%s_final_consumption_by_source_africa_2000_2023.csv" % s),
-            {"Biofuels and waste"},
-        )
+    for s in files.sectors:
+        part = read_year_totals(d / files.by_source.format(sector=s), {"Biofuels and waste"})
         blank = [y for y in tfc if y not in part]
         if blank:
             LOGGER.warning(
@@ -574,7 +594,7 @@ def report(p: CarbonIntensityParams):
         "%s, comb. per total final" % name: per(comb(nga), tfc_n, 1e9 / 1e3),
     }
     if iea_africa:
-        tfc_a, com_a = africa_final(iea_africa)
+        tfc_a, com_a = africa_final(iea_africa, p.iea_africa_files)
         ci_f["%s, per total final" % agg] = per(co2(afr), tfc_a, 1e9 / 1e3)
         ci_f["%s, comb. per total final" % agg] = per(comb(afr), tfc_a, 1e9 / 1e3)
         tfc_xn = {y: tfc_a[y] - tfc_n[y] for y in tfc_a if y in tfc_n}
