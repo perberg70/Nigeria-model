@@ -1,0 +1,55 @@
+[project]
+name = "nigeria-model"
+version = "0.1.0"
+description = "Data build and analysis scripts behind the Africa (Nigeria) decision-support prototype"
+requires-python = ">=3.11"
+# Direct third-party imports of src/ and scripts/. environment.yaml remains the
+# canonical environment spec (conda env `nigeria-model`; see README). The pypdf
+# lower bound is the version the ETP regression tests were verified with.
+dependencies = [
+    "pypdf>=6.17",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4",
+]
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+# Explicit src-layout discovery: the packages under src/ plus the top-level
+# config_paths and units modules. scripts/ is deliberately not packaged — those
+# are run as entry-point scripts and self-bootstrap via scripts/_path_setup.py.
+[tool.setuptools]
+package-dir = { "" = "src" }
+py-modules = ["config_paths", "units"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+markers = [
+    "network: tests that download external data (e.g. the CCKP climate API); deselect with -m 'not network'",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests"]
+extend-exclude = ["build", "dist", "*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "SIM"]
+ignore = ["E203"]
+
+[tool.ruff.format]
+docstring-code-format = true
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint.isort]
+combine-as-imports = true

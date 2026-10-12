@@ -22,22 +22,25 @@ its text.
 | `etp_gas_BAU_demand_PJ.csv` | Gas demand by sector, business as usual, PJ | 22 |
 | `etp_cooking.csv` | Cooking stoves by fuel (national, urban, rural, '000 units) and cooking fuel demand (PJ), 2020–2060 | 37–40 |
 | `etp_industry_PJ.csv` | Industry energy demand by fuel, PJ, 2020–2060: chemicals, high-temperature and low-temperature heat (added 2026-10-09) | 27–29 |
-| `extract_etp_charts.py` | Extracts the capacity and generation charts | |
-| `extract_etp_demand.py` | Extracts the oil and gas demand charts | |
-| `extract_etp_cooking.py` | Extracts the cooking charts | |
-| `extract_etp_industry.py` | Extracts the industry charts | |
 
-Reproduce (requires `pypdf`):
+The extractors are `src/etp_extraction/` (`power.py` capacity and generation, `demand.py` oil and
+gas demand, `cooking.py`, `industry.py`). Reproduce (requires `pypdf`), from the repository root:
 
 ```
-python3 extract_etp_charts.py  Nigeria-ETIP-u.pdf .
-python3 extract_etp_demand.py  Nigeria-ETIP-u.pdf .
-python3 extract_etp_cooking.py Nigeria-ETIP-u.pdf .
-python3 extract_etp_industry.py Nigeria-ETIP-u.pdf .
+python scripts/run_etp_extraction.py --config config.yaml --output-dir /tmp/etp   # compare first
+python scripts/run_etp_extraction.py --config config.yaml [--chart power demand cooking industry]
 ```
 
 Each extractor checks its output against statements in the plan's text and writes no CSV if a
 check fails.
+
+**A fresh extraction reproduces every committed CSV once line endings are normalised** (checked
+2026-10-12 with pypdf 6.17.0 on Python 3.13): the extractors write CRLF, while
+`etp_oil_BAU_demand_PJ.csv` and `etp_gas_BAU_demand_PJ.csv` are stored with LF, so extract to a
+scratch `--output-dir` rather than over the committed files. The generation and capacity TOTAL
+rows are summed left to right: Python 3.12+ `sum()` compensates rounding error and otherwise moves
+the 2030 generation TOTAL from the committed 140.63 to 140.62. `tests/test_etp_extraction.py`
+pins every file.
 
 ## Method
 

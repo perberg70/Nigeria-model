@@ -4,7 +4,9 @@ Branch `experiment/partial-adjustment`, 2026-10-09. Explores Per's question: whe
 move from fuels to electricity, the conversion factors change. This alters total energy demand,
 and any overall primary-to-final factor depends on the transitions in each sector.
 
-- **Script:** `sector_conversion.py`. **Full output:** `sector_conversion_output.txt`.
+- **Code:** `src/demand_analysis/sector_conversion.py`; run
+  `python scripts/run_sector_conversion.py --config config.yaml`. **Full output:**
+  `sector_conversion_output.txt`.
 - **Not changed:** the variant, the baseline builder and the prototype.
 - **Different question:** `CONVERSION_FACTORS.md` covers unit conversions of the Table 5
   coefficients, not this.
@@ -52,7 +54,7 @@ electricity a growing share of it, so it captures neither layer.
 | **total** | **1,219** | **84** | **230** | **784** | **120** | **2,451** |
 
 - **Source:** the IEA's own 2023 sector-by-fuel table (Data Browser, "Last updated 28 Sep
-  2026"), copied from MSc-thesis into `../../../iea_nigeria_2023/`.
+  2026"), copied from MSc-thesis into `../../iea_nigeria_2023/`.
 - **Finer split from UNSD:** the IEA table has five fuels. UNSD 2023 splits each IEA cell into
   wood vs charcoal, and into LPG, kerosene, petrol, diesel, jet fuel and fuel oil. The IEA cell
   sets the level; UNSD sets only the shares within it.
@@ -87,7 +89,7 @@ cooking and road transport.
 | LPG | 1.2 / 1.5 / 2 | ETP per stove 1.3–1.9; Uganda test 1.27 (low confidence, above). Akpasoh & Edeminam (2023, Nigeria) give 3.7–7.1 for an electric pressure cooker, an upper bound |
 | Kerosene | 1.5 / 2 / 3 | Akpasoh & Edeminam 1.7–3.6 (upper bound, lower heating values assumed) |
 | Road fuels | 2.3 / 3 / 5 | US DOE (found by web search): electric vehicles about 60% grid-to-wheel (77% in an older figure), petrol vehicles 12–30% |
-| Industrial heat, fossil | 1.0 / 1.1 / 1.5 | **Assumption**: resistance heating against boilers; heat pumps at the high end. The ETP's industry charts (pp. 27–29, checked 2026-10-09, `../../../seforall_nigeria_etp/etp_industry_PJ.csv`) give no basis: they switch fuels one-for-one, including heat pumps for low-temperature heat, i.e. ρ = 1, this range's low end |
+| Industrial heat, fossil | 1.0 / 1.1 / 1.5 | **Assumption**: resistance heating against boilers; heat pumps at the high end. The ETP's industry charts (pp. 27–29, checked 2026-10-09, `../../seforall_nigeria_etp/etp_industry_PJ.csv`) give no basis: they switch fuels one-for-one, including heat pumps for low-temperature heat, i.e. ρ = 1, this range's low end |
 | Industrial heat, wood | 1.5 / 2.5 / 4 | **Assumption**. The ETP's industry charts also switch biomass one-for-one |
 | Back-up generators → grid | 4–6.7 | 15–25% generator efficiency (2026-08-29 boundary memo) |
 

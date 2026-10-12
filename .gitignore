@@ -1,0 +1,12 @@
+results/
+build/
+dist/
+__pycache__/
+.DS_Store
+*.egg-info/
+.vscode/
+.pytest_tmp*/
+.pytest_cache/
+.ruff_cache/
+
+.cursor/

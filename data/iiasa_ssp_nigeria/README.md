@@ -41,5 +41,5 @@ Before 2025 every scenario uses the historical reference; from 2025 the scenario
 2023 and 2024 are interpolated linearly between the 2020 and 2025 historical values. Population
 scales energy demand and household air-pollution deaths; GDP per head (USD_2015 row) drives the
 baseline energy demand and the income effect on clean cooking. For clean cooking it enters the
-prototype only through the income index `pollutingIdxSSP`, which `build_nigeria_baseline.py`
+prototype only through the income index `pollutingIdxSSP`, which `src/ssp_baseline/` (via `scripts/run_ssp_baseline.py`)
 generates (since 2026-10-09; before then the prototype held a hand-pasted GDP table).

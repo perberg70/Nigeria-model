@@ -1,0 +1,245 @@
+# Nigeria model configuration. Every script requires `--config config.yaml`.
+# Relative paths resolve against this file's directory (the repository root).
+# Values carry their source; GAP / ASSUMED / TRANSFERRED mark what is not a
+# Nigerian measurement. Floats are written as floats (40975.0, not 40975)
+# because the generated reports print them with %s in places.
+
+region:
+  name: Nigeria
+  iso3: NGA
+
+time_horizon:
+  base_year: 2023    # observed anchor year of the energy series (IEA 2023)
+  anchor_year: 2024  # observed anchor year of the emissions series (GCB 2024)
+  end_year: 2100
+
+# Prototype pathway id -> IAM scenario, identified by its (model, scenario)
+# pair, and the IIASA SSP narrative whose population and GDP path it uses.
+scenarios:
+  ssp119: {label: SSP1-1.9, model: IMAGE 3.2, scenario: SSP2021-SSP1-SPA1-19-Default, narrative: SSP1}
+  ssp126: {label: SSP1-2.6, model: IMAGE 3.2, scenario: SSP2021-SSP1-SPA1-26-Default, narrative: SSP1}
+  ssp245: {label: SSP2-4.5, model: IMAGE 3.2, scenario: SSP2021-SSP2-SPA2-45-Default, narrative: SSP2}
+  ssp370: {label: SSP3-7.0, model: IMAGE 3.2, scenario: SSP2021-SSP3-Baseline, narrative: SSP3}
+  ssp585: {label: SSP5-8.5, model: IMAGE 3.2, scenario: SSP2021-SSP5-Baseline, narrative: SSP5}
+
+inputs:
+  # Scenario Compass, IMAGE 3.2 SSP2021, Africa R10 region (one CSV per variable)
+  image_dir: data/scenario_compass_africa_r10/image32_ssp2021
+  iiasa:
+    csv: data/iiasa_ssp_nigeria/Population_GDP_PPP_IIASA_SSP_15_Nigeria.csv
+    history_end_year: 2025  # the Historical Reference row runs through 2025
+    region: Nigeria          # the export's region name
+    # Rows are identified by (model, scenario) within the region, never by scenario alone.
+    population: {model: IIASA-WiC POP 2025, variable: Population, unit: million, scale: 1.0e+6}
+    gdp: {model: OECD ENV-Growth 2025, variable: GDP|PPP, unit: billion USD_2015/yr, scale: 1.0e+9}
+  iea:
+    # IEA Energy Statistics Data Browser, Nigeria, current release ("Last updated
+    # 28 Sep 2026"); the older-release exports beside them are the audit trail and
+    # the two releases must not be mixed in one calculation.
+    final_by_fuel_and_sector_current: data/iea_nigeria_2023/iea_nigeria_2023_final_consumption_by_fuel_and_sector_current_release.csv
+    electricity_current: data/iea_nigeria_2023/iea_nigeria_2023_electricity_generation_and_consumption_current_release.csv
+    # Older release: the only total-energy-supply table and 2000-2023 series held.
+    total_energy_supply_2023: data/iea_nigeria_2023/total_energy_supply_2023.csv
+    final_by_sector_2023: data/iea_nigeria_2023/total_final_consumption_by_sector_2023.csv
+    final_by_sector_2000_2023: data/iea_nigeria_2023/total_final_consumption_by_sector_2000_2023.csv
+    domestic_production_2000_2023: data/iea_nigeria_2023/domestic_energy_production_2000_2023.csv
+  unsd_energy: data/unsd_energy_nigeria/unsd_nigeria_energy_2020_2023.csv
+  owid_co2: data/owid_co2_africa/owid_co2_africa_2000_2024.csv
+  wdi_gdp_growth: data/worldbank_nigeria_gdp/NY.GDP.MKTP.KD.ZG.json
+  # IEA Africa chart exports, copied from MSc-thesis on 2026-10-09. Used only by
+  # the carbon-intensity check; null skips its Africa final-energy rows.
+  iea_africa_dir: data/iea_africa_2023
+  ipcc_emission_factors: data/ipcc_2006_emission_factors/default_co2_factors_table_1_4.csv
+  etp_cooking: data/seforall_nigeria_etp/etp_cooking.csv
+
+# Published coefficients shared by more than one package.
+parameters:
+  burke_csereklyei_2016:
+    # Burke & Csereklyei (2016), Energy Economics 58:199-210 / CAMA WP 45/2016,
+    # Table 5 (p. 19), all columns: the 10-year growth-rates model on within-country
+    # growth 1960-2010. beta = mean 10-year elasticity, eta = interaction with
+    # demeaned t-10 log GDP per capita, theta/kappa = t-10 log income / log energy,
+    # b25/b75 = elasticity at the 25th/75th percentile, lr = reported long-run
+    # elasticity. Table 5 "total" is a PRIMARY-energy (TPES) elasticity.
+    table5:
+      residences: {beta: 0.05, eta: 0.05, theta: 0.008, kappa: -0.033, b25: 0.00, b75: 0.11, lr: 0.25}
+      agriculture: {beta: 0.52, eta: 0.25, theta: 0.006, kappa: -0.025, b25: 0.28, b75: 0.78, lr: 0.25}
+      transport: {beta: 0.66, eta: 0.05, theta: 0.029, kappa: -0.035, b25: 0.62, b75: 0.71, lr: 0.84}
+      industry: {beta: 0.73, eta: 0.25, theta: 0.012, kappa: -0.025, b25: 0.50, b75: 0.98, lr: 0.48}
+      services: {beta: 0.56, eta: 0.41, theta: 0.033, kappa: -0.040, b25: 0.19, b75: 0.98, lr: 0.83}
+      other: {beta: 0.59, eta: -0.04, theta: 0.032, kappa: -0.028, b25: 0.63, b75: 0.55, lr: 1.15}
+      total: {beta: 0.48, eta: 0.13, theta: 0.016, kappa: -0.023, b25: 0.36, b75: 0.62, lr: 0.71}
+    # Table 5 decade effects for total energy (annual growth units), 1981-2010,
+    # relative to the 1970 base.
+    table5_decade_effects_total: [-0.021, -0.025, -0.029, -0.029]
+    # Table 2 col. 7 (2010 cross-section levels, log income NOT demeaned):
+    # elasticity = B1 + 2*B2*lnY, 0.63 at the 25th percentile (p. 14).
+    table2_col7: {b1: -1.20, b2: 0.11, e25: 0.63}
+
+ssp_baseline:
+  output_block: data/scenario_compass_africa_r10/nigeria_baseline_block.js
+  prototype_html: prototype/africa-prototype.html
+  anchors:
+    # IEA 2023 grid generation, current release: gas 31,601 + hydro 9,107 + solar 267
+    # (page prints 40,976; its three lines sum to 40,975). Cross-checked on every run
+    # against inputs.iea.electricity_current.
+    grid_gwh: 40975.0
+    # ETP 296.3 PJ at 25% efficiency; conditional estimate [GAP: back-up generator
+    # output is not measured; the IEA says genset inputs and outputs "may not be properly
+    # reported" (World Energy Balances documentation, p. 502; data/iea_nigeria_2023/), see
+    # SECTOR_CONVERSION.md section 5]. BOUNDARY: the base-year electrification share counts
+    # this output as electricity, while the gensets' fuel, if it is recorded at all, stays in
+    # total_final_energy_tj; if it is not recorded, total final energy is understated.
+    genset_gwh: 20600.0
+    hydro_gwh: 9107.0
+    solar_gwh: 267.0  # IEA 2023, current release (211 in the older one)
+    # IEA 2023 total final energy, current release, Total row (sector rows sum to
+    # 2,450,509). Cross-checked against inputs.iea.final_by_fuel_and_sector_current.
+    total_final_energy_tj: 2450511.0
+    emissions_mt: 135.824  # Global Carbon Budget, 2024 (time_horizon.anchor_year)
+  demand:
+    # Burke & Csereklyei (2016), Table 5, column 7 (total energy). The 10-year
+    # elasticity rises by eta = 0.13 per log unit of income; Nigeria starts at the
+    # 25th-percentile value, 0.36 (Per's decision, 2026-10-05), matching its
+    # 29th-percentile position in 2023 world GDP per capita (MSc-thesis
+    # 03_models/2026-09-02 memo); the paper's percentiles are for its 1960-2010
+    # sample, so that match is approximate. Integrating beta(L) = 0.36 + 0.13 L gives
+    # ln(E/E0) = 0.36 L + 0.065 L^2. The 10-year form integrated over decades is a
+    # projection assumption, not the paper's dynamic model. The Table 2 cross-section
+    # (0.63 at the 25th percentile, 0.11 squared term; parameters...table2_col7) was used
+    # until 2026-10-02 and is not, because it compares countries at one date rather than
+    # following growth over time. TRANSFERRED: a
+    # cross-country estimate applied to Nigeria. [GAP: BOUNDARY MISMATCH: Table 5
+    # "total" is a primary-energy (TPES) elasticity; here it drives total FINAL energy
+    # and the emissions line (see CONVERSION_FACTORS.md section C).] Must equal
+    # parameters...table5.total.b25 and table5.total.eta / 2 (tests/test_config.py).
+    elasticity: 0.36
+    elasticity_quadratic: 0.065
+    # Burke & Csereklyei (2016), CAMA WP 45/2016, Table 3 Panel C col. 1, SE 0.22:
+    # the GDP elasticity of residential primary solid-biofuel use per head in a 2010
+    # cross-section of up to 132 countries. TRANSFERRED to Nigeria and applied as a
+    # time path, and applied to a SHARE OF PEOPLE rather than energy per head (an
+    # assumption); not a Nigerian estimate.
+    cooking_elasticity: -0.67
+  envelope:
+    # Energy Transition Plan p.64, "Techno-economic assumptions in the power sector",
+    # column "Resource potential": PHYSICAL LIMITS FOR NIGERIA, not policy targets.
+    #   large hydro 24 GW · small hydro 3.5 GW · utility solar 210 GW
+    #   onshore wind 3.2 GW · biomass 29,800 PJ · nuclear: none stated
+    hydro_ceiling_gw: 27.5
+    wind_ceiling_gw: 3.2
+    # Hydro capacity factor is DERIVED: hydro_gwh over this capacity (ETP p.17).
+    # [GAP: mixes years -- generation is 2023, capacity is 2020. If capacity grew
+    # between them the true factor, and the ceiling, are lower.]
+    hydro_capacity_gw: 2.0
+    # ASSUMED. Nigeria generated zero wind in 2023, so nothing can be derived. Per's
+    # ruling 2026-09-09. The cap binds at any plausible value: even at an impossible
+    # CF of 1.0, 3.2 GW yields only 28 TWh.
+    wind_capacity_factor: 0.30
+
+partial_adjustment:
+  report: data/scenario_compass_africa_r10/partial_adjustment/output.txt
+  coherence_tests:
+    # Test design (arbitrary level; only changes matter).
+    income_per_head: 8000.0
+    sustained_growth: 0.02   # TEST 2: constant growth of income per head, /yr
+    shock: 1.10              # TEST 1: income per head x1.10 ...
+    shock_year: 2024         # ... from this year, then flat
+  # Leg sequence of the report (run_all arguments).
+  runs:
+    - {delta_mode: "off", eta: true, b_mode: plain, r_mode: recalibrated}
+    - {delta_mode: "off", eta: true, b_mode: static-adjusted, r_mode: recalibrated}
+    - {delta_mode: decade-effects, eta: true, b_mode: plain, r_mode: recalibrated}
+    - {delta_mode: decade-effects, eta: true, b_mode: plain, r_mode: fixed-old}
+
+conversion_factors:
+  report: data/scenario_compass_africa_r10/partial_adjustment/conversion_factors_output.txt
+  # Penn World Table 7.1, Nigeria, rgdpch (2005 I$ per person), as republished by
+  # FRED (RGDPCHNGA625NUPN). [GAP: read via web search 2026-10-09; NOT downloaded
+  # and not independently verified.] Note the year-to-year volatility.
+  pwt71_rgdpch:
+    2006: 1649.33976
+    2007: 1912.57771
+    2008: 1930.60455
+    2009: 1684.59140
+    2010: 1695.45250
+  # IMAGE marker whose own 2023 sector mix is reported for the region.
+  region_mix_pathway: ssp245
+
+sector_conversion:
+  report: data/scenario_compass_africa_r10/partial_adjustment/sector_conversion_output.txt
+  # End-use efficiency ratios rho = eta_electric / eta_displaced: (low, central,
+  # high), by (sector group, carrier). Evidence and ASSUMPTIONS in section 3 of the
+  # report and SECTOR_CONVERSION.md; industry has no source held.
+  rho:
+    household:
+      wood: [4.0, 6.0, 10.0]
+      charcoal: [2.0, 3.0, 4.0]
+      lpg: [1.2, 1.5, 2.0]
+      kerosene: [1.5, 2.0, 3.0]
+      gas: [1.2, 1.5, 2.0]
+    industry:
+      wood: [1.5, 2.5, 4.0]
+      charcoal: [1.5, 2.0, 3.0]
+      fossil: [1.0, 1.1, 1.5]
+    transport:
+      road: [2.3, 3.0, 5.0]
+  # Electrification targets evaluated in sections 4 and 7. Section 4 reads them as electricity
+  # shares of FINAL energy; section 7 reads the same numbers as PROTOTYPE slider shares (gross
+  # generation + genset output over total final energy), mapped to final shares by the 2023 ratio.
+  electrification_targets: [0.20, 0.40, 0.67]
+  # Back-up genset fuel-to-electricity efficiencies (2026-08-29 boundary memo).
+  genset_efficiencies: [0.15, 0.20, 0.25]
+  # Useful-energy check on IMAGE Residential and Commercial (central rho).
+  useful_energy_check: {electric_efficiency: 0.70, other_fuel_rho: 1.5, solid_biomass_rho: 6}
+  # IMAGE marker and year whose electricity increments set the "IMAGE pattern"
+  # allocation and the section 7 illustration.
+  illustration_pathway: ssp245
+  illustration_year: 2050
+
+carbon_intensity:
+  report: data/scenario_compass_africa_r10/carbon_intensity/carbon_intensity_output.txt
+  observed_years: [2000, 2024]     # OWID CO2 rows analysed (inclusive)
+  gdp_coverage_years: [2000, 2022]  # countries need Maddison GDP in every one of these
+  wdi_index_base_year: 2005         # WDI real growth is chained from this Maddison level
+  owid_aggregate: Africa            # OWID's own continental aggregate row
+  exclude_iso3: ZAF                 # the large coal economy removed in "excl." groups
+  # kg CO2/GJ, IPCC 2006 Vol. 2 Table 1.4, other bituminous coal (94,600 kg/TJ in
+  # inputs.ipcc_emission_factors; a test ties the two together).
+  coal_emission_factor: 94.6
+  # Nigeria biomass final energy is not held as a time series; it is estimated as
+  # domestic biofuels-and-waste production x the 2023 final/supply ratio (IEA 2023:
+  # 1,233,622 TJ final / 1,372,877 TJ supply), i.e. the charcoal conversion share is
+  # held at its 2023 value. [ASSUMED constant over 2000-2023.]
+  biomass_final_tj_2023: 1233622.0
+  biomass_supply_tj_2023: 1372877.0
+  # IMAGE marker shown in section D (IMAGE 2010-2020 rows are near identical across
+  # markers).
+  image_history_pathway: ssp245
+
+etp_extraction:
+  # SEforALL / Federal Government of Nigeria, Energy Transition & Investment Plan
+  # update (2024). Page geometry and the prose figures each chart is validated
+  # against are document facts held in src/etp_extraction/<chart>.py.
+  pdf: data/seforall_nigeria_etp/Nigeria-ETIP-u.pdf
+  output_dir: data/seforall_nigeria_etp
+
+regional_climate:
+  output_dir: data/nigeria_regional_climate
+  # CCKP Admin-1 unit codes -> state names -> the six geopolitical zones.
+  admin_units: data/nigeria_regional_climate/admin1_units.yaml
+  period: 2080-2099
+  pathways: [ssp119, ssp126, ssp245, ssp370, ssp585]
+  # Individual-model runs are published for these pathways only.
+  model_pathways: [ssp126, ssp245, ssp370, ssp585]
+  percentiles: [median, p10, p90]
+  user_agent: MSc-thesis climate-data retrieval/1.0
+  timeout_s: 120
+  max_workers: 6
+  outputs:
+    admin1: cckp_cmip6_admin1_anomalies_2080-2099.csv
+    zone_summary: cckp_cmip6_geopolitical_zone_summary_2080-2099.csv
+    national_ensemble: cckp_cmip6_nigeria_ensemble_2080-2099.csv
+    model_admin1: cckp_cmip6_model_admin1_anomalies_2080-2099.csv
+    model_zone: cckp_cmip6_model_geopolitical_zone_2080-2099.csv
+    zone_ensemble: cckp_cmip6_geopolitical_zone_ensemble_2080-2099.csv

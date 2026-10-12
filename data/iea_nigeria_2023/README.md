@@ -63,10 +63,11 @@ The two releases must not be mixed within one calculation. The 2000–2022 annua
 current-release counterpart.
 
 **Which release this repository uses:**
-- **Current release:** `build_nigeria_baseline.py`, the generated baseline block and the prototype
+- **Current release:** the baseline builder (`src/ssp_baseline/`), the generated baseline block and the prototype
   use it since 2026-10-09 (ported from the MSc-thesis refresh of 2026-10-08). So do the
-  partial-adjustment variant and the sector-conversion analysis. The build script asserts that its
-  typed anchors (2,450,511 TJ; 40,975 GWh; hydro 9,107; solar 267) equal these tables.
+  partial-adjustment variant and the sector-conversion analysis. The builder checks on every run that
+  its configured anchors (`ssp_baseline.anchors` in `config.yaml`: 2,450,511 TJ; 40,975 GWh; hydro
+  9,107; solar 267) equal these tables, and stops with an error if they do not.
 - **Older release:** the time-series analyses (carbon-intensity check, the variant's unit-
   conversion boundary weights) use it, because no current-release series exists before 2023.
 

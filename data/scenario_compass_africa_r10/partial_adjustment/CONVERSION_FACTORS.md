@@ -5,9 +5,10 @@
 > to electricity are explored in `SECTOR_CONVERSION.md`.
 
 Branch `experiment/partial-adjustment`, 2026-10-09. Asks which conversion factors the variant in
-`partial_adjustment_variant.py` needs to carry Burke & Csereklyei (2016) Table 5 into the
-prototype's data, and what each one does to the results. Script: `conversion_factors.py`
-(imports the variant and leaves it unchanged). Full output: `conversion_factors_output.txt`.
+`src/demand_analysis/partial_adjustment.py` needs to carry Burke & Csereklyei (2016) Table 5 into the
+prototype's data, and what each one does to the results. Code: `src/demand_analysis/conversion_factors.py`
+(imports the variant and leaves it unchanged); run
+`python scripts/run_conversion_factors.py --config config.yaml`. Full output: `conversion_factors_output.txt`.
 Page references are to CAMA Working Paper 45/2016, the version held in MSc-thesis
 `02_literature/`.
 
