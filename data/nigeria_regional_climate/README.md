@@ -31,7 +31,7 @@ script writes CRLF line endings; the committed CSVs are stored with LF.
 | `cckp_cmip6_nigeria_ensemble_2080-2099.csv` | National ensemble median, 10th and 90th percentile, per pathway |
 | `cckp_cmip6_admin1_anomalies_2080-2099.csv` | Ensemble values for the 36 states and the FCT, with zone |
 | `cckp_cmip6_model_admin1_anomalies_2080-2099.csv` | Individual-model state values |
-| `cckp_cmip6_model_geopolitical_zone_2080-2099.csv` | One value per model and zone (median of its states) |
+| `cckp_cmip6_model_geopolitical_zone_2080-2099.csv` | One value per model and zone (median of its states), with the number of states each median uses (`temperature_state_count`, `precipitation_state_count`; 0 where CCKP gave no value, as for kiost-esm precipitation) |
 | `cckp_cmip6_geopolitical_zone_ensemble_2080-2099.csv` | Zone median, 10th and 90th percentile across models, with model counts |
 | `cckp_cmip6_geopolitical_zone_summary_2080-2099.csv` | Zone summary of the ensemble state values (median, min, max, state count) |
 

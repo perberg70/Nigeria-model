@@ -16,6 +16,7 @@ functions in ``src/regional_climate/zones.py``.
 from __future__ import annotations
 
 import argparse
+import logging
 from datetime import date
 
 import _path_setup  # noqa: F401
@@ -32,6 +33,7 @@ from regional_climate.fetch import fetch, fetch_all_model_states, fetch_national
 
 
 def main() -> int:
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(name)s: %(message)s")
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     add_config_argument(parser)
     args = parser.parse_args()

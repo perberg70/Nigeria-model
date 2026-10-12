@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import csv
+import dataclasses
+from collections import defaultdict
 
 import pytest
 
@@ -13,6 +15,7 @@ from regional_climate import (
     derive_model_zone_rows,
     derive_zone_ensemble_rows,
     derive_zone_rows,
+    fetch as fetch_mod,
     load_admin_units,
     write_csv,
 )
@@ -59,3 +62,46 @@ def test_admin1_rows_follow_unit_file(settings):
     for r in rows:
         unit = by_code[r["code"]]
         assert (r["state"], r["zone"]) == (unit.state, unit.zone)
+
+
+def test_model_zone_counts_the_states_each_median_uses():
+    def row(code, t, p):
+        return {
+            "pathway": "ssp245",
+            "model": "m",
+            "variant": "r1i1p1f1",
+            "code": code,
+            "state": code,
+            "zone": "Z",
+            "temperature_anomaly_c": t,
+            "precipitation_anomaly_mm_year": p,
+        }
+
+    (out,) = derive_model_zone_rows([row("a", 1.0, None), row("b", 2.0, 5.0), row("c", 3.0, None)])
+    counts = [
+        out[k] for k in ("state_count", "temperature_state_count", "precipitation_state_count")
+    ]
+    assert counts == [3, 3, 1]
+    assert out["precipitation_anomaly_mm_year"] == 5.0
+
+
+def test_model_run_without_data_is_flagged(settings, monkeypatch, caplog):
+    monkeypatch.setattr(fetch_mod, "_get_json", lambda s, url: {"data": []})
+    assert fetch_mod.fetch_model_states(settings, ("ssp245", "m", "r1i1p1f1")) == []
+    assert "no data for m r1i1p1f1 ssp245" in caplog.text
+
+
+def test_all_model_states_reports_dropped_runs(settings, monkeypatch, caplog):
+    runs = {w: {("m", "r1i1p1f1")} for w in settings.model_pathways}
+    monkeypatch.setattr(fetch_mod, "discover_model_runs", lambda s, v: defaultdict(set, runs))
+    monkeypatch.setattr(fetch_mod, "_get_json", lambda s, url: {"data": None})
+    assert fetch_mod.fetch_all_model_states(settings) == []
+    n = len(settings.model_pathways)
+    assert f"{n} of {n} model runs returned no data" in caplog.text
+
+
+def test_unlisted_model_pathway_is_an_error(settings, monkeypatch):
+    s = dataclasses.replace(settings, model_pathways=("ssp119",))
+    monkeypatch.setattr(fetch_mod, "discover_model_runs", lambda s, v: defaultdict(set))
+    with pytest.raises(ValueError, match="no individual-model runs for ssp119"):
+        fetch_mod.fetch_all_model_states(s)
