@@ -85,9 +85,11 @@ ssp_baseline:
     # against inputs.iea.electricity_current.
     grid_gwh: 40975.0
     # ETP 296.3 PJ at 25% efficiency; conditional estimate [GAP: back-up generator
-    # output is not measured; see data/seforall_nigeria_etp/README.md]. BOUNDARY: the
-    # base-year electrification share counts this output as electricity while the
-    # gensets' fuel stays in total_final_energy_tj (sector_conversion report, section 5).
+    # output is not measured; the IEA says genset inputs and outputs "may not be properly
+    # reported" (World Energy Balances documentation, p. 502; data/iea_nigeria_2023/), see
+    # SECTOR_CONVERSION.md section 5]. BOUNDARY: the base-year electrification share counts
+    # this output as electricity, while the gensets' fuel, if it is recorded at all, stays in
+    # total_final_energy_tj; if it is not recorded, total final energy is understated.
     genset_gwh: 20600.0
     hydro_gwh: 9107.0
     solar_gwh: 267.0  # IEA 2023, current release (211 in the older one)
@@ -103,7 +105,10 @@ ssp_baseline:
     # 03_models/2026-09-02 memo); the paper's percentiles are for its 1960-2010
     # sample, so that match is approximate. Integrating beta(L) = 0.36 + 0.13 L gives
     # ln(E/E0) = 0.36 L + 0.065 L^2. The 10-year form integrated over decades is a
-    # projection assumption, not the paper's dynamic model. TRANSFERRED: a
+    # projection assumption, not the paper's dynamic model. The Table 2 cross-section
+    # (0.63 at the 25th percentile, 0.11 squared term; parameters...table2_col7) was used
+    # until 2026-10-02 and is not, because it compares countries at one date rather than
+    # following growth over time. TRANSFERRED: a
     # cross-country estimate applied to Nigeria. [GAP: BOUNDARY MISMATCH: Table 5
     # "total" is a primary-energy (TPES) elasticity; here it drives total FINAL energy
     # and the emissions line (see CONVERSION_FACTORS.md section C).] Must equal
@@ -179,7 +184,9 @@ sector_conversion:
       fossil: [1.0, 1.1, 1.5]
     transport:
       road: [2.3, 3.0, 5.0]
-  # Electrification targets (share of final energy) evaluated in sections 4 and 7.
+  # Electrification targets evaluated in sections 4 and 7. Section 4 reads them as electricity
+  # shares of FINAL energy; section 7 reads the same numbers as PROTOTYPE slider shares (gross
+  # generation + genset output over total final energy), mapped to final shares by the 2023 ratio.
   electrification_targets: [0.20, 0.40, 0.67]
   # Back-up genset fuel-to-electricity efficiencies (2026-08-29 boundary memo).
   genset_efficiencies: [0.15, 0.20, 0.25]
