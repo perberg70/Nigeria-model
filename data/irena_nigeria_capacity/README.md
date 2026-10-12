@@ -16,8 +16,9 @@ Capacity units are not stated in the export; the magnitudes are consistent with 
 
 ## Comparison with the IEA, 2023
 
-IRENA puts total generation at 37,402 GWh against the IEA's 40,958 GWh (9.5% lower); gas
-generation at 27,599 GWh against 31,640 GWh. The prototype uses the IEA figures and uses IRENA as
+IRENA puts total generation at 37,402 GWh against the IEA's 40,975 GWh (current release; 40,958 in
+the older one): IRENA is 8.7% below the IEA. Gas generation is 27,599 GWh against 31,601 GWh
+(31,640 in the older release). The prototype uses the IEA figures and uses IRENA as
 a cross-check. IRENA lists the IEA among its contributors, so agreement between the two is not
 fully independent.
 

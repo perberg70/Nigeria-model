@@ -13,12 +13,13 @@ Regional energy and emissions scenarios used for the prototype's no-policy basel
 |---|---|
 | `image32_ssp2021/` | One CSV per variable (filename = IAMC variable name), IMAGE 3.2, five CMIP6 marker scenarios |
 | `scenario_metadata.csv` | Scenario-level metadata (climate category, vetting), one row per marker |
-| `build_nigeria_baseline.py` | Builds the prototype's Nigeria baseline series from these files and `../iiasa_ssp_nigeria/` |
-| `nigeria_baseline_block.js` | Output of the builder; the same block sits in the prototype |
+| `nigeria_baseline_block.js` | Output of the builder (`src/ssp_baseline/`): four blocks (emissions baseline, power-sector baseline, population, and the clean-cooking income index `pollutingIdxSSP`), copied into the prototype by `--update-prototype` |
 
-Run `python3 build_nigeria_baseline.py` to regenerate `nigeria_baseline_block.js`, or
-`python3 build_nigeria_baseline.py --update-prototype` to also write it into
-`../../prototype/africa-prototype.html`.
+The builder reads these files and `../iiasa_ssp_nigeria/`, with every anchor and parameter under
+`ssp_baseline` in `config.yaml`. From the repository root, run
+`python scripts/run_ssp_baseline.py --config config.yaml` to regenerate
+`nigeria_baseline_block.js`, or add `--update-prototype` to also write it into
+`prototype/africa-prototype.html`.
 
 ## The five marker scenarios
 
@@ -50,7 +51,7 @@ Nigeria's own observed values:
   same Burke & Csereklyei relation the prototype applies to Nigeria (`0.36L + 0.065L²`):
   `T(y) = [FE(y)/FE(ref)] / [P(y)/P(ref) × exp(0.36L + 0.065L²)]`, `L = ln(GDPpc(y)/GDPpc(ref))`,
   with `ref` 2023 for final energy and 2024 for CO₂ (`r10_efficiency()` in
-  `build_nigeria_baseline.py`). The raw `Final Energy/GDP` ratio was used until 2026-10-03; it
+  `src/ssp_baseline/builder.py`). The raw `Final Energy/GDP` ratio was used until 2026-10-03; it
   counted the income effect twice. The residual can exceed 1 (SSP3-7.0 and SSP5-8.5 in 2050),
   meaning energy per unit of output rises once the income effect is removed.
 

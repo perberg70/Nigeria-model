@@ -1,0 +1,17 @@
+"""Ensure CLI scripts can import the packages under ``src`` without installation.
+
+Every script in this folder imports this module first (``import _path_setup``).
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+
+SRC_PATH = ROOT / "src"
+if str(SRC_PATH) not in sys.path:
+    sys.path.insert(0, str(SRC_PATH))
+
+__all__ = ["ROOT"]

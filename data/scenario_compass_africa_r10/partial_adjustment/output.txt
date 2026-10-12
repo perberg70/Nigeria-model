@@ -1,0 +1,62 @@
+TEST 1: shock-then-flat income (+10% at 2024, then constant)
+  long-run-implied endpoint of log energy gap: 0.0663
+  year          current      annual PA     decade Eq5
+  2023           0.0000         0.0000         0.0000
+  2033           0.0349         0.0404         0.0343
+  2053           0.0349         0.0500         0.0473
+  2073           0.0349         0.0561         0.0551
+  2100           0.0349         0.0608            n/a
+  READING: the current construction should jump once and stop;
+  the PA paths should keep moving toward 0.0663 with a
+  half-life of about ln(2)/0.023 = 30 years.
+
+TEST 2: sustained income growth (2.0%/yr, constant)
+  footnote-3 long-run elasticity -(theta+eta*x_bar)/kappa: 0.8087
+  window              current      annual PA     decade Eq5
+  2023-2033            0.3730         0.4037         0.3600
+  2033-2043            0.3990         0.4878         0.4632
+  2043-2053            0.4250         0.5544         0.5427
+  2053-2063            0.4510         0.6072         0.6039
+  2063-2073            0.4770         0.6490         0.6510
+  2073-2083            0.5030         0.6822         0.6872
+  2083-2093            0.5290         0.7084         0.7152
+  READING: the PA window elasticities should converge toward
+  0.8087 from below; the current construction should drift upward
+  linearly with cumulated income and never settle.
+
+Variant run: delta_mode=off  eta=True  b_mode=plain  r_mode=recalibrated
+marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100
+  (* R10 eps is the scenario-path proxy, not a structural elasticity)
+ssp119         3.01      0.696      0.179      5467357      5237076      0.964      0.958
+ssp126         3.01      0.696      0.190      5644740      5406988      0.964      0.958
+ssp245         2.54      0.696      0.342     12097363     11501722      0.975      0.951
+ssp370         1.11      0.696      0.559     17682842     16693100      0.990      0.944
+ssp585         3.65      0.696      0.376     11333488     11091668      0.959      0.979
+
+Variant run: delta_mode=off  eta=True  b_mode=static-adjusted  r_mode=recalibrated
+marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100
+  (* R10 eps is the scenario-path proxy, not a structural elasticity)
+ssp119         3.01      0.866      0.179      5467357      4834853      0.981      0.884
+ssp126         3.01      0.866      0.190      5644740      4991715      0.981      0.884
+ssp245         2.54      0.839      0.342     12097363     11242536      0.978      0.929
+ssp370         1.11      0.758      0.559     17682842     16760773      0.988      0.948
+ssp585         3.65      0.902      0.376     11333488      9952322      0.981      0.878
+
+Variant run: delta_mode=decade-effects  eta=True  b_mode=plain  r_mode=recalibrated
+marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100
+  (* R10 eps is the scenario-path proxy, not a structural elasticity)
+ssp119         3.01      0.696      0.179      5467357      5237076      0.964      0.958
+ssp126         3.01      0.696      0.190      5644740      5406988      0.964      0.958
+ssp245         2.54      0.696      0.342     12097363     11501722      0.975      0.951
+ssp370         1.11      0.696      0.559     17682842     16693100      0.990      0.944
+ssp585         3.65      0.696      0.376     11333488     11091668      0.959      0.979
+
+Variant run: delta_mode=decade-effects  eta=True  b_mode=plain  r_mode=fixed-old
+marker   x_bar %/yr   b_target   R10 eps*  cur 2100 TJ  var 2100 TJ  var/cur50 var/cur100
+  (* R10 eps is the scenario-path proxy, not a structural elasticity)
+ssp119         3.01      0.696      0.179      5467357      2501606      0.583      0.458
+ssp126         3.01      0.696      0.190      5644740      2582768      0.583      0.458
+ssp245         2.54      0.696      0.342     12097363      5367274      0.577      0.444
+ssp370         1.11      0.696      0.559     17682842      7113450      0.571      0.402
+ssp585         3.65      0.696      0.376     11333488      5285026      0.586      0.466
+

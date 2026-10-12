@@ -1,0 +1,9 @@
+sector,coal_and_coal_products_TJ,oil_products_TJ,natural_gas_TJ,biofuels_and_waste_TJ,electricity_TJ,total_TJ
+Total final consumption,27198,901423,183560,1218797,119530,2450511
+Industry,27198,19493,117182,177613,29079,370568
+Transport,,793049,,,37,793086
+Residential,,76110,5,921258,61795,1059170
+Commercial and public services,,46,,119926,28618,148591
+Agriculture and forestry,,201,,,,201
+Other non-specified,,7641,,,,7641
+Non-energy use,,4880,66372,,,71252

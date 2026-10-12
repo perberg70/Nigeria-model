@@ -12,13 +12,17 @@ State and zone-level temperature and rainfall change for Nigeria, 2080–2099 ag
 
 ## Reproduce
 
-From the repository root:
+From the repository root (network required):
 
 ```
-python scripts/fetch_nigeria_regional_climate.py
+python scripts/fetch_regional_climate.py --config config.yaml
 ```
 
-Standard library only; overwrites the CSVs in this folder.
+Standard library plus PyYAML; overwrites the CSVs in this folder. The period, pathways and output
+names are under `regional_climate` in `config.yaml`; the Admin-1 code → state → zone map is
+`admin1_units.yaml` in this folder. The three zone CSVs can be re-derived offline from the two
+Admin-1 CSVs (`src/regional_climate/zones.py`; checked by `tests/test_regional_climate.py`). The
+script writes CRLF line endings; the committed CSVs are stored with LF.
 
 ## Files
 
@@ -27,7 +31,7 @@ Standard library only; overwrites the CSVs in this folder.
 | `cckp_cmip6_nigeria_ensemble_2080-2099.csv` | National ensemble median, 10th and 90th percentile, per pathway |
 | `cckp_cmip6_admin1_anomalies_2080-2099.csv` | Ensemble values for the 36 states and the FCT, with zone |
 | `cckp_cmip6_model_admin1_anomalies_2080-2099.csv` | Individual-model state values |
-| `cckp_cmip6_model_geopolitical_zone_2080-2099.csv` | One value per model and zone (median of its states) |
+| `cckp_cmip6_model_geopolitical_zone_2080-2099.csv` | One value per model and zone (median of its states), with the number of states each median uses (`temperature_state_count`, `precipitation_state_count`; 0 where CCKP gave no value, as for kiost-esm precipitation) |
 | `cckp_cmip6_geopolitical_zone_ensemble_2080-2099.csv` | Zone median, 10th and 90th percentile across models, with model counts |
 | `cckp_cmip6_geopolitical_zone_summary_2080-2099.csv` | Zone summary of the ensemble state values (median, min, max, state count) |
 
