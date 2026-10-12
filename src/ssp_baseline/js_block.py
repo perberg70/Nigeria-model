@@ -52,7 +52,7 @@ def render_block(result: BaselineResult) -> str:
                 json.dumps(block[pid]["demandFactor"]),
                 json.dumps(block[pid]["r10FinalEnergyIntensityFactor"]),
                 json.dumps(block[pid]["incomeElasticity"]),
-                _cumulative(years, block[pid]["emisMt"], 2025, p.end_year),
+                _cumulative(years, block[pid]["emisMt"], p.cumulative_start_year, p.end_year),
             )
         )
     out.append("  },\n\n")

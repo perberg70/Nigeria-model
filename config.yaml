@@ -43,6 +43,11 @@ inputs:
     final_by_sector_2023: data/iea_nigeria_2023/total_final_consumption_by_sector_2023.csv
     final_by_sector_2000_2023: data/iea_nigeria_2023/total_final_consumption_by_sector_2000_2023.csv
     domestic_production_2000_2023: data/iea_nigeria_2023/domestic_energy_production_2000_2023.csv
+  # Lines of inputs.iea.electricity_current that make up grid generation, keyed by the
+  # IAMC source they report (the names of IMAGE's Secondary Energy|Electricity rows).
+  # A source without a line here generated nothing in the base year
+  # (ssp_baseline.anchors.generation_gwh must hold 0.0 for it; checked on every run).
+  iea_generation_lines: {Gas: Natural gas, Hydro: Hydropower, Solar: Solar PV}
   unsd_energy: data/unsd_energy_nigeria/unsd_nigeria_energy_2020_2023.csv
   owid_co2: data/owid_co2_africa/owid_co2_africa_2000_2024.csv
   wdi_gdp_growth: data/worldbank_nigeria_gdp/NY.GDP.MKTP.KD.ZG.json
@@ -79,18 +84,34 @@ parameters:
 ssp_baseline:
   output_block: data/scenario_compass_africa_r10/nigeria_baseline_block.js
   prototype_html: prototype/africa-prototype.html
+  # First year of the cumulative emissions in BLOCK 1 (`cum`, the figure under the
+  # emissions chart). The prototype's policy window is 2025-2100 and its "2025–2100"
+  # labels are hand-written in prototype/africa-prototype.html: edit them together.
+  cumulative_start_year: 2025
+  # Mid-horizon year of the envelope table printed to stdout, beside
+  # time_horizon.end_year (diagnostics only; nothing generated reads it).
+  diagnostics_year: 2050
   anchors:
-    # IEA 2023 grid generation, current release: gas 31,601 + hydro 9,107 + solar 267
-    # (page prints 40,976; its three lines sum to 40,975). Cross-checked on every run
-    # against inputs.iea.electricity_current.
-    grid_gwh: 40975.0
+    # Base-year grid generation by IAMC source, GWh: IEA 2023, current release, the lines
+    # of inputs.iea_generation_lines in inputs.iea.electricity_current. Gas 31,601 + hydro
+    # 9,107 + solar 267 = 40,975 (the page prints a total of 40,976; its three lines sum
+    # to 40,975). Every source is listed. 0.0 is an OBSERVED ZERO: the IEA table has no
+    # line for that source. Cross-checked on every run against the saved table.
+    generation_gwh:
+      Hydro: 9107.0
+      Solar: 267.0    # 211 in the older release
+      Wind: 0.0       # observed zero (see envelope.wind_capacity_factor)
+      Nuclear: 0.0    # observed zero
+      Biomass: 0.0    # observed zero on the grid
+      Coal: 0.0       # observed zero
+      Gas: 31601.0
+      Oil: 0.0        # observed zero on the grid; back-up generators are genset_gwh
+      Other: 0.0      # observed zero
     # ETP 296.3 PJ at 25% efficiency; conditional estimate [GAP: back-up generator
     # output is not measured; see data/seforall_nigeria_etp/README.md]. BOUNDARY: the
     # base-year electrification share counts this output as electricity while the
     # gensets' fuel stays in total_final_energy_tj (sector_conversion report, section 5).
     genset_gwh: 20600.0
-    hydro_gwh: 9107.0
-    solar_gwh: 267.0  # IEA 2023, current release (211 in the older one)
     # IEA 2023 total final energy, current release, Total row (sector rows sum to
     # 2,450,509). Cross-checked against inputs.iea.final_by_fuel_and_sector_current.
     total_final_energy_tj: 2450511.0
@@ -123,9 +144,9 @@ ssp_baseline:
     #   onshore wind 3.2 GW · biomass 29,800 PJ · nuclear: none stated
     hydro_ceiling_gw: 27.5
     wind_ceiling_gw: 3.2
-    # Hydro capacity factor is DERIVED: hydro_gwh over this capacity (ETP p.17).
-    # [GAP: mixes years -- generation is 2023, capacity is 2020. If capacity grew
-    # between them the true factor, and the ceiling, are lower.]
+    # Hydro capacity factor is DERIVED: anchors.generation_gwh.Hydro over this
+    # capacity (ETP p.17). [GAP: mixes years -- generation is 2023, capacity is 2020.
+    # If capacity grew between them the true factor, and the ceiling, are lower.]
     hydro_capacity_gw: 2.0
     # ASSUMED. Nigeria generated zero wind in 2023, so nothing can be derived. Per's
     # ruling 2026-09-09. The cap binds at any plausible value: even at an impossible

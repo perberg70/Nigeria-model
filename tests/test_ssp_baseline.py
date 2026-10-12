@@ -6,6 +6,7 @@ import dataclasses
 
 import pytest
 
+from config_paths import ConfigError
 from ssp_baseline import (
     BaselineParams,
     block_series,
@@ -61,9 +62,32 @@ def test_markers_carry_model_and_scenario(params):
 
 
 def test_anchor_drift_from_iea_table_is_an_error(params):
-    drifted = dataclasses.replace(params, grid_gwh=params.grid_gwh + 1.0)
-    with pytest.raises(ValueError, match="grid total"):
+    generation = {**params.generation_gwh, "Gas": params.generation_gwh["Gas"] + 1.0}
+    drifted = dataclasses.replace(params, generation_gwh=generation)
+    with pytest.raises(ValueError, match="Gas generation differs from the saved IEA table"):
         check_iea_anchors(drifted)
+
+
+def test_source_without_iea_line_must_be_an_observed_zero(params):
+    assert "Wind" not in params.iea_generation_lines
+    generation = {**params.generation_gwh, "Wind": 1.0}
+    with pytest.raises(ValueError, match="Wind generation differs"):
+        check_iea_anchors(dataclasses.replace(params, generation_gwh=generation))
+
+
+def test_generation_must_list_every_source(config):
+    anchors = {**config["ssp_baseline"]["anchors"]}
+    anchors["generation_gwh"] = {
+        k: v for k, v in anchors["generation_gwh"].items() if k != "Nuclear"
+    }
+    cfg = {**config, "ssp_baseline": {**config["ssp_baseline"], "anchors": anchors}}
+    with pytest.raises(ConfigError, match="generation_gwh must list every source"):
+        BaselineParams.from_config(cfg)
+
+
+def test_grid_anchor_is_the_sum_of_the_iea_lines(params):
+    assert params.grid_gwh == 40975.0
+    assert params.lowmix_base["Wind"] == 0.0
 
 
 def test_missing_iea_table_is_an_error(params, tmp_path):

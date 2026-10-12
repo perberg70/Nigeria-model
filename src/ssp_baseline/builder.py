@@ -69,7 +69,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from config_paths import require, require_path
+from config_paths import ConfigError, require, require_path
 from scenario_data import IiasaExport, Marker, interp, load_markers, narratives, read_series
 from units import HOURS_PER_YEAR, TJ_PER_GWH
 
@@ -95,11 +95,12 @@ class BaselineParams:
     iea_electricity_current: Path
     output_block: Path
     prototype_html: Path
+    cumulative_start_year: int
+    diagnostics_year: int
     # --- the region's observed anchors ---------------------------------------
-    grid_gwh: float
+    generation_gwh: dict[str, float]  # base-year grid generation by IAMC source (ALLS)
+    iea_generation_lines: dict[str, str]  # IAMC source -> line of the IEA electricity table
     genset_gwh: float
-    hydro_gwh: float
-    solar_gwh: float
     tfe_tj: float
     anchor_mt: float
     # --- demand relation ----------------------------------------------------
@@ -117,22 +118,39 @@ class BaselineParams:
         a = "ssp_baseline.anchors"
         d = "ssp_baseline.demand"
         e = "ssp_baseline.envelope"
+        generation = dict(require(config, f"{a}.generation_gwh"))
+        if set(generation) != set(ALLS):
+            raise ConfigError(
+                f"{a}.generation_gwh must list every source {ALLS} (0.0 for an observed zero); "
+                f"got {sorted(generation)}"
+            )
+        lines = dict(require(config, "inputs.iea_generation_lines"))
+        if not set(lines) <= set(ALLS):
+            raise ConfigError(
+                f"inputs.iea_generation_lines: unknown sources {set(lines) - set(ALLS)}"
+            )
+        base_year = int(require(config, "time_horizon.base_year"))
+        end_year = int(require(config, "time_horizon.end_year"))
+        diagnostics_year = int(require(config, "ssp_baseline.diagnostics_year"))
+        if not base_year <= diagnostics_year <= end_year:
+            raise ConfigError("ssp_baseline.diagnostics_year must lie within time_horizon")
         return cls(
             region_name=require(config, "region.name"),
             markers=load_markers(config),
-            base_year=int(require(config, "time_horizon.base_year")),
+            base_year=base_year,
             anchor_year=int(require(config, "time_horizon.anchor_year")),
-            end_year=int(require(config, "time_horizon.end_year")),
+            end_year=end_year,
             image_dir=require_path(config, "inputs.image_dir"),
             iiasa=IiasaExport.from_config(config),
             iea_final_current=require_path(config, "inputs.iea.final_by_fuel_and_sector_current"),
             iea_electricity_current=require_path(config, "inputs.iea.electricity_current"),
             output_block=require_path(config, "ssp_baseline.output_block"),
             prototype_html=require_path(config, "ssp_baseline.prototype_html"),
-            grid_gwh=require(config, f"{a}.grid_gwh"),
+            cumulative_start_year=int(require(config, "ssp_baseline.cumulative_start_year")),
+            diagnostics_year=diagnostics_year,
+            generation_gwh=generation,
+            iea_generation_lines=lines,
             genset_gwh=require(config, f"{a}.genset_gwh"),
-            hydro_gwh=require(config, f"{a}.hydro_gwh"),
-            solar_gwh=require(config, f"{a}.solar_gwh"),
             tfe_tj=require(config, f"{a}.total_final_energy_tj"),
             anchor_mt=require(config, f"{a}.emissions_mt"),
             elasticity=require(config, f"{d}.elasticity"),
@@ -146,12 +164,20 @@ class BaselineParams:
 
     # Derived anchors, in the order and form the original constants used.
     @property
+    def grid_gwh(self) -> float:
+        return sum(self.generation_gwh[n] for n in ALLS)
+
+    @property
+    def hydro_gwh(self) -> float:
+        return self.generation_gwh["Hydro"]
+
+    @property
     def all_gwh(self) -> float:
         return self.grid_gwh + self.genset_gwh
 
     @property
     def low_gwh(self) -> float:
-        return self.hydro_gwh + self.solar_gwh
+        return sum(self.generation_gwh[n] for n in LOW)
 
     @property
     def elec_base(self) -> float:
@@ -168,7 +194,7 @@ class BaselineParams:
 
     @property
     def fossil_gwh(self) -> float:
-        return self.all_gwh - self.low_gwh  # 52,201 = grid gas 31,601 + gensets 20,600
+        return self.all_gwh - self.low_gwh  # grid fossil plus back-up generators
 
     @property
     def k0(self) -> float:
@@ -201,13 +227,8 @@ class BaselineParams:
 
     @property
     def lowmix_base(self) -> dict[str, float]:
-        return {
-            "Hydro": self.hydro_gwh / self.low_gwh,
-            "Solar": self.solar_gwh / self.low_gwh,
-            "Wind": 0.0,
-            "Nuclear": 0.0,
-            "Biomass": 0.0,
-        }
+        """Composition of the base year's low-emission generation, by source."""
+        return {n: self.generation_gwh[n] / self.low_gwh for n in LOW}
 
     @property
     def years(self) -> list[int]:
@@ -237,7 +258,9 @@ class BaselineResult:
 # 2026-10-08) from an older release (total final energy 2,465,907 TJ; grid 40,958 GWh = gas
 # 31,640 + hydro 9,107 + solar 211). The older exports stay in that folder as the audit
 # trail; the two releases must not be mixed in one calculation. The check below ties the
-# configured anchors to the saved tables, so the two cannot drift apart silently.
+# configured anchors to the saved tables, so the two cannot drift apart silently: each
+# source's generation must equal its configured line, and a source without a line must
+# be an observed zero.
 def check_iea_anchors(params: BaselineParams) -> None:
     f1, f2 = params.iea_final_current, params.iea_electricity_current
     for f in (f1, f2):
@@ -249,10 +272,14 @@ def check_iea_anchors(params: BaselineParams) -> None:
         gen = {r["line"]: float(r["value_GWh"]) for r in csv.DictReader(fh)}
     if float(tot["total_TJ"]) != params.tfe_tj:
         raise ValueError("total_final_energy_tj differs from the saved IEA table")
-    if not (gen["Hydropower"] == params.hydro_gwh and gen["Solar PV"] == params.solar_gwh):
-        raise ValueError("hydro/solar differ from the saved IEA table")
-    if gen["Natural gas"] + gen["Hydropower"] + gen["Solar PV"] != params.grid_gwh:
-        raise ValueError("grid total differs from the saved IEA table")
+    lines = params.iea_generation_lines
+    for source, gwh in params.generation_gwh.items():
+        observed = gen[lines[source]] if source in lines else 0.0
+        if gwh != observed:
+            raise ValueError(
+                "%s generation differs from the saved IEA table (%s configured, %s in the table)"
+                % (source, gwh, observed)
+            )
 
 
 # --- ONE INCOME-DRIVEN INDEX FOR HOUSEHOLD SOLID-FUEL USE, ported 2026-10-09 from MSc-thesis
@@ -581,8 +608,12 @@ def print_diagnostics(result: BaselineResult) -> None:
     """Self-checks, the envelope at its caps and the candidate fossil-split rules."""
 
     p, years, block = result.params, result.years, result.block
+    b, mid, end = p.base_year, p.diagnostics_year, p.end_year
     print("CHECKS  (all should be ~0)")
-    print("%-8s %12s %12s %12s %12s" % ("marker", "elec@2023", "low@2023", "mix@2023", "mix worst"))
+    print(
+        "%-8s %12s %12s %12s %12s"
+        % ("marker", "elec@%d" % b, "low@%d" % b, "mix@%d" % b, "mix worst")
+    )
     for c in result.checks:
         print("%-8s %12.2e %12.2e %12.2e %12.2e" % c)
     print()
@@ -596,48 +627,50 @@ def print_diagnostics(result: BaselineResult) -> None:
         % (p.ceil_hydro, p.hydro_ceiling_gw, p.cf_hydro, p.ceil_wind, p.wind_ceiling_gw, p.cf_wind)
     )
     print(
-        "%-8s %s"
-        % ("marker", "low-emission generation at its cap, TWh (hydro / wind), 2050 and 2100")
+        "%-8s low-emission generation at its cap, TWh (hydro / wind), %d and %d"
+        % ("marker", mid, end)
     )
     for pid in p.markers:
         r = block[pid]
-        i50, i100 = years.index(2050), years.index(2100)
+        i_mid, i_end = years.index(mid), years.index(end)
 
         def lt(i, r=r):
             return r["lowShare"][i] * r["elecShare"][i] * r["energyTJ"][i] / TJ_PER_GWH / 1000.0
 
         print(
-            "%-8s 2050 hydro %6.1f  wind %5.1f   |   2100 hydro %6.1f  wind %5.1f   |  "
+            "%-8s %d hydro %6.1f  wind %5.1f   |   %d hydro %6.1f  wind %5.1f   |  "
             "genset share of fossil %5.1f%% -> %4.1f%%"
             % (
                 pid,
-                r["lowMix"]["Hydro"][i50] * lt(i50),
-                r["lowMix"]["Wind"][i50] * lt(i50),
-                r["lowMix"]["Hydro"][i100] * lt(i100),
-                r["lowMix"]["Wind"][i100] * lt(i100),
-                r["gensetFossil"][i50] * 100,
-                r["gensetFossil"][i100] * 100,
+                mid,
+                r["lowMix"]["Hydro"][i_mid] * lt(i_mid),
+                r["lowMix"]["Wind"][i_mid] * lt(i_mid),
+                end,
+                r["lowMix"]["Hydro"][i_end] * lt(i_end),
+                r["lowMix"]["Wind"][i_end] * lt(i_end),
+                r["gensetFossil"][i_mid] * 100,
+                r["gensetFossil"][i_end] * 100,
             )
         )
     print()
 
     # The four candidate rules for the fossil split (section 6 in build_baseline),
-    # as the absolute back-up-generator fleet each implies in 2100.
+    # as the absolute back-up-generator fleet each implies in the end year.
     # Printed rather than written into a comment because the figures move
     # with the energy path -- see the section 6 comment for what happened
     # when they were hard-coded. fleet = elec x energy/3.6 x (1-low) x k.
     e0, k0 = p.elec_base, p.k0
     g0 = p.genset_gwh / p.all_gwh
     print(
-        "CANDIDATE RULES  back-up-generator fleet in 2100, TWh, from %.1f TWh in 2023"
-        % (p.genset_gwh / 1000.0)
+        "CANDIDATE RULES  back-up-generator fleet in %d, TWh, from %.1f TWh in %d"
+        % (end, p.genset_gwh / 1000.0, b)
     )
     print(
         "%-8s %12s %12s %12s %18s" % ("marker", "held k0", "k0*e0/e", "g0*e0/e", "k0*(1-e)/(1-e0)")
     )
     for pid in p.markers:
         r = block[pid]
-        i = years.index(2100)
+        i = years.index(end)
         e, low = r["elecShare"][i], r["lowShare"][i]
         total = e * r["energyTJ"][i] / TJ_PER_GWH / 1000.0
         fossil = total * (1.0 - low)
