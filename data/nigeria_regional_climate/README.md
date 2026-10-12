@@ -12,13 +12,17 @@ State and zone-level temperature and rainfall change for Nigeria, 2080–2099 ag
 
 ## Reproduce
 
-From the repository root:
+From the repository root (network required):
 
 ```
-python scripts/fetch_nigeria_regional_climate.py
+python scripts/fetch_regional_climate.py --config config.yaml
 ```
 
-Standard library only; overwrites the CSVs in this folder.
+Standard library plus PyYAML; overwrites the CSVs in this folder. The period, pathways and output
+names are under `regional_climate` in `config.yaml`; the Admin-1 code → state → zone map is
+`admin1_units.yaml` in this folder. The three zone CSVs can be re-derived offline from the two
+Admin-1 CSVs (`src/regional_climate/zones.py`; checked by `tests/test_regional_climate.py`). The
+script writes CRLF line endings; the committed CSVs are stored with LF.
 
 ## Files
 

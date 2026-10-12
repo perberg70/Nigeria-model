@@ -8,7 +8,8 @@ sections "Elasticity coherence tests" and "Partial-adjustment variant:
 equations and assumptions"). Source: Burke & Csereklyei (2016),
 Energy Economics 58(C):199-210, Table 5 "total" column and footnote 3.
 The baseline builder is untouched; this directory is a standalone
-comparator. Run: `python partial_adjustment_variant.py` (full output in
+comparator. Code: `src/demand_analysis/partial_adjustment.py`. Run from the repository root:
+`python scripts/run_partial_adjustment.py --config config.yaml` (full output in
 `output.txt`).
 
 ## Test 1: shock-then-flat income (+10% at 2024, then constant)

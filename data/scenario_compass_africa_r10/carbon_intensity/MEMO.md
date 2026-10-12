@@ -3,9 +3,10 @@
 Branch `experiment/partial-adjustment`, 2026-10-09. Per's question: the energy systems of
 Nigeria and Africa R10 do not match, but perhaps their carbon intensities do. If they did, an R10
 carbon-intensity path could be a candidate for transfer. The baseline transfers none
-(`../build_nigeria_baseline.py` docstring).
+(`src/ssp_baseline/builder.py` docstring).
 
-- **Script:** `carbon_intensity_check.py`.
+- **Script:** `src/demand_analysis/carbon_intensity.py`; run
+  `python scripts/run_carbon_intensity.py --config config.yaml` from the repository root.
 - **Output:** `carbon_intensity_output.txt`, which uses only data held in this repository.
 - **Earlier work:** the 2026-09-18 backtest (MSc-thesis `03_models/`) compared one metric over
   one window (CO₂ per final energy, 2010→2020: R10 −7.7%, Nigeria −18.0%), using IMAGE's own

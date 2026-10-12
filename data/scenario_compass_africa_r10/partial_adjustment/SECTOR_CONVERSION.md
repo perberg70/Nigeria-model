@@ -4,7 +4,9 @@ Branch `experiment/partial-adjustment`, 2026-10-09. Explores Per's question: whe
 move from fuels to electricity, the conversion factors change. This alters total energy demand,
 and any overall primary-to-final factor depends on the transitions in each sector.
 
-- **Script:** `sector_conversion.py`. **Full output:** `sector_conversion_output.txt`.
+- **Code:** `src/demand_analysis/sector_conversion.py`; run
+  `python scripts/run_sector_conversion.py --config config.yaml`. **Full output:**
+  `sector_conversion_output.txt`.
 - **Not changed:** the variant, the baseline builder and the prototype.
 - **Different question:** `CONVERSION_FACTORS.md` covers unit conversions of the Table 5
   coefficients, not this.
