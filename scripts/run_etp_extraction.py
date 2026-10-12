@@ -17,6 +17,7 @@ data/seforall_nigeria_etp/README.md), so use ``--output-dir`` to compare first.
 from __future__ import annotations
 
 import argparse
+import logging
 from pathlib import Path
 
 import _path_setup  # noqa: F401
@@ -26,6 +27,7 @@ from etp_extraction import CHARTS, ExtractionError
 
 
 def main() -> int:
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(name)s: %(message)s")
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     add_config_argument(parser)
     parser.add_argument(

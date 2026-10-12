@@ -86,16 +86,27 @@ def extract(reader, cfg):
         colour_of[t] = colour_key(c)
 
     bars = [r for r in rects if 23 < r[3] < 26]
+    stray = [b for b in bars if not any(abs(b[1] - x0) < 2 for x0 in cfg["xs"])]
+    if stray:
+        raise ExtractionError(
+            f"p.{cfg['page']}: {len(stray)} bar segment(s) match no year column, "
+            f"e.g. at x={stray[0][1]:.2f}"
+        )
     data = {}
     for year, x0 in zip(YEARS, cfg["xs"], strict=False):
         column = sorted([b for b in bars if abs(b[1] - x0) < 2], key=lambda b: b[2])
-        ptr, row = 0, {}
+        ptr, row, last = 0, {}, None
         for c, _x, _y, _w, h in column:
             key = colour_key(c)
             while ptr < len(ORDER) and colour_of.get(ORDER[ptr]) != key:
                 ptr += 1
             if ptr >= len(ORDER):
-                break
+                after = f"after {ORDER[last]}" if last is not None else "at the base"
+                raise ExtractionError(
+                    f"p.{cfg['page']} {year}: segment colour {key} does not follow the "
+                    f"stack order {after}; TOTAL would under-sum"
+                )
+            last = ptr
             row[ORDER[ptr]] = row.get(ORDER[ptr], 0.0) + h * per_pt
             ptr += 1
         data[year] = row

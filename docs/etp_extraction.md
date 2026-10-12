@@ -10,7 +10,9 @@ Recovers numeric series from the vector stacked-bar charts of the Energy Transit
 - `pdf_vectors.py` – content-stream tokenizer, `parse_page()` (filled rectangles and text runs),
   the atomic CSV writer.
 - `power.py` (pp.17–18), `demand.py` (p.22), `cooking.py` (pp.37–40), `industry.py`
-  (pp.27–29) – one `run(pdf, outdir)` each.
+  (pp.27–29) – one `run(pdf, outdir)` each. In `power.py`, a bar segment that does not follow
+  the legend's stack order, or lies outside every year column, is an `ExtractionError` for any
+  year, not only the 2060 values the prose checks gate.
 
 ## Configuration (`config.yaml`)
 
