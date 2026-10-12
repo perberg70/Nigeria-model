@@ -73,6 +73,15 @@ def test_coal_factor_matches_ipcc_table(config):
     assert require(config, "carbon_intensity.coal_emission_factor") == kg_per_tj / 1000
 
 
+def test_carbon_intensity_labels_name_the_configured_rows(config):
+    # The printed name of the excluded country is the OWID row's own name for its ISO code.
+    with require_path(config, "inputs.owid_co2").open(encoding="utf-8") as fh:
+        names = {r["iso_code"]: r["country"] for r in csv.DictReader(fh)}
+    excluded = require(config, "carbon_intensity.exclude_iso3")
+    assert names[excluded] == require(config, "carbon_intensity.labels.exclude_name")
+    assert require(config, "carbon_intensity.owid_aggregate") in names.values()
+
+
 def test_baseline_law_is_table5_total_at_the_25th_percentile(config):
     # ln(E/E0) = b L + q L^2 integrates beta(L) = b25 + eta L, so q = eta / 2.
     total = require(config, "parameters.burke_csereklyei_2016.table5.total")

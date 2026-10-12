@@ -283,6 +283,29 @@ carbon_intensity:
   wdi_index_base_year: 2005         # WDI real growth is chained from this Maddison level
   owid_aggregate: Africa            # OWID's own continental aggregate row
   exclude_iso3: ZAF                 # the large coal economy removed in "excl." groups
+  # Names the report prints for the configured rows (they select nothing): the excluded
+  # country in full, abbreviated and by ISO alpha-2 code, and the aggregate's short form
+  # and adjective. Edit them with exclude_iso3 and owid_aggregate; a test ties
+  # exclude_name to the OWID row of exclude_iso3.
+  labels:
+    exclude_name: South Africa
+    exclude_short: SA
+    exclude_code: ZA
+    aggregate_short: Afr.
+    aggregate_adjective: African
+  aggregate_check_year: 2023        # summed country rows checked against the aggregate row
+  # The region's oil CO2 breaks in 2010 (Global Carbon Budget: 27 -> 59 Mt), so trends
+  # are fitted within the data regimes either side of the break, never across it.
+  trend_windows: [[2000, 2009], [2010, 2022]]
+  # Section C correlates annual changes after the break. Pairs on GDP end with the
+  # Maddison coverage (gdp_coverage_years); pairs on final energy run to the IEA
+  # series' last year.
+  comovement_years: [2011, 2022]
+  comovement_years_final_energy: [2011, 2023]
+  # IMAGE R10 years: section D's history rows (changes between consecutive years) and
+  # section E's forward path (change from the reference year to the mid and end years).
+  image_history_years: [2010, 2015, 2020]
+  image_forward_years: {reference: 2020, mid: 2050, end: 2100}
   # kg CO2/GJ, IPCC 2006 Vol. 2 Table 1.4, other bituminous coal (94,600 kg/TJ in
   # inputs.ipcc_emission_factors; a test ties the two together).
   coal_emission_factor: 94.6

@@ -23,9 +23,11 @@ Nigeria's final-energy series are the IEA older release throughout (the only
 2000-2023 series held); the current release covers 2023 alone.
 
 The countries compared are configured (region.iso3, carbon_intensity.exclude_iso3,
-carbon_intensity.owid_aggregate); the report labels name Nigeria, South Africa
-and Africa because they describe that configured comparison, and must be edited
-with it.
+carbon_intensity.owid_aggregate), and so are the trend, co-movement and IMAGE years.
+The report labels are built from the same keys plus carbon_intensity.labels (region
+name, ISO codes, the aggregate's and the excluded country's printed names), so they
+follow the configured comparison. Prose notes about the data held (the 2010 break,
+EIA's erratic primary energy) describe the committed inputs.
 """
 
 from __future__ import annotations
@@ -38,18 +40,40 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from config_paths import require, require_path, resolve_path
+from config_paths import ConfigError, require, require_path, resolve_path
 from scenario_data import Marker, load_markers, read_series, read_year_totals
 from units import KWH_PER_GJ
+
+from .reporting import short_year
 
 AGGREGATE_KEY = "_aggregate"  # the OWID continental aggregate row, kept apart from countries
 
 
 @dataclass(frozen=True)
+class ReportLabels:
+    """Printed names of the configured rows (carbon_intensity.labels); they select nothing."""
+
+    exclude_name: str
+    exclude_short: str
+    exclude_code: str
+    aggregate_short: str
+    aggregate_adjective: str
+
+
+def _year_pair(pair: Any, key: str) -> tuple[int, int]:
+    """A configured [first year, last year] window, inclusive."""
+    if not isinstance(pair, list) or len(pair) != 2 or pair[0] > pair[1]:
+        raise ConfigError(f"{key}: need [first year, last year], got {pair!r}")
+    return int(pair[0]), int(pair[1])
+
+
+@dataclass(frozen=True)
 class CarbonIntensityParams:
+    region_name: str
     iso3: str
     exclude_iso3: str
     owid_aggregate: str
+    labels: ReportLabels
     markers: dict[str, Marker]
     image_dir: Path
     owid: Path
@@ -66,6 +90,12 @@ class CarbonIntensityParams:
     bio_final_tj: float
     bio_supply_tj: float
     image_history_pathway: str
+    aggregate_check_year: int
+    trend_windows: tuple[tuple[int, int], ...]
+    comovement_years: tuple[int, int]
+    comovement_years_final_energy: tuple[int, int]
+    image_history_years: tuple[int, ...]
+    image_forward_years: tuple[int, int, int]  # reference, mid, end
 
     @classmethod
     def from_config(
@@ -84,10 +114,21 @@ class CarbonIntensityParams:
             africa = resolve_path(config, configured) if configured else None
         if africa is not None and not africa.is_dir():
             raise FileNotFoundError(f"IEA Africa directory not found: {africa}")
+        windows = require(config, f"{c}.trend_windows")
+        if not windows:
+            raise ConfigError(f"{c}.trend_windows: need at least one window")
+        history = tuple(int(y) for y in require(config, f"{c}.image_history_years"))
+        if len(history) < 2 or list(history) != sorted(history):
+            raise ConfigError(f"{c}.image_history_years: need two or more years, ascending")
+        f = f"{c}.image_forward_years"
         return cls(
+            region_name=require(config, "region.name"),
             iso3=require(config, "region.iso3"),
             exclude_iso3=require(config, f"{c}.exclude_iso3"),
             owid_aggregate=require(config, f"{c}.owid_aggregate"),
+            labels=ReportLabels(
+                **{k: require(config, f"{c}.labels.{k}") for k in ReportLabels.__annotations__}
+            ),
             markers=load_markers(config),
             image_dir=require_path(config, "inputs.image_dir"),
             owid=require_path(config, "inputs.owid_co2"),
@@ -104,6 +145,21 @@ class CarbonIntensityParams:
             bio_final_tj=require(config, f"{c}.biomass_final_tj_2023"),
             bio_supply_tj=require(config, f"{c}.biomass_supply_tj_2023"),
             image_history_pathway=pathway,
+            aggregate_check_year=int(require(config, f"{c}.aggregate_check_year")),
+            trend_windows=tuple(_year_pair(w, f"{c}.trend_windows") for w in windows),
+            comovement_years=_year_pair(
+                require(config, f"{c}.comovement_years"), f"{c}.comovement_years"
+            ),
+            comovement_years_final_energy=_year_pair(
+                require(config, f"{c}.comovement_years_final_energy"),
+                f"{c}.comovement_years_final_energy",
+            ),
+            image_history_years=history,
+            image_forward_years=(
+                int(require(config, f"{f}.reference")),
+                int(require(config, f"{f}.mid")),
+                int(require(config, f"{f}.end")),
+            ),
         )
 
     @property
@@ -231,25 +287,33 @@ def dlog(s, y0, y1):
     return [math.log(s[y] / s[y - 1]) for y in range(y0 + 1, y1 + 1)]
 
 
-def show(title, unit, series, years=(2000, 2005, 2009, 2010, 2015, 2020, 2022, 2023), ref=None):
-    """Levels, plus OLS trends within the two data regimes either side of the
-    2010 break in Nigeria's oil CO2 (Global Carbon Budget: 27 -> 59 Mt)."""
+def show(
+    title,
+    unit,
+    series,
+    windows,
+    years=(2000, 2005, 2009, 2010, 2015, 2020, 2022, 2023),
+    ref=None,
+):
+    """Levels in the printed `years` (report layout only), plus OLS trends within each
+    window of carbon_intensity.trend_windows: the data regimes either side of the
+    break in the region's oil CO2."""
     print("  %s (%s)" % (title, unit))
     print(
         "    %-30s" % ""
         + "".join("%7d" % y for y in years)
-        + "%10s %10s" % ("tr 00-09", "tr 10-22")
+        + " ".join("%10s" % ("tr %s-%s" % (short_year(a), short_year(b))) for a, b in windows)
     )
     for name, s in series:
         cells = "".join("%7s" % ("%.3g" % s[y] if s.get(y) else "-") for y in years)
-        print(
-            "    %-30s%s%9.1f%% %9.1f%%" % (name, cells, trend(s, 2000, 2009), trend(s, 2010, 2022))
-        )
+        trends = " ".join("%9.1f%%" % trend(s, a, b) for a, b in windows)
+        print("    %-30s%s%s" % (name, cells, trends))
     if ref:
         a, b = ref
         print(
-            "    Nigeria / %s, level: %s"
+            "    %s / %s, level: %s"
             % (
+                a[0],
                 b[0],
                 ", ".join(
                     "%d %.2f" % (y, a[1][y] / b[1][y]) for y in years if a[1].get(y) and b[1].get(y)
@@ -274,6 +338,22 @@ def report(p: CarbonIntensityParams):
     iso, excl = p.iso3, p.exclude_iso3
     years = p.years
     coal_ef = p.coal_ef
+    windows = p.trend_windows
+
+    # Printed names, from region.*, carbon_intensity.owid_aggregate and .labels.
+    lab = p.labels
+    name, agg, agg_short = p.region_name, p.owid_aggregate, lab.aggregate_short
+    agg_excl = "%s excl. %s" % (agg, lab.exclude_name)  # the aggregate without exclude_iso3
+    rest = "%s excl. %s and %s" % (agg, lab.exclude_code, iso)  # ... and without the region
+    rest_plus = "%s excl. %s+%s" % (agg, lab.exclude_code, iso)
+    agg_xn = "%s excl. %s" % (agg, iso)  # the aggregate without the region
+    nga_mad = "%s (Maddison GDP)" % name
+    nga_comm = "%s, per commercial final" % name
+    rest_prim = "%s excl. %s+%s, OWID prim." % (agg_short, lab.exclude_code, iso)
+    nga_comb_comm = "%s, comb. per comm. final" % name
+    xn_comb_comm = "%s, comb/comm.fin" % agg_xn
+    nga_tot = "%s, per total final" % name
+    xn_tot = "%s, per total final" % agg_xn
 
     def image_series(fn):
         return read_series(p.image_dir, fn)
@@ -285,11 +365,19 @@ def report(p: CarbonIntensityParams):
     exz_g, _ = region(p, by, exclude=(excl,), need_gdp=True)
     exz, _ = region(p, by, exclude=(excl,))
     rest_g, _ = region(p, by, exclude=(excl, iso), need_gdp=True)
-    rest, _ = region(p, by, exclude=(excl, iso))
+    rest_r, _ = region(p, by, exclude=(excl, iso))
     afr_xn, _ = region(p, by, exclude=(iso,))
+    cy = p.aggregate_check_year
     print(
-        'Check: sum of %d African country rows vs OWID "%s" CO2, 2023: %.1f vs %.1f Mt'
-        % (len(afr_isos), p.owid_aggregate, afr[2023]["co2"], by[AGGREGATE_KEY][2023]["co2"])
+        'Check: sum of %d %s country rows vs OWID "%s" CO2, %d: %.1f vs %.1f Mt'
+        % (
+            len(afr_isos),
+            lab.aggregate_adjective,
+            p.owid_aggregate,
+            cy,
+            afr[cy]["co2"],
+            by[AGGREGATE_KEY][cy]["co2"],
+        )
     )
     print(
         "GDP ratios use the %d countries with Maddison GDP in every year %d-%d "
@@ -303,13 +391,13 @@ def report(p: CarbonIntensityParams):
     )
     print()
 
-    # A. composition
+    # A. composition (the printed years are report layout)
     print("A. WHAT THE CO2 IS MADE OF (share of fossil-and-industry CO2)")
     print(
         "    %-26s %6s %6s %6s %6s %7s %6s %8s"
         % ("", "year", "coal", "oil", "gas", "flaring", "cement", "total Mt")
     )
-    for name, s in (("Nigeria", nga), ("Africa", afr), ("Africa excl. South Africa", exz)):
+    for label, s in ((name, nga), (agg, afr), (agg_excl, exz)):
         for y in (2000, 2010, 2023):
             d = s[y]
             sh = [
@@ -318,7 +406,7 @@ def report(p: CarbonIntensityParams):
             ]
             print(
                 "    %-26s %6d %5.0f%% %5.0f%% %5.0f%% %6.0f%% %5.0f%% %8.1f"
-                % (name, y, *sh, d["co2"])
+                % (label, y, *sh, d["co2"])
             )
     print()
 
@@ -340,32 +428,31 @@ def report(p: CarbonIntensityParams):
         return {y: s[y]["gdp"] for y in years if s.get(y, {}).get("gdp")}
 
     ci_gdp = {
-        "Nigeria (Maddison GDP)": per(co2(nga), g_nga, 1e9),
-        "Nigeria (WDI real growth)": per(co2(nga), g_nga_wdi, 1e9),
-        "Africa": per(co2(afr_g), gdp(afr_g), 1e9),
-        "Africa excl. South Africa": per(co2(exz_g), gdp(exz_g), 1e9),
-        "Africa excl. ZA and NGA": per(co2(rest_g), gdp(rest_g), 1e9),
+        nga_mad: per(co2(nga), g_nga, 1e9),
+        "%s (WDI real growth)" % name: per(co2(nga), g_nga_wdi, 1e9),
+        agg: per(co2(afr_g), gdp(afr_g), 1e9),
+        agg_excl: per(co2(exz_g), gdp(exz_g), 1e9),
+        rest: per(co2(rest_g), gdp(rest_g), 1e9),
     }
     show(
         "B1. CO2 per GDP, fossil and industry",
         "kg per 2011 int-$",
         list(ci_gdp.items()),
-        ref=(("Nigeria", ci_gdp["Nigeria (Maddison GDP)"]), ("Africa", ci_gdp["Africa"])),
+        windows,
+        ref=((name, ci_gdp[nga_mad]), (agg, ci_gdp[agg])),
     )
     cb_gdp = {
-        "Nigeria (Maddison GDP)": per(comb(nga), g_nga, 1e9),
-        "Africa": per(comb(afr_g), gdp(afr_g), 1e9),
-        "Africa excl. South Africa": per(comb(exz_g), gdp(exz_g), 1e9),
-        "Africa excl. ZA and NGA": per(comb(rest_g), gdp(rest_g), 1e9),
+        nga_mad: per(comb(nga), g_nga, 1e9),
+        agg: per(comb(afr_g), gdp(afr_g), 1e9),
+        agg_excl: per(comb(exz_g), gdp(exz_g), 1e9),
+        rest: per(comb(rest_g), gdp(rest_g), 1e9),
     }
     show(
         "B2. CO2 per GDP, fuel combustion only (no flaring, no cement)",
         "kg per 2011 int-$",
         list(cb_gdp.items()),
-        ref=(
-            ("Nigeria", cb_gdp["Nigeria (Maddison GDP)"]),
-            ("Africa excl. ZA and NGA", cb_gdp["Africa excl. ZA and NGA"]),
-        ),
+        windows,
+        ref=((name, cb_gdp[nga_mad]), (rest, cb_gdp[rest])),
     )
 
     def pe(iso):
@@ -384,111 +471,106 @@ def report(p: CarbonIntensityParams):
     pe_rest = {y: pe_exz[y] - pe(iso)[y] for y in pe_exz if y in pe(iso)}
     tfc_n, com_n = country_final(p)
     ci_e = {
-        "Nigeria, per commercial final": per(comb(nga), com_n, 1e9 / 1e3),
-        "Nigeria, per OWID primary": per(comb(nga), pe(iso), 1e9 / (1e9 / KWH_PER_GJ)),
-        "Africa, per OWID primary": per(comb(afr), pe_afr, 1e9 / (1e9 / KWH_PER_GJ)),
-        "Africa excl. SA, OWID prim.": per(comb(exz), pe_exz, 1e9 / (1e9 / KWH_PER_GJ)),
-        "Afr. excl. ZA+NGA, OWID prim.": per(comb(rest), pe_rest, 1e9 / (1e9 / KWH_PER_GJ)),
+        nga_comm: per(comb(nga), com_n, 1e9 / 1e3),
+        "%s, per OWID primary" % name: per(comb(nga), pe(iso), 1e9 / (1e9 / KWH_PER_GJ)),
+        "%s, per OWID primary" % agg: per(comb(afr), pe_afr, 1e9 / (1e9 / KWH_PER_GJ)),
+        "%s excl. %s, OWID prim." % (agg, lab.exclude_short): per(
+            comb(exz), pe_exz, 1e9 / (1e9 / KWH_PER_GJ)
+        ),
+        rest_prim: per(comb(rest_r), pe_rest, 1e9 / (1e9 / KWH_PER_GJ)),
     }
     print()
     show(
         "B3. Combustion CO2 per unit of commercial energy (no traditional biomass)",
         "kg/GJ",
         list(ci_e.items()),
+        windows,
     )
-    print("    (Nigeria's OWID primary energy is EIA data and erratic -- e.g. 2010 below 2008;")
+    print("    (%s's OWID primary energy is EIA data and erratic -- e.g. 2010 below 2008;" % name)
     print("     its commercial final energy is IEA TFC minus estimated biomass. Final and")
     print("     primary are different denominators: compare changes, not levels, across them.)")
     ci_f = {
-        "Nigeria, per total final": per(co2(nga), tfc_n, 1e9 / 1e3),
-        "Nigeria, comb. per total final": per(comb(nga), tfc_n, 1e9 / 1e3),
+        nga_tot: per(co2(nga), tfc_n, 1e9 / 1e3),
+        "%s, comb. per total final" % name: per(comb(nga), tfc_n, 1e9 / 1e3),
     }
     if iea_africa:
         tfc_a, com_a = africa_final(iea_africa)
-        ci_f["Africa, per total final"] = per(co2(afr), tfc_a, 1e9 / 1e3)
-        ci_f["Africa, comb. per total final"] = per(comb(afr), tfc_a, 1e9 / 1e3)
+        ci_f["%s, per total final" % agg] = per(co2(afr), tfc_a, 1e9 / 1e3)
+        ci_f["%s, comb. per total final" % agg] = per(comb(afr), tfc_a, 1e9 / 1e3)
         tfc_xn = {y: tfc_a[y] - tfc_n[y] for y in tfc_a if y in tfc_n}
         com_xn = {y: com_a[y] - com_n[y] for y in com_a if y in com_n}
-        ci_f["Africa excl. NGA, per total final"] = per(co2(afr_xn), tfc_xn, 1e9 / 1e3)
+        ci_f[xn_tot] = per(co2(afr_xn), tfc_xn, 1e9 / 1e3)
         ci_e2 = {
-            "Nigeria, comb. per comm. final": ci_e["Nigeria, per commercial final"],
-            "Africa, comb. per comm. final": per(comb(afr), com_a, 1e9 / 1e3),
-            "Africa excl. NGA, comb/comm.fin": per(comb(afr_xn), com_xn, 1e9 / 1e3),
+            nga_comb_comm: ci_e[nga_comm],
+            "%s, comb. per comm. final" % agg: per(comb(afr), com_a, 1e9 / 1e3),
+            xn_comb_comm: per(comb(afr_xn), com_xn, 1e9 / 1e3),
         }
     print()
-    show("B4. CO2 per total final energy (biomass in the denominator)", "kg/GJ", list(ci_f.items()))
+    show(
+        "B4. CO2 per total final energy (biomass in the denominator)",
+        "kg/GJ",
+        list(ci_f.items()),
+        windows,
+    )
     if iea_africa:
         print()
         show(
             "B5. Combustion CO2 per commercial final energy, like for like",
             "kg/GJ",
             list(ci_e2.items()),
-            ref=(
-                ("Nigeria", ci_e2["Nigeria, comb. per comm. final"]),
-                ("Africa excl. NGA", ci_e2["Africa excl. NGA, comb/comm.fin"]),
-            ),
+            windows,
+            ref=((name, ci_e2[nga_comb_comm]), (agg_xn, ci_e2[xn_comb_comm])),
         )
     else:
-        print("    (Africa final energy not found: pass --iea-africa DIR for B4/B5 Africa rows.)")
+        print(
+            "    (%s final energy not found: pass --iea-africa DIR for B4/B5 %s rows.)" % (agg, agg)
+        )
     print()
 
     # C. co-movement
-    print("C. DO THEY MOVE TOGETHER? Nigeria against the rest of Africa (Nigeria removed, so")
+    print("C. DO THEY MOVE TOGETHER? %s against the rest of %s (%s removed, so" % (name, agg, name))
     print(
         "   no mechanical correlation), after the 2010 break; r = correlation of annual log changes"
     )
-    for a0, a1 in ((2011, 2022),):
+    g0, g1 = p.comovement_years
+    f0, f1 = p.comovement_years_final_energy
+    comove("%s CO2/GDP" % iso, ci_gdp[nga_mad], rest_plus, ci_gdp[rest], g0, g1)
+    comove("%s comb/GDP" % iso, cb_gdp[nga_mad], rest_plus, cb_gdp[rest], g0, g1)
+    comove(
+        "%s comb/comm.final" % iso,
+        ci_e[nga_comm],
+        "%s excl. %s+%s /prim." % (agg_short, lab.exclude_code, iso),
+        ci_e[rest_prim],
+        f0,
+        f1,
+    )
+    if iea_africa:
         comove(
-            "NGA CO2/GDP",
-            ci_gdp["Nigeria (Maddison GDP)"],
-            "Africa excl. ZA+NGA",
-            ci_gdp["Africa excl. ZA and NGA"],
-            a0,
-            a1,
+            "%s comb/comm.final" % iso,
+            ci_e2[nga_comb_comm],
+            "%s /comm.fin" % agg_xn,
+            ci_e2[xn_comb_comm],
+            f0,
+            f1,
         )
         comove(
-            "NGA comb/GDP",
-            cb_gdp["Nigeria (Maddison GDP)"],
-            "Africa excl. ZA+NGA",
-            cb_gdp["Africa excl. ZA and NGA"],
-            a0,
-            a1,
+            "%s CO2/total final" % iso, ci_f[nga_tot], "%s /tot.fin" % agg_xn, ci_f[xn_tot], f0, f1
         )
-        comove(
-            "NGA comb/comm.final",
-            ci_e["Nigeria, per commercial final"],
-            "Afr. excl. ZA+NGA /prim.",
-            ci_e["Afr. excl. ZA+NGA, OWID prim."],
-            a0,
-            a1 + 1,
-        )
-        if iea_africa:
-            comove(
-                "NGA comb/comm.final",
-                ci_e2["Nigeria, comb. per comm. final"],
-                "Africa excl. NGA /comm.fin",
-                ci_e2["Africa excl. NGA, comb/comm.fin"],
-                a0,
-                a1 + 1,
-            )
-            comove(
-                "NGA CO2/total final",
-                ci_f["Nigeria, per total final"],
-                "Africa excl. NGA /tot.fin",
-                ci_f["Africa excl. NGA, per total final"],
-                a0,
-                a1 + 1,
-            )
     print()
 
-    # D. IMAGE R10 "history" against observed Africa
-    print("D. IMAGE R10 2010-2020 ROWS AGAINST OBSERVED AFRICA (relative change)")
+    # D. IMAGE R10 "history" against observed aggregate
+    hist = p.image_history_years
+    steps = list(zip(hist, hist[1:], strict=False))
+    print(
+        "D. IMAGE R10 %d-%d ROWS AGAINST OBSERVED %s (relative change)"
+        % (hist[0], hist[-1], agg.upper())
+    )
     co2_i, afolu = image_series("Emissions - CO2.csv"), image_series("Emissions - CO2 - AFOLU.csv")
     fe_i, gdp_i = image_series("Final Energy.csv"), image_series("GDP - PPP.csv")
     feb_i = image_series("Final Energy - Solids - Biomass.csv")
     shown = p.markers[p.image_history_pathway]
     sc = shown.key
-    ff = {y: co2_i[sc][y] - afolu[sc][y] for y in (2010, 2015, 2020)}
+    ff = {y: co2_i[sc][y] - afolu[sc][y] for y in hist}
     print(
         "    fossil-and-industry CO2, Mt: IMAGE %s; GCB %s"
         % (
@@ -498,29 +580,35 @@ def report(p: CarbonIntensityParams):
     )
     rows = [
         ("CO2", ff, co2(afr)),
-        ("CO2/GDP", {y: ff[y] / gdp_i[sc][y] for y in ff}, ci_gdp["Africa"]),
+        ("CO2/GDP", {y: ff[y] / gdp_i[sc][y] for y in ff}, ci_gdp[agg]),
         (
             "CO2/final energy",
             {y: ff[y] / fe_i[sc][y] for y in ff},
-            ci_f.get("Africa, per total final"),
+            ci_f.get("%s, per total final" % agg),
         ),
         (
             "CO2/commercial final",
             {y: ff[y] / (fe_i[sc][y] - feb_i[sc][y]) for y in ff},
-            ci_e2.get("Africa, comb. per comm. final") if iea_africa else None,
+            ci_e2.get("%s, comb. per comm. final" % agg) if iea_africa else None,
         ),
     ]
     print(
-        "    %-22s %12s %12s %12s %12s"
-        % ("", "IMAGE 10-15", "obs 10-15", "IMAGE 15-20", "obs 15-20")
-    )
-    for name, im, ob in rows:
-        o1 = "%11.1f%%" % pct(ob[2010], ob[2015]) if ob else "%12s" % "n/a"
-        o2 = "%11.1f%%" % pct(ob[2015], ob[2020]) if ob else "%12s" % "n/a"
-        print(
-            "    %-22s %11.1f%% %s %11.1f%% %s"
-            % (name, pct(im[2010], im[2015]), o1, pct(im[2015], im[2020]), o2)
+        "    %-22s" % ""
+        + "".join(
+            " %12s %12s"
+            % (
+                "IMAGE %s-%s" % (short_year(a), short_year(b)),
+                "obs %s-%s" % (short_year(a), short_year(b)),
+            )
+            for a, b in steps
         )
+    )
+    for label, im, ob in rows:
+        cells = ""
+        for a, b in steps:
+            o = "%11.1f%%" % pct(ob[a], ob[b]) if ob else "%12s" % "n/a"
+            cells += " %11.1f%% %s" % (pct(im[a], im[b]), o)
+        print("    %-22s%s" % (label, cells))
     print(
         "    (IMAGE rows are identical across markers to <0.15%%; %s shown. Observed" % shown.label
     )
@@ -530,12 +618,14 @@ def report(p: CarbonIntensityParams):
     print()
 
     # E. IMAGE forward: what an R10 carbon-intensity path would carry
+    ref, mid, end = p.image_forward_years
+    r_, m_, e_ = short_year(ref), short_year(mid), short_year(end)
     print("E. IMAGE R10 FORWARD: WHAT AN R10 CARBON-INTENSITY PATH WOULD CARRY")
     pe_coal = image_series("Primary Energy - Coal.csv")
     print("    fossil-and-industry CO2 per final energy (all, and commercial = without solid")
     print(
-        '    biomass), change from 2020; "ex-coal" removes primary coal x %.1f kg/GJ from the'
-        % coal_ef
+        '    biomass), change from %d; "ex-coal" removes primary coal x %.1f kg/GJ from the'
+        % (ref, coal_ef)
     )
     print(
         "    numerator (no CCS adjustment, so it fails where coal carries CCS or net CO2 nears 0)"
@@ -544,13 +634,13 @@ def report(p: CarbonIntensityParams):
         "    %-8s %8s %9s %9s %9s %11s %12s %12s"
         % (
             "marker",
-            "CO2/FE20",
-            "FE ->50",
-            "FE ->100",
-            "comm->50",
-            "coal sh.20",
-            "coal sh.50",
-            "ex-coal comm->50",
+            "CO2/FE" + r_,
+            "FE ->" + m_,
+            "FE ->" + e_,
+            "comm->" + m_,
+            "coal sh." + r_,
+            "coal sh." + m_,
+            "ex-coal comm->" + m_,
         )
     )
     for pid, marker in p.markers.items():
@@ -565,7 +655,7 @@ def report(p: CarbonIntensityParams):
         def coal(y, s_=s_):
             return pe_coal[s_][y] * coal_ef  # EJ x kg/GJ = Mt
 
-        ok50 = f(2050) > coal(2050)
+        ok_mid = f(mid) > coal(mid)
 
         def exc(y):
             return (f(y) - coal(y)) / com(y)
@@ -574,16 +664,16 @@ def report(p: CarbonIntensityParams):
             "    %-8s %8.1f %8.1f%% %8.1f%% %8.1f%% %10.0f%% %11s %12s"
             % (
                 pid,
-                f(2020) / fe_i[s_][2020],
-                pct(f(2020) / fe_i[s_][2020], f(2050) / fe_i[s_][2050]),
-                pct(f(2020) / fe_i[s_][2020], f(2100) / fe_i[s_][2100]),
-                pct(f(2020) / com(2020), f(2050) / com(2050)),
-                100 * coal(2020) / f(2020),
-                ("%.0f%%" % (100 * coal(2050) / f(2050))) if ok50 else "n/a",
-                ("%.1f%%" % pct(exc(2020), exc(2050))) if ok50 else "n/a",
+                f(ref) / fe_i[s_][ref],
+                pct(f(ref) / fe_i[s_][ref], f(mid) / fe_i[s_][mid]),
+                pct(f(ref) / fe_i[s_][ref], f(end) / fe_i[s_][end]),
+                pct(f(ref) / com(ref), f(mid) / com(mid)),
+                100 * coal(ref) / f(ref),
+                ("%.0f%%" % (100 * coal(mid) / f(mid))) if ok_mid else "n/a",
+                ("%.1f%%" % pct(exc(ref), exc(mid))) if ok_mid else "n/a",
             )
         )
     print(
-        "    (kg CO2/GJ final energy, 2020. Observed Africa coal share of CO2, GCB: "
-        "%.0f%% in 2020.)" % (100 * afr[2020]["coal_co2"] / afr[2020]["co2"])
+        "    (kg CO2/GJ final energy, %d. Observed %s coal share of CO2, GCB: "
+        "%.0f%% in %d.)" % (ref, agg, 100 * afr[ref]["coal_co2"] / afr[ref]["co2"], ref)
     )
