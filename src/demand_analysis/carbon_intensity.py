@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import csv
 import json
+import logging
 import math
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -43,6 +44,20 @@ from scenario_data import Marker, load_markers, read_series, read_year_totals
 from units import KWH_PER_GJ
 
 AGGREGATE_KEY = "_aggregate"  # the OWID continental aggregate row, kept apart from countries
+REGION_COLUMNS = (
+    "co2",
+    "coal_co2",
+    "oil_co2",
+    "gas_co2",
+    "flaring_co2",
+    "cement_co2",
+    "gdp",
+    "population",
+)
+# CO2 components that combustion() and section A take as 0 when blank
+CO2_PARTS = ("coal_co2", "oil_co2", "gas_co2", "flaring_co2", "cement_co2")
+
+LOGGER = logging.getLogger("demand_analysis.carbon_intensity")
 
 
 @dataclass(frozen=True)
@@ -136,7 +151,8 @@ def load_owid(p: CarbonIntensityParams):
 def region(p: CarbonIntensityParams, by, exclude=(), need_gdp=False):
     """Sum the aggregate's countries (iso rows), optionally excluding some and, for
     GDP ratios, restricting to countries with GDP in every year of the coverage
-    window (2000-2022) so numerator and denominator cover the same set."""
+    window (2000-2022) so numerator and denominator cover the same set. Other
+    columns sum whichever countries report that year (see coverage_gaps)."""
     isos = [k for k in by if k != AGGREGATE_KEY and k not in exclude]
     if need_gdp:
         window = range(p.gdp_first_year, p.gdp_last_year + 1)
@@ -144,20 +160,63 @@ def region(p: CarbonIntensityParams, by, exclude=(), need_gdp=False):
     out = {}
     for y in p.years:
         d = {}
-        for c in (
-            "co2",
-            "coal_co2",
-            "oil_co2",
-            "gas_co2",
-            "flaring_co2",
-            "cement_co2",
-            "gdp",
-            "population",
-        ):
+        for c in REGION_COLUMNS:
             vals = [by[k][y][c] for k in isos if y in by[k] and by[k][y].get(c) is not None]
             d[c] = sum(vals) if vals else None
         out[y] = d
     return out, isos
+
+
+def year_ranges(years):
+    """[2000, 2001, 2002, 2005] -> '2000-2002, 2005'."""
+    out, ys = [], sorted(years)
+    for i, y in enumerate(ys):
+        if i and y == ys[i - 1] + 1:
+            out[-1][1] = y
+        else:
+            out.append([y, y])
+    return ", ".join(str(a) if a == b else "%d-%d" % (a, b) for a, b in out)
+
+
+def coverage_gaps(by, isos, columns, years):
+    """{column: {iso: [years blank]}} for countries that report a column in some
+    of the years but not all, so a regional sum changes its country set by year."""
+    out = {}
+    for c in columns:
+        gaps = {}
+        for k in isos:
+            blank = [y for y in years if by[k].get(y, {}).get(c) is None]
+            if blank and len(blank) < len(years):
+                gaps[k] = blank
+        if gaps:
+            out[c] = gaps
+    return out
+
+
+def warn_coverage_gaps(p: CarbonIntensityParams, by):
+    """Log, once per column, the country-years regional sums treat as 0. GDP is
+    left out: GDP ratios use only countries covering the whole window."""
+    isos = [k for k in by if k != AGGREGATE_KEY]
+    columns = [c for c in REGION_COLUMNS if c != "gdp"]
+    for c, gaps in coverage_gaps(by, isos, columns, p.years).items():
+        never = [k for k in isos if all(by[k].get(y, {}).get(c) is None for y in p.years)]
+        LOGGER.warning(
+            "OWID %s: regional sums change country set by year; blank country-years are "
+            "summed as 0: %s (%d countries never report it)",
+            c,
+            "; ".join("%s %s" % (k, year_ranges(ys)) for k, ys in sorted(gaps.items())),
+            len(never),
+        )
+
+
+def blank_parts(s, years, columns=CO2_PARTS):
+    """{column: [years]} where total CO2 is present but a component is blank."""
+    out = {}
+    for c in columns:
+        ys = [y for y in years if s.get(y, {}).get("co2") is not None and s[y].get(c) is None]
+        if ys:
+            out[c] = ys
+    return out
 
 
 def combustion(d):
@@ -183,6 +242,14 @@ def africa_final(d: Path):
             d / ("%s_final_consumption_by_source_africa_2000_2023.csv" % s),
             {"Biofuels and waste"},
         )
+        blank = [y for y in tfc if y not in part]
+        if blank:
+            LOGGER.warning(
+                "IEA Africa %s biofuels and waste blank in %s; commercial final energy "
+                "counts it as 0 there",
+                s,
+                year_ranges(blank),
+            )
         for y, v in part.items():
             bio[y] = bio.get(y, 0.0) + v
     com = {y: tfc[y] - bio.get(y, 0.0) for y in tfc}
@@ -287,6 +354,19 @@ def report(p: CarbonIntensityParams):
     rest_g, _ = region(p, by, exclude=(excl, iso), need_gdp=True)
     rest, _ = region(p, by, exclude=(excl, iso))
     afr_xn, _ = region(p, by, exclude=(iso,))
+    warn_coverage_gaps(p, by)
+    for name, s in (
+        ("Nigeria", nga),
+        ("Africa", afr),
+        ("Africa excl. South Africa", exz),
+        ("Africa excl. ZA and NGA", rest),
+        ("Africa excl. NGA", afr_xn),
+        ("Africa, GDP set", afr_g),
+        ("Africa excl. South Africa, GDP set", exz_g),
+        ("Africa excl. ZA and NGA, GDP set", rest_g),
+    ):
+        for c, ys in blank_parts(s, years).items():
+            LOGGER.warning("%s %s blank in %s, taken as 0", name, c, year_ranges(ys))
     print(
         'Check: sum of %d African country rows vs OWID "%s" CO2, 2023: %.1f vs %.1f Mt'
         % (len(afr_isos), p.owid_aggregate, afr[2023]["co2"], by[AGGREGATE_KEY][2023]["co2"])

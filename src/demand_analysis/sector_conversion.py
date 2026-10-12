@@ -38,6 +38,7 @@ report text describes the 2023 IEA/UNSD snapshot the inputs hold.
 from __future__ import annotations
 
 import csv
+import logging
 import math
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -48,6 +49,8 @@ from config_paths import require, require_path
 from scenario_data import Marker, interp, load_markers, read_label_values, read_series
 from ssp_baseline import block_series as read_block_series, block_years
 from units import TJ_PER_GWH
+
+LOGGER = logging.getLogger("demand_analysis.sector_conversion")
 
 
 @dataclass(frozen=True)
@@ -177,9 +180,13 @@ SECTORS = [
 
 def unsd_2023(p: SectorConversionParams):
     """Final energy in TJ, {sector: {carrier: TJ}}, plus the transformation
-    rows needed for primary-energy factors."""
+    rows needed for primary-energy factors. A row in natural units without a
+    conversion factor is not converted: it is an error if it would enter the
+    sector-carrier matrix, and is otherwise left out of the transformation rows
+    (so a later lookup fails instead of reading 0)."""
     m = {s: {c: 0.0 for c in CARRIERS} for s in SECTORS}
     extra = {}
+    unconverted = []
     with p.unsd.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
             if r["TIME_PERIOD"] != str(p.base_year):
@@ -189,11 +196,27 @@ def unsd_2023(p: SectorConversionParams):
                 tj = v * TJ_PER_GWH
             elif r["UNIT_MEASURE"] == "TJ":
                 tj = v
+            elif r["CONVERSION_FACTOR"].strip():
+                tj = v * float(r["CONVERSION_FACTOR"])
+            elif com in CARRIER and tr in SECTOR:
+                raise ValueError(
+                    f"{p.unsd}: {p.base_year} commodity {com}, transaction {tr} is in "
+                    f"{r['UNIT_MEASURE']} with no conversion factor; cannot convert to TJ"
+                )
             else:
-                tj = v * float(r["CONVERSION_FACTOR"] or 0)
+                unconverted.append((com, tr, r["UNIT_MEASURE"]))
+                continue
             extra[(com, tr)] = tj
             if com in CARRIER and tr in SECTOR:
                 m[SECTOR[tr]][CARRIER[com]] += tj
+    if unconverted:
+        LOGGER.info(
+            "UNSD %d: %d rows without a conversion factor left unconverted (units %s; "
+            "none enters the sector-carrier matrix)",
+            p.base_year,
+            len(unconverted),
+            ", ".join(sorted({u for _, _, u in unconverted})),
+        )
     return m, extra
 
 
@@ -227,6 +250,9 @@ FUEL_GROUP = {
     "coal": "coal",
     "electricity": "electricity",
 }
+# IEA rounds each cell and the row total to whole TJ: the non-blank cells of a
+# row may differ from its total by up to 0.5 TJ x (5 cells + total).
+ROUNDING_TJ = 0.5 * (len(IEA_FUEL) + 1)
 GROUP_DEFAULT = {
     "bio": "wood",
     "oil": "diesel",
@@ -241,13 +267,35 @@ def iea_current(p: SectorConversionParams, u):
     The IEA table has five fuels; each cell is split into the carriers of
     CARRIERS in proportion to the UNSD 2023 split of the same sector and fuel
     group (wood vs charcoal; LPG, kerosene, petrol, diesel, jet, fuel oil).
-    The IEA cell sets the level, UNSD only the within-cell shares."""
+    The IEA cell sets the level, UNSD only the within-cell shares.
+
+    A blank IEA cell is read as 0 only if the row's non-blank cells add up to
+    its total_TJ (within rounding); otherwise it may hide a value and is an
+    error. Where UNSD has no split for a fuel group with several carriers, the
+    whole cell goes to GROUP_DEFAULT, a proxy that is logged as a warning."""
     m = {s: {c: 0.0 for c in CARRIERS} for s in SECTORS}
+    blanks = []
     with p.iea_final_current.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
             if r["sector"] not in IEA_SECTOR:
                 continue
             s = IEA_SECTOR[r["sector"]]
+            empty = [col for col in IEA_FUEL if not r[col].strip()]
+            if empty:
+                if not r["total_TJ"].strip():
+                    raise ValueError(
+                        f"{p.iea_final_current}: {r['sector']} has blank cells and no "
+                        "total_TJ, so the blanks cannot be confirmed as zero"
+                    )
+                gap = float(r["total_TJ"]) - sum(
+                    float(r[col]) for col in IEA_FUEL if col not in empty
+                )
+                if abs(gap) > ROUNDING_TJ:
+                    raise ValueError(
+                        f"{p.iea_final_current}: {r['sector']} cells fall {gap:.0f} TJ short "
+                        f"of total_TJ; a blank cell ({', '.join(empty)}) may hide a value"
+                    )
+                blanks += [(r["sector"], col) for col in empty]
             for col, g in IEA_FUEL.items():
                 v = float(r[col]) if r[col].strip() else 0.0
                 members = [c for c in CARRIERS if FUEL_GROUP[c] == g]
@@ -256,7 +304,29 @@ def iea_current(p: SectorConversionParams, u):
                     for c in members:
                         m[s][c] += v * u[s][c] / base
                 else:
+                    if v and len(members) > 1:
+                        LOGGER.warning(
+                            "IEA %s %s %.0f TJ: UNSD has no split, so all of it is "
+                            "assigned to %s (PROXY)",
+                            s,
+                            g,
+                            v,
+                            GROUP_DEFAULT[g],
+                        )
+                    elif v:
+                        LOGGER.info(
+                            "IEA %s %s %.0f TJ has no UNSD counterpart; assigned to its "
+                            "only carrier",
+                            s,
+                            g,
+                            v,
+                        )
                     m[s][GROUP_DEFAULT[g]] += v
+    if blanks:
+        LOGGER.info(
+            "IEA current release: %d blank cells read as 0 TJ; row totals confirm",
+            len(blanks),
+        )
     return m
 
 
@@ -777,14 +847,27 @@ def section6(p: SectorConversionParams):
     for pid, marker in p.markers.items():
         sc = marker.key
         have = all(sc in prim[k] for k in PRIMARY)
+        have_gen = all(sc in byfuel[k] for k in byfuel)
+        missing = ["Primary Energy - %s" % k for k in PRIMARY if sc not in prim[k]] + [
+            "Secondary Energy - Electricity - %s" % k for k in byfuel if sc not in byfuel[k]
+        ]
+        if missing:
+            LOGGER.warning(
+                "IMAGE %s lacks %s; the values that need them are printed as nan",
+                marker.label,
+                ", ".join(missing),
+            )
         base = {}
         for y in (2020, 2050, 2100):
             F = interp(y, fe[sc])
             P = sum(interp(y, prim[k][sc]) for k in PRIMARY) if have else float("nan")
             yp = interp(y, gdp[sc]) / interp(y, pop[sc])
             n = interp(y, pop[sc])
-            gen = sum(interp(y, byfuel[k][sc]) for k in byfuel if sc in byfuel[k])
-            lowsh = sum(interp(y, byfuel[k][sc]) for k in LOWC if sc in byfuel[k]) / gen
+            if have_gen:
+                gen = sum(interp(y, byfuel[k][sc]) for k in byfuel)
+                lowsh = sum(interp(y, byfuel[k][sc]) for k in LOWC) / gen
+            else:
+                lowsh = float("nan")
             pb = interp(y, prim["Biomass"][sc]) / interp(y, fbio[sc]) if have else float("nan")
             vals = (P / F, interp(y, fel[sc]) / F, interp(y, fbio[sc]) / F, lowsh, pb)
             if y == 2020:

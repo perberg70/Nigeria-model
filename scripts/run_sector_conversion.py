@@ -17,6 +17,7 @@ see ``data/scenario_compass_africa_r10/partial_adjustment/SECTOR_CONVERSION.md``
 from __future__ import annotations
 
 import argparse
+import logging
 import sys
 
 import _path_setup  # noqa: F401
@@ -27,6 +28,7 @@ from demand_analysis.sector_conversion import SectorConversionParams, report
 
 
 def main() -> int:
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(name)s: %(message)s")
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     add_config_argument(parser)
     args = parser.parse_args()

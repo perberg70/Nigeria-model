@@ -14,6 +14,12 @@ baseline or the prototype; each prints a report that is committed beside its mem
 
 (paths under `data/scenario_compass_africa_r10/`)
 
+Data gaps are logged to stderr, never into the reports: WARNING marks a value that is proxied
+or taken as 0 (e.g. OWID country-years missing from a regional CO2 sum, the Africa transport
+biofuel years, a missing IMAGE row), INFO a blank that was checked (IEA blank cells against
+their row totals). A gap that would silently corrupt a result (an unconvertible UNSD
+final-energy row, an IEA blank its row total does not confirm) is a `ValueError`.
+
 ## Key Equations
 
 Partial-adjustment variant (`partial_adjustment.pa_path`), annual, logs of per-capita final

@@ -4,6 +4,9 @@ Every script is run from the repository root, requires `--config <file>` (normal
 `config.yaml`) and exits with status 2 if it is missing. Paths below are the values in
 `config.yaml`.
 
+Data gaps found while running are logged to stderr (`[WARNING]` for proxied or zero-filled
+values, `[INFO]` for checked ones); they never enter the written reports.
+
 ## SSP baseline
 
 - `scripts/run_ssp_baseline.py --config config.yaml [--update-prototype]`
