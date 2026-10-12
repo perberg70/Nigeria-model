@@ -46,7 +46,7 @@ from typing import Any
 
 from config_paths import require, require_path
 from scenario_data import Marker, interp, load_markers, read_label_values, read_series
-from ssp_baseline import block_series as read_block_series
+from ssp_baseline import block_series as read_block_series, block_years
 from units import TJ_PER_GWH
 
 
@@ -186,7 +186,7 @@ def unsd_2023(p: SectorConversionParams):
                 continue
             com, tr, v = r["COMMODITY"], r["TRANSACTION"], float(r["OBS_VALUE"])
             if com == "7000":
-                tj = v * 3.6
+                tj = v * TJ_PER_GWH
             elif r["UNIT_MEASURE"] == "TJ":
                 tj = v
             else:
@@ -846,7 +846,13 @@ def section6(p: SectorConversionParams):
 # 7. WHAT IT MEANS FOR THE DEMAND LAW
 def block_series(p: SectorConversionParams, pid, key):
     """One BLOCK 2 series of the generated baseline block (ssp_baseline.output_block)."""
-    return read_block_series(p.baseline_block.read_text(encoding="utf-8"), pid, key)
+    text = p.baseline_block.read_text(encoding="utf-8")
+    if block_years(text) != p.years:
+        raise ValueError(
+            f"{p.baseline_block}: year grid differs from time_horizon; "
+            "re-run scripts/run_ssp_baseline.py"
+        )
+    return read_block_series(text, pid, key)
 
 
 def section7(p: SectorConversionParams, m, results, rows):
@@ -899,8 +905,8 @@ def section7(p: SectorConversionParams, m, results, rows):
         e = s_user * proto_to_final
         res = solve(m, pl, "IMAGE pattern", e, w)
         K = res[0] / base[0]
-        e11 = e * tj / 3.6 / 1e3
-        conv = e * tj * K / 3.6 / 1e3
+        e11 = e * tj / TJ_PER_GWH / 1e3
+        conv = e * tj * K / TJ_PER_GWH / 1e3
         print(
             "  %-24s %10.0f %12.0f %12.2f %10.3f"
             % ("%.0f%%" % (100 * s_user), e11, conv, tj * K / 1e6, K)

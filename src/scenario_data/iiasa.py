@@ -19,6 +19,7 @@ HISTORICAL = "Historical Reference"
 class SeriesSpec:
     """One variable of the export: its name, unit and the scale to absolute units."""
 
+    model: str
     variable: str
     unit: str
     scale: float
@@ -30,6 +31,7 @@ class IiasaExport:
 
     path: Path
     history_end: int
+    region: str
     population: SeriesSpec
     gdp: SeriesSpec
 
@@ -38,6 +40,7 @@ class IiasaExport:
         def spec(name: str) -> SeriesSpec:
             base = f"inputs.iiasa.{name}"
             return SeriesSpec(
+                model=require(config, f"{base}.model"),
                 variable=require(config, f"{base}.variable"),
                 unit=require(config, f"{base}.unit"),
                 scale=float(require(config, f"{base}.scale")),
@@ -46,6 +49,7 @@ class IiasaExport:
         return cls(
             path=require_path(config, "inputs.iiasa.csv"),
             history_end=int(require(config, "inputs.iiasa.history_end_year")),
+            region=require(config, "inputs.iiasa.region"),
             population=spec("population"),
             gdp=spec("gdp"),
         )
@@ -57,6 +61,8 @@ class IiasaExport:
             self.path,
             spec.variable,
             narratives,
+            model=spec.model,
+            region=self.region,
             unit=spec.unit,
             scale=spec.scale,
             history_end=self.history_end,
@@ -77,6 +83,8 @@ def country_series(
     variable: str,
     narratives: Iterable[str],
     *,
+    model: str,
+    region: str,
     unit: str | None = None,
     scale: float = 1.0,
     history_end: int,
@@ -89,6 +97,7 @@ def country_series(
     shared by all narratives; each of ``fill_years`` missing from the grid (the
     base and anchor years, on this five-yearly export) is linearly interpolated
     between the historical anchors. Scenario rows supply ``history_end`` onward.
+    Rows are matched on ``(model, scenario)`` within ``region``; a repeated row raises.
     """
 
     wanted = set(narratives)
@@ -96,14 +105,18 @@ def country_series(
     forecasts = {}
     with path.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
-            if r["variable"] != variable:
+            if r["variable"] != variable or r["model"] != model or r["region"] != region:
                 continue
             if unit is not None and r["unit"] != unit:
                 continue
             yrs = _year_columns(r, scale)
             if r["scenario"] == HISTORICAL:
+                if historical is not None:
+                    raise ValueError("%s: repeated Historical Reference row" % variable)
                 historical = yrs
             elif r["scenario"] in wanted:
+                if r["scenario"] in forecasts:
+                    raise ValueError("%s: repeated %s row" % (variable, r["scenario"]))
                 forecasts[r["scenario"]] = yrs
 
     fill = list(fill_years)
@@ -130,11 +143,24 @@ def country_series(
     return out
 
 
-def historical_series(path: Path, variable: str, unit: str) -> dict[int, float]:
-    """The Historical Reference row of one variable, unscaled."""
+def historical_series(
+    path: Path, variable: str, unit: str, *, model: str, region: str
+) -> dict[int, float]:
+    """The Historical Reference row of one variable of one model and region, unscaled."""
 
+    found = []
     with path.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
-            if r["scenario"] == HISTORICAL and r["variable"] == variable and r["unit"] == unit:
-                return _year_columns(r, 1.0)
-    raise ValueError(f"{path.name}: no Historical Reference row for {variable} [{unit}]")
+            if (
+                r["scenario"] == HISTORICAL
+                and r["model"] == model
+                and r["region"] == region
+                and r["variable"] == variable
+                and r["unit"] == unit
+            ):
+                found.append(_year_columns(r, 1.0))
+    if len(found) != 1:
+        raise ValueError(
+            f"{path.name}: {len(found)} Historical Reference rows for {model} {variable} [{unit}]"
+        )
+    return found[0]

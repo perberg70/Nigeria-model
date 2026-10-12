@@ -155,7 +155,11 @@ class BaselineParams:
 
     @property
     def elec_base(self) -> float:
-        """Electrification in the base year: (grid + gensets) / total final energy."""
+        """Electrification in the base year: (grid + gensets) / total final energy.
+
+        BOUNDARY: genset output is counted as electricity while the gensets' fuel stays in
+        total final energy (see the genset_gwh note in config.yaml).
+        """
         return self.all_gwh * TJ_PER_GWH / self.tfe_tj
 
     @property
@@ -236,9 +240,9 @@ class BaselineResult:
 # configured anchors to the saved tables, so the two cannot drift apart silently.
 def check_iea_anchors(params: BaselineParams) -> None:
     f1, f2 = params.iea_final_current, params.iea_electricity_current
-    if not (f1.exists() and f2.exists()):
-        LOGGER.warning("IEA current-release tables not found; anchors not cross-checked")
-        return
+    for f in (f1, f2):
+        if not f.exists():
+            raise FileNotFoundError(f"IEA current-release table not found, anchors unchecked: {f}")
     with f1.open(encoding="utf-8", newline="") as fh:
         tot = {r["sector"]: r for r in csv.DictReader(fh)}["Total final consumption"]
     with f2.open(encoding="utf-8", newline="") as fh:

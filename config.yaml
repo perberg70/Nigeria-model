@@ -28,8 +28,10 @@ inputs:
   iiasa:
     csv: data/iiasa_ssp_nigeria/Population_GDP_PPP_IIASA_SSP_15_Nigeria.csv
     history_end_year: 2025  # the Historical Reference row runs through 2025
-    population: {variable: Population, unit: million, scale: 1.0e+6}
-    gdp: {variable: GDP|PPP, unit: billion USD_2015/yr, scale: 1.0e+9}
+    region: Nigeria          # the export's region name
+    # Rows are identified by (model, scenario) within the region, never by scenario alone.
+    population: {model: IIASA-WiC POP 2025, variable: Population, unit: million, scale: 1.0e+6}
+    gdp: {model: OECD ENV-Growth 2025, variable: GDP|PPP, unit: billion USD_2015/yr, scale: 1.0e+9}
   iea:
     # IEA Energy Statistics Data Browser, Nigeria, current release ("Last updated
     # 28 Sep 2026"); the older-release exports beside them are the audit trail and
@@ -83,7 +85,9 @@ ssp_baseline:
     # against inputs.iea.electricity_current.
     grid_gwh: 40975.0
     # ETP 296.3 PJ at 25% efficiency; conditional estimate [GAP: back-up generator
-    # output is not measured; see data/seforall_nigeria_etp/README.md].
+    # output is not measured; see data/seforall_nigeria_etp/README.md]. BOUNDARY: the
+    # base-year electrification share counts this output as electricity while the
+    # gensets' fuel stays in total_final_energy_tj (sector_conversion report, section 5).
     genset_gwh: 20600.0
     hydro_gwh: 9107.0
     solar_gwh: 267.0  # IEA 2023, current release (211 in the older one)
@@ -100,7 +104,10 @@ ssp_baseline:
     # sample, so that match is approximate. Integrating beta(L) = 0.36 + 0.13 L gives
     # ln(E/E0) = 0.36 L + 0.065 L^2. The 10-year form integrated over decades is a
     # projection assumption, not the paper's dynamic model. TRANSFERRED: a
-    # cross-country estimate applied to Nigeria.
+    # cross-country estimate applied to Nigeria. [GAP: BOUNDARY MISMATCH: Table 5
+    # "total" is a primary-energy (TPES) elasticity; here it drives total FINAL energy
+    # and the emissions line (see CONVERSION_FACTORS.md section C).] Must equal
+    # parameters...table5.total.b25 and table5.total.eta / 2 (tests/test_config.py).
     elasticity: 0.36
     elasticity_quadratic: 0.065
     # Burke & Csereklyei (2016), CAMA WP 45/2016, Table 3 Panel C col. 1, SE 0.22:

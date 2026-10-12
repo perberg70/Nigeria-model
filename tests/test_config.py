@@ -71,3 +71,11 @@ def test_coal_factor_matches_ipcc_table(config):
         rows = {r[0]: r for r in csv.reader(fh)}
     kg_per_tj = float(rows["Other Bituminous Coal"][2])
     assert require(config, "carbon_intensity.coal_emission_factor") == kg_per_tj / 1000
+
+
+def test_baseline_law_is_table5_total_at_the_25th_percentile(config):
+    # ln(E/E0) = b L + q L^2 integrates beta(L) = b25 + eta L, so q = eta / 2.
+    total = require(config, "parameters.burke_csereklyei_2016.table5.total")
+    demand = require(config, "ssp_baseline.demand")
+    assert demand["elasticity"] == total["b25"]
+    assert demand["elasticity_quadratic"] == total["eta"] / 2

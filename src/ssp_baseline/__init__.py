@@ -9,7 +9,7 @@ from .builder import (
     cook_index,
     print_diagnostics,
 )
-from .js_block import block_series, render_block
+from .js_block import block_series, block_years, render_block
 from .prototype import replace_fragment, update_prototype_html
 
 __all__ = [
@@ -17,6 +17,7 @@ __all__ = [
     "BaselineResult",
     "apply_envelope",
     "block_series",
+    "block_years",
     "build_baseline",
     "check_iea_anchors",
     "cook_index",

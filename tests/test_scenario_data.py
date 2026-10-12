@@ -51,7 +51,55 @@ def test_country_series_missing_narrative_is_an_error(config):
             iiasa.path,
             iiasa.population.variable,
             ["SSP2", "SSP9"],
+            model=iiasa.population.model,
+            region=iiasa.region,
             unit=iiasa.population.unit,
             history_end=iiasa.history_end,
             fill_years=(2023, 2024),
+        )
+
+
+IIASA_HEADER = "model,scenario,region,variable,unit,version,2020,2025,2030\n"
+
+
+def test_iiasa_rows_are_matched_on_model_and_region(tmp_path):
+    (tmp_path / "x.csv").write_text(
+        IIASA_HEADER
+        + "M1,Historical Reference,R,Population,million,1,1.0,2.0,\n"
+        + "M1,SSP2,R,Population,million,1,,2.0,3.0\n"
+        + "M2,SSP2,R,Population,million,1,,9.0,9.0\n"
+        + "M1,SSP2,OTHER,Population,million,1,,9.0,9.0\n",
+        encoding="utf-8",
+    )
+    out = country_series(
+        tmp_path / "x.csv",
+        "Population",
+        ["SSP2"],
+        model="M1",
+        region="R",
+        unit="million",
+        history_end=2025,
+        fill_years=(2023,),
+    )
+    assert out["SSP2"][2030] == 3.0
+
+
+def test_iiasa_repeated_row_is_an_error(tmp_path):
+    (tmp_path / "x.csv").write_text(
+        IIASA_HEADER
+        + "M1,Historical Reference,R,Population,million,1,1.0,2.0,\n"
+        + "M1,SSP2,R,Population,million,1,,2.0,3.0\n"
+        + "M1,SSP2,R,Population,million,2,,2.0,4.0\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="repeated SSP2 row"):
+        country_series(
+            tmp_path / "x.csv",
+            "Population",
+            ["SSP2"],
+            model="M1",
+            region="R",
+            unit="million",
+            history_end=2025,
+            fill_years=(2023,),
         )

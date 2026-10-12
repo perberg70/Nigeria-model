@@ -82,6 +82,8 @@ class CarbonIntensityParams:
             # null in the config skips the Africa final-energy rows; the report says so.
             configured = require(config, "inputs.iea_africa_dir")
             africa = resolve_path(config, configured) if configured else None
+        if africa is not None and not africa.is_dir():
+            raise FileNotFoundError(f"IEA Africa directory not found: {africa}")
         return cls(
             iso3=require(config, "region.iso3"),
             exclude_iso3=require(config, f"{c}.exclude_iso3"),
@@ -92,7 +94,7 @@ class CarbonIntensityParams:
             wdi_growth=require_path(config, "inputs.wdi_gdp_growth"),
             iea_tfc_series=require_path(config, "inputs.iea.final_by_sector_2000_2023"),
             iea_production_series=require_path(config, "inputs.iea.domestic_production_2000_2023"),
-            iea_africa_dir=africa if africa is not None and africa.is_dir() else None,
+            iea_africa_dir=africa,
             first_year=int(first),
             last_year=int(last),
             gdp_first_year=int(gdp_first),

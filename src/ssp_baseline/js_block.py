@@ -95,6 +95,14 @@ def render_block(result: BaselineResult) -> str:
     return "".join(out)
 
 
+def block_years(text: str) -> list[int]:
+    """The year grid of BLOCK 2 (``sspBaseline.years``), read back."""
+
+    i = text.index("sspBaseline:{")
+    j = text.index("years:[", i) + len("years:[")
+    return [int(x) for x in text[j : text.index("]", j)].split(",")]
+
+
 def block_series(text: str, pathway: str, key: str) -> list[float]:
     """One annual series of BLOCK 2 (e.g. ``energyTJ``) for one pathway, read back."""
 

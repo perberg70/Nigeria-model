@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import dataclasses
-import logging
 
 import pytest
 
@@ -67,8 +66,7 @@ def test_anchor_drift_from_iea_table_is_an_error(params):
         check_iea_anchors(drifted)
 
 
-def test_missing_iea_tables_are_flagged_not_silent(params, tmp_path, caplog):
+def test_missing_iea_table_is_an_error(params, tmp_path):
     missing = dataclasses.replace(params, iea_final_current=tmp_path / "absent.csv")
-    with caplog.at_level(logging.WARNING):
+    with pytest.raises(FileNotFoundError, match="anchors unchecked"):
         check_iea_anchors(missing)
-    assert "not cross-checked" in caplog.text

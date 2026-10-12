@@ -288,15 +288,16 @@ def section_b(c: ConversionFactorsParams):
     p = c.pa
     t5, dev, base = p.t5, p.deviation, p.base_year
     t2 = c.table2
-    iiasa = p.iiasa.path
+    iiasa, popspec, gdpspec = p.iiasa.path, p.iiasa.population, p.iiasa.gdp
+    where = dict(region=p.iiasa.region)
     print("B. INCOME LEVEL: only the ETA interaction reads the level of income")
     print("  beta*dg and the target slope use log DIFFERENCES (any constant price-base")
     print("  factor cancels) and alpha absorbs the level, so the income conversion")
     print("  only enters through d = ln Y_NGA - mean_463(ln Y_t-10) in PWT 7.1 units.")
-    pop = historical_series(iiasa, "Population", "million")
+    pop = historical_series(iiasa, popspec.variable, popspec.unit, model=popspec.model, **where)
     pc = {}
     for unit in ("billion USD_2010/yr", "billion USD_2015/yr", "billion USD_2017/yr"):
-        g = historical_series(iiasa, "GDP|PPP", unit)
+        g = historical_series(iiasa, gdpspec.variable, unit, model=gdpspec.model, **where)
         pc[unit] = {y: g[y] / pop[y] * 1e3 for y in (2010, 2020, 2025)}
         pc[unit][base] = (
             interp(base, {y: g[y] for y in (2020, 2025)})
@@ -434,7 +435,11 @@ def section_c(c: ConversionFactorsParams):
         '  %.0f TJ (%.1f%% of TFC; non-energy use and non-specified are "Other" in the paper)'
         % (five, 100 * five / tfc_total)
     )
-    pop23 = interp(base, historical_series(p.iiasa.path, "Population", "million")) * 1e6
+    popspec = p.iiasa.population
+    pop_hist = historical_series(
+        p.iiasa.path, popspec.variable, popspec.unit, model=popspec.model, region=p.iiasa.region
+    )
+    pop23 = interp(base, pop_hist) * popspec.scale
     print(
         "  per head: TES %.0f kgoe, TFC %.0f kgoe (1 kgoe = %.3f MJ); paper 2010 cross-section"
         % (

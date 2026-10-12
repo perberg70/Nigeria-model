@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import dataclasses
+
 import pytest
 
 from config_paths import require_path
@@ -56,3 +58,17 @@ def test_carbon_intensity_skips_africa_rows_when_not_configured(config):
     cfg["inputs"] = {**config["inputs"], "iea_africa_dir": None}
     text = capture(ci.report, ci.CarbonIntensityParams.from_config(cfg))
     assert "Africa final energy not found: pass --iea-africa DIR" in text
+
+
+def test_carbon_intensity_missing_africa_dir_is_an_error(config, tmp_path):
+    with pytest.raises(FileNotFoundError, match="IEA Africa directory"):
+        ci.CarbonIntensityParams.from_config(config, iea_africa_override=tmp_path / "absent")
+
+
+def test_sector_conversion_rejects_a_stale_block_grid(config, tmp_path):
+    p = sc.SectorConversionParams.from_config(config)
+    text = p.baseline_block.read_text(encoding="utf-8")
+    stale = tmp_path / "block.js"
+    stale.write_text(text.replace("years:[2023,", "years:[2022,2023,", 2), encoding="utf-8")
+    with pytest.raises(ValueError, match="year grid differs"):
+        sc.block_series(dataclasses.replace(p, baseline_block=stale), "ssp245", "energyTJ")

@@ -14,7 +14,7 @@ module docstring of `builder.py`.
   GDP|PPP, population.
 - IIASA SSP export for Nigeria (`inputs.iiasa`): population and GDP|PPP by SSP narrative.
 - IEA 2023 current-release tables (`inputs.iea.*_current`): the anchors are cross-checked
-  against them on every run; a mismatch is an error, missing tables a logged warning.
+  against them on every run; a mismatch or a missing table is an error.
 
 ## Key Equations
 
