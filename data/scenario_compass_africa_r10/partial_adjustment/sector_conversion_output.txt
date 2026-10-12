@@ -104,7 +104,7 @@
     genset efficiency 25%: fuel 297 PJ, final energy falls by 222 PJ (9.1% of 2023)
   ...if the fuel is inside final energy. If it is not recorded, final energy is
   understated today and nothing falls. The prototype's 2023 electrification share
-  (8.99%, older release) also uses gross generation plus genset output, against 4.88%
+  (9.05%, from ssp_baseline.anchors) also uses gross generation plus genset output, against 4.88%
   final electricity in the balance; the share definition is itself a boundary choice.
 
 6. IMAGE 3.2 AFRICA R10: P/F MOVES WITH THE SSP'S OWN SECTOR TRANSITIONS

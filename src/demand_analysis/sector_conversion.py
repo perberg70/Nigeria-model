@@ -49,7 +49,7 @@ from typing import Any
 
 from config_paths import ConfigError, require, require_path
 from scenario_data import Marker, interp, load_markers, read_label_values, read_series
-from ssp_baseline import block_series as read_block_series, block_years
+from ssp_baseline import BaselineParams, block_series as read_block_series, block_years
 from units import TJ_PER_GWH
 
 LOGGER = logging.getLogger("demand_analysis.sector_conversion")
@@ -70,6 +70,7 @@ class SectorConversionParams:
     etp_cooking: Path
     baseline_block: Path
     genset_gwh: float
+    prototype_elec_share: float  # the baseline's base-year share (BaselineParams.elec_base)
     generation_lines: dict[str, str]  # IAMC source -> line of the IEA electricity table
     unsd_carriers: dict[str, str]  # UNSD COMMODITY code -> carrier (CARRIERS)
     unsd_sectors: dict[str, str]  # UNSD TRANSACTION code -> sector (SECTORS)
@@ -132,6 +133,7 @@ class SectorConversionParams:
             etp_cooking=require_path(config, "inputs.etp_cooking"),
             baseline_block=require_path(config, "ssp_baseline.output_block"),
             genset_gwh=require(config, "ssp_baseline.anchors.genset_gwh"),
+            prototype_elec_share=BaselineParams.from_config(config).elec_base,
             generation_lines=lines,
             unsd_carriers=carriers,
             unsd_sectors=_codes(config, f"{s}.unsd.sectors", SECTORS),
@@ -850,8 +852,9 @@ def section5(p: SectorConversionParams, m):
     print("  ...if the fuel is inside final energy. If it is not recorded, final energy is")
     print("  understated today and nothing falls. The prototype's 2023 electrification share")
     print(
-        "  (8.99%%, older release) also uses gross generation plus genset output, against %.2f%%"
-        % (100 * sum(m[s]["electricity"] for s in SECTORS) / F0)
+        "  (%.2f%%, from ssp_baseline.anchors) also uses gross generation plus genset output, "
+        "against %.2f%%"
+        % (100 * p.prototype_elec_share, 100 * sum(m[s]["electricity"] for s in SECTORS) / F0)
     )
     print("  final electricity in the balance; the share definition is itself a boundary choice.")
     print()

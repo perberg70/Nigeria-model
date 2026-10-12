@@ -150,8 +150,9 @@ in final energy, if it is recorded at all:
 service cuts final energy by **222–420 PJ, or 9–17% of the 2023 total**, at 25–15% generator
 efficiency. If the fuel is not recorded, today's final energy is understated instead.
 
-**The share definition is also a choice.** The prototype's 2023 electrification share of 8.99%
-uses gross generation plus generator output (older IEA release). The final-electricity share in
+**The share definition is also a choice.** The prototype's 2023 electrification share of 9.05%
+uses gross generation plus generator output over total final energy (IEA current release,
+`ssp_baseline.anchors`; 8.99% in the older release). The final-electricity share in
 the balance is 4.88% (current release).
 
 ## 6. IMAGE Africa R10: the factor moves with each SSP's own transitions
