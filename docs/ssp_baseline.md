@@ -20,9 +20,12 @@ module docstring of `builder.py`.
 
 ## Key Equations
 
-- Energy and emissions demand: `E(t) = E_base × (P_t/P_base) × exp(b L + q L²)`,
+- Total final energy: `TFE(t) = TFE_base × (P_t/P_base) × exp(b L + q L²) × T(t, base_year)`,
   `L = ln(y_t / y_base)`, with `b = ssp_baseline.demand.elasticity` and
   `q = ssp_baseline.demand.elasticity_quadratic` (Burke & Csereklyei 2016, Table 5; transferred).
+- Emissions: `M(t) = M_anchor × (P_t/P_anchor) × exp(b L + q L²) × T(t, anchor_year)`,
+  `L = ln(y_t / y_anchor)`, with `M_anchor = ssp_baseline.anchors.emissions_mt` in
+  `time_horizon.anchor_year`.
 - R10 efficiency residual: `T(y, ref) = [FE(y)/FE(ref)] / [P(y)/P(ref) × exp(b L + q L²)]`,
   all Africa R10, so the income effect is not counted twice.
 - Fossil split: back-up generators' share of fossil generation `k = k0 × e0/e`.
@@ -50,7 +53,8 @@ window) and `ssp_baseline.diagnostics_year` (stdout only), plus `scenarios`, `ti
 | `power.popSSP` | Generated (BLOCK 3) |
 | `health.pollutingIdxSSP` | Generated (BLOCK 4) |
 | `observed`, `scc`, `hotDays`, `cckpNationalClimate`, `regionalClimate`, `REGIONAL_STATE_CLIMATE` | Hand-pasted from the data folders |
-| `power.envelope`, `power.totalEnergy2023TJ`, `power.elasticityTotal(Quadratic)`, `health.elecCookShareOfClean2020` | Hand-written; they duplicate `ssp_baseline.*` and `etp_cooking.csv` values |
+| `mitigationAnchorMt`, `anchorYear`, `anchorMt`; `power.gen2023GWh`, `power.gridLowShare2023`, `power.lowShareAll2023`, `power.within2023`, `power.genset2023GWh`, `power.gensetFossilShare2023`, `power.envelope`, `power.totalEnergy2023TJ`, `power.elasticityTotal(Quadratic)`; `health.elecCookShareOfClean2020` | Hand-written; they duplicate `ssp_baseline.anchors`, `.demand`, `.envelope`, `time_horizon.anchor_year` and `etp_cooking.csv` values |
+| `power.elecFinal2023TJ` | Hand-written IEA 2023 value (not in `config.yaml`) |
 
 [GAP: the hand-written blocks are not regenerated, so a change to `config.yaml` or to the data
 folders does not reach them. Edit them by hand in the same commit, or extend the splice.]

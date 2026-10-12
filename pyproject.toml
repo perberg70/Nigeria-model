@@ -5,8 +5,7 @@ description = "Data build and analysis scripts behind the Africa (Nigeria) decis
 requires-python = ">=3.11"
 # Direct third-party imports of src/ and scripts/. environment.yaml remains the
 # canonical environment spec (conda env `nigeria-model`; see README). The pypdf
-# lower bound is the version the ETP regression tests were verified with; the
-# version that produced the committed ETP CSVs was not recorded.
+# lower bound is the version the ETP regression tests were verified with.
 dependencies = [
     "pypdf>=6.17",
     "pyyaml>=6.0",

@@ -33,9 +33,10 @@ Each writes its report to the path under `<section>.report` and echoes it to std
 
 - `scripts/run_etp_extraction.py --config config.yaml [--chart power demand cooking industry] [--output-dir DIR]`
   - Reads `etp_extraction.pdf`; writes `etp_*.csv` to `etp_extraction.output_dir` or `--output-dir`.
-  - A failed gating check writes nothing and exits 1. A fresh extraction does not reproduce every
-    committed CSV byte for byte (see `data/seforall_nigeria_etp/README.md`), so extract to a
-    scratch `--output-dir` and compare before overwriting the committed files.
+  - A chart group that fails a gating check writes none of its CSVs and the script exits 1 (groups
+    run earlier have already been written). The extractors write CRLF while two committed CSVs are
+    stored with LF (see `data/seforall_nigeria_etp/README.md`), so extract to a scratch
+    `--output-dir` and compare before overwriting the committed files.
 
 ## Regional climate
 
@@ -45,4 +46,5 @@ Each writes its report to the path under `<section>.report` and echoes it to std
 
 ## Cleanup Utilities
 
-- `python clean_cache.py` removes `__pycache__`, `.pytest_cache`, `.coverage` and `.ruff_cache`.
+- `python clean_cache.py` removes the `__pycache__`, `.pytest_cache` and `.ruff_cache` directories
+  (identical to TRA420's; a `.coverage` file and `.pytest_tmp/` are left in place).
