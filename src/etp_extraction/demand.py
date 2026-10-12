@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 """Extract the ETP 2.0 oil- and gas-demand-by-sector charts (printed page 22) as series.
 
-Companion to `extract_etp_charts.py`, which does the power-sector charts on pages 17-18.
+Companion to `power.py`, which does the power-sector charts on pages 17-18.
 Page 22 carries FOUR small stacked-bar charts -- oil and gas demand by consuming sector,
 each under a BAU and an NZE scenario, all in PJ. Like the power charts they are vector
 graphics with no underlying table published anywhere in the document.
@@ -13,19 +12,20 @@ fuel behind the `Diesel decentralized` row of the generation chart on page 18.
 Calibration is checked against the one figure the ETP states in prose for these charts:
 "the oil demand is almost halved by 2060 in comparison to 2020 (550 PJ in 2060)" (p.22).
 
-Usage:  python3 extract_etp_demand.py <path-to-Nigeria-ETIP-u.pdf> [outdir]
-Requires: pypdf, and extract_etp_charts.py alongside this file.
+Run: python scripts/run_etp_extraction.py --config config.yaml --chart demand
+Requires: pypdf
 """
 
-import csv
-import os
-import sys
+from __future__ import annotations
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import contextlib
+import os
+from pathlib import Path
 
-from extract_etp_charts import parse_page  # noqa: E402
-from pypdf import PdfReader  # noqa: E402
+from pypdf import PdfReader
+
+from .document import YEARS
+from .pdf_vectors import ExtractionError, colour_key, parse_page, write_csv_rows
 
 # Series are identified by COLOUR, not by position in the stack. Position fails here:
 # several series are zero in several years, so a segment's index in the sorted stack does
@@ -36,7 +36,6 @@ from pypdf import PdfReader  # noqa: E402
 # x~606, each paired with its label at x~613 on the same line -- so it is derived from the
 # document rather than assumed. `legend_map()` below re-derives it on every run.
 ORDER = ["Power", "Hydrogen", "Industry", "Transport", "Residential", "Commercial"]
-YEARS = [2020, 2025, 2030, 2035, 2040, 2045, 2050, 2055, 2060]
 
 # Each chart: the x/y window that isolates it on the page, the y band holding its year
 # labels, the y of the "0" and top tick LABELS, and the value at the top label.
@@ -49,7 +48,7 @@ YEARS = [2020, 2025, 2030, 2035, 2040, 2045, 2050, 2055, 2060]
 # on 2026-08-30 and fixed here.
 #
 # NOTE on `base`: the axis line sits ~3 pt above the "0" label's text baseline, the same
-# offset `extract_etp_charts.py` carries for the power charts. It is taken here from the
+# offset `power.py` carries for the power charts. It is taken here from the
 # bottom edge of the lowest filled segment, which is exact.
 CHARTS = {
     "oil_BAU": dict(
@@ -112,13 +111,13 @@ def legend_map(rects, texts):
     for name, lx, ly in labels:
         near = [s for s in swatches if 0 < lx - s[1] < 20 and abs(s[2] - ly) < 6]
         if near:
-            rgb = tuple(round(c, 3) for c in near[0][0])
+            rgb = colour_key(near[0][0])
             if rgb in out and out[rgb] != name:
-                raise SystemExit(f"legend colour clash: {rgb} -> {out[rgb]} and {name}")
+                raise ExtractionError(f"legend colour clash: {rgb} -> {out[rgb]} and {name}")
             out[rgb] = name
     missing = set(ORDER) - set(out.values())
     if missing:
-        raise SystemExit(f"legend swatches not found for: {sorted(missing)}")
+        raise ExtractionError(f"legend swatches not found for: {sorted(missing)}")
     return out
 
 
@@ -137,7 +136,7 @@ def columns(rects, texts, cfg):
         if t.strip().isdigit() and len(t.strip()) == 4 and x0 < x < x1 and ly0 < y < ly1
     )
     if len(labels) != len(YEARS):
-        raise SystemExit(f"expected {len(YEARS)} year labels, found {len(labels)}")
+        raise ExtractionError(f"expected {len(YEARS)} year labels, found {len(labels)}")
 
     bars = sorted(
         {
@@ -147,7 +146,7 @@ def columns(rects, texts, cfg):
         }
     )
     if not bars:
-        raise SystemExit("no bars found in window")
+        raise ExtractionError("no bars found in window")
     offsets = [min((b - lab for lab in labels), key=abs) for b in bars]
     offsets.sort()
     offset = offsets[len(offsets) // 2]  # median, robust to a stray fill
@@ -172,13 +171,13 @@ def series(rects, texts, cfg, cmap):
             and r[4] > 0.3
         ]
         for rgb, _x, _y, _w, h in segs:
-            name = cmap.get(tuple(round(c, 3) for c in rgb))
+            name = cmap.get(colour_key(rgb))
             if name:  # ignore gridlines / stray fills
                 out[name][col] += round(h * scale, 1)
     return out, scale
 
 
-def main(pdf, outdir="."):
+def run(pdf: Path, outdir: Path) -> None:
     rects, texts = parse_page(PdfReader(pdf).pages[PAGE - 1])
     cmap = legend_map(rects, texts)
     failures = 0
@@ -190,14 +189,14 @@ def main(pdf, outdir="."):
     for name, cfg in CHARTS.items():
         data, scale = series(rects, texts, cfg, cmap)
         totals = [sum(data[s][i] for s in ORDER) for i in range(len(YEARS))]
-        path = os.path.join(outdir, f"etp_{name}_demand_PJ.csv")
-        tmp = path + ".tmp"
-        with open(tmp, "w", newline="", encoding="utf-8") as fh:
-            w = csv.writer(fh)
-            w.writerow(["series", "unit"] + YEARS)
-            for s in ORDER:
-                w.writerow([s, "PJ"] + [f"{v:.1f}" for v in data[s]])
-            w.writerow(["TOTAL", "PJ"] + [f"{v:.1f}" for v in totals])
+        path = outdir / f"etp_{name}_demand_PJ.csv"
+        tmp = Path(str(path) + ".tmp")
+        write_csv_rows(
+            tmp,
+            [["series", "unit"] + YEARS]
+            + [[s, "PJ"] + [f"{v:.1f}" for v in data[s]] for s in ORDER]
+            + [["TOTAL", "PJ"] + [f"{v:.1f}" for v in totals]],
+        )
         pending.append((tmp, path))
         quantum = QUANTUM_PT * scale
         print(f"staged {path}   (quantum = +/-{quantum:.1f} PJ)")
@@ -220,14 +219,8 @@ def main(pdf, outdir="."):
         for tmp, _ in pending:
             with contextlib.suppress(OSError):
                 os.remove(tmp)
-        raise SystemExit(f"{failures} prose check(s) FAILED — no CSV written")
+        raise ExtractionError(f"{failures} prose check(s) FAILED — no CSV written")
 
     for tmp, path in pending:
         os.replace(tmp, path)
         print(f"wrote {path}")
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        sys.exit(__doc__)
-    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else ".")

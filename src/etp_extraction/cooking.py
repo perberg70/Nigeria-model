@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
 """Extract the ETP 2.0 cooking charts (PDF pages 37-40) as numeric series.
 
-Companion to `extract_etp_charts.py` (power, pp.17-18) and `extract_etp_demand.py`
-(oil/gas demand, p.22). The four cooking charts are vector stacked-bar graphics with
-no underlying table anywhere in the document:
+Companion to `power.py` (pp.17-18) and `demand.py` (oil/gas demand, p.22). The four
+cooking charts are vector stacked-bar graphics with no underlying table anywhere in the
+document:
 
   PDF p.37  national cooking demand, '000 stove units, by fuel
   PDF p.38  urban cooking demand,    '000 stove units, by fuel
@@ -27,21 +26,21 @@ that made the p.22 NZE charts unextractable).
 Validation: every figure the ETP states in prose about these charts is checked. Checks marked
 GATE must pass within tolerance or no CSV is written. Checks marked INFO are loose prose
 ("3-fold", "90%") that the extraction does not reproduce exactly; they are printed, and the
-mismatch is recorded in README.md rather than hidden.
+mismatch is recorded in data/seforall_nigeria_etp/README.md rather than hidden.
 
-Usage:  python3 extract_etp_cooking.py <path-to-Nigeria-ETIP-u.pdf> [outdir]
-Requires: pypdf, and extract_etp_charts.py alongside this file.
+Run: python scripts/run_etp_extraction.py --config config.yaml --chart cooking
+Requires: pypdf
 """
 
-import csv
-import os
-import sys
+from __future__ import annotations
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from extract_etp_charts import parse_page  # noqa: E402
-from pypdf import PdfReader  # noqa: E402
+from pathlib import Path
 
-YEARS = [2020, 2025, 2030, 2035, 2040, 2045, 2050, 2055, 2060]
+from pypdf import PdfReader
+
+from .document import YEARS
+from .pdf_vectors import ExtractionError, colour_key, parse_page, write_csv_atomically
+
 SERIES = {
     "lpg": "LPG",
     "electric": "Electric",
@@ -71,7 +70,7 @@ def legend_map(rects, texts):
             if tx > x + w - 1 and abs(ty - y) < 6 and t.strip().lower() in SERIES
         ]
         if cands:
-            out[tuple(round(v, 3) for v in c)] = SERIES[min(cands)[1].strip().lower()]
+            out[colour_key(c)] = SERIES[min(cands)[1].strip().lower()]
     return out
 
 
@@ -95,7 +94,7 @@ def extract(reader, page):
     )
     cmap = legend_map(lrects, ltexts)
     if len(cmap) < 3:
-        raise SystemExit(f"p.{page}: legend map has {len(cmap)} entries -- refusing")
+        raise ExtractionError(f"p.{page}: legend map has {len(cmap)} entries -- refusing")
     per_pt, zero_y = axis_scale(texts)
     labels = sorted(
         [
@@ -110,7 +109,7 @@ def extract(reader, page):
         key=lambda a: a[1],
     )
     if [lab[0] for lab in labels] != YEARS:
-        raise SystemExit(f"p.{page}: year labels not found in order: {labels}")
+        raise ExtractionError(f"p.{page}: year labels not found in order: {labels}")
     spacing = (labels[-1][1] - labels[0][1]) / (len(labels) - 1)
     bars = [
         (c, x, y, w, h)
@@ -119,12 +118,12 @@ def extract(reader, page):
     ]
     data = {y: {} for y in YEARS}
     for c, x, _y, _w, h in bars:
-        key = tuple(round(v, 3) for v in c)
+        key = colour_key(c)
         if key not in cmap:
-            raise SystemExit(f"p.{page}: bar colour {key} not in legend map {cmap}")
+            raise ExtractionError(f"p.{page}: bar colour {key} not in legend map {cmap}")
         d = sorted((abs(x - lx), yr) for yr, lx in labels)
         if d[1][0] - d[0][0] < 0.5 * spacing:
-            raise SystemExit(
+            raise ExtractionError(
                 f"p.{page}: bar at x={x:.1f} is ambiguous between {d[0][1]} and {d[1][1]}"
             )
         s = cmap[key]
@@ -132,9 +131,7 @@ def extract(reader, page):
     return name, unit, data, 0.75 * per_pt
 
 
-def main():
-    pdf = sys.argv[1] if len(sys.argv) > 1 else "Nigeria-ETIP-u.pdf"
-    outdir = sys.argv[2] if len(sys.argv) > 2 else "."
+def run(pdf: Path, outdir: Path) -> None:
     reader = PdfReader(pdf)
     charts = {p: extract(reader, p) for p in CHARTS}
     nat, urb, rur, fuel = (charts[p][2] for p in (37, 38, 39, 40))
@@ -201,25 +198,20 @@ def main():
             failures += 1
         print(f"  {tag} {label:48} extracted {got:8.2f}  stated {stated}")
     if failures:
-        raise SystemExit(f"\n{failures} gating check(s) FAILED -- no CSV written")
+        raise ExtractionError(f"{failures} gating check(s) FAILED -- no CSV written")
 
-    path = os.path.join(outdir, "etp_cooking.csv")
-    tmp = path + ".tmp"
-    with open(tmp, "w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["chart", "pdf_page", "series", "unit"] + [str(y) for y in YEARS])
+    def rows():
+        yield ["chart", "pdf_page", "series", "unit"] + [str(y) for y in YEARS]
         for p, (name, unit, data, _) in charts.items():
             for s in sorted({k for y in YEARS for k in data[y]}):
-                w.writerow([name, p, s, unit] + [f"{data[y].get(s, 0.0):.1f}" for y in YEARS])
-            w.writerow([name, p, "TOTAL", unit] + [f"{sum(data[y].values()):.1f}" for y in YEARS])
-    os.replace(tmp, path)
+                yield [name, p, s, unit] + [f"{data[y].get(s, 0.0):.1f}" for y in YEARS]
+            yield [name, p, "TOTAL", unit] + [f"{sum(data[y].values()):.1f}" for y in YEARS]
+
+    path = outdir / "etp_cooking.csv"
+    write_csv_atomically(path, rows())
     print(f"\nwrote {path}")
     e, lpg = nat[2020].get("Electric", 0), nat[2020].get("LPG", 0)
     print(
         f"2020 national: electric {e:.0f}k, LPG {lpg:.0f}k stoves -> "
         f"electric share of (electric+LPG) = {e / (e + lpg):.4f}"
     )
-
-
-if __name__ == "__main__":
-    main()

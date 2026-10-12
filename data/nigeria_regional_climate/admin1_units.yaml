@@ -1,0 +1,44 @@
+# Nigeria Admin-1 units as returned by the World Bank CCKP API (36 states plus
+# Abuja/FCT), with the six geopolitical zones the prototype aggregates to.
+# Codes and names are returned together by the same endpoint with _format=xlsx;
+# keeping the mapping explicit makes code/name changes visible in review.
+# Order is the row order of the fetched admin1 CSVs. Used by
+# src/regional_climate (config key regional_climate.admin_units).
+admin1_units:
+  - {code: NGA.1822211, state: Adamawa, zone: North East}
+  - {code: NGA.1822212, state: Akwa Ibom, zone: South South}
+  - {code: NGA.1822213, state: Anambra, zone: South East}
+  - {code: NGA.1822215, state: Benue, zone: North Central}
+  - {code: NGA.1822216, state: Borno, zone: North East}
+  - {code: NGA.1822217, state: Cross River, zone: South South}
+  - {code: NGA.1822218, state: Delta, zone: South South}
+  - {code: NGA.1822219, state: Edo, zone: South South}
+  - {code: NGA.1822221, state: Abuja, zone: North Central}
+  - {code: NGA.1822222, state: Imo, zone: South East}
+  - {code: NGA.1822223, state: Jigawa, zone: North West}
+  - {code: NGA.1822224, state: Kaduna, zone: North West}
+  - {code: NGA.1822225, state: Kano, zone: North West}
+  - {code: NGA.1822226, state: Katsina, zone: North West}
+  - {code: NGA.1822227, state: Kebbi, zone: North West}
+  - {code: NGA.1822228, state: Kogi, zone: North Central}
+  - {code: NGA.1822229, state: Kwara, zone: North Central}
+  - {code: NGA.1822230, state: Lagos, zone: South West}
+  - {code: NGA.1822231, state: Niger, zone: North Central}
+  - {code: NGA.1822232, state: Ogun, zone: South West}
+  - {code: NGA.1822234, state: Osun, zone: South West}
+  - {code: NGA.1822235, state: Oyo, zone: South West}
+  - {code: NGA.1822239, state: Taraba, zone: North East}
+  - {code: NGA.1822240, state: Yobe, zone: North East}
+  - {code: NGA.18265698, state: Abia, zone: South East}
+  - {code: NGA.18265699, state: Bauchi, zone: North East}
+  - {code: NGA.18265700, state: Bayelsa, zone: South South}
+  - {code: NGA.18265701, state: Ebonyi, zone: South East}
+  - {code: NGA.18265702, state: Ekiti, zone: South West}
+  - {code: NGA.18265703, state: Enugu, zone: South East}
+  - {code: NGA.18265704, state: Gombe, zone: North East}
+  - {code: NGA.18265705, state: Nassarawa, zone: North Central}
+  - {code: NGA.18265706, state: Ondo, zone: South West}
+  - {code: NGA.18265707, state: Plateau, zone: North Central}
+  - {code: NGA.18265708, state: Rivers, zone: South South}
+  - {code: NGA.18265709, state: Sokoto, zone: North West}
+  - {code: NGA.18265710, state: Zamfara, zone: North West}

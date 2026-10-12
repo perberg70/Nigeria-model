@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Sector-wise energy conversion factors under electrification.
 
 EXPERIMENT BRANCH `experiment/partial-adjustment`, written 2026-10-09.
@@ -27,21 +26,95 @@ Sections
   7. What it means for the demand law: eps_final = eps_primary - eps_P/F,
      and an SSP2-4.5 2050 illustration
 
-Run: python sector_conversion.py  (output in sector_conversion_output.txt)
+Run: python scripts/run_sector_conversion.py --config config.yaml
+(report in sector_conversion_output.txt)
+
+The efficiency ratios, electrification targets, genset efficiencies and the
+illustration marker come from the ``sector_conversion`` section of the
+configuration; the back-up generator output from ``ssp_baseline.anchors``. The
+report text describes the 2023 IEA/UNSD snapshot the inputs hold.
 """
 
-import csv
-import io
-import math
-import os
+from __future__ import annotations
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-DATA = os.path.join(HERE, "..", "..")
-UNSD = os.path.join(DATA, "unsd_energy_nigeria", "unsd_nigeria_energy_2020_2023.csv")
-IEA = os.path.join(DATA, "iea_nigeria_2023")
-ETP = os.path.join(DATA, "seforall_nigeria_etp", "etp_cooking.csv")
-SC = os.path.join(HERE, "..", "image32_ssp2021")
-BLOCK = os.path.join(HERE, "..", "nigeria_baseline_block.js")
+import csv
+import math
+from collections.abc import Mapping
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+from config_paths import require, require_path
+from scenario_data import Marker, interp, load_markers, read_label_values, read_series
+from ssp_baseline import block_series as read_block_series
+from units import TJ_PER_GWH
+
+
+@dataclass(frozen=True)
+class SectorConversionParams:
+    region_name: str
+    markers: dict[str, Marker]
+    base_year: int
+    end_year: int
+    image_dir: Path
+    unsd: Path
+    iea_final_current: Path
+    iea_electricity_current: Path
+    iea_tes_2023: Path
+    iea_tfc_2023: Path
+    etp_cooking: Path
+    baseline_block: Path
+    genset_gwh: float
+    rho: dict[tuple[str, str], tuple[float, float, float]]
+    targets: tuple[float, ...]
+    genset_efficiencies: tuple[float, ...]
+    useful_electric_efficiency: float
+    useful_other_fuel_rho: float
+    useful_solid_biomass_rho: float
+    illustration_pathway: str
+    illustration_year: int
+
+    @classmethod
+    def from_config(cls, config: Mapping[str, Any]) -> SectorConversionParams:
+        s = "sector_conversion"
+        rho = {}
+        for group, carriers in require(config, f"{s}.rho").items():
+            for carrier, values in carriers.items():
+                if len(values) != 3:
+                    raise ValueError(f"{s}.rho.{group}.{carrier}: need (low, central, high)")
+                rho[(group, carrier)] = tuple(float(v) for v in values)
+        pathway = require(config, f"{s}.illustration_pathway")
+        require(config, f"scenarios.{pathway}")
+        return cls(
+            region_name=require(config, "region.name"),
+            markers=load_markers(config),
+            base_year=int(require(config, "time_horizon.base_year")),
+            end_year=int(require(config, "time_horizon.end_year")),
+            image_dir=require_path(config, "inputs.image_dir"),
+            unsd=require_path(config, "inputs.unsd_energy"),
+            iea_final_current=require_path(config, "inputs.iea.final_by_fuel_and_sector_current"),
+            iea_electricity_current=require_path(config, "inputs.iea.electricity_current"),
+            iea_tes_2023=require_path(config, "inputs.iea.total_energy_supply_2023"),
+            iea_tfc_2023=require_path(config, "inputs.iea.final_by_sector_2023"),
+            etp_cooking=require_path(config, "inputs.etp_cooking"),
+            baseline_block=require_path(config, "ssp_baseline.output_block"),
+            genset_gwh=require(config, "ssp_baseline.anchors.genset_gwh"),
+            rho=rho,
+            targets=tuple(require(config, f"{s}.electrification_targets")),
+            genset_efficiencies=tuple(require(config, f"{s}.genset_efficiencies")),
+            useful_electric_efficiency=require(
+                config, f"{s}.useful_energy_check.electric_efficiency"
+            ),
+            useful_other_fuel_rho=require(config, f"{s}.useful_energy_check.other_fuel_rho"),
+            useful_solid_biomass_rho=require(config, f"{s}.useful_energy_check.solid_biomass_rho"),
+            illustration_pathway=pathway,
+            illustration_year=int(require(config, f"{s}.illustration_year")),
+        )
+
+    @property
+    def years(self) -> list[int]:
+        return list(range(self.base_year, self.end_year + 1))
+
 
 # --------------------------------------------------------------------------
 # 1. NIGERIA 2023 BY SECTOR AND CARRIER (UNSD)
@@ -102,14 +175,14 @@ SECTORS = [
 ]
 
 
-def unsd_2023():
+def unsd_2023(p: SectorConversionParams):
     """Final energy in TJ, {sector: {carrier: TJ}}, plus the transformation
     rows needed for primary-energy factors."""
     m = {s: {c: 0.0 for c in CARRIERS} for s in SECTORS}
     extra = {}
-    with io.open(UNSD, encoding="utf-8-sig") as fh:
+    with p.unsd.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
-            if r["TIME_PERIOD"] != "2023":
+            if r["TIME_PERIOD"] != str(p.base_year):
                 continue
             com, tr, v = r["COMMODITY"], r["TRANSACTION"], float(r["OBS_VALUE"])
             if com == "7000":
@@ -124,17 +197,6 @@ def unsd_2023():
     return m, extra
 
 
-def iea_csv(name):
-    out = {}
-    with io.open(os.path.join(IEA, name), encoding="utf-8-sig") as fh:
-        for r in list(csv.reader(fh))[1:]:
-            if len(r) >= 2 and r[1].strip():
-                out[r[0]] = float(r[1])
-    return out
-
-
-IEA_CUR = "iea_nigeria_2023_final_consumption_by_fuel_and_sector_current_release.csv"
-IEA_EL = "iea_nigeria_2023_electricity_generation_and_consumption_current_release.csv"
 IEA_SECTOR = {
     "Industry": "industry",
     "Transport": "transport",
@@ -174,14 +236,14 @@ GROUP_DEFAULT = {
 }
 
 
-def iea_current(u):
+def iea_current(p: SectorConversionParams, u):
     """IEA current-release 2023 final consumption, {sector: {carrier: TJ}}.
     The IEA table has five fuels; each cell is split into the carriers of
     CARRIERS in proportion to the UNSD 2023 split of the same sector and fuel
     group (wood vs charcoal; LPG, kerosene, petrol, diesel, jet, fuel oil).
     The IEA cell sets the level, UNSD only the within-cell shares."""
     m = {s: {c: 0.0 for c in CARRIERS} for s in SECTORS}
-    with io.open(os.path.join(IEA, IEA_CUR), encoding="utf-8-sig") as fh:
+    with p.iea_final_current.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
             if r["sector"] not in IEA_SECTOR:
                 continue
@@ -198,15 +260,18 @@ def iea_current(u):
     return m
 
 
-def iea_electricity():
-    with io.open(os.path.join(IEA, IEA_EL), encoding="utf-8-sig") as fh:
+def iea_electricity(p: SectorConversionParams):
+    with p.iea_electricity_current.open(encoding="utf-8-sig") as fh:
         return {r["line"]: float(r["value_GWh"]) for r in csv.DictReader(fh)}
 
 
-def section1():
-    u, extra = unsd_2023()
-    m = iea_current(u)
-    print("1. NIGERIA 2023 FINAL ENERGY BY SECTOR AND CARRIER (IEA current release, PJ;")
+def section1(p: SectorConversionParams):
+    u, extra = unsd_2023(p)
+    m = iea_current(p, u)
+    print(
+        "1. %s 2023 FINAL ENERGY BY SECTOR AND CARRIER (IEA current release, PJ;"
+        % p.region_name.upper()
+    )
     print("   UNSD 2023 splits each IEA fuel cell into carriers)")
     print("  %-12s" % "" + "".join("%9s" % c[:8] for c in CARRIERS) + "%9s" % "total")
     for s in SECTORS:
@@ -263,8 +328,8 @@ def section1():
 
 # --------------------------------------------------------------------------
 # 2. PRIMARY-TO-FINAL FACTORS BY CARRIER, 2023
-def section2(m, extra):
-    el = iea_electricity()  # IEA current release, GWh
+def section2(p: SectorConversionParams, m, extra):
+    el = iea_electricity(p)  # IEA current release, GWh
     gen = el["Natural gas"] + el["Hydropower"] + el["Solar PV"]
     fin_el = sum(m[s]["electricity"] for s in SECTORS)
     gas_in = extra[("3000", "088")]  # UNSD: gas into power plants
@@ -311,8 +376,8 @@ def section2(m, extra):
     )
     # TES is held only for the older release, so it is compared with the older
     # release's own TFC, never with the current-release matrix
-    tes_old = sum(iea_csv("total_energy_supply_2023.csv").values())
-    tfc_old = sum(iea_csv("total_final_consumption_by_sector_2023.csv").values())
+    tes_old = sum(read_label_values(p.iea_tes_2023).values())
+    tfc_old = sum(read_label_values(p.iea_tfc_2023).values())
     print(
         "  P/F bottom-up %.3f (demand-linked conversion only); IEA TES/TFC %.3f (older release,"
         % (bottom / tfc, tes_old / tfc_old)
@@ -328,9 +393,9 @@ def section2(m, extra):
 
 # --------------------------------------------------------------------------
 # 3. END-USE EFFICIENCY RATIOS rho = eta_elec / eta_displaced (low, central, high)
-def etp_ratios():
+def etp_ratios(p: SectorConversionParams):
     rows = {}
-    with io.open(ETP, encoding="utf-8-sig") as fh:
+    with p.etp_cooking.open(encoding="utf-8-sig") as fh:
         for r in csv.DictReader(fh):
             rows[(r["chart"], r["series"])] = r
 
@@ -348,18 +413,8 @@ def etp_ratios():
     return bio20, lpg20, el20, el50, lpg50
 
 
-RHO = {
-    # (sector group, carrier): (low, central, high)
-    ("household", "wood"): (4.0, 6.0, 10.0),
-    ("household", "charcoal"): (2.0, 3.0, 4.0),
-    ("household", "lpg"): (1.2, 1.5, 2.0),
-    ("household", "kerosene"): (1.5, 2.0, 3.0),
-    ("household", "gas"): (1.2, 1.5, 2.0),
-    ("industry", "wood"): (1.5, 2.5, 4.0),
-    ("industry", "charcoal"): (1.5, 2.0, 3.0),
-    ("industry", "fossil"): (1.0, 1.1, 1.5),
-    ("transport", "road"): (2.3, 3.0, 5.0),
-}
+# rho = eta_electric / eta_displaced, (low, central, high) by (sector group,
+# carrier), comes from sector_conversion.rho in the configuration.
 GROUP = {
     "residential": "household",
     "commercial": "household",
@@ -371,7 +426,7 @@ GROUP = {
 NOT_ELECTRIFIABLE = {("transport", "jet"), ("transport", "other_oil")}
 
 
-def rho_for(sector, carrier, case):
+def rho_for(rho, sector, carrier, case):
     g = GROUP.get(sector)
     if (
         g is None
@@ -390,11 +445,11 @@ def rho_for(sector, carrier, case):
         key = ("industry", "fossil")
     else:
         key = (g, carrier)
-    return RHO[key][case]
+    return rho[key][case]
 
 
-def section3():
-    bio20, lpg20, el20, el50, lpg50 = etp_ratios()
+def section3(p: SectorConversionParams):
+    bio20, lpg20, el20, el50, lpg50 = etp_ratios(p)
     print("3. END-USE EFFICIENCY RATIOS rho = eta_electric / eta_displaced")
     print("  Evidence (final energy for the same service; ratios derived here unless stated):")
     print("  - ETP 2.0 cooking charts (Nigeria, net-zero pathway, pp. 37-40), per stove per year:")
@@ -438,7 +493,7 @@ def section3():
         "    switch fuels one-for-one, heat pumps included (rho = 1), so they give no basis either."
     )
     print("  Ranges used (low / central / high):")
-    for k, v in RHO.items():
+    for k, v in p.rho.items():
         print("    %-24s %4.1f %4.1f %4.1f" % ("%s, %s" % k, *v))
     print("  Not electrifiable here: aviation fuel, lubricants/bitumen, non-energy use.")
     print()
@@ -446,12 +501,12 @@ def section3():
 
 # --------------------------------------------------------------------------
 # 4. NATIONAL ELECTRIFICATION -> FINAL ENERGY, BY ALLOCATION RULE
-def pools(m, case):
+def pools(rho, m, case):
     """Electrifiable non-electric final energy: list of (sector, carrier, TJ, rho)."""
     out = []
     for s in SECTORS:
         for c in CARRIERS:
-            r = rho_for(s, c, case) if m[s][c] > 0 else None
+            r = rho_for(rho, s, c, case) if m[s][c] > 0 else None
             if r is not None:
                 out.append((s, c, m[s][c], r))
     return out
@@ -534,16 +589,18 @@ def solve(m, pl, rule, share, weights=None):
     return F, E, F0, E0, d
 
 
-def image_weights(scen="SSP2021-SSP2-SPA2-45-Default", y1=2050):
+def image_weights(p: SectorConversionParams):
+    scen, y1 = p.markers[p.illustration_pathway].key, p.illustration_year
+
     def s(fn):
-        return series(fn)[scen]
+        return read_series(p.image_dir, fn)[scen]
 
     inc = {
         "household": s("Final Energy - Residential and Commercial - Electricity.csv"),
         "industry": s("Final Energy - Industry - Electricity.csv"),
         "transport": s("Final Energy - Transportation - Electricity.csv"),
     }
-    dlt = {g: interp(y1, v) - interp(2023, v) for g, v in inc.items()}
+    dlt = {g: interp(y1, v) - interp(p.base_year, v) for g, v in inc.items()}
     tot = sum(dlt.values())
     return {g: v / tot for g, v in dlt.items()}
 
@@ -559,13 +616,14 @@ def p_over_f(m, pl, d, F, E, pef_el, pef_fuel):
     return (P + E * pef_el) / F
 
 
-def section4(m, pef, pef_fuel):
-    w = image_weights()
+def section4(p: SectorConversionParams, m, pef, pef_fuel):
+    w = image_weights(p)
     print("4. NATIONAL ELECTRIFICATION AT CONSTANT ENERGY SERVICE, 2023 STRUCTURE")
     print("  Target: electricity share of final energy (e). Displaced fuel d becomes d/rho of")
     print("  electricity. The prototype converts 1:1 (rho = 1). IMAGE pattern = new electricity")
     print(
-        "  split as IMAGE R10 SSP2-4.5 adds it 2023-2050: "
+        "  split as IMAGE R10 %s adds it %d-%d: "
+        % (p.markers[p.illustration_pathway].label, p.base_year, p.illustration_year)
         + ", ".join("%s %.2f" % kv for kv in w.items())
     )
     F0 = sum(sum(m[s].values()) for s in SECTORS)
@@ -575,14 +633,20 @@ def section4(m, pef, pef_fuel):
         % (F0 / 1e3, E0 / 1e3, 100 * E0 / F0)
     )
     rules = ["pro rata", "cooking first", "transport first", "industry first", "IMAGE pattern"]
-    targets = (0.20, 0.40, 0.67)
+    targets = p.targets
     print()
     print("  F/F0 = final energy relative to 2023 at the same service (central rho; lo/hi =")
     print("  high/low rho). The 1:1 model keeps F/F0 = 1, so its electricity at the same share is")
     print("  1/(F/F0) times this. P/F and P/P0 (primary relative to 2023) with the 2023 grid and")
     print("  with 72% low-emission power (bottom-up convention of section 2).")
     PF0 = p_over_f(
-        m, pools(m, 1), [0.0] * len(pools(m, 1)), F0, E0, pef["electricity_2023"], pef_fuel
+        m,
+        pools(p.rho, m, 1),
+        [0.0] * len(pools(p.rho, m, 1)),
+        F0,
+        E0,
+        pef["electricity_2023"],
+        pef_fuel,
     )
     print(
         "  %-16s %5s %8s %8s %9s %8s %8s %8s %8s"
@@ -593,7 +657,7 @@ def section4(m, pef, pef_fuel):
         for e in targets:
             row = {}
             for case in (0, 1, 2):
-                pl = pools(m, case)
+                pl = pools(p.rho, m, case)
                 res = solve(m, pl, rule, e, w)
                 row[case] = (res, pl)
             res, pl = row[1]
@@ -620,7 +684,7 @@ def section4(m, pef, pef_fuel):
                     pf72 * F / (PF0 * F0),
                 )
             )
-    pl = pools(m, 1)
+    pl = pools(p.rho, m, 1)
     F, E, _, _ = outcome(m, pl, [p[2] for p in pl])
     print(
         "  maximum reachable share (all electrifiable uses switched, central rho): %.1f%%, "
@@ -634,11 +698,14 @@ def section4(m, pef, pef_fuel):
 
 # --------------------------------------------------------------------------
 # 5. GENSETS
-def section5(m):
-    gwh = 20600.0  # prototype's 2023 genset output estimate
+def section5(p: SectorConversionParams, m):
+    gwh = p.genset_gwh  # prototype's 2023 genset output estimate
     F0 = sum(sum(m[s].values()) for s in SECTORS)
     print("5. BACK-UP GENERATORS: THE BOUNDARY TERM")
-    print("  The prototype counts an estimated 20.6 TWh of genset output as electricity, while")
+    print(
+        "  The prototype counts an estimated %.1f TWh of genset output as electricity, while"
+        % (gwh / 1000)
+    )
     print("  the fuel stays in final energy if it is recorded at all (UNSD books all petrol and")
     print(
         '  almost all diesel to road transport; the IEA says genset inputs and outputs "may not be'
@@ -646,9 +713,9 @@ def section5(m):
     print(
         '  properly reported", p. 502). Replacing that output with grid power at constant service:'
     )
-    for eta in (0.15, 0.20, 0.25):
-        fuel = gwh * 3.6 / eta
-        save = fuel - gwh * 3.6
+    for eta in p.genset_efficiencies:
+        fuel = gwh * TJ_PER_GWH / eta
+        save = fuel - gwh * TJ_PER_GWH
         print(
             "    genset efficiency %.0f%%: fuel %.0f PJ, final energy falls by %.0f PJ "
             "(%.1f%% of 2023)" % (100 * eta, fuel / 1e3, save / 1e3, 100 * save / F0)
@@ -665,36 +732,13 @@ def section5(m):
 
 # --------------------------------------------------------------------------
 # 6. IMAGE AFRICA R10
-def series(fn):
-    out = {}
-    with io.open(os.path.join(SC, fn), encoding="utf-8-sig") as fh:
-        for r in csv.DictReader(fh):
-            out.setdefault(r["Scenario name"], {})[int(r["year"])] = float(r["value"])
-    return out
-
-
-def interp(y, d):
-    ys = sorted(d)
-    if y <= ys[0]:
-        return d[ys[0]]
-    if y >= ys[-1]:
-        return d[ys[-1]]
-    for a, b in zip(ys, ys[1:], strict=False):
-        if a <= y <= b:
-            return d[a] + (d[b] - d[a]) * (y - a) / (b - a)
-
-
-SCEN = [
-    ("ssp119", "SSP2021-SSP1-SPA1-19-Default"),
-    ("ssp126", "SSP2021-SSP1-SPA1-26-Default"),
-    ("ssp245", "SSP2021-SSP2-SPA2-45-Default"),
-    ("ssp370", "SSP2021-SSP3-Baseline"),
-    ("ssp585", "SSP2021-SSP5-Baseline"),
-]
 PRIMARY = ["Biomass", "Coal", "Gas", "Oil", "Hydro", "Nuclear", "Solar", "Wind"]
 
 
-def section6():
+def section6(p: SectorConversionParams):
+    def series(fn):
+        return read_series(p.image_dir, fn)
+
     fe, gdp, pop = series("Final Energy.csv"), series("GDP - PPP.csv"), series("Population.csv")
     fel = series("Final Energy - Electricity.csv")
     fbio = series("Final Energy - Solids - Biomass.csv")
@@ -730,7 +774,8 @@ def section6():
         )
     )
     rows = {}
-    for pid, sc in SCEN:
+    for pid, marker in p.markers.items():
+        sc = marker.key
         have = all(sc in prim[k] for k in PRIMARY)
         base = {}
         for y in (2020, 2050, 2100):
@@ -760,14 +805,20 @@ def section6():
     print("  modern bioenergy conversion -- biofuels, biomass power, BECCS in SSP1-1.9.)")
     print()
     # useful-energy check on Residential and Commercial
+    eff = p.useful_electric_efficiency
+    other_rho, bio_rho = p.useful_other_fuel_rho, p.useful_solid_biomass_rho
     print("  Useful-energy check, Residential and Commercial (central rho: electricity")
-    print("  eta 0.70, other fuels 0.70/1.5, solid biomass 0.70/6):")
+    print(
+        "  eta %.2f, other fuels %.2f/%s, solid biomass %.2f/%s):"
+        % (eff, eff, other_rho, eff, bio_rho)
+    )
     print("  %-7s %6s %10s %10s %10s" % ("marker", "to", "eps_final", "eps_useful", "useful/F"))
-    for pid, sc in SCEN:
+    for pid, marker in p.markers.items():
+        sc = marker.key
 
         def useful(y, sc=sc):
             t, e, b = interp(y, rc[sc]), interp(y, rce[sc]), interp(y, rcb[sc])
-            return 0.70 * e + (0.70 / 1.5) * (t - e - b) + (0.70 / 6) * b, t
+            return eff * e + (eff / other_rho) * (t - e - b) + (eff / bio_rho) * b, t
 
         u0, f0 = useful(2020)
         n0, y0 = interp(2020, pop[sc]), interp(2020, gdp[sc]) / interp(2020, pop[sc])
@@ -793,16 +844,12 @@ def section6():
 
 # --------------------------------------------------------------------------
 # 7. WHAT IT MEANS FOR THE DEMAND LAW
-def block_series(pid, key):
-    with open(BLOCK, encoding="utf-8") as fh:
-        txt = fh.read()
-    i = txt.index("%s:{elecShare" % pid)
-    j = txt.index("%s:[" % key, i)
-    k = txt.index("]", j)
-    return [float(x) for x in txt[j + len(key) + 2 : k].split(",")]
+def block_series(p: SectorConversionParams, pid, key):
+    """One BLOCK 2 series of the generated baseline block (ssp_baseline.output_block)."""
+    return read_block_series(p.baseline_block.read_text(encoding="utf-8"), pid, key)
 
 
-def section7(m, results, rows):
+def section7(p: SectorConversionParams, m, results, rows):
     print("7. WHAT IT MEANS FOR THE DEMAND LAW")
     print("  eps_final = eps_primary - eps_P/F. The paper estimates eps_primary on 1960-2010 data,")
     print("  when electrification was thermal and raised P/F with income. Its own sector columns")
@@ -815,39 +862,40 @@ def section7(m, results, rows):
             "  IMAGE R10, 2020 -> %d: eps_P/F = " % y
             + ", ".join(
                 "%s %+.3f" % (pid, rows[(pid, y)][1] - rows[(pid, y)][0])
-                for pid, _ in SCEN
+                for pid in p.markers
                 if (pid, y) in rows and rows[(pid, y)][1] == rows[(pid, y)][1]
             )
         )
     print()
-    # SSP2-4.5 2050 illustration
-    years = list(range(2023, 2101))
-    tj = block_series("ssp245", "energyTJ")[years.index(2050)]
-    s_base = block_series("ssp245", "elecShare")[years.index(2050)]
+    # Illustration marker and year (sector_conversion.illustration_*)
+    pid_i, y_i = p.illustration_pathway, p.illustration_year
+    years = p.years
+    tj = block_series(p, pid_i, "energyTJ")[years.index(y_i)]
+    s_base = block_series(p, pid_i, "elecShare")[years.index(y_i)]
     F0 = sum(sum(m[s].values()) for s in SECTORS)
     E0 = sum(m[s]["electricity"] for s in SECTORS)
-    el = iea_electricity()
+    el = iea_electricity(p)
     gen = el["Natural gas"] + el["Hydropower"] + el["Solar PV"]
-    proto_2023 = (gen + 20600.0) * 3.6 / F0  # prototype definition, current release
+    proto_2023 = (gen + p.genset_gwh) * TJ_PER_GWH / F0  # prototype definition, current release
     proto_to_final = (E0 / F0) / proto_2023  # 2023 final share / prototype share
     print(
-        "  SSP2-4.5 in 2050 (baseline final energy %.2f EJ, prototype electrification %.1f%%)."
-        % (tj / 1e6, 100 * s_base)
+        "  %s in %d (baseline final energy %.2f EJ, prototype electrification %.1f%%)."
+        % (p.markers[pid_i].label, y_i, tj / 1e6, 100 * s_base)
     )
-    print("  Approximation: 2050 has 2023's sector-carrier structure; prototype shares map to")
+    print("  Approximation: %d has 2023's sector-carrier structure; prototype shares map to" % y_i)
     print(
         "  final-electricity shares by the 2023 ratio %.3f. TWh are final electricity."
         % proto_to_final
     )
-    w = image_weights()
-    pl = pools(m, 1)
+    w = image_weights(p)
+    pl = pools(p.rho, m, 1)
     eb = s_base * proto_to_final
     base = solve(m, pl, "IMAGE pattern", eb, w)
     print(
         "  %-24s %10s %12s %12s %10s"
         % ("slider (prototype %)", "1:1 TWh", "converted TWh", "final EJ", "K")
     )
-    for s_user in (0.20, 0.40, 0.67):
+    for s_user in p.targets:
         e = s_user * proto_to_final
         res = solve(m, pl, "IMAGE pattern", e, w)
         K = res[0] / base[0]
@@ -862,11 +910,11 @@ def section7(m, results, rows):
     print()
 
 
-if __name__ == "__main__":
-    m, extra = section1()
-    pef, pef_fuel = section2(m, extra)
-    section3()
-    results = section4(m, pef, pef_fuel)
-    section5(m)
-    rows = section6()
-    section7(m, results, rows)
+def report(p: SectorConversionParams) -> None:
+    m, extra = section1(p)
+    pef, pef_fuel = section2(p, m, extra)
+    section3(p)
+    results = section4(p, m, pef, pef_fuel)
+    section5(p, m)
+    rows = section6(p)
+    section7(p, m, results, rows)
