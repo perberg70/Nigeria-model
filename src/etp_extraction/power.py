@@ -14,6 +14,8 @@ Requires: pypdf
 
 from __future__ import annotations
 
+import functools
+import operator
 import re
 from pathlib import Path
 
@@ -111,7 +113,10 @@ def csv_rows(data, unit):
     yield ["series", "unit"] + [str(y) for y in YEARS]
     for s in series:
         yield [s, unit] + [f"{data[y].get(s, 0.0):.2f}" for y in YEARS]
-    yield ["TOTAL", unit] + [f"{sum(data[y].values()):.2f}" for y in YEARS]
+    # Plain left-to-right addition: Python >= 3.12 sum() compensates rounding error, which
+    # moves one committed TOTAL (generation 2030: 140.62 vs 140.63) across a rounding boundary.
+    totals = [functools.reduce(operator.add, data[y].values(), 0.0) for y in YEARS]
+    yield ["TOTAL", unit] + [f"{t:.2f}" for t in totals]
 
 
 def run(pdf: Path, outdir: Path) -> None:

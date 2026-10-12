@@ -9,9 +9,10 @@ python scripts/run_etp_extraction.py --config config.yaml [--chart power demand 
 
 Reads ``etp_extraction.pdf`` and writes to ``etp_extraction.output_dir`` (or
 ``--output-dir``). Each chart group is validated against the figures the
-document states in prose; a failed gating check writes nothing and exits 1.
-A fresh extraction does not reproduce every committed CSV byte for byte (see
-data/seforall_nigeria_etp/README.md), so use ``--output-dir`` to compare first.
+document states in prose; a group that fails a gating check writes none of its
+CSVs and the script exits 1. A fresh extraction matches the committed CSVs except
+for line endings (see data/seforall_nigeria_etp/README.md), so use
+``--output-dir`` to compare first.
 """
 
 from __future__ import annotations
