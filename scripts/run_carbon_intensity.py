@@ -16,6 +16,7 @@ see ``data/scenario_compass_africa_r10/carbon_intensity/MEMO.md``.
 from __future__ import annotations
 
 import argparse
+import logging
 import sys
 from pathlib import Path
 
@@ -27,6 +28,7 @@ from demand_analysis.carbon_intensity import CarbonIntensityParams, report
 
 
 def main() -> int:
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(name)s: %(message)s")
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     add_config_argument(parser)
     parser.add_argument(

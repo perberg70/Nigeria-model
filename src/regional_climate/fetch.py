@@ -8,6 +8,7 @@ country code, period, pathways and the Admin-1 unit list come from the
 from __future__ import annotations
 
 import json
+import logging
 import re
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -38,6 +39,8 @@ MODEL_API = (
     "cmip6-x0.25_climatology_tas,pr_anomaly_annual_{period}_"
     "mean_{pathway}_{model}_{variant}_mean/all_countries_subnationals?_format=json"
 )
+LOGGER = logging.getLogger("regional_climate.fetch")
+
 S3_DATASETS = (
     "https://wbg-cckp.s3.amazonaws.com/?list-type=2&prefix=data/cmip6-x0.25/{variable}/&delimiter=/"
 )
@@ -164,6 +167,7 @@ def fetch_model_states(s: FetchSettings, task: tuple[str, str, str]) -> list[dic
     payload = _get_json(s, url)
     data = payload.get("data", {})
     if not isinstance(data, dict):
+        LOGGER.warning("CCKP returned no data for %s %s %s; run dropped", model, variant, pathway)
         return []
     temperature = data.get("tas", {})
     precipitation = data.get("pr", {})
@@ -189,13 +193,23 @@ def fetch_model_states(s: FetchSettings, task: tuple[str, str, str]) -> list[dic
 def fetch_all_model_states(s: FetchSettings) -> list[dict[str, object]]:
     tas_runs = discover_model_runs(s, "tas")
     pr_runs = discover_model_runs(s, "pr")
+    unlisted = [w for w in s.model_pathways if not (tas_runs[w] or pr_runs[w])]
+    if unlisted:
+        raise ValueError(
+            "regional_climate.model_pathways: CCKP lists no individual-model runs for "
+            + ", ".join(unlisted)
+        )
     tasks = [
         (pathway, model, variant)
         for pathway in s.model_pathways
         for model, variant in sorted(tas_runs[pathway] | pr_runs[pathway])
     ]
     rows: list[dict[str, object]] = []
+    dropped = 0
     with ThreadPoolExecutor(max_workers=s.max_workers) as executor:
         for result in executor.map(partial(fetch_model_states, s), tasks):
             rows.extend(result)
+            dropped += not result
+    if dropped:
+        LOGGER.warning("%d of %d model runs returned no data and were dropped", dropped, len(tasks))
     return rows

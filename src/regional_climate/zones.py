@@ -58,6 +58,8 @@ def derive_model_zone_rows(
                 "variant": variant,
                 "zone": zone,
                 "state_count": len(rows),
+                "temperature_state_count": len(temperatures),
+                "precipitation_state_count": len(precipitation),
                 "temperature_anomaly_c": (
                     round(statistics.median(temperatures), 3) if temperatures else None
                 ),

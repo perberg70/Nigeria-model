@@ -22,4 +22,7 @@ request settings) and `region.iso3`.
 
 ## Outputs
 
-Six CSVs in `data/nigeria_regional_climate/` (see its README).
+Six CSVs in `data/nigeria_regional_climate/` (see its README). The model-zone CSV carries
+`temperature_state_count` and `precipitation_state_count`: the states each median actually uses
+(`state_count` is the zone's size). A model run CCKP returns without data is logged as a dropped
+run; a configured model pathway CCKP lists no runs for is an error.
