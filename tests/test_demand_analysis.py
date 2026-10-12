@@ -6,7 +6,7 @@ import dataclasses
 
 import pytest
 
-from config_paths import require_path
+from config_paths import ConfigError, require_path
 from conftest import ROOT
 from demand_analysis import (
     capture,
@@ -72,3 +72,14 @@ def test_sector_conversion_rejects_a_stale_block_grid(config, tmp_path):
     stale.write_text(text.replace("years:[2023,", "years:[2022,2023,", 2), encoding="utf-8")
     with pytest.raises(ValueError, match="year grid differs"):
         sc.block_series(dataclasses.replace(p, baseline_block=stale), "ssp245", "energyTJ")
+
+
+def test_sector_conversion_rejects_an_unquoted_unsd_code(config):
+    sc_cfg = config["sector_conversion"]
+    carriers = {**sc_cfg["unsd"]["carriers"], 100: "coal"}  # YAML reads unquoted 0100 as 64
+    cfg = {
+        **config,
+        "sector_conversion": {**sc_cfg, "unsd": {**sc_cfg["unsd"], "carriers": carriers}},
+    }
+    with pytest.raises(ConfigError, match="must be quoted"):
+        sc.SectorConversionParams.from_config(cfg)

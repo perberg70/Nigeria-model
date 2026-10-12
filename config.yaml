@@ -184,6 +184,57 @@ conversion_factors:
 
 sector_conversion:
   report: data/scenario_compass_africa_r10/partial_adjustment/sector_conversion_output.txt
+  # UNSD Energy Statistics codes (inputs.unsd_energy). Codes are strings and must be
+  # quoted: unquoted, YAML reads 0100 as the octal number 64.
+  unsd:
+    # COMMODITY -> carrier. 0100 is the coal aggregate; 0129, its only component, is
+    # left out to avoid double counting. The commodity mapped to electricity is in GWh.
+    carriers:
+      "0100": coal
+      "3000": gas
+      "4630": lpg
+      "4652": gasoline
+      "4661": jet
+      "4669": kerosene
+      "4670": diesel
+      "4680": fuel_oil
+      "4692": other_oil
+      "4699": other_oil
+      "5110": wood
+      "5120": wood
+      "5150": wood
+      "5160": charcoal
+      "7000": electricity
+    # TRANSACTION -> sector. 1234 and 1235 are labelled by their match to the IEA
+    # country page (1235 electricity = IEA commercial and public services 29,184 TJ;
+    # 1234 kerosene = IEA other non-specified 8,096 TJ). [GAP: the UNSD code list is
+    # not held in this repository, so these two labels are inferred, not read.]
+    sectors:
+      "1231": residential
+      "1235": commercial
+      "121": industry
+      "122": transport
+      "1232": agriculture
+      "1234": other
+      "11": non_energy
+    # (COMMODITY, TRANSACTION) flows read by section 2.
+    flows:
+      gas_to_power: ["3000", "088"]       # natural gas into power plants
+      thermal_output: ["7000T", "01"]     # electricity from combustible fuels (all gas-fired)
+      wood_to_kilns: ["5110", "085CH"]    # fuelwood into charcoal kilns
+      charcoal_output: ["5160", "01"]     # charcoal produced
+      gas_own_use: ["3000", "0912"]       # gas used by the oil and gas industry itself
+  # Section 2's second power case besides the base-year grid: this share of
+  # generation low-emission (counted at output), the rest gas at the UNSD plant
+  # efficiency. [ASSUMED: an illustrative mix; its source is not recorded here.]
+  low_emission_power_share: 0.72
+  # ETP cooking charts (inputs.etp_cooking): the year of the per-stove fuel use of
+  # every stove type, and the later year of the electric and LPG stoves (section 3).
+  etp_cooking_years: [2020, 2050]
+  # IMAGE years of sections 6 and 7: elasticities run from the reference year (the
+  # last IMAGE calibration row) to each comparison year.
+  image_reference_year: 2020
+  image_comparison_years: [2050, 2100]
   # End-use efficiency ratios rho = eta_electric / eta_displaced: (low, central,
   # high), by (sector group, carrier). Evidence and ASSUMPTIONS in section 3 of the
   # report and SECTOR_CONVERSION.md; industry has no source held.

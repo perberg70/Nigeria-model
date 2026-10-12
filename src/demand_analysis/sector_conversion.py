@@ -29,10 +29,12 @@ Sections
 Run: python scripts/run_sector_conversion.py --config config.yaml
 (report in sector_conversion_output.txt)
 
-The efficiency ratios, electrification targets, genset efficiencies and the
+The efficiency ratios, electrification targets, genset efficiencies, the UNSD
+code maps, the low-emission power case, the ETP and IMAGE years and the
 illustration marker come from the ``sector_conversion`` section of the
-configuration; the back-up generator output from ``ssp_baseline.anchors``. The
-report text describes the 2023 IEA/UNSD snapshot the inputs hold.
+configuration; the back-up generator output from ``ssp_baseline.anchors`` and the
+IEA generation lines from ``inputs.iea_generation_lines``. The report text
+describes the 2023 IEA/UNSD snapshot the inputs hold.
 """
 
 from __future__ import annotations
@@ -44,7 +46,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from config_paths import require, require_path
+from config_paths import ConfigError, require, require_path
 from scenario_data import Marker, interp, load_markers, read_label_values, read_series
 from ssp_baseline import block_series as read_block_series, block_years
 from units import TJ_PER_GWH
@@ -65,6 +67,14 @@ class SectorConversionParams:
     etp_cooking: Path
     baseline_block: Path
     genset_gwh: float
+    generation_lines: dict[str, str]  # IAMC source -> line of the IEA electricity table
+    unsd_carriers: dict[str, str]  # UNSD COMMODITY code -> carrier (CARRIERS)
+    unsd_sectors: dict[str, str]  # UNSD TRANSACTION code -> sector (SECTORS)
+    unsd_flows: dict[str, tuple[str, str]]  # section 2 flows, (COMMODITY, TRANSACTION)
+    low_share: float  # low-emission share of generation in section 2's second power case
+    etp_years: tuple[int, int]  # ETP cooking charts: (year of all stoves, later year)
+    image_reference_year: int
+    image_comparison_years: tuple[int, ...]
     rho: dict[tuple[str, str], tuple[float, float, float]]
     targets: tuple[float, ...]
     genset_efficiencies: tuple[float, ...]
@@ -85,6 +95,26 @@ class SectorConversionParams:
                 rho[(group, carrier)] = tuple(float(v) for v in values)
         pathway = require(config, f"{s}.illustration_pathway")
         require(config, f"scenarios.{pathway}")
+        lines = dict(require(config, "inputs.iea_generation_lines"))
+        if "Gas" not in lines or not set(lines) - {"Gas"} <= set(AT_OUTPUT):
+            # Section 2 measures thermal efficiency on the UNSD gas-plant pair only and
+            # counts every other source at output.
+            raise ConfigError(
+                "inputs.iea_generation_lines: section 2 needs a Gas line and otherwise only "
+                f"sources counted at output {AT_OUTPUT}; got {sorted(lines)}"
+            )
+        carriers = _codes(config, f"{s}.unsd.carriers", CARRIERS)
+        if list(carriers.values()).count("electricity") != 1:
+            raise ConfigError(f"{s}.unsd.carriers: map exactly one commodity to electricity")
+        flows = {}
+        for name in UNSD_FLOWS:
+            pair = require(config, f"{s}.unsd.flows.{name}")
+            if len(pair) != 2 or not all(isinstance(c, str) for c in pair):
+                raise ConfigError(f"{s}.unsd.flows.{name}: need two quoted codes")
+            flows[name] = (pair[0], pair[1])
+        etp_years = tuple(int(y) for y in require(config, f"{s}.etp_cooking_years"))
+        if len(etp_years) != 2:
+            raise ConfigError(f"{s}.etp_cooking_years: need [year of all stoves, later year]")
         return cls(
             region_name=require(config, "region.name"),
             markers=load_markers(config),
@@ -99,6 +129,16 @@ class SectorConversionParams:
             etp_cooking=require_path(config, "inputs.etp_cooking"),
             baseline_block=require_path(config, "ssp_baseline.output_block"),
             genset_gwh=require(config, "ssp_baseline.anchors.genset_gwh"),
+            generation_lines=lines,
+            unsd_carriers=carriers,
+            unsd_sectors=_codes(config, f"{s}.unsd.sectors", SECTORS),
+            unsd_flows=flows,
+            low_share=require(config, f"{s}.low_emission_power_share"),
+            etp_years=etp_years,
+            image_reference_year=int(require(config, f"{s}.image_reference_year")),
+            image_comparison_years=tuple(
+                int(y) for y in require(config, f"{s}.image_comparison_years")
+            ),
             rho=rho,
             targets=tuple(require(config, f"{s}.electrification_targets")),
             genset_efficiencies=tuple(require(config, f"{s}.genset_efficiencies")),
@@ -115,41 +155,33 @@ class SectorConversionParams:
     def years(self) -> list[int]:
         return list(range(self.base_year, self.end_year + 1))
 
+    @property
+    def low_case(self) -> str:
+        """Name of section 2's low-emission power case, e.g. electricity_72pc_low."""
+        return "electricity_%.0fpc_low" % (100 * self.low_share)
+
+
+def _codes(config: Mapping[str, Any], key: str, allowed: list[str]) -> dict[str, str]:
+    """A UNSD code map: quoted codes onto names this module knows."""
+    codes = dict(require(config, key))
+    for code, name in codes.items():
+        if not isinstance(code, str):
+            raise ConfigError(f"{key}: code {code!r} must be quoted (YAML reads 0100 as 64)")
+        if name not in allowed:
+            raise ConfigError(f"{key}.{code}: {name!r} is not one of {allowed}")
+    return codes
+
+
+# Sources whose generation section 2 counts at output (primary = generation).
+AT_OUTPUT = ("Hydro", "Solar", "Wind")
+# The UNSD (COMMODITY, TRANSACTION) flows section 2 reads (sector_conversion.unsd.flows).
+UNSD_FLOWS = ("gas_to_power", "thermal_output", "wood_to_kilns", "charcoal_output", "gas_own_use")
+
 
 # --------------------------------------------------------------------------
-# 1. NIGERIA 2023 BY SECTOR AND CARRIER (UNSD)
-# Carriers: UNSD commodity codes. 0100 is the coal aggregate (0129 is its
-# only component and is skipped to avoid double counting).
-CARRIER = {
-    "0100": "coal",
-    "3000": "gas",
-    "4630": "lpg",
-    "4652": "gasoline",
-    "4661": "jet",
-    "4669": "kerosene",
-    "4670": "diesel",
-    "4680": "fuel_oil",
-    "4692": "other_oil",
-    "4699": "other_oil",
-    "5110": "wood",
-    "5120": "wood",
-    "5150": "wood",
-    "5160": "charcoal",
-    "7000": "electricity",
-}
-# Sectors: UNSD transaction codes. 1234/1235 are labelled by their match to
-# the IEA country page (1235 electricity = IEA commercial and public services
-# 29,184 TJ; 1234 kerosene = IEA other non-specified 8,096 TJ), since the
-# UNSD code list is not held in this repository.
-SECTOR = {
-    "1231": "residential",
-    "1235": "commercial",
-    "121": "industry",
-    "122": "transport",
-    "1232": "agriculture",
-    "1234": "other",
-    "11": "non_energy",
-}
+# 1. BASE YEAR BY SECTOR AND CARRIER (UNSD)
+# Carriers and sectors are the names below; the UNSD codes that map onto them
+# are configuration (sector_conversion.unsd).
 CARRIERS = [
     "wood",
     "charcoal",
@@ -178,6 +210,7 @@ SECTORS = [
 def unsd_2023(p: SectorConversionParams):
     """Final energy in TJ, {sector: {carrier: TJ}}, plus the transformation
     rows needed for primary-energy factors."""
+    carrier, sector = p.unsd_carriers, p.unsd_sectors
     m = {s: {c: 0.0 for c in CARRIERS} for s in SECTORS}
     extra = {}
     with p.unsd.open(encoding="utf-8-sig") as fh:
@@ -185,15 +218,15 @@ def unsd_2023(p: SectorConversionParams):
             if r["TIME_PERIOD"] != str(p.base_year):
                 continue
             com, tr, v = r["COMMODITY"], r["TRANSACTION"], float(r["OBS_VALUE"])
-            if com == "7000":
+            if carrier.get(com) == "electricity":
                 tj = v * TJ_PER_GWH
             elif r["UNIT_MEASURE"] == "TJ":
                 tj = v
             else:
                 tj = v * float(r["CONVERSION_FACTOR"] or 0)
             extra[(com, tr)] = tj
-            if com in CARRIER and tr in SECTOR:
-                m[SECTOR[tr]][CARRIER[com]] += tj
+            if com in carrier and tr in sector:
+                m[sector[tr]][carrier[com]] += tj
     return m, extra
 
 
@@ -265,6 +298,11 @@ def iea_electricity(p: SectorConversionParams):
         return {r["line"]: float(r["value_GWh"]) for r in csv.DictReader(fh)}
 
 
+def grid_generation(p: SectorConversionParams, el) -> float:
+    """Base-year grid generation, GWh: the configured IEA generation lines summed."""
+    return sum(el[line] for line in p.generation_lines.values())
+
+
 def section1(p: SectorConversionParams):
     u, extra = unsd_2023(p)
     m = iea_current(p, u)
@@ -330,19 +368,21 @@ def section1(p: SectorConversionParams):
 # 2. PRIMARY-TO-FINAL FACTORS BY CARRIER, 2023
 def section2(p: SectorConversionParams, m, extra):
     el = iea_electricity(p)  # IEA current release, GWh
-    gen = el["Natural gas"] + el["Hydropower"] + el["Solar PV"]
+    gen = grid_generation(p, el)
     fin_el = sum(m[s]["electricity"] for s in SECTORS)
-    gas_in = extra[("3000", "088")]  # UNSD: gas into power plants
-    gas_gen = extra[("7000T", "01")]  # UNSD: gas-fired output
-    wood_in = extra[("5110", "085CH")]  # wood into charcoal kilns
-    char_out = extra[("5160", "01")]  # charcoal produced
+    flow = p.unsd_flows
+    gas_in = extra[flow["gas_to_power"]]  # UNSD: gas into power plants
+    gas_gen = extra[flow["thermal_output"]]  # UNSD: gas-fired output
+    wood_in = extra[flow["wood_to_kilns"]]  # wood into charcoal kilns
+    char_out = extra[flow["charcoal_output"]]  # charcoal produced
     eta_gas = gas_gen / gas_in  # UNSD pair, one source
     gap = gen / el["Total final consumption"]  # generation per final kWh
-    gas_sh = el["Natural gas"] / gen
+    gas_sh = el[p.generation_lines["Gas"]] / gen
+    low = p.low_share
     pef = {
         "electricity_2023": gap * (gas_sh / eta_gas + (1 - gas_sh)),
         "electricity_all_gas": gap / eta_gas,
-        "electricity_72pc_low": gap * (0.72 + 0.28 / eta_gas),
+        p.low_case: gap * (low + (1 - low) / eta_gas),
         "electricity_all_solar_hydro": gap,
     }
     kiln = char_out / wood_in
@@ -385,7 +425,7 @@ def section2(p: SectorConversionParams, m, extra):
     print("  the only TES held). The difference is mainly gas burned by the oil and gas industry")
     print(
         "  itself (UNSD 0912 %.0f PJ) and statistical differences, tied to production for export."
-        % (extra[("3000", "0912")] / 1e3)
+        % (extra[flow["gas_own_use"]] / 1e3)
     )
     print()
     return pef, pef_fuel
@@ -405,12 +445,13 @@ def etp_ratios(p: SectorConversionParams):
     def pj(s, y):
         return float(rows["fuel_demand", s][y])
 
-    bio20 = pj("Biomass", "2020") / (st("Traditional biomass", "2020") + st("Biofuels", "2020"))
-    lpg20 = pj("LPG", "2020") / st("LPG", "2020")
-    el20 = pj("Electric", "2020") / st("Electric", "2020")
-    el50 = pj("Electric", "2050") / st("Electric", "2050")
-    lpg50 = pj("LPG", "2050") / st("LPG", "2050")
-    return bio20, lpg20, el20, el50, lpg50
+    y0, y1 = (str(y) for y in p.etp_years)
+    bio0 = pj("Biomass", y0) / (st("Traditional biomass", y0) + st("Biofuels", y0))
+    lpg0 = pj("LPG", y0) / st("LPG", y0)
+    el0 = pj("Electric", y0) / st("Electric", y0)
+    el1 = pj("Electric", y1) / st("Electric", y1)
+    lpg1 = pj("LPG", y1) / st("LPG", y1)
+    return bio0, lpg0, el0, el1, lpg1
 
 
 # rho = eta_electric / eta_displaced, (low, central, high) by (sector group,
@@ -449,17 +490,22 @@ def rho_for(rho, sector, carrier, case):
 
 
 def section3(p: SectorConversionParams):
-    bio20, lpg20, el20, el50, lpg50 = etp_ratios(p)
+    bio0, lpg0, el0, el1, lpg1 = etp_ratios(p)
+    y0, y1 = p.etp_years
     print("3. END-USE EFFICIENCY RATIOS rho = eta_electric / eta_displaced")
     print("  Evidence (final energy for the same service; ratios derived here unless stated):")
-    print("  - ETP 2.0 cooking charts (Nigeria, net-zero pathway, pp. 37-40), per stove per year:")
     print(
-        "    biomass %.2f GJ, LPG %.2f GJ (2020); electric %.2f GJ (2020), %.2f GJ (2050), "
-        "LPG %.2f GJ (2050)" % (bio20 * 1e3, lpg20 * 1e3, el20 * 1e3, el50 * 1e3, lpg50 * 1e3)
+        "  - ETP 2.0 cooking charts (%s, net-zero pathway, pp. 37-40), per stove per year:"
+        % p.region_name
+    )
+    print(
+        "    biomass %.2f GJ, LPG %.2f GJ (%d); electric %.2f GJ (%d), %.2f GJ (%d), "
+        "LPG %.2f GJ (%d)"
+        % (bio0 * 1e3, lpg0 * 1e3, y0, el0 * 1e3, y0, el1 * 1e3, y1, lpg1 * 1e3, y1)
     )
     print(
         "    -> biomass/electric %.1f-%.1f, LPG/electric %.1f-%.1f, if service per stove is equal"
-        % (bio20 / el50, bio20 / el20, lpg20 / el50, lpg20 / el20)
+        % (bio0 / el1, bio0 / el0, lpg0 / el1, lpg0 / el0)
     )
     print("    (an assumption; the ETP states no efficiencies and its PJ do not match IEA levels)")
     print(
@@ -638,7 +684,8 @@ def section4(p: SectorConversionParams, m, pef, pef_fuel):
     print("  F/F0 = final energy relative to 2023 at the same service (central rho; lo/hi =")
     print("  high/low rho). The 1:1 model keeps F/F0 = 1, so its electricity at the same share is")
     print("  1/(F/F0) times this. P/F and P/P0 (primary relative to 2023) with the 2023 grid and")
-    print("  with 72% low-emission power (bottom-up convention of section 2).")
+    low = "%.0f" % (100 * p.low_share)
+    print("  with %s%% low-emission power (bottom-up convention of section 2)." % low)
     PF0 = p_over_f(
         m,
         pools(p.rho, m, 1),
@@ -650,7 +697,17 @@ def section4(p: SectorConversionParams, m, pef, pef_fuel):
     )
     print(
         "  %-16s %5s %8s %8s %9s %8s %8s %8s %8s"
-        % ("rule", "e", "F/F0", "F/F0 lo", "F/F0 hi", "P/F 23", "P/F 72", "P/P0 23", "P/P0 72")
+        % (
+            "rule",
+            "e",
+            "F/F0",
+            "F/F0 lo",
+            "F/F0 hi",
+            "P/F 23",
+            "P/F " + low,
+            "P/P0 23",
+            "P/P0 " + low,
+        )
     )
     results = {}
     for rule in rules:
@@ -668,8 +725,8 @@ def section4(p: SectorConversionParams, m, pef, pef_fuel):
             lo = row[2][0][0] / F0 if row[2][0] else float("nan")  # high rho -> lowest F
             hi = row[0][0][0] / F0 if row[0][0] else float("nan")
             pf23 = p_over_f(m, pl, d, F, E, pef["electricity_2023"], pef_fuel)
-            pf72 = p_over_f(m, pl, d, F, E, pef["electricity_72pc_low"], pef_fuel)
-            results[(rule, e)] = (F / F0, E, pf23, pf72)
+            pf_low = p_over_f(m, pl, d, F, E, pef[p.low_case], pef_fuel)
+            results[(rule, e)] = (F / F0, E, pf23, pf_low)
             print(
                 "  %-16s %5.2f %8.3f %8.3f %9.3f %8.3f %8.3f %8.3f %8.3f"
                 % (
@@ -679,9 +736,9 @@ def section4(p: SectorConversionParams, m, pef, pef_fuel):
                     lo,
                     hi,
                     pf23,
-                    pf72,
+                    pf_low,
                     pf23 * F / (PF0 * F0),
-                    pf72 * F / (PF0 * F0),
+                    pf_low * F / (PF0 * F0),
                 )
             )
     pl = pools(p.rho, m, 1)
@@ -773,12 +830,13 @@ def section6(p: SectorConversionParams):
             "eps_P/F",
         )
     )
+    ref, compare = p.image_reference_year, p.image_comparison_years
     rows = {}
     for pid, marker in p.markers.items():
         sc = marker.key
         have = all(sc in prim[k] for k in PRIMARY)
         base = {}
-        for y in (2020, 2050, 2100):
+        for y in (ref, *compare):
             F = interp(y, fe[sc])
             P = sum(interp(y, prim[k][sc]) for k in PRIMARY) if have else float("nan")
             yp = interp(y, gdp[sc]) / interp(y, pop[sc])
@@ -787,7 +845,7 @@ def section6(p: SectorConversionParams):
             lowsh = sum(interp(y, byfuel[k][sc]) for k in LOWC if sc in byfuel[k]) / gen
             pb = interp(y, prim["Biomass"][sc]) / interp(y, fbio[sc]) if have else float("nan")
             vals = (P / F, interp(y, fel[sc]) / F, interp(y, fbio[sc]) / F, lowsh, pb)
-            if y == 2020:
+            if y == ref:
                 base = dict(F=F / n, P=P / n, y=yp, pf=P / F)
                 tail = ""
             else:
@@ -820,9 +878,9 @@ def section6(p: SectorConversionParams):
             t, e, b = interp(y, rc[sc]), interp(y, rce[sc]), interp(y, rcb[sc])
             return eff * e + (eff / other_rho) * (t - e - b) + (eff / bio_rho) * b, t
 
-        u0, f0 = useful(2020)
-        n0, y0 = interp(2020, pop[sc]), interp(2020, gdp[sc]) / interp(2020, pop[sc])
-        for y in (2050, 2100):
+        u0, f0 = useful(ref)
+        n0, y0 = interp(ref, pop[sc]), interp(ref, gdp[sc]) / interp(ref, pop[sc])
+        for y in compare:
             u, f = useful(y)
             n, yp = interp(y, pop[sc]), interp(y, gdp[sc]) / interp(y, pop[sc])
             dl = math.log(yp / y0)
@@ -863,9 +921,9 @@ def section7(p: SectorConversionParams, m, results, rows):
     print(
         "  run (CONVERSION_FACTORS.md section C: final 0.28-0.30 vs total 0.36; 0.52-0.59 vs 0.71)."
     )
-    for y in (2050, 2100):
+    for y in p.image_comparison_years:
         print(
-            "  IMAGE R10, 2020 -> %d: eps_P/F = " % y
+            "  IMAGE R10, %d -> %d: eps_P/F = " % (p.image_reference_year, y)
             + ", ".join(
                 "%s %+.3f" % (pid, rows[(pid, y)][1] - rows[(pid, y)][0])
                 for pid in p.markers
@@ -881,7 +939,7 @@ def section7(p: SectorConversionParams, m, results, rows):
     F0 = sum(sum(m[s].values()) for s in SECTORS)
     E0 = sum(m[s]["electricity"] for s in SECTORS)
     el = iea_electricity(p)
-    gen = el["Natural gas"] + el["Hydropower"] + el["Solar PV"]
+    gen = grid_generation(p, el)
     proto_2023 = (gen + p.genset_gwh) * TJ_PER_GWH / F0  # prototype definition, current release
     proto_to_final = (E0 / F0) / proto_2023  # 2023 final share / prototype share
     print(
