@@ -13,7 +13,7 @@ its config-driven, region-agnostic architecture.
 - Make the smallest change that satisfies the task.
 - Do not silently invent, interpolate, or substitute missing research data. Flag gaps explicitly in code, logs, configuration, or documentation.
 - Keep modelling logic separate from thesis interpretation and user-interface presentation.
-- Do not change `.claude/agents/`; those files are maintained for Claude Code.
+- Codex: do not edit `.claude/agents/`; those files are maintained with Claude Code. When a shared rule changes, update this file and the matching agent together (see `.codex/README.md`).
 
 ## Mandatory architecture checks
 

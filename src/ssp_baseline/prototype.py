@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import os
+from pathlib import Path
+
 from .js_block import BLOCK1, BLOCK2, BLOCK3, BLOCK4
 
 
@@ -16,8 +19,11 @@ def replace_fragment(text: str, start_marker: str, end_marker: str, fragment: st
 def update_prototype_html(html: str, generated: str) -> str:
     """Return `html` with the four blocks of `generated` copied in.
 
-    The anchors are the object keys the prototype already carries; each must occur
-    exactly where the previous run left it (see docs/ssp_baseline.md).
+    The anchors are text the prototype already carries, and each must occur exactly
+    where the previous run left it: ``emissions:{`` up to ``  /* --- Social Cost of
+    Carbon``; ``sspBaseline:{`` up to ``         totalEnergy2023TJ:``; ``popSSP:{`` up to
+    ``         elasticityTotal:``; ``pollutingIdxSSP:{`` up to its closing ``\\n    },``.
+    A missing anchor raises ValueError.
     """
 
     def fragment(marker, next_marker=None):
@@ -40,3 +46,16 @@ def update_prototype_html(html: str, generated: str) -> str:
     line_start = html.rfind("\n", 0, start) + 1
     close = html.index("\n    },", start) + len("\n    },")
     return html[:line_start] + fragment(BLOCK4).rstrip() + html[close:]
+
+
+def write_prototype(path: Path, generated: str) -> None:
+    """Splice `generated` into the prototype at `path`, replacing the file only on success.
+
+    The new HTML is built in memory first and staged to ``<path>.tmp`` before
+    os.replace, so a failed splice (a missing anchor) leaves the original untouched.
+    """
+    new_html = update_prototype_html(path.read_text(encoding="utf-8"), generated)
+    tmp = path.with_name(path.name + ".tmp")
+    with tmp.open("w", encoding="utf-8", newline="\n") as fh:
+        fh.write(new_html)
+    os.replace(tmp, path)

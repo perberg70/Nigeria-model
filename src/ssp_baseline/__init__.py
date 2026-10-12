@@ -10,7 +10,7 @@ from .builder import (
     print_diagnostics,
 )
 from .js_block import block_series, block_years, render_block
-from .prototype import replace_fragment, update_prototype_html
+from .prototype import replace_fragment, update_prototype_html, write_prototype
 
 __all__ = [
     "BaselineParams",
@@ -25,4 +25,5 @@ __all__ = [
     "render_block",
     "replace_fragment",
     "update_prototype_html",
+    "write_prototype",
 ]
