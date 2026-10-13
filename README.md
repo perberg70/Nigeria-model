@@ -10,6 +10,28 @@ Open `prototype/africa-prototype.html` in any web browser. It is a single self-c
 no installation, server or internet connection is needed. A short header comment in the file
 describes its structure; data sources are documented in `data/` and `data_sources/`.
 
+## Browser link for external users
+
+The GitHub Pages workflow in `.github/workflows/deploy-pages.yml` publishes a small
+landing page and the Nigeria prototype. It copies only `site/index.html` and
+`prototype/africa-prototype.html` into the public site artifact; the repository's
+research data and scripts are not part of the website.
+
+To activate it, merge the publishing change into `main`, then in the GitHub
+repository open **Settings → Pages** and set **Build and deployment → Source**
+to **GitHub Actions**. Next open **Actions → Publish prototypes**, select
+**Run workflow** on `main`, and check that the run completes successfully.
+The first push-triggered run may fail if Pages was not yet enabled; the manual
+run after enabling Pages publishes the site. The browser links will be:
+
+- Landing page: `https://perberg70.github.io/Nigeria-model/`
+- Nigeria model: `https://perberg70.github.io/Nigeria-model/nigeria/`
+
+These links are public. Check the embedded model content and source-data licences
+before enabling Pages. For a future model, add its HTML file to the repository,
+copy it into another folder under `_site` in the workflow, add a link to
+`site/index.html`, and include the new source path in the workflow's `push.paths`.
+
 The Python code in this repository builds and checks the data behind the prototype. It follows
 the layout and tooling of the TRA420 Western Balkans model (`TRA420_Modeling_2025`).
 
