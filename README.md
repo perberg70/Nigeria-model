@@ -17,10 +17,12 @@ landing page and the Nigeria prototype. It copies only `site/index.html` and
 `prototype/africa-prototype.html` into the public site artifact; the repository's
 research data and scripts are not part of the website.
 
-To activate it, push these files to `main`, then in the GitHub repository open
-**Settings → Pages** and set **Build and deployment → Source** to **GitHub Actions**.
-Under **Actions**, check that **Publish prototypes** completes successfully. The
-browser links will be:
+To activate it, merge the publishing change into `main`, then in the GitHub
+repository open **Settings → Pages** and set **Build and deployment → Source**
+to **GitHub Actions**. Next open **Actions → Publish prototypes**, select
+**Run workflow** on `main`, and check that the run completes successfully.
+The first push-triggered run may fail if Pages was not yet enabled; the manual
+run after enabling Pages publishes the site. The browser links will be:
 
 - Landing page: `https://perberg70.github.io/Nigeria-model/`
 - Nigeria model: `https://perberg70.github.io/Nigeria-model/nigeria/`
