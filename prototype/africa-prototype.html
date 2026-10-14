@@ -175,16 +175,23 @@ h1{margin:0;font-size:31px;line-height:1.15;color:var(--ink);letter-spacing:-.4p
 .driver .dshort{font-size:13px;color:var(--ink-3);margin-top:2px}
 .driver>details{grid-column:1/-1}
 .more{font-size:13.5px;color:var(--ink-2)}
-.more>summary{cursor:pointer;color:var(--link);font-weight:600;font-size:13.5px}
+.more>summary,.fold>summary,.mixpanel>summary,.data-table>summary{
+  cursor:pointer;color:var(--link);font-family:inherit;font-size:14px;font-weight:700;line-height:1.45}
 .more p{margin:6px 0 0;line-height:1.55}
 .fold{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 15px;font-size:14px;color:var(--ink-2)}
-.fold>summary{cursor:pointer;font-weight:700;color:var(--link)}
 .fold>summary span{font-weight:400;color:var(--ink-3)}
 .fold p{margin:8px 0 0;line-height:1.55}
+.fold-list{display:grid;gap:10px}
+.fold-list details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 15px;font-size:14px;color:var(--ink-2)}
+.fold-list details details{margin-top:10px}
+.fold-list details>summary{display:flex;align-items:baseline;gap:10px;list-style:none;margin:0}
+.fold-list details>summary::-webkit-details-marker{display:none}
+.fold-list details>summary::before{content:"▸";display:block;flex:none;width:14px;line-height:1.45}
+.fold-list details[open]>summary::before{content:"▾"}
+.fold-list+.maprow{margin-top:16px}
 .about-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0 14px}
 .mixpanel{grid-column:1/-1;background:#EEF4F9;border:1.5px solid #9DBBD3;border-radius:10px;padding:14px 18px;font-size:13.5px;color:var(--ink-2)}
-.mixpanel>summary{cursor:pointer;font-weight:700;color:var(--link);font-size:15px}
-.data-table>summary{cursor:pointer;font-size:13.5px;color:var(--link);font-weight:600;margin-top:10px}
+.data-table>summary{margin-top:10px}
 .mixpanel .badge{font-size:12px;font-weight:600;color:#fff;background:#1F5F8B;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:1px;white-space:nowrap}
 .mixpanel .mixintro{margin:10px 0 12px;line-height:1.55}
 .mixbar-cap{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);margin-bottom:4px}
@@ -313,11 +320,6 @@ table.dt td.n{font-variant-numeric:tabular-nums}
   background:var(--tint);border:1px solid #CFE0D6;font-size:13px;color:var(--ink-2);cursor:pointer}
 .unc b{color:var(--brand-green-dk);font-weight:600}
 .unc:hover{border-color:var(--brand-green-dk)}
-.chart-info{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0}
-.chart-info .unc{margin-top:0}
-.chart-info .info-link{display:inline-flex;align-items:center;min-height:33px;padding:6px 11px;border:1px solid #CFE0D6;border-radius:999px;background:var(--tint);font-size:13px;text-decoration:none}
-.chart-info .info-link:hover{border-color:var(--brand-green-dk)}
-.chart-info [role="button"]:focus-visible{outline:3px solid var(--brand-blue);outline-offset:2px}
 
 .paperrow{margin:9px 0 0;font-size:12.8px;line-height:1.5;color:var(--ink-2)}
 .paperrow .lbl2{font-weight:600;color:var(--ink)}
@@ -2843,25 +2845,27 @@ const VIEWS = {
          <span><i class="dashed"></i>${c.s1}</span>
          <span><i class="solid"></i>${c.s2}</span></div></div>
        ${lineChart(c)}
-       <div class="chart-info" aria-label="Chart information">
-         <span class="info-link" data-modal="engine" role="button" tabindex="0">⚙ What runs the calculations</span>
-         ${uncCue("uncertaintyEmissions")}
-       </div>
-       <details class="more" data-keep="em-explain"><summary>What the three lines are, and how this chart is computed</summary>
-         <p>Nigeria's national profile is anchored at <b>${fmtN(NGA_DATA.observed[2024],1)} Mt</b>
-         of fossil-fuel and industrial carbon dioxide in 2024 and <b>${fmtN(NGA_DATA.observed[2005],1)} Mt</b> in 2005.
-         The dashed grey line is a Nigeria-specific socioeconomic-pressure construction: Nigeria's own
-         population and GDP-per-capita path enters the stage-sensitive Burke &amp; Csereklyei aggregate-energy
-         relation, anchored at the observed 2024 national value. An Africa R10 efficiency
-         residual (its final-energy path with the income effect taken out) supplies an aggregate efficiency, structure and technology proxy;
-         R10 carbon intensity and an ETP fugitive/process decomposition are not applied to this line. The green line
-         follows the mitigation target you set at step ${STEP.drivers}. Land-use emissions and removals
-         are not included.</p>
-         <p><span class="info-link" data-modal="emissionsChart" role="button" tabindex="0">ⓘ Full explanation of the three lines</span></p></details>
-       ${dataTable(["Year",c.s1+" (Mt)",c.s2+" (Mt)","Baseline minus your pathway (Mt)"],
+       <div class="fold-list" aria-label="Emissions chart information">
+         <details class="fold" data-keep="em-engine"><summary>What runs the calculations</summary>
+           <p>${MODALS.engine.lede}</p>${MODALS.engine.body}<div class="note">${MODALS.engine.note}</div></details>
+         <details class="fold" data-keep="em-uncertainty"><summary>This is one possible result — what could make it higher or lower</summary>
+           <p>${MODALS.uncertaintyEmissions.lede}</p>${MODALS.uncertaintyEmissions.body()}</details>
+         <details class="fold" data-keep="em-explain"><summary>What the three lines are, and how this chart is computed</summary>
+           <p>Nigeria's national profile is anchored at <b>${fmtN(NGA_DATA.observed[2024],1)} Mt</b>
+           of fossil-fuel and industrial carbon dioxide in 2024 and <b>${fmtN(NGA_DATA.observed[2005],1)} Mt</b> in 2005.
+           The dashed grey line is a Nigeria-specific socioeconomic-pressure construction: Nigeria's own
+           population and GDP-per-capita path enters the stage-sensitive Burke &amp; Csereklyei aggregate-energy
+           relation, anchored at the observed 2024 national value. An Africa R10 efficiency
+           residual (its final-energy path with the income effect taken out) supplies an aggregate efficiency, structure and technology proxy;
+           R10 carbon intensity and an ETP fugitive/process decomposition are not applied to this line. The green line
+           follows the mitigation target you set at step ${STEP.drivers}. Land-use emissions and removals
+           are not included.</p>
+           <p><span class="info-link" data-modal="emissionsChart" role="button" tabindex="0">ⓘ Full explanation of the three lines</span></p></details>
+         ${dataTable(["Year",c.s1+" (Mt)",c.s2+" (Mt)","Baseline minus your pathway (Mt)"],
           yrs.map((y,i)=>[y,fmtN(baselineVals[i],1),fmtN(pathwayVals[i],1),signed(baselineVals[i]-pathwayVals[i],1)]))}
-       ${dataTable(["Year","Nigeria's observed emissions (Mt)"],
-          c.observed.years.map((y,i)=>[y,fmtN(c.observed.values[i],1)]), "Show national history table")}</div>
+         ${dataTable(["Year","Nigeria's observed emissions (Mt)"],
+          c.observed.years.map((y,i)=>[y,fmtN(c.observed.values[i],1)]), "Show national history table")}
+       </div></div>
 
      <div class="panel">
        <div class="chart-head"><div><h3>Electricity emissions in 2050</h3>
@@ -2882,6 +2886,7 @@ const VIEWS = {
            <span><i class="dashed"></i>${pc.s1}</span>
            <span><i class="solid"></i>${pc.s2}</span></div></div>
        ${lineChart(pc)}
+       <div class="fold-list" aria-label="Electricity chart information">
        <details class="more" data-keep="el-backup"><summary>◐ About the back-up generation estimate</summary>
          <p>Every figure on this screen counts <b>both</b>: the IEA's 40,975 GWh grid total (its gas, hydropower and solar lines) for 2023 and an
          estimated <b>20.6 TWh</b> of private back-up generation the official statistics do not record. The tiles above
@@ -2899,6 +2904,7 @@ const VIEWS = {
            : `Your pathway brings that combined total to <b>${fmtN(allMine,1)} Mt</b>, despite generating ${fmtN(NGA.allElectricityGWh(2050)/(NGA_DATA.power.gen2023GWh+NGA_DATA.power.genset2023GWh),1)}× more electricity.` }</p>
          <p><span class="info-link" data-modal="powerChart" role="button" tabindex="0">ⓘ Full explanation of the two lines</span></p></details>
        ${mixTable}
+       </div>
      </div>
      <div class="actions"><button class="btn" data-go="${STEP.air}">Next: Air pollution impacts &nbsp;→</button></div></div>`;
   },
@@ -2947,8 +2953,7 @@ const VIEWS = {
       <table><tr><td>From your clean-cooking target${floor?'<small class="cap" style="display:block">below what income alone brings — no extra effect</small>':''}</td><td class="n ${nCls(-y2050.avoided)}">${sgn(-y2050.avoided)}</td></tr>
       <tr><td>From your income assumption</td><td class="n ${nCls(inc||0)}">${sgn(inc||0)}</td></tr>
       <tr class="tot"><td>Your pathway, in total</td><td class="n ${nCls(gap)}">${sgn(gap)} deaths</td></tr></table>`};
-    const actions=`<span class="info-link" data-modal="health" role="button" tabindex="0">ⓘ See how these health figures are worked out</span>${uncCue("uncertaintyHealth")}`;
-    return head(STEP.air,d.title,`<p class="sub">${T(d.sub)}</p>`,actions)+
+    return head(STEP.air,d.title,`<p class="sub">${T(d.sub)}</p>`)+
     `<div class="body">${tiles([
        ...(hasBase ? [
          {lbl: tiny(gap) ? "Premature deaths in 2050" : gap>0 ? "Extra premature deaths in 2050" : "Premature deaths avoided in 2050",
@@ -2968,8 +2973,14 @@ const VIEWS = {
        ]),
        ...(decomp?[decomp]:[])
      ], decomp?"":"tiles-2")}
-     <details class="fold" data-keep="air-read"><summary>How to read these numbers</summary>
-       <p>${incomeLine}</p><p>${boundNote}</p></details>
+     <div class="fold-list" aria-label="Air pollution impact information">
+       <details class="fold" data-keep="air-read"><summary>How to read these numbers</summary>
+         <p>${incomeLine}</p><p>${boundNote}</p></details>
+       <details class="fold" data-keep="air-method"><summary>How these health figures are worked out</summary>
+         <p>${MODALS.health.lede}</p>${MODALS.health.body()}</details>
+       <details class="fold" data-keep="air-uncertainty"><summary>This is one possible result — what could make it higher or lower</summary>
+         <p>${MODALS.uncertaintyHealth.lede}</p>${MODALS.uncertaintyHealth.body()}</details>
+     </div>
      <div class="panel" style="margin-top:16px"><div class="chart-head legend-left"><div>
         <h3>Household air-pollution deaths per year</h3>
         <p class="cap">In 2050 ${pct(y2050.polClean)} cook mainly with clean fuel on your pathway${hasBase?`, against ${pct(y2050.baseClean)} in the ${ssp} baseline`:""}.</p></div>
@@ -2984,6 +2995,7 @@ const VIEWS = {
                          maxDeaths, "deaths per year",
                          {val:h.D0, low:h.uiLow, high:h.uiHigh, name:"Today's household burden",
                           src:"WHO Global Health Observatory AIR_11, 2021"}, ssp+" baseline")}
+       <div class="fold-list" aria-label="Air pollution chart information">
        <details class="more" data-keep="air-drivers"><summary>What drives this chart</summary>
         <p>Deaths follow the share of Nigerians still cooking mainly with wood, charcoal or kerosene, and the
         ${NGA.narrative()} population path — ${fmtN(NGA.populationAt(2050)/1e6)} million Nigerians by 2050,
@@ -2995,7 +3007,8 @@ const VIEWS = {
           rows.map(([y,v])=>[y, fmtN(NGA.populationAt(y)/1e6)+" m",
             v.baseClean==null?"—":pct(v.baseClean), pct(v.cfClean), pct(v.polClean), pct(v.elecCook),
             v.baseDeaths==null?"—":fmtN(Math.round(v.baseDeaths)), fmtN(Math.round(v.cfDeaths)),
-            fmtN(Math.round(v.polDeaths)), fmtN(Math.round(v.avoided))]))}</div>
+            fmtN(Math.round(v.polDeaths)), fmtN(Math.round(v.avoided))]))}
+       </div></div>
 
      <div class="actions"><button class="btn" data-go="${STEP.local}">Next: Local climate impacts &nbsp;→</button></div></div>`;
   },
@@ -3024,10 +3037,8 @@ const VIEWS = {
       <text x="${xd(H.d35)}" y="13" font-size="12" font-weight="600" text-anchor="middle" fill="#B4531B">${fmtN(H.d35,0)}</text>
       <text x="${xd(H.p10)}" y="61" font-size="12" text-anchor="middle" fill="#6B7C87">${fmtN(H.p10,0)}</text>
       <text x="${xd(H.p90)}" y="61" font-size="12" text-anchor="middle" fill="#6B7C87">${fmtN(H.p90,0)}</text></svg>`;
-    const actions=`<span class="info-link" data-modal="regionalUncertainty" role="button" tabindex="0">ⓘ What these ranges mean, and how the maps are built</span>${uncCue("uncertaintyLocal")}`;
-
     return head(STEP.local,d.title,`<p class="sub">${T(d.sub)}</p>
-      <p class="pathway-tag"><span class="k">Global pathway</span><b>${NGA.label()}</b></p>`,actions)+
+      <p class="pathway-tag"><span class="k">Global pathway</span><b>${NGA.label()}</b></p>`)+
     `<div class="body">${NGA.proxyNote()?`<div class="note"><span>⚠️</span><span>${NGA.proxyNote()}</span></div>`:""}
      ${tiles([
        {lbl:"National temperature", sub:`${NGA.label()}, CCKP ensemble median`,
@@ -3041,6 +3052,12 @@ const VIEWS = {
         unit:`days per year above 35°C (${fmtN(HD.hist35,0)} today → ${fmtN(H.d35,0)})`}
      ])}
      <p class="cap" style="margin:-10px 0 16px;font-size:13px">↗ Hover over or keyboard-focus a national climate tile to see the CMIP6 model range. On either map, select a region to open its states and state-level CCKP estimates.</p>
+     <div class="fold-list" aria-label="Local climate information">
+       <details class="fold" data-keep="local-ranges"><summary>What these ranges mean, and how the maps are built</summary>
+         <p>${MODALS.regionalUncertainty.lede}</p>${MODALS.regionalUncertainty.body}<div class="note">${MODALS.regionalUncertainty.note}</div></details>
+       <details class="fold" data-keep="local-uncertainty"><summary>This is one possible result — what could make it higher or lower</summary>
+         <p>${MODALS.uncertaintyLocal.lede}</p>${MODALS.uncertaintyLocal.body()}</details>
+     </div>
      <div class="maprow">${regionalClimatePanel("temp",regional)}${regionalClimatePanel("rain",regional)}</div>
 
      <div class="panel" style="margin-top:16px"><h3 style="margin-top:0">Days above 35&deg;C</h3>
@@ -3050,15 +3067,18 @@ const VIEWS = {
        central estimate of ${fmtN(H.d35,0)} &mdash; a wider spread than the whole gap between the
        lowest and highest pathway. For this indicator, which climate model you use moves the answer
        more than which pathway the world follows.</p>
+       <div class="fold-list" aria-label="Hot days chart information">
        <details class="more" data-keep="hot-about"><summary>About the range, and data table</summary>
          <p>Nigeria has about <b>${fmtN(HD.hist35,0)} days a year</b> above 35&deg;C today. The range shows
          how much the climate models differ from one another for the same pathway.</p>
          ${dataTable(["Pathway","Days above 35&deg;C by 2080&ndash;2099","Change","Range across models","Days above 40&deg;C"],
            Object.keys(NGA_DATA.pathwayLabel).map(k=>[NGA_DATA.pathwayLabel[k],
              fmtN(HD[k].d35,0), signed(Math.round(HD[k].d35-HD.hist35)),
-             `${fmtN(HD[k].p10,0)} &ndash; ${fmtN(HD[k].p90,0)}`, fmtN(HD[k].d40,0)]))}</details></div>
+             `${fmtN(HD[k].p10,0)} &ndash; ${fmtN(HD[k].p90,0)}`, fmtN(HD[k].d40,0)]))}</details>
+       </div></div>
 
-     <details class="fold" data-keep="zones" style="margin-bottom:12px"><summary>Six geopolitical zones — selected pathway</summary>
+     <div class="fold-list" aria-label="Climate data by zone and pathway">
+     <details class="fold" data-keep="zones"><summary>Six geopolitical zones — selected pathway</summary>
        <p>${regional[0].tempP10==null
          ? "CCKP's SSP1-1.9 regional ensemble median is shown, but a model range cannot be reconstructed because individual-model projections are not published for this pathway."
          : "Each climate model is first summarized across the states in a zone. The central figure and range are then the median and 10th–90th percentiles across those model-specific zone results."}</p>
@@ -3077,6 +3097,7 @@ const VIEWS = {
            return [o.label, signed(C2.temp,2)+"°C", `${signed(C2.tempP10,2)}°C to ${signed(C2.tempP90,2)}°C`,
              signed(C2.rain,1)+" mm/yr", `${signed(C2.rainP10,1)} to ${signed(C2.rainP90,1)} mm/yr`];
          }))}</details>
+     </div>
 
      <div class="save-box">
        <div class="txt"><b>Save this outcome</b>Your settings and the results of all three results screens — climate and
