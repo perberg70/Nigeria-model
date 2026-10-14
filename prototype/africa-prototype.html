@@ -178,12 +178,13 @@ h1{margin:0;font-size:31px;line-height:1.15;color:var(--ink);letter-spacing:-.4p
 .more>summary{cursor:pointer;color:var(--link);font-weight:600;font-size:13.5px}
 .more p{margin:6px 0 0;line-height:1.55}
 .fold{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 15px;font-size:14px;color:var(--ink-2)}
-.fold>summary{cursor:pointer;font-weight:700;color:var(--ink)}
+.fold>summary{cursor:pointer;font-weight:700;color:var(--link)}
 .fold>summary span{font-weight:400;color:var(--ink-3)}
 .fold p{margin:8px 0 0;line-height:1.55}
 .about-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0 14px}
 .mixpanel{grid-column:1/-1;background:#EEF4F9;border:1.5px solid #9DBBD3;border-radius:10px;padding:14px 18px;font-size:13.5px;color:var(--ink-2)}
-.mixpanel>summary{cursor:pointer;font-weight:700;color:#123E5C;font-size:15px}
+.mixpanel>summary{cursor:pointer;font-weight:700;color:var(--link);font-size:15px}
+.data-table>summary{cursor:pointer;font-size:13.5px;color:var(--link);font-weight:600;margin-top:10px}
 .mixpanel .badge{font-size:12px;font-weight:600;color:#fff;background:#1F5F8B;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:1px;white-space:nowrap}
 .mixpanel .mixintro{margin:10px 0 12px;line-height:1.55}
 .mixbar-cap{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);margin-bottom:4px}
@@ -312,6 +313,11 @@ table.dt td.n{font-variant-numeric:tabular-nums}
   background:var(--tint);border:1px solid #CFE0D6;font-size:13px;color:var(--ink-2);cursor:pointer}
 .unc b{color:var(--brand-green-dk);font-weight:600}
 .unc:hover{border-color:var(--brand-green-dk)}
+.chart-info{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0}
+.chart-info .unc{margin-top:0}
+.chart-info .info-link{display:inline-flex;align-items:center;min-height:33px;padding:6px 11px;border:1px solid #CFE0D6;border-radius:999px;background:var(--tint);font-size:13px;text-decoration:none}
+.chart-info .info-link:hover{border-color:var(--brand-green-dk)}
+.chart-info [role="button"]:focus-visible{outline:3px solid var(--brand-blue);outline-offset:2px}
 
 .paperrow{margin:9px 0 0;font-size:12.8px;line-height:1.5;color:var(--ink-2)}
 .paperrow .lbl2{font-weight:600;color:var(--ink)}
@@ -1500,6 +1506,21 @@ const MODALS = {
       data/nigeria_regional_climate/.`
   },
 
+  uncertaintyEmissions:{
+    title:"What could change this emissions graph?",
+    lede:"These lines are one scenario-based estimate of Nigeria's fossil-fuel and industrial carbon dioxide emissions, not a forecast with measured uncertainty bounds.",
+    body:()=>`
+      <ul class="chain">
+        <li><div class="ico">🌍</div><div><b>Your global scenario</b>
+          <span>Changes the dashed Nigeria baseline and its 2025 starting point. Because your pathway starts at that point, changing the scenario can also move the green line.</span></div></li>
+        <li><div class="ico">🍃</div><div><b>Your national mitigation target</b>
+          <span>Sets where the green pathway reaches in 2050, relative to observed 2024 emissions. A deeper cut lowers that line and widens the gap below the baseline; a weaker cut does the reverse.</span></div></li>
+        <li><div class="ico">📊</div><div><b>Assumptions behind the baseline</b>
+          <span>The dashed line depends on projected population, income, energy use and efficiency, and on how regional data are applied to Nigeria. Different defensible assumptions would change the baseline and the emissions gap.</span></div></li>
+      </ul>
+      <p>The income-growth, electrification, low-emission electricity and clean-cooking controls do not change these two lines. The electricity controls affect the separate electricity graph below; clean cooking affects the air-pollution results on step ${STEP.air}.</p>`
+  },
+
   uncertainty:{
     title:"How certain is any of this?",
     lede:`Every number on the results screens is a single figure. None of them is exact. What moves a result falls into two groups: the choices you make on steps ${STEP.drivers} and ${STEP.ssp}, and the assumptions built into the model that you cannot change here.`,
@@ -2629,7 +2650,7 @@ function regionalClimatePanel(metric,regions){
 }
 
 function dataTable(headers, rows, label="Show data table"){
-  return `<details><summary style="cursor:pointer;font-size:13.5px;color:var(--ink-3);margin-top:10px">${label}</summary>
+  return `<details class="data-table"><summary>${label}</summary>
     <table class="dt"><thead><tr>${headers.map((h,i)=>`<th class="${i?'n':''}">${h}</th>`).join("")}</tr></thead>
     <tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i?'n':''}">${c}</td>`).join("")}</tr>`).join("")}</tbody></table></details>`;
 }
@@ -2799,9 +2820,7 @@ const VIEWS = {
       return dataTable(["Low-emission share OF ALL ELECTRICITY","Intensity (g/kWh)",
                         "Back-up generators","All-electricity emissions 2050 (Mt)"], rows); })();
     const savedTxt=(allSaved>=0?"−":"+")+fmtN(Math.abs(allSaved),1)+" Mt";
-    const actions=`<span class="info-link" data-modal="engine" role="button" tabindex="0">⚙ What runs the calculations</span>${uncCue()}`;
-
-    return head(STEP.climate,d.title,`<p class="sub">${T(d.sub)}</p>`,actions)+
+    return head(STEP.climate,d.title,`<p class="sub">${T(d.sub)}</p>`)+
     `<div class="body">
      ${tiles([
        {lbl:"Emissions in 2050", sub:`against ${fmtN(baselineVals[i50],1)} Mt on the ${NGA.label()} baseline`,
@@ -2824,6 +2843,10 @@ const VIEWS = {
          <span><i class="dashed"></i>${c.s1}</span>
          <span><i class="solid"></i>${c.s2}</span></div></div>
        ${lineChart(c)}
+       <div class="chart-info" aria-label="Chart information">
+         <span class="info-link" data-modal="engine" role="button" tabindex="0">⚙ What runs the calculations</span>
+         ${uncCue("uncertaintyEmissions")}
+       </div>
        <details class="more" data-keep="em-explain"><summary>What the three lines are, and how this chart is computed</summary>
          <p>Nigeria's national profile is anchored at <b>${fmtN(NGA_DATA.observed[2024],1)} Mt</b>
          of fossil-fuel and industrial carbon dioxide in 2024 and <b>${fmtN(NGA_DATA.observed[2005],1)} Mt</b> in 2005.
@@ -3324,7 +3347,7 @@ function mixPanel(){
   const nSrc=NGA_DATA.power.groups.low.length+NGA_DATA.power.groups.fossil.length;
   const set=["low","fossil"].reduce((a,g)=>a+Object.keys((state.sourceMix||{})[g]||{}).length,0);
   return `<details class="mixpanel" data-keep="mix" open>
-    <summary><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#1F5F8B" stroke-width="1.8" aria-hidden="true" style="vertical-align:-3px;margin-right:6px"><path d="M2 4h14M2 9h14M2 14h14"/><circle cx="6" cy="4" r="2" fill="#EEF4F9"/><circle cx="12" cy="9" r="2" fill="#EEF4F9"/><circle cx="8" cy="14" r="2" fill="#EEF4F9"/></svg>Set your energy mix — choose which sources grow and which are phased out
+    <summary><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="vertical-align:-3px;margin-right:6px"><path d="M2 4h14M2 9h14M2 14h14"/><circle cx="6" cy="4" r="2" fill="#EEF4F9"/><circle cx="12" cy="9" r="2" fill="#EEF4F9"/><circle cx="8" cy="14" r="2" fill="#EEF4F9"/></svg>Set your energy mix — choose which sources grow and which are phased out
       <span class="badge">${nSrc} sliders · ${set?set+" set by you":"optional"}</span></summary>
     <p class="mixintro"><b style="color:#123E5C">Your choice:</b> tick a source, then move its slider to set its share yourself.
       The slider above fixes how much of Nigeria's electricity is low-emission; these sliders decide which sources make up
