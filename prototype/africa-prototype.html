@@ -2832,7 +2832,7 @@ const VIEWS = {
     const pyrs=[2023,...NGA_DATA.emissions.years.filter(yr=>yr>2023)];
     const held=pyrs.map(yr=>+NGA.allElectricityIfUnchanged(yr).toFixed(1));
     const yours=pyrs.map(yr=>+NGA.allElectricityCO2(yr).toFixed(1));
-    const pc={ title:"Nigeria's electricity carbon dioxide emissions",
+    const pc={ title:"Emissions from electricity generation",
       unit:"Mt carbon dioxide per year, 2023–2100 · grid and ◐ back-up generators · both lines carry the electricity your settings call for; only the mix differs",
       years:pyrs, baseline:held, pathway:yours, xTicks:[2023,2040,2060,2080,2100],
       yMax:Math.max(1,Math.ceil(Math.max(...held,...yours)/10)*10),
