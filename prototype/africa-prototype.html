@@ -2661,7 +2661,7 @@ function regionalClimatePanel(metric,regions){
     return `<g class="climate-region" fill="${color(r[metric])}"
       tabindex="0" role="button" aria-label="${encodedLabel}" data-tooltip="${encodedLabel}" data-modal="region_${regionKey}"
       onmousemove="showTT(event,this.dataset.tooltip)" onmouseleave="hideTT()"
-      onfocus="showFocusTT(event,this.dataset.tooltip)" onblur="hideTT()"><title>${encodedLabel}</title>${states}</g>`;
+      onfocus="showFocusTT(event,this.dataset.tooltip)" onblur="hideTT()">${states}</g>`;
   }).join("");
   const legend=regions.map(r=>`<span><i style="background:${color(r[metric])}"></i>${r.name}: <b>${format(r[metric])}</b></span>`).join("");
   return `<div class="mapbox"><h4>${title}</h4><p class="yr">CCKP median, 2080–2099 against 1995–2014</p>
