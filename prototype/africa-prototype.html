@@ -3396,7 +3396,7 @@ function mixPanel(){
   if(!NGA.isCountry()) return "";
   const nSrc=NGA_DATA.power.groups.low.length+NGA_DATA.power.groups.fossil.length;
   const set=["low","fossil"].reduce((a,g)=>a+Object.keys((state.sourceMix||{})[g]||{}).length,0);
-  return `<details class="mixpanel" data-keep="mix" open>
+  return `<details class="mixpanel" data-keep="mix">
     <summary><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="vertical-align:-3px;margin-right:6px"><path d="M2 4h14M2 9h14M2 14h14"/><circle cx="6" cy="4" r="2" fill="#EEF4F9"/><circle cx="12" cy="9" r="2" fill="#EEF4F9"/><circle cx="8" cy="14" r="2" fill="#EEF4F9"/></svg>Set your energy mix — choose which sources grow and which are phased out
       <span class="badge">${nSrc} sliders · ${set?set+" set by you":"optional"}</span></summary>
     <p class="mixintro"><b style="color:#123E5C">Your choice:</b> tick a source, then move its slider to set its share yourself.
