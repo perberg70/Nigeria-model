@@ -3295,7 +3295,7 @@ function render(){
 }
 
 function backBtn(n){ const s=DATA.steps[n-2];
-  return `<button class="btn ghost back" data-go="${s.n}">← &nbsp;Back: ${s.nav}</button>`; }
+  return `<button class="btn back" data-go="${s.n}">← &nbsp;Back: ${s.nav}</button>`; }
 
 function uncCue(modal="uncertainty"){
   return `<div class="unc" data-modal="${modal}" role="button" tabindex="0">
