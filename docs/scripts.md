@@ -43,6 +43,10 @@ Each writes its report to the path under `<section>.report` and echoes it to std
 - `scripts/fetch_regional_climate.py --config config.yaml` (network required)
   - Reads `regional_climate` and `region.iso3`; writes six CSVs to
     `data/nigeria_regional_climate/`.
+- `scripts/build_zone_map.py --config config.yaml`
+  - Reads `regional_climate.admin_units`, `.state_boundaries`, `.boundary_simplify_deg`,
+    `.boundary_source_label`; splices `NIGERIA_ZONE_MAP` (the state outlines the regional maps
+    are drawn from) into `regional_climate.prototype_html`.
 
 ## Cleanup Utilities
 

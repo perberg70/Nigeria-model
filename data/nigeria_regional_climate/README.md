@@ -24,6 +24,24 @@ names are under `regional_climate` in `config.yaml`; the Admin-1 code → state 
 Admin-1 CSVs (`src/regional_climate/zones.py`; checked by `tests/test_regional_climate.py`). The
 script writes CRLF line endings; the committed CSVs are stored with LF.
 
+## State boundaries
+
+`geoBoundaries-NGA-ADM1_simplified.geojson` draws the prototype's zone maps; no model figure is computed
+from it (the 2026-10 audit in `docs/zone_boundaries_review.md` used it).
+
+- **Source:** GRID3 Nigeria state boundaries (boundary year 2022), redistributed by geoBoundaries
+  gbOpen as `NGA-ADM1-27671186` (build 2023-12-12), simplified release; identifier, build date and
+  licence from the geoBoundaries `geoBoundaries-NGA-ADM1-metaData.json` beside the file
+- **Licence:** Creative Commons Attribution 4.0 (CC BY 4.0)
+- **URL:** https://media.githubusercontent.com/media/wmgeolab/geoBoundaries/main/releaseData/gbOpen/NGA/ADM1/geoBoundaries-NGA-ADM1_simplified.geojson
+- **Retrieved:** 2026-10-15; SHA-256 `edd28050c7f1ae40471424605f74e4d2df83502e4f301089761ae18f8ae2fbbf`
+- **Join:** `shapeISO` (ISO 3166-2) to `iso3166_2` in `admin1_units.yaml`; the file's names differ
+  from CCKP's ("Abuja Federal Capital Territory", "Nasarawa" against "Abuja", "Nassarawa").
+- **Mismatch:** CCKP computes the state values on its own Admin-1 boundaries, not these; the size of
+  the difference has not been measured [GAP].
+
+Rebuild the maps with `python scripts/build_zone_map.py --config config.yaml`.
+
 ## Files
 
 | File | Contents |

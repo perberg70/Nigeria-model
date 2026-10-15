@@ -11,4 +11,6 @@ beside the data (`data/**/MEMO.md`, `CONVERSION_FACTORS.md`, `SECTOR_CONVERSION.
 - `demand_analysis.md` – partial adjustment, conversion factors, sector conversion and carbon
   intensity (exploratory comparators; none changes the baseline).
 - `etp_extraction.md` – reading the Energy Transition Plan's vector charts.
-- `regional_climate.md` – CCKP Admin-1 climate anomalies and the six-zone aggregation.
+- `regional_climate.md` – CCKP Admin-1 climate anomalies, the six-zone aggregation and the zone maps.
+- `zone_boundaries_review.md` – audit of the earlier zone-map borders (2026-10), with the
+  assumptions behind the regional climate figures.

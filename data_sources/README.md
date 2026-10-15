@@ -21,6 +21,7 @@ processing are described in each `data/<folder>/README.md`.
 | `nbs_petroleum_products` | Nigerian National Bureau of Statistics, Petroleum Statistics Report 2023 | Petrol and diesel volumes for the back-up generator estimate | https://www.nigerianstat.gov.ng/pdfuploads/Petroleum_Statistics_Repor_2023.pdf |
 | `ipcc_2006_emission_factors` | IPCC 2006 Guidelines, Volume 2 (Energy) | CO₂ emission factors for fuels | https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/ |
 | `nigeria_regional_climate` | World Bank Climate Change Knowledge Portal, CMIP6 | State-level temperature and rainfall change | https://climateknowledgeportal.worldbank.org/download-data |
+| `nigeria_regional_climate` (boundaries) | GRID3 Nigeria state boundaries 2022, via geoBoundaries gbOpen NGA ADM1 (CC BY 4.0) | State outlines for the zone maps | https://www.geoboundaries.org/ |
 | `cckp_nigeria_heat` | World Bank Climate Change Knowledge Portal API | Hot-day counts | https://cckpapi.worldbank.org/cckp/v1/ |
 | `tra420_ssp119_run` | Integrated assessment model run (FaIR climate module, pulse-based social cost of carbon) | Social cost of carbon and temperature path, SSP1-1.9 | see folder README |
 
