@@ -359,3 +359,10 @@ regional_climate:
     model_admin1: cckp_cmip6_model_admin1_anomalies_2080-2099.csv
     model_zone: cckp_cmip6_model_geopolitical_zone_2080-2099.csv
     zone_ensemble: cckp_cmip6_geopolitical_zone_ensemble_2080-2099.csv
+  # State boundaries the prototype's zone maps are drawn from (joined on iso3166_2 in
+  # admin_units); provenance in the output_dir README. scripts/build_zone_map.py.
+  state_boundaries: data/nigeria_regional_climate/geoBoundaries-NGA-ADM1_simplified.geojson
+  boundary_source_label: "State boundaries: GRID3 Nigeria 2022 via geoBoundaries (CC BY 4.0)"
+  # Douglas-Peucker tolerance, degrees of latitude, applied to each shared border once.
+  boundary_simplify_deg: 0.02
+  prototype_html: prototype/africa-prototype.html

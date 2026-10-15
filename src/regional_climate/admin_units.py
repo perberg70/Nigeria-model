@@ -12,6 +12,7 @@ import yaml
 class AdminUnit:
     code: str
     state: str
+    iso3166_2: str
     zone: str
 
 
@@ -24,4 +25,7 @@ def load_admin_units(path: Path) -> list[AdminUnit]:
     codes = [u.code for u in units]
     if len(set(codes)) != len(codes):
         raise ValueError(f"{path}: duplicate Admin-1 codes")
+    iso_codes = [u.iso3166_2 for u in units]
+    if len(set(iso_codes)) != len(iso_codes):
+        raise ValueError(f"{path}: duplicate ISO 3166-2 codes")
     return units

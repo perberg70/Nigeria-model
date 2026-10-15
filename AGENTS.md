@@ -41,7 +41,7 @@ For changes to Python, YAML, configuration loading, demand equations, electrific
 
 ## Generated files
 
-- `data/scenario_compass_africa_r10/nigeria_baseline_block.js`, the four spliced blocks of `prototype/africa-prototype.html`, the analysis reports (`*output*.txt`) and the ETP CSVs are outputs of `scripts/`. Regenerate them; never hand-edit them.
+- `data/scenario_compass_africa_r10/nigeria_baseline_block.js`, the four spliced blocks of `prototype/africa-prototype.html`, its `NIGERIA_ZONE_MAP` block (`scripts/build_zone_map.py`), the analysis reports (`*output*.txt`) and the ETP CSVs are outputs of `scripts/`. Regenerate them; never hand-edit them.
 - A change that moves any committed output must regenerate and commit that output in the same change; the regression tests in `tests/` compare them byte for byte.
 - The ETP CSVs are compared after line-ending normalisation: the extractors write CRLF while two committed files are stored with LF. Extract to a scratch `--output-dir` and keep the committed files unless the change is meant to move them (`data/seforall_nigeria_etp/README.md`).
 - `docs/ssp_baseline.md` lists the prototype data that are still hand-pasted; keep them consistent by hand or extend the splice.

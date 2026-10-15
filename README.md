@@ -42,7 +42,7 @@ the layout and tooling of the TRA420 Western Balkans model (`TRA420_Modeling_202
 | `prototype/` | The prototype, `africa-prototype.html` |
 | `config.yaml` | Every modelling value the scripts use, with its source; all scripts require `--config` |
 | `src/` | Library packages (one doc each in `docs/`): `scenario_data`, `ssp_baseline`, `demand_analysis`, `etp_extraction`, `regional_climate`, plus `config_paths.py` and `units.py` |
-| `scripts/` | Thin command-line entry points (`run_*.py`, `fetch_regional_climate.py`) |
+| `scripts/` | Thin command-line entry points (`run_*.py`, `fetch_regional_climate.py`, `build_zone_map.py`) |
 | `tests/` | Regression tests against the committed outputs, and unit tests |
 | `data/` | One folder per dataset, each with a `README.md` describing source, retrieval and processing. Generated outputs (the baseline block, analysis reports, ETP CSVs) and their research memos sit beside the data they come from |
 | `data_sources/` | Index of every external source, with URLs |
@@ -73,6 +73,7 @@ python scripts/run_sector_conversion.py --config config.yaml
 python scripts/run_carbon_intensity.py --config config.yaml
 python scripts/run_etp_extraction.py --config config.yaml --output-dir /tmp/etp
 python scripts/fetch_regional_climate.py --config config.yaml        # network required
+python scripts/build_zone_map.py --config config.yaml
 ```
 
 What each script reads and writes is in `docs/scripts.md`. `run_sector_conversion.py` reads the
