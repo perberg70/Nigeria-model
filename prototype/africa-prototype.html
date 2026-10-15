@@ -245,11 +245,12 @@ svg{display:block;max-width:100%;overflow:visible}
 .bar{transition:opacity .12s}
 .bar:hover{opacity:.78}
 
-.actions{display:flex;justify-content:flex-end;margin-top:20px;gap:12px}
+.actions{display:flex;flex-wrap:wrap;justify-content:flex-end;margin-top:20px;gap:12px}
+.actions .back{margin-right:auto}
 .btn{background:var(--brand-green-dk);color:#fff;border:0;border-radius:9px;padding:14px 26px;
   font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:11px}
 .btn:hover{background:#0b4a33}
-.btn.wide{width:100%;justify-content:center}
+.btn.wide{flex:1;justify-content:center}
 .btn.ghost{background:#fff;color:var(--brand-green-dk);border:1px solid var(--line);font-weight:600;padding:10px 16px;font-size:14px}
 .note{display:flex;gap:11px;align-items:flex-start;background:var(--tint);border-radius:var(--radius);
   padding:14px 16px;font-size:14px;color:var(--ink-2);margin-top:6px}
@@ -2716,7 +2717,7 @@ const VIEWS = {
         <h5>${o.label}</h5>${sspSketch(o.id)}
         <div class="nm">${o.name}</div><p>${o.tag}</p><p style="margin-top:8px">${o.desc}</p></div>`).join("")}</div>
      <p class="sketch-note">The small curves sketch the direction of global emissions described on each card; they are not data.</p>
-     <div class="actions"><button class="btn" data-go="${STEP.ssp+1}">See results &nbsp;→</button></div></div>`;
+     <div class="actions">${backBtn(STEP.ssp)}<button class="btn" data-go="${STEP.ssp+1}">See results &nbsp;→</button></div></div>`;
   },
 
   country(){
@@ -2783,7 +2784,7 @@ const VIEWS = {
           ${it.explain ? `<p><span class="info-link" data-modal="${it.explain}" role="button" tabindex="0">ⓘ How this choice is used</span></p>` : ""}</details>
         ${it.id==="mix" ? mixPanel() : ""}</div>`;
     }).join("")}
-    <div class="actions"><button class="btn" data-go="${STEP.drivers+1}">Continue &nbsp;→</button></div></div>`;
+    <div class="actions">${backBtn(STEP.drivers)}<button class="btn" data-go="${STEP.drivers+1}">Continue &nbsp;→</button></div></div>`;
   },
 
   climate(){ const d=DATA.climate;
@@ -2931,7 +2932,7 @@ const VIEWS = {
        ${mixTable}
        </div>
      </div>
-     <div class="actions"><button class="btn" data-go="${STEP.air}">Next: Air pollution impacts &nbsp;→</button></div></div>`;
+     <div class="actions">${backBtn(STEP.climate)}<button class="btn" data-go="${STEP.air}">Next: Air pollution impacts &nbsp;→</button></div></div>`;
   },
 
   air(){ const d=DATA.air, h=NGA_DATA.health;
@@ -3035,7 +3036,7 @@ const VIEWS = {
             fmtN(Math.round(v.polDeaths)), fmtN(Math.round(v.avoided))]))}
        </div></div>
 
-     <div class="actions"><button class="btn" data-go="${STEP.local}">Next: Local climate impacts &nbsp;→</button></div></div>`;
+     <div class="actions">${backBtn(STEP.air)}<button class="btn" data-go="${STEP.local}">Next: Local climate impacts &nbsp;→</button></div></div>`;
   },
   local(){ const d=DATA.local;
     if(!NGA.isCountry())
@@ -3131,7 +3132,7 @@ const VIEWS = {
        <div class="btns">
          <button class="btn" data-save="pdf">⤓ &nbsp;Save as PDF</button>
          <button class="btn ghost" data-save="csv">Download data (CSV)</button></div></div>
-     <div class="actions"><button class="btn wide" data-go="${STEP.drivers}">⟳ &nbsp;Explore or change your pathway again</button></div></div>`;
+     <div class="actions">${backBtn(STEP.local)}<button class="btn wide" data-go="${STEP.drivers}">⟳ &nbsp;Explore or change your pathway again</button></div></div>`;
   }
 };
 
@@ -3292,6 +3293,9 @@ function render(){
   if(lastStep!==state.step) window.scrollTo({top:0,behavior:"smooth"});
   lastStep=state.step;
 }
+
+function backBtn(n){ const s=DATA.steps[n-2];
+  return `<button class="btn ghost back" data-go="${s.n}">← &nbsp;Back: ${s.nav}</button>`; }
 
 function uncCue(modal="uncertainty"){
   return `<div class="unc" data-modal="${modal}" role="button" tabindex="0">
