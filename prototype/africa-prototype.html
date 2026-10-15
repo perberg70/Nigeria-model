@@ -1598,7 +1598,7 @@ const MODALS = {
           the headline emissions gap and avoided-damage figures on step ${STEP.climate}. It is a target, not a
           forecast: it does not say whether policies to meet it exist.</span></div></li>
         <li><div class="ico">📈</div><div><b>Income growth (step ${STEP.drivers})</b>
-          <span>Faster growth means more energy demand, which raises the electricity emissions on step
+          <span>Faster growth means more energy demand, which raises the emissions from electricity generation on step
           ${STEP.climate} unless generation is cleaner; it does not change the headline emissions gap, which
           follows your mitigation target. It also raises income per person, which lifts the money value placed on each avoided death
           and speeds the move off wood for cooking. Slower growth does the reverse.</span></div></li>
@@ -2846,7 +2846,7 @@ const VIEWS = {
                  fmtN(NGA.gensetShareAt(2050)*100,1)+"%", fmtN(NGA.allElectricityCO2(2050),1) ]; });
       state.drivers.mix=keep;
       return dataTable(["Low-emission share OF ALL ELECTRICITY","Intensity (g/kWh)",
-                        "Back-up generators","All-electricity emissions 2050 (Mt)"], rows); })();
+                        "Back-up generators","Generation emissions 2050 (Mt)"], rows); })();
     const savedTxt=(allSaved>=0?"−":"+")+fmtN(Math.abs(allSaved),1)+" Mt";
     return head(STEP.climate,d.title,`<p class="sub">${T(d.sub)}</p>`)+
     `<div class="body">
@@ -2894,7 +2894,7 @@ const VIEWS = {
        </div></div>
 
      <div class="panel">
-       <div class="chart-head"><div><h3>Electricity emissions in 2050</h3>
+       <div class="chart-head"><div><h3>Emissions from electricity generation in 2050</h3>
          <p class="cap" style="margin-bottom:4px">Grid and private back-up generators, carbon dioxide per year — ${state.drivers.mix}% low-emission</p>
          <p class="cap" style="margin:0;font-size:13.5px;color:var(--ink-2)">If today's ${(NGA_DATA.power.lowShareAll2023*100).toFixed(1)}% mix stayed as it is:
            <b>${fmtN(allHeld,1)} Mt</b> · Difference the mix makes, from cleaning generation alone: <b>${savedTxt}</b></p></div></div>
@@ -3163,7 +3163,7 @@ function outcomeRows(){
       fmtN(Math.abs(cum)/1000,2)+" bn t CO₂","against the selected baseline");
   add(S4,dmg>=0?"Global climate damage avoided":"Additional global climate damage",
       "US$"+fmtN(Math.abs(dmg)/1000,2)+" trillion","present value in 2025, valued with the IAM social cost of carbon");
-  add(S4,"Electricity emissions in 2050",fmtN(NGA.allElectricityCO2(2050),1)+" Mt",
+  add(S4,"Emissions from electricity generation in 2050",fmtN(NGA.allElectricityCO2(2050),1)+" Mt",
       `grid ${fmtN(NGA.powerNow(2050),1)} Mt + back-up generators ${fmtN(NGA.gensetCO2(2050),1)} Mt (conditional estimate)`);
   add(S4,"If today's electricity mix stayed",fmtN(NGA.allElectricityIfUnchanged(2050),1)+" Mt","in 2050, same electricity");
 
