@@ -1086,7 +1086,7 @@ const MODALS = {
 
   powerChart:{
     title:"How the electricity chart is built",
-    lede:"Two lines, one amount of electricity — grid and private back-up generators together. Both carry the same generation in every year — they differ only in what that generation is burned from, so the gap between them is the effect of the mix alone.",
+    lede:"Two lines, one amount of electricity — grid and private back-up generators together. Each line is that combined total, year by year. Both carry the same generation in every year — they differ only in what that generation is burned from, so the gap between them is the effect of the mix alone.",
     body:()=>{
       const P=NGA_DATA.power, mine=NGA.powerNow(2050), held=NGA.powerIfGridUnchanged(2050),
 
@@ -1598,7 +1598,7 @@ const MODALS = {
           the headline emissions gap and avoided-damage figures on step ${STEP.climate}. It is a target, not a
           forecast: it does not say whether policies to meet it exist.</span></div></li>
         <li><div class="ico">📈</div><div><b>Income growth (step ${STEP.drivers})</b>
-          <span>Faster growth means more energy demand, which raises the electricity emissions on step
+          <span>Faster growth means more energy demand, which raises the emissions from electricity generation on step
           ${STEP.climate} unless generation is cleaner; it does not change the headline emissions gap, which
           follows your mitigation target. It also raises income per person, which lifts the money value placed on each avoided death
           and speeds the move off wood for cooking. Slower growth does the reverse.</span></div></li>
@@ -2832,8 +2832,8 @@ const VIEWS = {
     const pyrs=[2023,...NGA_DATA.emissions.years.filter(yr=>yr>2023)];
     const held=pyrs.map(yr=>+NGA.allElectricityIfUnchanged(yr).toFixed(1));
     const yours=pyrs.map(yr=>+NGA.allElectricityCO2(yr).toFixed(1));
-    const pc={ title:"Emissions from electricity generation",
-      unit:"Mt carbon dioxide per year, 2023–2100 · grid and ◐ back-up generators · both lines carry the electricity your settings call for; only the mix differs",
+    const pc={ title:"Total emissions from electricity generation",
+      unit:"Mt carbon dioxide per year, 2023–2100 · aggregated: grid power stations plus ◐ back-up generators, added together each year · both lines carry the electricity your settings call for; only the mix differs",
       years:pyrs, baseline:held, pathway:yours, xTicks:[2023,2040,2060,2080,2100],
       yMax:Math.max(1,Math.ceil(Math.max(...held,...yours)/10)*10),
       s1:`Today's mix (${(NGA_DATA.power.lowShareAll2023*100).toFixed(1)}% low-emission)`,
@@ -2846,7 +2846,7 @@ const VIEWS = {
                  fmtN(NGA.gensetShareAt(2050)*100,1)+"%", fmtN(NGA.allElectricityCO2(2050),1) ]; });
       state.drivers.mix=keep;
       return dataTable(["Low-emission share OF ALL ELECTRICITY","Intensity (g/kWh)",
-                        "Back-up generators","All-electricity emissions 2050 (Mt)"], rows); })();
+                        "Back-up generators","Total generation emissions 2050 (Mt)"], rows); })();
     const savedTxt=(allSaved>=0?"−":"+")+fmtN(Math.abs(allSaved),1)+" Mt";
     return head(STEP.climate,d.title,`<p class="sub">${T(d.sub)}</p>`)+
     `<div class="body">
@@ -2894,8 +2894,8 @@ const VIEWS = {
        </div></div>
 
      <div class="panel">
-       <div class="chart-head"><div><h3>Electricity emissions in 2050</h3>
-         <p class="cap" style="margin-bottom:4px">Grid and private back-up generators, carbon dioxide per year — ${state.drivers.mix}% low-emission</p>
+       <div class="chart-head"><div><h3>Total emissions from electricity generation in 2050</h3>
+         <p class="cap" style="margin-bottom:4px">Aggregated: grid plus private back-up generators (split in the tiles below), carbon dioxide per year — ${state.drivers.mix}% low-emission</p>
          <p class="cap" style="margin:0;font-size:13.5px;color:var(--ink-2)">If today's ${(NGA_DATA.power.lowShareAll2023*100).toFixed(1)}% mix stayed as it is:
            <b>${fmtN(allHeld,1)} Mt</b> · Difference the mix makes, from cleaning generation alone: <b>${savedTxt}</b></p></div></div>
        ${tiles([
@@ -2920,6 +2920,8 @@ const VIEWS = {
          The back-up half is a <b>conditional estimate</b> rather than a measurement — it is the one marked ◐.</p>
          <p><span class="info-link" data-modal="powerChart" role="button" tabindex="0">ⓘ More about the estimate and its emission factor</span></p></details>
        <details class="more" data-keep="el-explain"><summary>What the two lines are, and how this chart is computed</summary>
+         <p>Each line is an aggregate: the carbon dioxide from grid power stations and from private back-up
+         generators, added together for each year. These are yearly totals, not a running sum over time.</p>
          <p>Nigeria's power stations emitted about <b>${fmtN(now,1)} Mt</b> in 2023; adding the
          estimated private back-up fleet takes all Nigerian electricity to about
          <b>${fmtN(allNow,1)} Mt</b>, beside a national total of
@@ -3163,7 +3165,7 @@ function outcomeRows(){
       fmtN(Math.abs(cum)/1000,2)+" bn t CO₂","against the selected baseline");
   add(S4,dmg>=0?"Global climate damage avoided":"Additional global climate damage",
       "US$"+fmtN(Math.abs(dmg)/1000,2)+" trillion","present value in 2025, valued with the IAM social cost of carbon");
-  add(S4,"Electricity emissions in 2050",fmtN(NGA.allElectricityCO2(2050),1)+" Mt",
+  add(S4,"Total emissions from electricity generation in 2050",fmtN(NGA.allElectricityCO2(2050),1)+" Mt",
       `grid ${fmtN(NGA.powerNow(2050),1)} Mt + back-up generators ${fmtN(NGA.gensetCO2(2050),1)} Mt (conditional estimate)`);
   add(S4,"If today's electricity mix stayed",fmtN(NGA.allElectricityIfUnchanged(2050),1)+" Mt","in 2050, same electricity");
 
