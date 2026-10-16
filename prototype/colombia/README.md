@@ -4,7 +4,8 @@ This folder holds the Colombia decision-support prototype, the counterpart of th
 prototype in `prototype/africa-prototype.html`.
 
 **Status:** placeholder. No prototype file has been added yet, and nothing for Colombia is
-published.
+published. A design proposal for v2 is in `design-v2/` (canvas sources, not published; see its
+`README.md`).
 
 ## Publishing on GitHub Pages
 

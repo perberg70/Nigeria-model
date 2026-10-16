@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Step 3 — Global scenario</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./proto.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#EDEFF1}
+a{color:#1D4ED8}a:hover{color:#0E5C3F}
+</style>
+</helmet>
+<div class="page">
+<div class="app">
+  <header class="hdr">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6C14 10 9 18 10 27c5 1 10-2 13-7 2-4 2-9 1-14z" fill="#7DBE3C"></path><path d="M31 9c-5 6-6 13-4 19 6-1 11-6 12-12 .5-3 0-6-1-9-2 .5-5 1-7 2z" fill="#1E7B3E"></path><path d="M9 29c2 8 9 13 17 13 3 0 6-1 9-2-3-7-10-12-18-12-3 0-6 .3-8 1z" fill="#1D6FB8"></path><path d="M10 27c-1 6 1 11 5 14" stroke="#0B3B54" stroke-width="1.4" fill="none" stroke-linecap="round"></path></svg>
+      <div><div class="logo-txt">EfD Colombia <span class="proto-badge">Prototype</span></div>
+      <div class="tagline">Environment for Development in Latin America</div></div>
+    </div>
+    <nav class="stepbar" aria-label="Steps">
+      <a class="st done" href="Main.dc.html"><span class="pip">✓</span><span class="lbl">Country</span></a>
+      <a class="st done" href="Step2.dc.html"><span class="pip">✓</span><span class="lbl">Your pathway</span></a>
+      <a class="st on" href="Step3.dc.html" aria-current="step"><span class="pip">3</span><span class="lbl">Global scenario</span></a>
+      <span class="sep" aria-hidden="true"></span>
+      <a class="st" href="Step4.dc.html"><span class="pip">4</span><span class="lbl">Climate &amp; SCC</span></a>
+      <a class="st" href="Step5.dc.html"><span class="pip">5</span><span class="lbl">Air pollution</span></a>
+      <a class="st" href="Step6.dc.html"><span class="pip">6</span><span class="lbl">Climate impacts</span></a>
+    </nav>
+    <a class="hdr-link" href="InfoLayers.dc.html">About this tool</a>
+  </header>
+  <div class="strip">
+    <span class="k">Your settings</span>
+    <a href="Main.dc.html"><b>Colombia</b></a>
+    <a href="Step2.dc.html">CO₂ 2050 <b>−60%</b></a>
+    <a href="Step2.dc.html">GDP <b>2.0%</b></a>
+    <a href="Step2.dc.html">Electrification <b>40%</b></a>
+    <a href="Step2.dc.html">Low-emission power <b>90%</b></a>
+    <a href="Step3.dc.html">SSP <b>{{sspLabel}}</b>{{sspNote}}</a>
+  </div>
+
+  <section class="content">
+    <div class="title-row">
+      <svg class="title-ico" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="20" fill="none" stroke="#0E5C3F" stroke-width="2"></circle><ellipse cx="26" cy="26" rx="9" ry="20" fill="none" stroke="#0E5C3F" stroke-width="2"></ellipse><path d="M6 26h40M10 15h32M10 37h32" stroke="#0E5C3F" stroke-width="2"></path></svg>
+      <div class="title-main">
+        <p class="eyebrow">Step 3 of 6 · Settings</p>
+        <h1>Choose the preferred global pathway</h1>
+        <p class="sub">Shared Socioeconomic Pathways (SSPs) describe different possible futures for the world. They influence global emissions, temperatures and impacts.</p>
+      </div>
+    </div>
+
+    <div class="body">
+      <p class="scenario-cue">Choose a scenario. Selecting a card also opens its panel — what it assumes, and what it means for Colombia.</p>
+      <p class="default-line"><span aria-hidden="true">ⓘ</span><span><b>SSP2-4.5 is the default setting</b> if you prefer not to make a choice. <a class="info-link" href="InfoLayers.dc.html" style="margin-left: 6px">About these scenarios</a></span></p>
+
+      <div class="cards">
+        <sc-for list="{{cards}}" as="o" hint-placeholder-count="5">
+          <button type="button" class="{{o.cls}}" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}">
+            <sc-if value="{{o.on}}" hint-placeholder-val="{{ false }}"><span class="tick" aria-hidden="true">✓</span></sc-if>
+            <span style="margin: 0 0 12px; font-size: 17px; font-weight: 700; color: #0B3B54">{{o.label}}</span>
+            <svg class="sketch" viewBox="0 0 120 44" preserveAspectRatio="none" aria-hidden="true"><path d="M4 43H116" stroke="#DCE2DC" fill="none"></path><path d="{{o.d}}" stroke="{{o.c}}" stroke-width="2.5" fill="none"></path></svg>
+            <span class="nm">{{o.name}}</span>
+            <span style="font-size: 12.8px; color: #40525E; line-height: 1.45">{{o.tag}}</span>
+            <span style="margin-top: 8px; font-size: 12.8px; color: #40525E; line-height: 1.45">{{o.desc}}</span>
+          </button>
+        </sc-for>
+      </div>
+      <p class="sketch-note">The small curves sketch the direction of global emissions described on each card; they are not data.</p>
+
+      <div class="actions">
+        <a class="btn back" href="Step2.dc.html"><span aria-hidden="true">←</span> Back: Shape your country's future</a>
+        <a class="btn" href="Step4.dc.html">See results <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { ssp: 'ssp245' };
+  }
+  renderVals() {
+    const O = [
+      ['ssp119', 'SSP1-1.9', 'Very low emissions', 'Around 1.5°C', 'Sustainability with very rapid global emissions reductions', 'M4 24 C30 26 46 38 70 41 S110 42 116 42', '#0E5C3F'],
+      ['ssp126', 'SSP1-2.6', 'Low emissions', 'Well below 2°C', 'Sustainability with strong and sustained global emissions reductions', 'M4 24 C34 24 56 32 80 36 S110 39 116 39', '#0E5C3F'],
+      ['ssp245', 'SSP2-4.5', 'Intermediate emissions', 'Middle of the road', 'Global emissions remain around current levels before declining', 'M4 24 C40 20 70 21 90 26 S110 32 116 34', '#0E5C3F'],
+      ['ssp370', 'SSP3-7.0', 'High emissions', 'Regional rivalry', 'Global emissions continue to rise through much of the century', 'M4 24 C40 19 76 11 116 6', '#B4531B'],
+      ['ssp585', 'SSP5-8.5', 'Very high emissions', 'Fossil-fuelled development', 'A high-end pathway with rapidly increasing fossil-fuel use', 'M4 24 C30 17 60 6 116 2', '#B4531B']
+    ];
+    const ssp = this.state.ssp;
+    const cards = O.map(o => ({
+      id: o[0], label: o[1], name: o[2], tag: o[3], desc: o[4], d: o[5], c: o[6],
+      on: o[0] === ssp, pressed: o[0] === ssp ? 'true' : 'false',
+      cls: o[0] === ssp ? 'card on' : 'card',
+      pick: () => this.setState({ ssp: o[0] })
+    }));
+    const sel = O.find(o => o[0] === ssp);
+    return { cards, sspLabel: sel[1], sspNote: ssp === 'ssp245' ? ' (default)' : '' };
+  }
+}
+</script>
+</body>
+</html>

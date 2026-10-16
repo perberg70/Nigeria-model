@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Info layers, opened</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./proto.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#EDEFF1}
+a{color:#1D4ED8}a:hover{color:#0E5C3F}
+</style>
+</helmet>
+<div class="page" style="width: 1440px; height: 1500px; box-sizing: border-box; padding: 40px; overflow: hidden">
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; align-items: start">
+
+    <div style="display: flex; flex-direction: column; gap: 22px">
+      <p class="eyebrow" style="margin: 0">Layer 2 · a lever's own fold, opened</p>
+      <div class="driver" style="grid-template-columns: 1fr; margin: 0">
+        <div><h2 class="dname">National climate mitigation target</h2><div class="dshort">CO₂ in 2050 against 2024 · today 92.7 Mt</div></div>
+        <details class="more" open=""><summary>About this lever</summary>
+          <p>Target for fossil-fuel and industrial carbon dioxide emissions in 2050, expressed as a change from Colombia's 2024 level. Land use is not part of this target.</p>
+          <p>● Observed 2024: 92.7 Mt CO₂ (Global Carbon Budget)</p>
+          <div class="fold-list" style="margin-top: 10px">
+            <details open=""><summary>What has Colombia already committed to?</summary>
+              <p>Absolute limits on net national emissions of all six greenhouse gases, including agriculture, forestry and other land use:</p>
+              <ul class="chain">
+                <li><span class="yr">2030</span><span>At most <b>169.44 Mt CO₂eq</b></span></li>
+                <li><span class="yr">2035</span><span>At most <b>155 to 161 Mt CO₂eq</b></span></li>
+              </ul>
+              <p><b>Not on this slider's basis</b> — gases, sectors and target year all differ, so neither figure can be read off the other.</p>
+              <p class="cite"><b>Source:</b> NDC 3.0 — Transformaciones para la Vida, Table 1, p. 54.</p>
+            </details>
+            <details><summary>Where this figure comes from</summary>
+              <p>Global Carbon Budget, archived annual series: 92.6594 Mt in 2024.</p>
+            </details>
+          </div>
+        </details>
+      </div>
+
+      <p class="eyebrow" style="margin: 6px 0 0">Layer 3 · model range on hover or focus</p>
+      <div style="position: relative">
+        <div class="tile" style="border-color: #3B82F6; box-shadow: 0 0 0 3px rgba(59,130,246,.18)">
+          <div class="lbl">National rainfall<small>SSP2-4.5, CCKP ensemble median</small></div>
+          <div class="val">+38 mm</div>
+          <div class="unit">per year, 2080–2099 against 1995–2014</div>
+        </div>
+        <div class="tipbox" style="width: 290px; margin: 10px auto 0">10th–90th percentile across climate models: −162.7 to +198.5 mm/year. Median: +38.4 mm/year. The range spans zero.</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 22px">
+      <p class="eyebrow" style="margin: 0">Layers 1–6 · how much detail you see</p>
+      <div class="modal">
+        <h2>How it works</h2>
+        <p class="lede">The step bar at the top shows six steps: three choices, then three sets of results. Within each step the same content is stacked in layers, shallowest first. Nothing below the surface is hidden — it is folded away until you ask for it.</p>
+        <ul class="chain" style="margin-top: 0">
+          <li><span class="yr">1</span><span><b>The answer.</b> The headline figure, the chart or the map.</span></li>
+          <li><span class="yr">2</span><span><b>What it means, in plain words.</b> The caption beside every figure and the label on every lever: unit, year, and what is compared with what.</span></li>
+          <li><span class="yr">3</span><span><b>A term or range where you meet it.</b> Hover or keyboard focus gives a one-sentence definition or the model range. Nothing navigates away.</span></li>
+          <li><span class="yr">4</span><span><b>What could make this higher or lower.</b> The fold on every results screen — the one layer put in front of you rather than waiting to be asked.</span></li>
+          <li><span class="yr">5</span><span><b>The full explanation.</b> The four numbered entry points on the opening screen and the folds beside each chart.</span></li>
+          <li><span class="yr">6</span><span><b>The numbers, and the sources.</b> "Show data table" under each chart, and the papers behind each step.</span></li>
+        </ul>
+      </div>
+
+      <p class="eyebrow" style="margin: 6px 0 0">Layer 5 · a results fold, opened</p>
+      <div class="fold-list">
+        <details open=""><summary>What the three lines are, and how this chart is computed</summary>
+          <p>Colombia's profile is anchored at <b>92.7 Mt</b> of fossil-fuel and industrial CO₂ in 2024. The dashed grey line is the median of 6 Colombia SSP curves; the pale band spans the full model range. The green line reaches the 2050 target you set at step 2 and continues at the same proportional rate. Land use is excluded.</p>
+        </details>
+        <details><summary>Show data table</summary><p>Rows for 2024–2100.</p></details>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 22px">
+      <p class="eyebrow" style="margin: 0">Layer 6 · a region, selected on either map</p>
+      <div class="modal" role="dialog" aria-label="Andean: departments and CCKP estimates">
+        <button type="button" class="x" aria-label="Close">×</button>
+        <h2>Andean: departments and CCKP estimates</h2>
+        <p class="lede">Department-level CCKP CMIP6 ensemble medians under <b>SSP2-4.5</b>, 2080–2099 against 1995–2014.</p>
+        <div style="background: #F4F8FA; border: 1px solid #E3E8EB; border-radius: 10px; padding: 10px">
+          <dc-import name="RegionMap" fills="{{fills}}" tips="{{tips}}" h="{{mapH}}" label="Colombia with the Andean region highlighted" hint-size="100%,210px"></dc-import>
+        </div>
+        <table class="dt">
+          <thead><tr><th>Department</th><th class="n">Temperature change</th><th class="n">Yearly rainfall change</th></tr></thead>
+          <tbody>
+            <tr><td>Antioquia</td><td class="n">+2.11 °C</td><td class="n">+150 mm/yr</td></tr>
+            <tr><td>Bogotá, D.C.</td><td class="n">+2.30 °C</td><td class="n">+6 mm/yr</td></tr>
+            <tr><td>Boyacá</td><td class="n">+2.35 °C</td><td class="n">−13 mm/yr</td></tr>
+            <tr><td>Caldas</td><td class="n">+2.09 °C</td><td class="n">+94 mm/yr</td></tr>
+            <tr><td>Cundinamarca</td><td class="n">+2.23 °C</td><td class="n">+10 mm/yr</td></tr>
+            <tr><td>Huila</td><td class="n">+2.16 °C</td><td class="n">−2 mm/yr</td></tr>
+            <tr><td>Norte de Santander</td><td class="n">+2.43 °C</td><td class="n">+7 mm/yr</td></tr>
+            <tr><td>Quindío</td><td class="n">+2.17 °C</td><td class="n">+141 mm/yr</td></tr>
+            <tr><td>Risaralda</td><td class="n">+2.14 °C</td><td class="n">+230 mm/yr</td></tr>
+            <tr><td>Santander</td><td class="n">+2.39 °C</td><td class="n">+13 mm/yr</td></tr>
+            <tr><td>Tolima</td><td class="n">+2.21 °C</td><td class="n">+31 mm/yr</td></tr>
+          </tbody>
+        </table>
+        <p class="cite" style="margin-top: 12px">Across the whole region the models span +1.30 to +2.98 °C in temperature and −216 to +220 mm/yr in rainfall — wider than the differences between the departments above. These are department medians, not the 10th–90th percentile ranges shown on hover.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const grey = '#E3E8EB';
+    return {
+      mapH: 210,
+      fills: { Amazonia: grey, Andean: '#D54D22', Caribbean: grey, Orinoquia: grey, Pacific: grey },
+      tips: {
+        Amazonia: 'Amazonia', Caribbean: 'Caribbean', Orinoquia: 'Orinoquia', Pacific: 'Pacific',
+        Andean: 'Andean: median +2.21 °C; 10th–90th percentile across 28 climate models +1.30 to +2.98 °C'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
