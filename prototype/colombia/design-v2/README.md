@@ -60,13 +60,20 @@ Two deliberate departures from v2, both from the review below:
   script outside the repository; there is no boundary file, configuration entry or committed
   build step. Before the map moves into a published prototype, add the boundary file and a
   `--config`-driven build step on the pattern of `scripts/build_zone_map.py`.
-- **Gap — licence.** ODbL requires attribution (given in the map captions) and share-alike for
-  derived databases. Check how that applies before publishing.
+- **Licence.** The department geometry in `RegionMap.dc.html` is derived from OpenStreetMap
+  data via geoBoundaries and is made available under the Open Database License 1.0
+  (https://opendatacommons.org/licenses/odbl/1-0/), © OpenStreetMap contributors. That notice
+  covers the geometry only, not the rest of this folder. Whether simplified polygons embedded in
+  a page count as a derivative database or a produced work has not been settled; the notice takes
+  the cautious reading, because this repository is public and the branch already distributes
+  the file.
 
 ## Known inconsistencies inherited from v2 (not fixed here)
 
-- Step 4's "What the three lines are" fold in v2 describes an older method than the visible
-  paragraph beside it; the design uses the visible paragraph.
+- Step 4's "What the three lines are" fold in v2 still describes the older "pressure curve"
+  method (a normalized final-energy-intensity factor). The paragraph beside it describes the
+  current one: the paired R5 carbon index with reported biomass CCS added back. The design's fold
+  uses that current wording.
 - v2's health and uncertainty panels give US$3.0m per statistical life; its result tiles
   compute at US$1.67m.
 - The step 2 slider references (17.8% electrification, 76.4% low-emission; UPME BECO 2023)
