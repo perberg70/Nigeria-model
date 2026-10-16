@@ -26,6 +26,8 @@ run after enabling Pages publishes the site. The browser links will be:
 
 - Landing page: `https://perberg70.github.io/Nigeria-model/`
 - Nigeria model: `https://perberg70.github.io/Nigeria-model/nigeria/`
+- Colombia model (once `prototype/colombia/colombia-prototype.html` exists):
+  `https://perberg70.github.io/Nigeria-model/colombia/`
 
 These links are public. Check the embedded model content and source-data licences
 before enabling Pages. For a future model, add its HTML file to the repository,
@@ -39,7 +41,7 @@ the layout and tooling of the TRA420 Western Balkans model (`TRA420_Modeling_202
 
 | Path | Contents |
 |---|---|
-| `prototype/` | The prototype, `africa-prototype.html` |
+| `prototype/` | The Nigeria prototype, `africa-prototype.html`; `colombia/` holds the Colombia prototype (placeholder, see its `README.md`) |
 | `config.yaml` | Every modelling value the scripts use, with its source; all scripts require `--config` |
 | `src/` | Library packages (one doc each in `docs/`): `scenario_data`, `ssp_baseline`, `demand_analysis`, `etp_extraction`, `regional_climate`, plus `config_paths.py` and `units.py` |
 | `scripts/` | Thin command-line entry points (`run_*.py`, `fetch_regional_climate.py`, `build_zone_map.py`) |
