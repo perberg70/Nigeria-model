@@ -69,7 +69,7 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
         <div class="tile hero">
           <div class="lbl">Estimated global climate damage avoided<small>2025–2100, valued using the IAM Social Cost of Carbon</small></div>
           <div class="val">US$2.86</div>
-          <div class="unit">trillion, present value in 2025</div>
+          <div class="unit">trillion, present value in 2025 (PPP US$ of 2025)</div>
         </div>
       </div>
 
@@ -90,23 +90,27 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
           <details><summary>What runs the calculations</summary>
             <p>The integrated assessment model (IAM) is the calculation engine. It combines scenario data, climate modelling and economic relationships to work out the consequences of the choices you made.</p>
             <ul class="chain">
-              <li><span class="yr">SSPs</span><span><b>The scenarios you pick from.</b> Five standard storylines about how the world develops; the starting assumption, not a result. <a class="paper" href="https://doi.org/10.1016/j.gloenvcha.2016.05.009">Riahi et al. (2017) ↗</a></span></li>
+              <li><span class="yr">SSPs</span><span><b>The scenarios you pick from.</b> Five pathways, each pairing a socioeconomic storyline (SSP1 appears twice) with a forcing level in 2100; the starting assumption, not a result. <a class="paper" href="https://doi.org/10.1016/j.gloenvcha.2016.05.009">Riahi et al. (2017) ↗</a></span></li>
               <li><span class="yr">FaIR</span><span><b>The climate model.</b> Takes emissions and works out temperature — a fast, simplified model calibrated against the large ones. <a class="paper" href="https://doi.org/10.5194/gmd-14-3007-2021">Leach et al. (2021) ↗</a></span></li>
               <li><span class="yr">DICE</span><span><b>The economy.</b> Projects population, productivity and capital for each scenario — how large the economy is that the damage lands on. <a class="paper" href="https://doi.org/10.1073/pnas.2312030121">Barrage &amp; Nordhaus (2024) ↗</a></span></li>
               <li><span class="yr">Damage</span><span><b>Warming into cost.</b> The most contested step in the chain; the answer moves a lot with the curve used. <a class="paper" href="https://doi.org/10.1007/s10640-025-01016-7">Howard &amp; Sterner (2025) ↗</a></span></li>
             </ul>
           </details>
           <details><summary>This is one possible result — what could make it higher or lower</summary>
-            <p>Every number on this screen is a single figure from one IAM parameter set. Read it as a pathway comparison, not a precise forecast. Four choices move it most:</p>
+            <p>Every number on this screen is a single figure from one IAM parameter set. Read it as a pathway comparison, not a precise forecast. Three choices move it most:</p>
             <ul class="chain">
-              <li><span class="yr">ECS</span><span><b>How strongly the planet responds to CO₂</b> — set to 3 °C per doubling; the supported range is roughly 2 to 5 °C. <a class="paper" href="https://doi.org/10.1029/2019RG000678">Sherwood et al. (2020) ↗</a></span></li>
+              <li><span class="yr">ECS</span><span><b>How strongly the planet responds to CO₂</b> — set to 3 °C per doubling. Sherwood et al. give 2.6–3.9 °C as a 66% range and 2.3–4.7 °C as a 90% range. <a class="paper" href="https://doi.org/10.1029/2019RG000678">Sherwood et al. (2020) ↗</a></span></li>
               <li><span class="yr">Curve</span><span><b>How damage grows with warming</b> — different published curves give substantially different costs from identical warming. <a class="paper" href="https://doi.org/10.1073/pnas.2410733121">Moore et al. (2024) ↗</a></span></li>
-              <li><span class="yr">Rate</span><span><b>How much the future counts</b> — the discount rate can change the cost of carbon several-fold. <a class="paper" href="https://doi.org/10.1257/pol.20160240">Drupp et al. (2018) ↗</a></span></li>
+              <li><span class="yr">Rate</span><span><b>How much the future counts</b> — this tool uses a 0.5% pure time-preference rate; economists disagree about the right rate. <a class="paper" href="https://doi.org/10.1257/pol.20160240">Drupp et al. (2018) ↗</a></span></li>
             </ul>
+          </details>
+          <details><summary>How the cost of carbon is worked out</summary>
+            <p>One extra tonne of CO₂ is added in 2025, the climate model is run again, and the difference in damage over the following 450 years is added up and discounted by the Ramsey rule (pure time preference 0.5%, elasticity 1). Under SSP2-4.5 this gives <b>US$718 per tonne</b> in 2025, in PPP US$ of 2025.</p>
+            <p>That is high against the range most often quoted in policy: the damage curve used is far steeper than the classic quadratic one, and 0.5% is a low time-preference rate. Both are stated choices.</p>
           </details>
           <details><summary>What the three lines are, and how this chart is computed</summary>
             <p>Colombia's national profile is anchored at <b>92.7 Mt</b> of fossil-fuel and industrial carbon dioxide in 2024 and <b>60.3 Mt</b> in 2005. The dashed grey line is the median of 6 Colombia SSP curves. Each uses Colombian population and GDP per capita, a paired IIASA Latin America (R5) final-energy factor, and that R5 run's indexed fossil/industrial CO₂ after adding back reported biomass CCS. The pale grey band spans the full available model range.</p>
-            <p>This is an SSP-scaled prototype baseline, not a calibrated or forcing-consistent Colombian forecast. Some adjusted model values remain negative. The green line reaches the 2050 mitigation target you set at step 2 and continues at the same proportional rate; it does not estimate a technology mix or biomass CCS. Land-use emissions and removals are excluded.</p>
+            <p>This is an SSP-scaled prototype baseline, not a calibrated or forcing-consistent Colombian forecast. Some adjusted model values remain negative; the available rows do not explain every removal or establish one for Colombia. This chart does not respond to the energy sliders. The green line reaches the 2050 mitigation target you set at step 2 and continues at the same proportional rate; it does not estimate a technology mix or biomass CCS. Land-use emissions and removals are excluded.</p>
           </details>
           <details><summary>Show data table</summary>
             <div class="scroll-x"><table class="dt">
@@ -133,7 +137,8 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
 
       <div class="panel">
         <div class="chart-head"><div><h3>Emissions from electricity generation in 2050</h3>
-          <p class="cap" style="margin: 0">Grid, life-cycle CO₂e per year — with your 40% electrification and 90% low-emission generation</p></div></div>
+          <p class="cap" style="margin: 0">Grid, life-cycle CO₂e per year — with your 40% electrification and 90% low-emission generation</p>
+          <p class="cap" style="margin: 4px 0 0; color: #40525E">Do not add these to the 37 Mt above: that chart is economy-wide fossil and industrial CO₂; these are life-cycle CO₂e from grid generation, which overlap with it.</p></div></div>
         <div class="tiles" style="margin-top: 14px">
           <div class="tile">
             <div class="lbl">SSP power baseline<small>median across 6 Latin America model runs</small></div>
@@ -159,22 +164,28 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
 
         <div class="fold-list" aria-label="Electricity chart information" style="margin-top: 14px">
           <details><summary>How this curve is computed</summary>
-            <p>Ember reports about <b>26.6 Mt</b> life-cycle CO₂e from <b>89.14 TWh</b> of Colombian generation in 2024. The dashed curve uses national SSP population and income, a normalized regional energy and electricity path, and a regional mix change indexed to Ember's Colombian mix. It is the median of 6 model runs; that range is not a probability interval or a published Colombia forecast.</p>
+            <p>Ember reports about <b>26.6 Mt</b> life-cycle CO₂e from <b>89.14 TWh</b> of Colombian generation in 2024. The dashed curve uses national SSP population and income, a normalized regional energy and electricity path, and a regional mix change indexed to Ember's Colombian mix. It is the median of 6 model runs. The range across those runs, in the data table below, is not a probability interval or a published Colombia forecast.</p>
           </details>
           <details><summary>Show the inputs and their sources</summary>
             <div class="scroll-x"><table class="dt">
               <thead><tr><th>Input</th><th class="n">Value for Colombia</th><th>Source</th></tr></thead>
               <tbody>
                 <tr><td>Total final energy, 2024</td><td class="n">1,498,690 TJ</td><td>UPME BECO 2024</td></tr>
+                <tr><td>Demand response to income</td><td class="n">exp(0.48 L + 0.065 L²), population scaled</td><td>Burke &amp; Csereklyei Table 5; primary-energy transfer, not estimated for Colombia</td></tr>
+                <tr><td>R5 energy residual, 2050</td><td class="n">92.7% of 2024</td><td>IIASA SSP 2018 R5 paired final energy, GDP and population</td></tr>
                 <tr><td>Final energy in 2050 on your settings</td><td class="n">1,889,057 TJ</td><td>your GDP slider + SSP2 + R5 residual</td></tr>
+                <tr><td>Electricity in final energy, 2024</td><td class="n">282,640 TJ</td><td>UPME BECO 2024 (EE SIN + AUT COG)</td></tr>
                 <tr><td>Electricity share of final energy, 2024</td><td class="n">18.9%</td><td>UPME BECO 2024</td></tr>
                 <tr><td>Low-emission share of generation, 2024</td><td class="n">61.34%</td><td>Ember 2024</td></tr>
-                <tr><td>Your 2050 generation mix</td><td class="n">90.0%</td><td>your slider</td></tr>
+                <tr><td>Your 2050 generation mix</td><td class="n">90.0%</td><td>your slider (99.9% numerical bound)</td></tr>
                 <tr><td>Fossil generation emission factor</td><td class="n">719.4 gCO₂e/kWh</td><td>Ember 2024</td></tr>
                 <tr><td>Low-emission generation factor</td><td class="n">32.9 gCO₂e/kWh</td><td>Ember 2024</td></tr>
+                <tr><td>Generation, 2024</td><td class="n">89.14 TWh</td><td>Ember 2024</td></tr>
                 <tr><td>Published power intensity, 2024</td><td class="n">298.3 gCO₂e/kWh</td><td>Ember 2024</td></tr>
+                <tr><td>SSP baseline, 2050</td><td class="n">39.0 Mt CO₂e</td><td>IIASA SSP 2018 R5 indexed to Ember 2024</td></tr>
               </tbody>
             </table></div>
+            <p>The 2024 low-emission share reflects a dry year: 61.3% in 2024 against 77.0% in 2025 on a hydro-dominated grid. Whether to anchor on one year or a multi-year average has not been decided. Step 2's slider marks use UPME 2023 figures (17.8% and 76.4%), a different year and definition.</p>
           </details>
           <details><summary>Which sources make up this grid, and how to change them</summary>
             <p>The low-emission slider at step 2 fixes the size of each group; the optional source editor sets the split within a group. Wind set to 40% of a 30% low-emission share is 12% of all electricity. Every source carries its own life-cycle factor — bioenergy at 216 g/kWh is not the same "clean" as hydro at 24. <a class="info-link" href="Step2.dc.html">Open the source editor at step 2</a></p>

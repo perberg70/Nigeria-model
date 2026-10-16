@@ -31,11 +31,25 @@ Every value is copied from `colombia-prototype-v2.html` rendered at its default 
 generation 90%). Nothing recomputes: the step 2 sliders and step 3 cards respond on their own
 artboard only. Treat any figure here as a copy of v2, not as an independent result.
 
+Two deliberate departures from v2, both from the review below:
+
+- **Step 6 region centres** come from the CCKP region ensemble (MSc-thesis
+  `02_literature/data/south_america_regional_climate/cckp_cmip6_region_ensemble_2080-2099.csv`),
+  so each region's centre and its 10th–90th range describe one distribution. v2 shows the median
+  of the department medians beside the ensemble range. Values that change: temperature Amazonia
+  2.04 → 2.00, Caribbean 2.09 → 2.06, Orinoquia 2.32 → 2.28, Pacific 2.07 → 1.99 °C; rainfall
+  Amazonia −25 → −23, Andean +13 → +48, Caribbean −29 → −13, Orinoquia −28 → −36,
+  Pacific +435 → +445 mm/yr.
+- **Step 5 ambient interval** is WHO AIR_41's published 11,051–20,348 (MSc-thesis
+  `02_literature/data/colombia_air_pollution/who_air41_colombia_2021.csv`), not v2's 11,050–20,353,
+  which comes from fixed multipliers.
+
 ## Department map
 
 - **Source:** geoBoundaries gbOpen COL ADM1, simplified release (boundary ID
   `COL-ADM1-13589884`; source OpenStreetMap, Wambacher; boundary year 2017; built 2023-12-12),
-  licence ODbL 1.0, downloaded 2026-10-16.
+  licence ODbL 1.0 (© OpenStreetMap contributors), downloaded 2026-10-16. The mainland drawing
+  holds 31 departments and Bogotá D.C.
 - **Method:** `regional_climate.zone_geometry.build_zone_map` from this repository (commit
   `1ca6791`), simplification tolerance 0.06°; polygons under 0.01 square degrees dropped;
   San Andrés, Providencia y Santa Catalina excluded from the mainland drawing and shown as an
@@ -56,7 +70,16 @@ artboard only. Treat any figure here as a copy of v2, not as an independent resu
 - v2's health and uncertainty panels give US$3.0m per statistical life; its result tiles
   compute at US$1.67m.
 - The step 2 slider references (17.8% electrification, 76.4% low-emission; UPME BECO 2023)
-  differ from the step 4 inputs table (18.9%, BECO 2024; 61.34%, Ember 2024).
+  differ from the step 4 inputs table (18.9%, BECO 2024; 61.34%, Ember 2024). The design now
+  labels each with its year and source and says the anchor year is undecided.
+- v2 records a value-per-life range (US$1.21m–7.81m) and says it is disclosed on screen, but never
+  renders it. The design shows it.
+- Two sources behind displayed figures are not archived in either repository: the NDC 3.0 PDF
+  (the design labels its figures "as quoted in v2") and the UPME BECO 2023 edition, whose 2023
+  total (1,528,901 TJ) differs from the revised workbook's 1,497,259 TJ.
 
-An independent `thesis-gap-flagger` review of this design is in progress; its triage is
-recorded in MSc-thesis `09_project_management/review_log.md`.
+## Review
+
+An independent `thesis-gap-flagger` review ran on 2026-10-16. Its triage is the 2026-10-16
+`thesis-gap-flagger` entry in MSc-thesis `09_project_management/review_log.md`; this revision
+carries the accepted fixes.

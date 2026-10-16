@@ -55,7 +55,13 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
 
     <div class="body">
       <p class="scenario-cue">Choose a scenario. Selecting a card also opens its panel — what it assumes, and what it means for Colombia.</p>
-      <p class="default-line"><span aria-hidden="true">ⓘ</span><span><b>SSP2-4.5 is the default setting</b> if you prefer not to make a choice. <a class="info-link" href="InfoLayers.dc.html" style="margin-left: 6px">About these scenarios</a></span></p>
+      <p class="default-line"><span aria-hidden="true">ⓘ</span><span><b>SSP2-4.5 is the default setting</b> if you prefer not to make a choice.</span></p>
+      <div class="fold-list" style="margin-top: 10px">
+        <details><summary>About these scenarios</summary>
+          <p>Each pathway pairs a socioeconomic storyline (the part before the hyphen) with the approximate radiative forcing it reaches in 2100, in watts per square metre (the number after it). A larger number generally means more warming. None of the five is a prediction or the expected outcome.</p>
+          <p>SSP1-1.9 and SSP1-2.6 share the same sustainability storyline and differ in how fast global emissions fall: treat them as two climate pathways, not two socioeconomic worlds. Your choice here sets the world, not your country — what Colombia does is the separate choice at step 2.</p>
+        </details>
+      </div>
 
       <div class="cards">
         <sc-for list="{{cards}}" as="o" hint-placeholder-count="5">
@@ -88,11 +94,11 @@ class Component extends DCLogic {
   }
   renderVals() {
     const O = [
-      ['ssp119', 'SSP1-1.9', 'Very low emissions', 'Around 1.5°C', 'Sustainability with very rapid global emissions reductions', 'M4 24 C30 26 46 38 70 41 S110 42 116 42', '#0E5C3F'],
-      ['ssp126', 'SSP1-2.6', 'Low emissions', 'Well below 2°C', 'Sustainability with strong and sustained global emissions reductions', 'M4 24 C34 24 56 32 80 36 S110 39 116 39', '#0E5C3F'],
-      ['ssp245', 'SSP2-4.5', 'Intermediate emissions', 'Middle of the road', 'Global emissions remain around current levels before declining', 'M4 24 C40 20 70 21 90 26 S110 32 116 34', '#0E5C3F'],
-      ['ssp370', 'SSP3-7.0', 'High emissions', 'Regional rivalry', 'Global emissions continue to rise through much of the century', 'M4 24 C40 19 76 11 116 6', '#B4531B'],
-      ['ssp585', 'SSP5-8.5', 'Very high emissions', 'Fossil-fuelled development', 'A high-end pathway with rapidly increasing fossil-fuel use', 'M4 24 C30 17 60 6 116 2', '#B4531B']
+      ['ssp119', 'SSP1-1.9', 'Very low emissions', 'Sustainability · 1.9 W/m² in 2100', 'Sustainability with very rapid global emissions reductions', 'M4 24 C30 26 46 38 70 41 S110 42 116 42', '#0E5C3F'],
+      ['ssp126', 'SSP1-2.6', 'Low emissions', 'Sustainability · 2.6 W/m² in 2100', 'Sustainability with strong and sustained global emissions reductions', 'M4 24 C34 24 56 32 80 36 S110 39 116 39', '#0E5C3F'],
+      ['ssp245', 'SSP2-4.5', 'Intermediate emissions', 'Middle of the road · 4.5 W/m² in 2100', 'Global emissions remain around current levels before declining', 'M4 24 C40 20 70 21 90 26 S110 32 116 34', '#0E5C3F'],
+      ['ssp370', 'SSP3-7.0', 'High emissions', 'Regional rivalry · 7.0 W/m² in 2100', 'Global emissions continue to rise through much of the century', 'M4 24 C40 19 76 11 116 6', '#B4531B'],
+      ['ssp585', 'SSP5-8.5', 'Very high emissions', 'Fossil-fuelled development · 8.5 W/m² in 2100', 'A high-end pathway with rapidly increasing fossil-fuel use', 'M4 24 C30 17 60 6 116 2', '#B4531B']
     ];
     const ssp = this.state.ssp;
     const cards = O.map(o => ({

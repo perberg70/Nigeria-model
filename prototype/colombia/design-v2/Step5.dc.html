@@ -57,12 +57,12 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
     <div class="body">
       <div class="tiles">
         <div class="tile hero">
-          <div class="lbl">Premature deaths avoided in 2050<small>ambient PM₂.₅, against the reference energy pathway · 260–323 across the published counterfactual range</small></div>
+          <div class="lbl">Premature deaths avoided in 2050<small>ambient PM₂.₅, against the reference energy pathway (today's 17.8% electrification and 76.4% low-emission power held to 2050) · 260–323 across the published counterfactual range</small></div>
           <div class="val">288</div>
           <div class="unit">lives per year</div>
         </div>
         <div class="tile">
-          <div class="lbl">Value of those avoided deaths<small>welfare value, 2025 USD</small></div>
+          <div class="lbl">Value of those avoided deaths<small>welfare value at US$1.67m per avoided death, 2025 USD · basis below</small></div>
           <div class="val">US$0.48</div>
           <div class="unit">billion per year</div>
         </div>
@@ -76,26 +76,32 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
               <tr class="tot"><td>Your pathway, in total</td><td class="n good-n">+4.3 pts</td></tr>
             </tbody>
           </table>
-          <p class="foot">Positive points reduce pollution. Energy-related air pollution is <b>3% lower</b> under your pathway.</p>
+          <p class="foot">A point is one hundredth of an energy-pollution index set to 1.00 for today's system; positive points reduce pollution. Components are rounded, so they sum to 4.2. Measured against the reference pathway's own 2050 level, energy-related air pollution is <b>3% lower</b>.</p>
         </div>
       </div>
 
       <div class="fold-list" aria-label="Air pollution impact information">
         <details><summary>How to read these numbers</summary>
           <p>Together the three effects produce a net change of <b>+4.3 index points</b> — 288 deaths a year avoided, the figure in the green tile. A high-electrification pathway delivers the strongest health gains when the additional electricity is also low-emission.</p>
-          <p>The largest driver is not on any slider: <b>bioenergy is 2.5% of Colombia's generation but 73% of its power-sector fine particulates</b>, so which low-emission sources grow matters more here than how much low-emission generation there is.</p>
+          <p>The largest driver is not on any slider you have moved: <b>bioenergy is 2.5% of Colombia's generation but 73% of its power-sector fine particulates</b> (Ember 2024 generation mix; EMEP/EEA 2023 Tier 1 emission factors), so which low-emission sources grow matters more here than how much low-emission generation there is. That choice sits in the optional source editor at step 2.</p>
         </details>
         <details><summary>How these health figures are worked out</summary>
           <ul class="chain">
             <li><span class="yr">1</span><span><b>How much the emissions change.</b> Two ratios against 2024: the power sector's particulate emissions, which move with your generation mix, and fuel burned outside the power sector, which falls as electrification rises.</span></li>
-            <li><span class="yr">2</span><span><b>Only part of the air responds.</b> Windblown dust, open fires, agriculture and industrial process emissions do not move when the energy system changes, so that share is left alone.</span></li>
-            <li><span class="yr">3</span><span><b>Concentration becomes risk.</b> A relative risk of 1.08 per 10 µg/m³, applied as exp(slope × change) − 1.</span></li>
-            <li><span class="yr">4</span><span><b>Risk becomes deaths.</b> Colombia's measured burden of 15,741 deaths a year is rescaled by the attributable fraction at the new concentration against today's.</span></li>
+            <li><span class="yr">2</span><span><b>Only part of the air responds.</b> Windblown dust, open fires, agriculture and industrial process emissions do not move when the energy system changes, so that share is left alone. This step runs on 21.3 µg/m³ (McDuffie et al. 2021, 2017 base year), a different exposure estimate from the World Bank's 18.4 µg/m³ for 2023 shown below; the two do not reconcile. Industry fuel other than coal (9.1% of the concentration) is excluded because it mixes in cement and lime process emissions, so the effect of electrification may be understated by up to that much.</span></li>
+            <li><span class="yr">3</span><span><b>Concentration becomes risk.</b> A relative risk of 1.08 per 10 µg/m³ (the value used in the TRA420 model; no epidemiological source is attached here), applied as exp(slope × change) − 1.</span></li>
+            <li><span class="yr">4</span><span><b>Risk becomes deaths.</b> The WHO's estimated burden of 15,741 deaths a year (modelled attribution, not a count of death certificates) is rescaled by the attributable fraction at the new concentration against today's.</span></li>
             <li><span class="yr">5</span><span><b>Where this stops working.</b> Concentration is scaled in proportion to emissions — reasonable for moderate change, wrong for large change.</span></li>
           </ul>
         </details>
         <details><summary>This is one possible result — what could make it higher or lower</summary>
-          <p>No deaths are attributed below a counterfactual of 2.4–5.9 µg/m³, published as a range; carried through, that alone moves the result by roughly ±11% (the 260–323 in the tile). It is a parameter range, not a confidence interval. The dollar figure scales one-for-one with the value placed on an avoided death; the health effect does not.</p>
+          <p>Three published ranges move the result, and none is a confidence interval:</p>
+          <ul class="chain">
+            <li><span class="yr">±30%</span><span><b>The size of the burden.</b> The WHO's 15,741 is published as a range, and the result moves with it in proportion — roughly 200 to 370 avoided deaths.</span></li>
+            <li><span class="yr">±11%</span><span><b>Where clean air is defined.</b> No deaths are attributed below a counterfactual of 2.4–5.9 µg/m³; carried through, that gives the 260–323 in the tile.</span></li>
+            <li><span class="yr">±10%</span><span><b>Which response function.</b> McDuffie et al. (2021) report Colombia under two response functions — 11,818 deaths (GBD2019) and 14,390 (Global Exposure Mortality Model) — about ±10% around their mean.</span></li>
+          </ul>
+          <p>The dollar figures scale one-for-one with the value per avoided death: US$1.67m in 2025 dollars, transferred from Viscusi &amp; Masterman (2017, US$1.228m in 2015 dollars) and uprated by US inflation. Whether that transfer should use purchasing-power or market exchange rates is unresolved; the prototype carries a range of US$1.21m to US$7.81m. The health effect itself does not depend on it.</p>
         </details>
       </div>
 
@@ -107,7 +113,7 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
         <svg viewBox="0 0 980 320" role="img" aria-label="Ambient air-pollution deaths per year, 2025 to 2050. Reference pathway 16,189 in 2025 and 20,778 in 2050; your pathway 16,191 and 20,489."><line class="gridline" x1="52" y1="278" x2="962" y2="278"></line><text class="axtx" x="42" y="282" text-anchor="end">0</text><line class="gridline" x1="52" y1="225.2" x2="962" y2="225.2"></line><text class="axtx" x="42" y="229.2" text-anchor="end">5,000</text><line class="gridline" x1="52" y1="172.4" x2="962" y2="172.4"></line><text class="axtx" x="42" y="176.4" text-anchor="end">10,000</text><line class="gridline" x1="52" y1="119.6" x2="962" y2="119.6"></line><text class="axtx" x="42" y="123.6" text-anchor="end">15,000</text><line class="gridline" x1="52" y1="66.8" x2="962" y2="66.8"></line><text class="axtx" x="42" y="70.8" text-anchor="end">20,000</text><line class="gridline" x1="52" y1="14" x2="962" y2="14"></line><text class="axtx" x="42" y="18" text-anchor="end">25,000</text><line class="axis" x1="52" y1="14" x2="52" y2="278"></line><line class="axis" x1="52" y1="278" x2="962" y2="278"></line><polygon points="52,107.0 234,95.6 598,75.2 962,58.5 962,61.6 598,77.3 234,96.3 52,107.0" fill="#0A7A48" opacity=".22"></polygon><polyline points="52,107.0 234,95.6 598,75.2 962,58.5" fill="none" stroke="#7C8B94" stroke-width="2" stroke-dasharray="8 6"></polyline><polyline points="52,107.0 234,96.3 598,77.3 962,61.6" fill="none" stroke="#0A7A48" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></polyline><text x="66" y="34" style="font-size:13px;fill:#0A7A48;font-weight:600">Green: premature deaths avoided</text><text class="axtx" x="52" y="300" text-anchor="middle">2025</text><text class="axtx" x="234" y="300" text-anchor="middle">2030</text><text class="axtx" x="598" y="300" text-anchor="middle">2040</text><text class="axtx" x="962" y="300" text-anchor="middle">2050</text></svg>
         <div class="fold-list" aria-label="Ambient chart information" style="margin-top: 14px">
           <details><summary>What drives this chart</summary>
-            <p>The Colombia profile starts at <b>15,741</b> ambient air-pollution-attributable deaths in 2021 (11,050–20,353), with population-weighted PM₂.₅ exposure of <b>18.4 µg/m³</b>. Both lines rise with the SSP2 population path; the gap between them is what your energy choices change.</p>
+            <p>The Colombia profile starts at <b>15,741</b> ambient air-pollution-attributable deaths in 2021 (11,051–20,348; WHO AIR_41), with population-weighted PM₂.₅ exposure of <b>18.4 µg/m³</b> (World Bank, 2023). Both lines rise with population and with energy-demand growth; the gap between them is what your energy choices change.</p>
           </details>
           <details><summary>Show data table</summary>
             <div class="scroll-x"><table class="dt">
@@ -119,13 +125,14 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
                 <tr class="sel"><td>2050</td><td class="n">40.0%</td><td class="n">90.0%</td><td class="n">20,778</td><td class="n">20,489</td><td class="n">288</td></tr>
               </tbody>
             </table></div>
+            <p>The 2025 row starts from UPME's 2023 values (17.8% and 76.4%).</p>
           </details>
         </div>
       </div>
 
       <div class="panel">
         <h3>Household air pollution — a second, separate burden</h3>
-        <p class="cap" style="font-size: 13.5px; line-height: 1.55">Driven by electrification of household energy, not by the generation mix. Colombia today: <b>6,283</b> deaths a year (WHO, 2021), against 15,741 from ambient exposure. Both scale with the SSP2 population path — 57.6 million Colombians by 2050.</p>
+        <p class="cap" style="font-size: 13.5px; line-height: 1.55">Driven by electrification of household energy, not by the generation mix. Colombia today: <b>6,283</b> deaths a year (WHO AIR_11, 2021), against 15,741 from ambient exposure. Both rise with population — 57.6 million Colombians by 2050 on the SSP2 path (IIASA-WiC POP 2025), 1.13× the 2021 population — and with energy-demand growth.</p>
         <div class="tiles" style="margin-top: 14px">
           <div class="tile">
             <div class="lbl">Household deaths in 2050<small>at 40% electrification of final energy</small></div>
@@ -138,16 +145,24 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
             <div class="unit">lives per year</div>
           </div>
           <div class="tile">
-            <div class="lbl">Value of those avoided deaths<small>valued at US$1.67m per life</small></div>
+            <div class="lbl">Value of those avoided deaths<small>at US$1.67m per avoided death, 2025 USD; conversion basis unresolved (US$1.21m–7.81m)</small></div>
             <div class="val">US$4.92</div>
             <div class="unit">billion per year</div>
           </div>
         </div>
         <div class="note caveat">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A5300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3L2 21h20z"></path><path d="M12 10v5M12 18v.5"></path></svg>
-          <span><b>Do not add this to the ambient figure above.</b> The two burdens overlap — household combustion contributes to ambient concentrations. The WHO publishes the combined total with the overlap removed: 21,190 deaths (15,215–26,471), against a naive sum of 22,024. The overlap is 834 deaths, about 3.8% of the combined burden.</span>
+          <span><b>Do not add this to the ambient figure above.</b> The two burdens overlap — household combustion contributes to ambient concentrations. The WHO publishes the combined total with the overlap removed: 21,190 deaths (15,215–26,471), against a naive sum of 22,024. The overlap is 834 deaths, about 3.9% of that combined total.</span>
         </div>
         <div class="fold-list" aria-label="Household burden information">
+          <details><summary>Why these household figures lean high, and what they leave out</summary>
+            <ul class="chain">
+              <li><span class="yr">1</span><span><b>Household fuel grows too fast.</b> It is scaled at the economy-wide income elasticity of 0.64, although residential energy grows more slowly and households burn less wood as they get richer. With electrification unchanged, that alone raises household deaths about 46% by 2050 — so the 2,952 avoided is measured against a reference that is likely too high.</span></li>
+              <li><span class="yr">2</span><span><b>The household mapping is not sourced.</b> How economy-wide electrification carries into homes is an assumption (equal percentage points), not a measured relation.</span></li>
+              <li><span class="yr">3</span><span><b>The firewood share is dated.</b> It comes from a 2015 carrier split; gas has displaced firewood since, so today's share is likely lower.</span></li>
+              <li><span class="yr">4</span><span><b>Deaths only.</b> Illness that does not kill is left out, so as a measure of total health cost the figure is a floor.</span></li>
+            </ul>
+          </details>
           <details><summary>Local generator emissions are not modelled</summary>
             <p>These figures assume that added electricity replaces polluting cooking fuel in the home, which can reduce indoor smoke even if the supply is off-grid. A nearby diesel or petrol generator could add outdoor pollution that neither this household result nor the national power-mix calculation counts. The source of new household electricity in Colombia has not been measured here, so the combined health effect of off-grid supply is unresolved.</p>
           </details>

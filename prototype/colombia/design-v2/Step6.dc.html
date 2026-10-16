@@ -71,17 +71,19 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
           <div class="unit" style="margin-top: 4px; color: #8A5300; font-weight: 600">Models disagree on the direction</div>
         </div>
         <div class="tile word">
-          <div class="lbl">Strongest warming region<small>median across its departments</small></div>
+          <div class="lbl">Strongest warming region<small>region median across climate models</small></div>
           <div class="val">Orinoquia</div>
-          <div class="unit">+2.32 °C, against +2.04 °C in Amazonia</div>
+          <div class="unit">+2.28 °C, against +1.99 °C in Pacific</div>
+          <div class="unit" style="margin-top: 4px; color: #8A5300; font-weight: 600">The 0.29 °C spread is inside any one region's model range</div>
         </div>
       </div>
       <p class="tip-hint">↗ Hover over or keyboard-focus a national tile to see the CMIP6 model range. On either map, hover a region for its model range, then select it for its departments.</p>
 
       <div class="fold-list" aria-label="Climate impact information">
         <details><summary>What these ranges mean, and how the maps are built</summary>
-          <p>Straight from the World Bank's CCKP CMIP6 ensemble at 0.25°. The national figure is the ensemble median for the country. A region is the median of its departments: each climate model is first summarised across the departments in a region, and the median and 10th–90th percentiles are then taken across those model results. A region is an unweighted median, so a large, thinly populated department counts as much as a small, dense one.</p>
-          <p>The maps draw Colombia's 32 mainland departments from geoBoundaries (OpenStreetMap, ODbL 1.0), shaded by the natural region each belongs to; thick lines are region borders. San Andrés y Providencia sits in the dashed box, off its true position.</p>
+          <p>Straight from the World Bank's CCKP CMIP6 ensemble at 0.25°. The national figure is the ensemble median for the country. For a region, each climate model is first summarised across the departments in the region, and the median and 10th–90th percentiles are then taken across those model results — so a region's centre and its range come from the same distribution. Departments count equally, so a large, thinly populated department weighs as much as a small, dense one.</p>
+          <p>The maps draw Colombia's 31 mainland departments and Bogotá D.C. from geoBoundaries (boundary year 2017; © OpenStreetMap contributors, ODbL 1.0), simplified for display and shaded by natural region; thick lines are region borders. San Andrés y Providencia sits in the dashed box, off its true position. CCKP's own admin-1 polygons, which produced the numbers, may differ slightly from these.</p>
+          <p>Each department is assigned whole to one region. Antioquia, Cauca, Nariño and Valle del Cauca straddle two natural regions and sit where their defining geography lies, so region borders on the map follow department lines, not the regions' true edges.</p>
           <p class="cite"><b>Source:</b> World Bank Climate Change Knowledge Portal, CMIP6 collection at 0.25°, retrieved 24 August 2026.</p>
         </details>
         <details><summary>This is one possible result — what could make it higher or lower</summary>
@@ -95,25 +97,25 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
           <p class="yr">CCKP median, 2080–2099 against 1995–2014</p>
           <dc-import name="RegionMap" fills="{{tempFills}}" tips="{{tempTips}}" h="{{mapH}}" label="Regional temperature change across Colombia's five natural regions, SSP2-4.5" hint-size="100%,300px"></dc-import>
           <div class="legend">
-            <span><i style="background: #F7D08A"></i>Amazonia: <b>+2.04 °C</b></span>
-            <span><i style="background: #D54D22"></i>Andean: <b>+2.21 °C</b></span>
-            <span><i style="background: #F1AE58"></i>Caribbean: <b>+2.09 °C</b></span>
-            <span><i style="background: #8C1F13"></i>Orinoquia: <b>+2.32 °C</b></span>
-            <span><i style="background: #F1AE58"></i>Pacific: <b>+2.07 °C</b></span>
+            <span><i style="background: #F7D08A"></i>Amazonia: <b>+2.00 °C</b></span>
+            <span><i style="background: #B83B20"></i>Andean: <b>+2.21 °C</b></span>
+            <span><i style="background: #F1AE58"></i>Caribbean: <b>+2.06 °C</b></span>
+            <span><i style="background: #8C1F13"></i>Orinoquia: <b>+2.28 °C</b></span>
+            <span><i style="background: #F7D08A"></i>Pacific: <b>+1.99 °C</b></span>
           </div>
-          <p class="map-cap">Central values are medians across model-specific region results. Colours rank regions within this pathway; hover a region for its model range.
-            <span>Department boundaries: geoBoundaries COL ADM1 (OpenStreetMap, ODbL 1.0); thin lines are department borders.</span></p>
+          <p class="map-cap">Central values are medians across model-specific region results. Colours rank regions within this pathway, but the whole spread is smaller than any region's model range; hover a region for that range.
+            <span>Department boundaries: geoBoundaries COL ADM1, boundary year 2017 (© OpenStreetMap contributors, ODbL 1.0), simplified; thin lines are department borders.</span></p>
         </div>
         <div class="mapbox">
           <h4>Regional yearly rainfall change</h4>
           <p class="yr">CCKP median, 2080–2099 against 1995–2014</p>
           <dc-import name="RegionMap" fills="{{rainFills}}" tips="{{rainTips}}" h="{{mapH}}" label="Regional yearly rainfall change across Colombia's five natural regions, SSP2-4.5" hint-size="100%,300px"></dc-import>
           <div class="legend">
-            <span><i style="background: #E6CFA8"></i>Amazonia: <b>−25 mm/yr</b></span>
-            <span><i style="background: #C6DCE5"></i>Andean: <b>+13 mm/yr</b></span>
-            <span><i style="background: #E6CFA8"></i>Caribbean: <b>−29 mm/yr</b></span>
-            <span><i style="background: #E6CFA8"></i>Orinoquia: <b>−28 mm/yr</b></span>
-            <span><i style="background: #1C6E8C"></i>Pacific: <b>+435 mm/yr</b></span>
+            <span><i style="background: #E6CFA8"></i>Amazonia: <b>−23 mm/yr</b></span>
+            <span><i style="background: #C6DCE5"></i>Andean: <b>+48 mm/yr</b></span>
+            <span><i style="background: #E6CFA8"></i>Caribbean: <b>−13 mm/yr</b></span>
+            <span><i style="background: #E6CFA8"></i>Orinoquia: <b>−36 mm/yr</b></span>
+            <span><i style="background: #1C6E8C"></i>Pacific: <b>+445 mm/yr</b></span>
           </div>
           <div class="scale" aria-hidden="true">
             <div><i style="background: #8C5A2B"></i>≤ −200</div>
@@ -175,14 +177,14 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
           <div class="scroll-x"><table class="dt">
             <thead><tr><th>Region</th><th class="n">Departments</th><th class="n">Temperature median</th><th class="n">Temperature p10–p90</th><th class="n">Rainfall median</th><th class="n">Rainfall p10–p90</th></tr></thead>
             <tbody>
-              <tr><td>Amazonia</td><td class="n">6</td><td class="n">+2.04 °C</td><td class="n">+1.38 to +3.61 °C</td><td class="n">−25 mm/yr</td><td class="n">−136 to +195 mm/yr</td></tr>
-              <tr><td>Andean</td><td class="n">11</td><td class="n">+2.21 °C</td><td class="n">+1.30 to +2.98 °C</td><td class="n">+13 mm/yr</td><td class="n">−216 to +220 mm/yr</td></tr>
-              <tr><td>Caribbean</td><td class="n">8</td><td class="n">+2.09 °C</td><td class="n">+1.41 to +2.81 °C</td><td class="n">−29 mm/yr</td><td class="n">−203 to +133 mm/yr</td></tr>
-              <tr><td>Orinoquia</td><td class="n">4</td><td class="n">+2.32 °C</td><td class="n">+1.55 to +3.37 °C</td><td class="n">−28 mm/yr</td><td class="n">−165 to +180 mm/yr</td></tr>
-              <tr><td>Pacific</td><td class="n">4</td><td class="n">+2.07 °C</td><td class="n">+1.28 to +2.80 °C</td><td class="n">+435 mm/yr</td><td class="n">−172 to +727 mm/yr</td></tr>
+              <tr><td>Amazonia</td><td class="n">6</td><td class="n">+2.00 °C</td><td class="n">+1.38 to +3.61 °C</td><td class="n">−23 mm/yr</td><td class="n">−136 to +195 mm/yr</td></tr>
+              <tr><td>Andean</td><td class="n">11</td><td class="n">+2.21 °C</td><td class="n">+1.30 to +2.98 °C</td><td class="n">+48 mm/yr</td><td class="n">−216 to +220 mm/yr</td></tr>
+              <tr><td>Caribbean</td><td class="n">8</td><td class="n">+2.06 °C</td><td class="n">+1.41 to +2.81 °C</td><td class="n">−13 mm/yr</td><td class="n">−203 to +133 mm/yr</td></tr>
+              <tr><td>Orinoquia</td><td class="n">4</td><td class="n">+2.28 °C</td><td class="n">+1.55 to +3.37 °C</td><td class="n">−36 mm/yr</td><td class="n">−165 to +180 mm/yr</td></tr>
+              <tr><td>Pacific</td><td class="n">4</td><td class="n">+1.99 °C</td><td class="n">+1.28 to +2.80 °C</td><td class="n">+445 mm/yr</td><td class="n">−172 to +727 mm/yr</td></tr>
             </tbody>
           </table></div>
-          <p>Temperature ranges across 28 climate models, rainfall across 27. Select a region on either map to open its departments and their CCKP estimates.</p>
+          <p>Medians and ranges across 28 climate models for temperature and 27 for rainfall (CCKP region ensemble). CCKP publishes 29 SSP2-4.5 runs; why one temperature run and two rainfall runs have no region result is not recorded. Select a region on either map to open its departments and their CCKP estimates.</p>
         </details>
       </div>
 
@@ -208,21 +210,21 @@ class Component extends DCLogic {
     const range = (n, a, b, unit, m) => n + ': median ' + a + '; 10th–90th percentile across ' + m + ' climate models ' + b + ' ' + unit;
     return {
       mapH: 300,
-      tempFills: { Amazonia: '#F7D08A', Andean: '#D54D22', Caribbean: '#F1AE58', Orinoquia: '#8C1F13', Pacific: '#F1AE58' },
+      tempFills: { Amazonia: '#F7D08A', Andean: '#B83B20', Caribbean: '#F1AE58', Orinoquia: '#8C1F13', Pacific: '#F7D08A' },
       tempTips: {
-        Amazonia: range('Amazonia', '+2.04 °C', '+1.38 to +3.61', '°C', 28),
+        Amazonia: range('Amazonia', '+2.00 °C', '+1.38 to +3.61', '°C', 28),
         Andean: range('Andean', '+2.21 °C', '+1.30 to +2.98', '°C', 28),
-        Caribbean: range('Caribbean', '+2.09 °C', '+1.41 to +2.81', '°C', 28),
-        Orinoquia: range('Orinoquia', '+2.32 °C', '+1.55 to +3.37', '°C', 28),
-        Pacific: range('Pacific', '+2.07 °C', '+1.28 to +2.80', '°C', 28)
+        Caribbean: range('Caribbean', '+2.06 °C', '+1.41 to +2.81', '°C', 28),
+        Orinoquia: range('Orinoquia', '+2.28 °C', '+1.55 to +3.37', '°C', 28),
+        Pacific: range('Pacific', '+1.99 °C', '+1.28 to +2.80', '°C', 28)
       },
       rainFills: { Amazonia: '#E6CFA8', Andean: '#C6DCE5', Caribbean: '#E6CFA8', Orinoquia: '#E6CFA8', Pacific: '#1C6E8C' },
       rainTips: {
-        Amazonia: range('Amazonia', '−25 mm/yr', '−136 to +195', 'mm/yr', 27),
-        Andean: range('Andean', '+13 mm/yr', '−216 to +220', 'mm/yr', 27),
-        Caribbean: range('Caribbean', '−29 mm/yr', '−203 to +133', 'mm/yr', 27),
-        Orinoquia: range('Orinoquia', '−28 mm/yr', '−165 to +180', 'mm/yr', 27),
-        Pacific: range('Pacific', '+435 mm/yr', '−172 to +727', 'mm/yr', 27)
+        Amazonia: range('Amazonia', '−23 mm/yr', '−136 to +195', 'mm/yr', 27),
+        Andean: range('Andean', '+48 mm/yr', '−216 to +220', 'mm/yr', 27),
+        Caribbean: range('Caribbean', '−13 mm/yr', '−203 to +133', 'mm/yr', 27),
+        Orinoquia: range('Orinoquia', '−36 mm/yr', '−165 to +180', 'mm/yr', 27),
+        Pacific: range('Pacific', '+445 mm/yr', '−172 to +727', 'mm/yr', 27)
       }
     };
   }
