@@ -76,14 +76,18 @@ Two deliberate departures from v2, both from the review below:
   uses that current wording.
 - v2's health and uncertainty panels give US$3.0m per statistical life; its result tiles
   compute at US$1.67m.
-- The step 2 slider references (17.8% electrification, 76.4% low-emission; UPME BECO 2023)
-  differ from the step 4 inputs table (18.9%, BECO 2024; 61.34%, Ember 2024). The design now
-  labels each with its year and source and says the anchor year is undecided.
+- v2's step 2 slider references (17.8% electrification, 76.4% low-emission) come from an
+  earlier UPME edition that is not archived. The design recomputes both marks from the revised
+  UPME workbook `BECO_VER_01_1975_2024.xlsx` (SHA-256 `6cd7674e…`, sheet `BECO_Datos 2006-2024`):
+  18.9% electrification in 2024 (282,640 / 1,498,690 TJ) and 70.3% low-emission grid generation
+  in 2024 (hydro, wind and solar 208,355 / 296,486 TJ of grid plants; 76.6% in 2023). Step 5's
+  results were computed in v2 from the older values and are not yet recomputed.
 - v2 records a value-per-life range (US$1.21m–7.81m) and says it is disclosed on screen, but never
   renders it. The design shows it.
 - Two sources behind displayed figures are not archived in either repository: the NDC 3.0 PDF
-  (the design labels its figures "as quoted in v2") and the UPME BECO 2023 edition, whose 2023
-  total (1,528,901 TJ) differs from the revised workbook's 1,497,259 TJ.
+  (the design labels its figures "as quoted in v2") and the earlier UPME edition behind v2's
+  1,528,901 TJ for 2023 (the revised workbook gives 1,497,259 TJ). The design no longer depends
+  on that edition.
 
 ## Review
 

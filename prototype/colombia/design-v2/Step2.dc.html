@@ -110,44 +110,43 @@ a{color:#1D4ED8}a:hover{color:#0E5C3F}
         <span>Electrification changes how much electricity Colombia needs. The generation mix determines how clean that electricity is.</span></div>
 
       <div class="driver">
-        <div><h2 class="dname">Electrification of final energy</h2><div class="dshort">Share of all energy used as electricity · 2023: 17.8%</div></div>
+        <div><h2 class="dname">Electrification of final energy</h2><div class="dshort">Share of all energy used as electricity · 2024: 18.9%</div></div>
         <div class="range-wrap">
           <div class="ticks"><sc-for list="{{elec.ticks}}" as="t" hint-placeholder-count="7"><span class="{{t.cls}}">{{t.label}}</span></sc-for></div>
           <input type="range" min="10" max="100" step="2" value="{{elec.v}}" onChange="{{elec.set}}" aria-label="Electrification of final energy in 2050" style="background: linear-gradient(90deg, #0E5C3F {{elec.pct}}%, #D9E0E4 {{elec.pct}}%)">
-          <span class="reference-mark" style="left: 8.7%" aria-hidden="true"></span>
+          <span class="reference-mark" style="left: 9.9%" aria-hidden="true"></span>
         </div>
         <div class="dval"><b>{{elec.disp}}</b><span>of final energy in 2050</span></div>
         <details class="more"><summary>About this lever</summary>
           <p>Share of energy used by households, transport, services and industry that is supplied as electricity in 2050. The top of the range is an arithmetic bound, not a pathway: high-temperature industrial heat, feedstocks, aviation and shipping cannot all be electrified.</p>
-          <p>● Colombia 2023: 17.8% of final energy (UPME energy balance)</p>
+          <p>● Colombia 2024: 18.9% of final energy (UPME energy balance)</p>
           <div class="fold-list" style="margin-top: 10px">
             <details><summary>Where this figure comes from</summary>
-              <span class="src-chip derived">◐ Sourced — edition difference unresolved</span>
-              <p>Grid electricity plus self- and co-generation, 271,541 TJ, divided by total final energy consumption, 1,528,901 TJ, giving 17.76%. This is electricity as a share of all final energy, which is lower than figures usually quoted for electricity access or for household energy.</p>
-              <p>The revised BECO workbook held in the thesis repository gives 1,497,259 TJ of final energy for 2023, not 1,528,901 TJ; the source of the 2.1% difference is unresolved. Step 4 uses the 2024 edition (18.9%).</p>
-              <p class="cite"><b>Source:</b> UPME, Balance Energético Colombiano (BECO) 2023.</p>
+              <span class="src-chip">✓ Sourced — recomputed from the 2024 workbook</span>
+              <p>Grid electricity plus self- and co-generation, 282,640 TJ, divided by total final energy consumption, 1,498,690 TJ, giving 18.86% in 2024 (18.36% in 2023). This is electricity as a share of all final energy, which is lower than figures usually quoted for electricity access or for household energy. It matches the step 4 inputs table.</p>
+              <p class="cite"><b>Source:</b> UPME, Balance Energético Colombiano, BECO_VER_01_1975_2024.xlsx (revised through August 2026), sheet BECO_Datos 2006-2024, recomputed with the thesis repository's BECO reader; workbook SHA-256 6cd7674e….</p>
             </details>
           </div>
         </details>
       </div>
 
       <div class="driver">
-        <div><h2 class="dname">Low-emission electricity generation</h2><div class="dshort">Share of all electricity · 2023: 76.4%</div></div>
+        <div><h2 class="dname">Low-emission electricity generation</h2><div class="dshort">Share of grid electricity · 2024: 70.3%</div></div>
         <div class="range-wrap">
           <div class="ticks"><sc-for list="{{mix.ticks}}" as="t" hint-placeholder-count="6"><span class="{{t.cls}}">{{t.label}}</span></sc-for></div>
           <input type="range" min="50" max="100" step="2" value="{{mix.v}}" onChange="{{mix.set}}" aria-label="Low-emission share of electricity in 2050" style="background: linear-gradient(90deg, #0E5C3F {{mix.pct}}%, #D9E0E4 {{mix.pct}}%)">
-          <span class="reference-mark" style="left: 52.8%" aria-hidden="true"></span>
+          <span class="reference-mark" style="left: 40.6%" aria-hidden="true"></span>
         </div>
         <div class="dval"><b>{{mix.disp}}</b><span>of electricity in 2050</span></div>
         <details class="more"><summary>About this lever</summary>
           <p>Share of electricity generated from renewable and other low-emission sources in 2050.</p>
-          <p>● Colombia 2023: 76.4% of electricity (UPME energy balance)</p>
+          <p>● Colombia 2024: 70.3% of grid electricity (UPME energy balance; 2024 was a dry year)</p>
           <div class="fold-list" style="margin-top: 10px">
             <details><summary>Where this figure comes from</summary>
-              <span class="src-chip derived">◐ Sourced — not re-checked against the revised workbook</span>
-              <p>Hydro, wind and solar together supply 220,470 TJ of 288,418 TJ of electricity products, giving 76.44%. Hydro dominates this share, so it moves with rainfall: a dry year lowers it without any change in installed capacity.</p>
-              <p>Step 4 uses a different figure: Ember's 2024 low-emission share of generation, 61.34%, which includes bioenergy and reflects a dry year (77.0% in 2025). Whether the baseline anchors on one year or a multi-year average has not been decided.</p>
-              <p class="cite"><b>Source:</b> UPME, Balance Energético Colombiano (BECO) 2023.</p>
+              <span class="src-chip">✓ Sourced — recomputed from the 2024 workbook; definition stated</span>
+              <p>Definition: hydro, wind and solar as a share of grid generation (hydro, thermal, wind and solar plants). In 2024 they supplied 208,355 of 296,486 TJ, giving 70.3%; in 2023, 220,470 of 287,639 TJ, giving 76.6%. Counting self- and co-generation in the denominator lowers 2024 to 60.3%. Hydro dominates, so the share moves with rainfall: 2024 was dry.</p>
+              <p>Step 4 uses Ember's 2024 low-emission share of generation, 61.34%, which includes bioenergy and self-generation. Whether the baseline anchors on one year or a multi-year average has not been decided.</p>
+              <p class="cite"><b>Source:</b> UPME, Balance Energético Colombiano, BECO_VER_01_1975_2024.xlsx (revised through August 2026), sheet BECO_Datos 2006-2024, recomputed with the thesis repository's BECO reader; workbook SHA-256 6cd7674e….</p>
             </details>
           </div>
         </details>
