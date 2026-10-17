@@ -32,10 +32,8 @@ jobs:
           mkdir -p _site/nigeria
           cp site/index.html _site/index.html
           cp prototype/africa-prototype.html _site/nigeria/index.html
-          if [ -f prototype/colombia/colombia-prototype.html ]; then
-            mkdir -p _site/colombia
-            cp prototype/colombia/colombia-prototype.html _site/colombia/index.html
-          fi
+          mkdir -p _site/colombia
+          cp prototype/colombia/colombia-prototype.html _site/colombia/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

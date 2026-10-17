@@ -1,0 +1,4 @@
+map:
+  boundaries: department-boundaries.json
+  prototype: colombia-prototype.html
+  expected_units: 32
