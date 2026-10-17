@@ -39,6 +39,28 @@ For a local preview, open `colombia-prototype.html` in a browser, or run
 `python -m http.server 8000` at the repository root and visit
 `http://localhost:8000/prototype/colombia/colombia-prototype.html`.
 
+## Navigation and export alignment with Africa
+
+The interaction reference is `prototype/africa-prototype.html` at Nigeria-model
+commit `1ca6791eddbf3a35e558b1d6c34eca9cd4460d69`.
+
+- Screens 2–6 have a labelled Back button leading to the preceding screen.
+- The final screen's “Save this outcome” panel offers “Save as PDF” and
+  “Download data (CSV)”, matching Africa. PDF opens a printable report and invokes
+  the browser's Print / Save as PDF dialog; a blocked popup falls back to an
+  in-page report.
+- Both formats capture the current country, SSP, drivers, resolved source mix,
+  all three results screens, assumptions, caveats and provenance. The PDF includes
+  charts and maps; CSV includes displayed result tiles and data tables.
+- Exports read the current view outputs rather than maintaining separate model
+  calculations. Ambient and household health effects remain separate, with their
+  overlap warning. Map attribution and the adapted-data link remain in exports.
+- “Explore or change your pathway again” returns to the pathway controls.
+  Open explanation panels survive control changes on the same screen.
+
+Country-specific results remain Colombia's: Nigeria's hot-day counts, generator
+model and clean-cooking target are not transplanted into the Colombia report.
+
 ## Map snapshot and reproducibility
 
 `department-boundaries.json` preserves the canvas's 32 mainland department/district
@@ -95,7 +117,8 @@ python tests/browser/colombia_smoke.py
 
 The browser check covers all six screens at desktop/mobile widths, a live keyboard
 slider change, baseline isolation, all five SSPs, department drill-down, country
-switching and browser errors. During integration the imported model was also
+switching, labelled back navigation, disclosure persistence, actual CSV/PDF
+exports and the popup-blocked print fallback, as well as browser errors. During integration the imported model was also
 compared with the pinned MSc-thesis source across five SSPs and three driver
 configurations: emissions, power, cumulative emissions, damage, regional climate
 and health inputs were unchanged.

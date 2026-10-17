@@ -762,6 +762,19 @@ button.st{border:0;background:none}.strip button{border:0;background:none;color:
 .modal{max-width:min(900px,94vw)}.dt-wrap{overflow-x:auto}.help-row{display:block}.help-row>.fold{width:100%}
 @media(max-width:900px){.app{margin:0}.driver{grid-template-columns:1fr}.driver .dval{text-align:left}.info-actions{grid-template-columns:1fr}.mapbox svg{height:300px!important}}
 
+
+/* Navigation and outcome export follow africa-prototype.html. */
+.actions{flex-wrap:wrap}.actions .back{margin-right:auto}
+.btn.back{background:#fff;color:var(--brand-green-dk);border:1px solid var(--line)}
+.btn.wide{flex:1;justify-content:center}
+.save-box{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px;padding:16px 18px;border:1.5px solid var(--brand-green-dk);border-radius:var(--radius);background:var(--tint)}
+.save-box .txt{flex:1 1 280px;font-size:14px;color:var(--ink-2)}
+.save-box .txt b{display:block;color:var(--ink);font-size:16px;margin-bottom:2px}
+.save-box .btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn.ghost{background:#fff;color:var(--brand-green-dk);border:1px solid var(--line);font-weight:600;padding:10px 16px;font-size:14px}
+#report{display:none}
+@media(max-width:600px){.actions .btn,.save-box .btns,.save-box .btn{width:100%}.actions .btn{justify-content:center}}
+
 </style>
 </head>
 <body>
@@ -784,6 +797,7 @@ button.st{border:0;background:none}.strip button{border:0;background:none;color:
   </div>
 </div>
 
+<div id="report"></div>
 <div class="tt" id="tt"></div>
 <div class="ovl" id="ovl" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
@@ -4597,7 +4611,7 @@ const VIEWS = {
          <h5>${o.label}</h5><span class="ico">${o.ico}</span>
         <div class="nm">${o.name}</div><p>${o.tag}</p><p style="margin-top:8px">${o.desc}</p></div>`).join("")}</div>
      <div class="note"><span>ⓘ</span><span>${d.note}</span></div>
-     <div class="actions"><button class="btn" data-go="4">Continue &nbsp;→</button></div></div>`;
+     <div class="actions">${backBtn(3)}<button class="btn" data-go="4">Continue &nbsp;→</button></div></div>`;
   },
 
   country(){
@@ -4654,9 +4668,9 @@ const VIEWS = {
           <span class="reference-mark" style="left:${refPct}%" aria-hidden="true"></span>
           </div>
         <div class="dval"><b>${it.fmt(v)}</b><span>${it.unit}</span></div>
-        <details class="more"><summary>About this lever</summary><p>${T(it.desc)}</p><p class="reference-label">● ${refLabel}</p>${note}${driverMore(it.id)}</details></div>`;
+        <details class="more" data-keep="driver-${it.id}"><summary>About this lever</summary><p>${T(it.desc)}</p><p class="reference-label">● ${refLabel}</p>${note}${driverMore(it.id)}</details></div>`;
     }).join("")}
-    <div class="actions"><button class="btn" data-go="3">Choose global scenario &nbsp;→</button></div></div>`;
+    <div class="actions">${backBtn(2)}<button class="btn" data-go="3">Choose global scenario &nbsp;→</button></div></div>`;
   },
 
   climate(){ const d=DATA.climate;
@@ -4856,7 +4870,7 @@ const VIEWS = {
           and the unresolved source-reconciliation question for Colombia itself, are
           recorded in 03_models/2026-09-01_electricity-panel-open-questions.md. */
        return ""; })()}
-      <div class="actions"><button class="btn" data-go="5">Next: Air pollution impacts &nbsp;→</button></div></div>`;
+      <div class="actions">${backBtn(4)}<button class="btn" data-go="5">Next: Air pollution impacts &nbsp;→</button></div></div>`;
   },
 
   air(){ const d=DATA.air;
@@ -5024,7 +5038,7 @@ const VIEWS = {
        <p class="cap" style="margin-top:10px">The ${DATA.country.name} profile starts at <b>${fmtN(health.air.whoDeaths)} ambient air-pollution-attributable deaths</b> in 2021 (${fmtN(health.air.whoLow)}–${fmtN(health.air.whoHigh)}), with population-weighted PM₂.₅ exposure of <b>${fmtN(health.air.pm25,1)} µg/m³</b>.</p>
        ${dataTable(["Year","Electrification, yours","Low-emission generation, yours","Deaths, reference","Deaths, yours","Reference minus yours"],
          rows.map(r=>[r.year,fmtN(r.policy.es*100,1)+"%",fmtN(r.policy.cs*100,1)+"%",fmtN(Math.round(r.refDeaths)),fmtN(Math.round(r.policyDeaths)),fmtN(Math.round(r.avoided))]))}</div>
-     <div class="actions"><button class="btn" data-go="6">Next: Local climate impacts &nbsp;→</button></div></div>`;
+     <div class="actions">${backBtn(5)}<button class="btn" data-go="6">Next: Local climate impacts &nbsp;→</button></div></div>`;
   },
 
   /* SCREEN 6 REWRITTEN 2026-08-24 onto CCKP. Every figure here is now that
@@ -5093,13 +5107,162 @@ const VIEWS = {
        conventional grouping used in regional-development work, not a published standard — weaker evidence than
        the schemes used for the other eleven countries.`:""}</p></div>
 
-     <div class="actions"><button class="btn wide" data-go="1">⟳ &nbsp;Explore or change your pathway again</button></div></div>`;
+     <div class="save-box">
+       <div class="txt"><b>Save this outcome</b>Your settings and all three results screens — climate and cost, air pollution and climate impacts — with charts, maps, data and assumptions.</div>
+       <div class="btns"><button class="btn" data-save="pdf">⤓ &nbsp;Save as PDF</button>
+       <button class="btn ghost" data-save="csv">Download data (CSV)</button></div>
+       <p class="cap">PDF opens a report for your browser’s Print / Save as PDF dialog.</p>
+     </div>
+     <div class="actions">${backBtn(6)}<button class="btn wide" data-go="2">⟳ &nbsp;Explore or change your pathway again</button></div></div>`;
   }
 };
+
+/* Shared navigation and export pattern from the Africa prototype. Export the
+   current Colombia views, so no parallel calculation or Nigeria assumption is introduced. */
+function backBtn(n){
+  const previous=DATA.steps[n-2];
+  return `<button class="btn back" data-go="${previous.n}">← &nbsp;Back: ${T(previous.nav)}</button>`;
+}
+function exportText(node){
+  return (node?.textContent||"").replace(/\s+/g," ").trim();
+}
+function exportSections(){
+  return ["climate","air","local"].map(key=>{
+    const node=document.createElement("div"); node.innerHTML=VIEWS[key]();
+    return {key,title:exportText(node.querySelector("h1")),node};
+  });
+}
+function outcomeRows(sections=exportSections()){
+  const rows=[],add=(sec,lbl,val,unit="")=>rows.push({sec,lbl,val:String(val),unit});
+  add("Your settings","Country",DATA.country.name);
+  DATA.drivers.items.forEach(d=>add("Your settings",d.name,d.fmt(state.drivers[d.id]),d.unit));
+  add("Your settings","Global scenario",COUNTRY.label());
+  if(COUNTRY.isColombia()){
+    ["low","fossil"].forEach(group=>{
+      const resolved=COUNTRY.resolveGroup(group);
+      Object.entries(resolved).forEach(([name,share])=>add("Your settings",
+        `${name} — ${group} group`,fmtN(share,2)+"%",
+        (state.sourceMix?.[group]?.[name]!=null?"User-pinned; ":"Unpinned; ")+"resolved share within group in 2050"));
+    });
+  }
+  for(const {title,node} of sections){
+    node.querySelectorAll(".tile").forEach(tile=>{
+      const label=tile.querySelector(".lbl")?.cloneNode(true);
+      const detail=exportText(label?.querySelector("small"));
+      label?.querySelectorAll("small").forEach(n=>n.remove());
+      add(title,exportText(label),exportText(tile.querySelector(".val")),
+        [detail,exportText(tile.querySelector(".unit"))].filter(Boolean).join("; "));
+    });
+    node.querySelectorAll("table").forEach((table,index)=>{
+      const headers=[...table.querySelectorAll("thead th")].map(exportText);
+      table.querySelectorAll("tbody tr").forEach(tr=>{
+        const cells=[...tr.querySelectorAll("td")].map(exportText);
+        if(cells.length) add(title+" — data table "+(index+1),cells[0],cells[1]||"",
+          cells.slice(2).map((v,i)=>(headers[i+2]||"Column "+(i+3))+": "+v).join("; "));
+      });
+    });
+    node.querySelectorAll(".note").forEach(note=>add(title,"Caveat",exportText(note)));
+  }
+  const h=COUNTRY.healthData();
+  add("Fixed assumptions","Value per statistical life","US$"+fmtN(h.valuation.vsl),
+    h.valuation.priceYear+" USD; transferred value, valuation basis unresolved");
+  add("Fixed assumptions","Health reference electrification",h.energy.referenceElectrification2050+"%",
+    "Held fixed; differs from the revised BECO context marker");
+  add("Fixed assumptions","Health reference low-emission share",h.energy.referenceCleanShare2050+"%",
+    "Held fixed; differs from the revised BECO context marker");
+  add("Fixed assumptions","SCC pathway",NGA_DATA.pathwayLabel[COUNTRY.sccPath()]||COUNTRY.sccPath(),
+    COUNTRY.sccPath()!==COUNTRY.pathway()?"Declared proxy for selected SSP":"Selected SSP");
+  const assumption=document.createElement("div");
+  const m=MODALS.uncertainty;
+  assumption.innerHTML=T(typeof m.body==="function"?m.body():m.body);
+  assumption.querySelectorAll("li").forEach((li,i)=>add("Fixed assumptions","Uncertainty "+(i+1),exportText(li)));
+  add("Provenance","Interpretation","Conditional prototype results, not forecasts",
+    COUNTRY.isColombia()?"Ambient and household burdens overlap: do not add them. Regional ranges are model percentiles, not confidence intervals.":"Includes illustrative/transferred country profiles; not a calibrated national model.");
+  add("Provenance","Model source","MSc-thesis e25546bbd08e5b3ed527fc42c0f6a3b66317cb5e",
+    "05_ui_design/prototypes/colombia-prototype-v2.html");
+  add("Provenance","Department map","© OpenStreetMap contributors via geoBoundaries; ODbL 1.0",
+    "https://opendatacommons.org/licenses/odbl/1-0/ ; complete adapted data: https://github.com/perberg70/Nigeria-model/blob/claude/epic-dirac-itqmpi/prototype/colombia/department-boundaries.json");
+  return rows;
+}
+const REPORT_CSS=`@page{size:A4;margin:16mm 14mm}
+#report{color:#0B3B54;font:10pt/1.45 "Segoe UI",system-ui,sans-serif}
+#report h1{font-size:20pt}#report h2{font-size:16pt;color:#0E5C3F}
+#report h3{font-size:12pt}#report .meta{font-size:9pt;color:#40525E}
+#report .body{margin:0}#report .title-row{display:none}
+#report table{width:100%;border-collapse:collapse;font-size:8.5pt;table-layout:fixed}
+#report td,#report th{padding:4pt;border-bottom:1px solid #E3E8EB;overflow-wrap:anywhere}
+#report .report-section{break-before:page}
+#report .tile,#report .mapbox,#report svg,#report tr{break-inside:avoid}
+#report h2,#report h3{break-after:avoid}
+#report .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+#report .maprow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+#report .tile .val{font-size:23pt}#report .tile .lbl,#report .tile .unit{font-size:9pt}
+#report .fold-body,#report .panel,#report details{overflow:visible}
+#report .mapbox svg{height:260px!important}
+#report .metric-tip::after{display:none}
+#report *{-webkit-print-color-adjust:exact;print-color-adjust:exact}`;
+document.head.insertAdjacentHTML("beforeend",`<style media="print">
+body:has(#report:not(:empty))>*:not(#report){display:none!important}
+#report:not(:empty){display:block!important}
+${REPORT_CSS}</style>`);
+function reportSection({key,title,node}){
+  node.querySelectorAll(".actions,.save-box,.help-row,.info-link,button,input,select").forEach(n=>n.remove());
+  node.querySelectorAll("details").forEach(n=>n.open=true);
+  node.querySelectorAll("*").forEach(n=>[...n.attributes].forEach(a=>{
+    if(/^on/.test(a.name)||a.name==="tabindex"||a.name.startsWith("data-")) n.removeAttribute(a.name);
+  }));
+  const ids=new Map();
+  node.querySelectorAll("[id]").forEach(n=>{const old=n.id;n.id="report-"+key+"-"+old;ids.set(old,n.id);});
+  node.querySelectorAll("*").forEach(n=>[...n.attributes].forEach(a=>{
+    if(a.value.includes("url(#")) n.setAttribute(a.name,a.value.replace(/url\(#([^)]*)\)/g,(all,id)=>ids.has(id)?`url(#${ids.get(id)})`:all));
+  }));
+  node.querySelectorAll('a[href="department-boundaries.json"],a[href="MAP-LICENSE.txt"]').forEach(a=>{
+    a.href="https://github.com/perberg70/Nigeria-model/blob/claude/epic-dirac-itqmpi/prototype/colombia/"+a.getAttribute("href");
+    a.removeAttribute("download");
+  });
+  return `<section class="report-section"><h2>${reportEscape(title)}</h2>${node.innerHTML}</section>`;
+}
+function reportEscape(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function outcomeReport(){
+  const sections=exportSections(),rows=outcomeRows(sections);
+  const table=sec=>`<table><tbody>${rows.filter(r=>r.sec===sec).map(r=>`<tr><td>${reportEscape(r.lbl)}</td><td>${reportEscape(r.val)}</td><td>${reportEscape(r.unit)}</td></tr>`).join("")}</tbody></table>`;
+  return `<h1>Saved outcome — ${reportEscape(DATA.country.name)}</h1>
+    <p class="meta">EfD climate-economic policy design tool (prototype) · ${new Date().toISOString()}</p>
+    <h2>Your settings</h2>${table("Your settings")}
+    ${sections.map(reportSection).join("")}
+    <section class="report-section"><h2>Fixed assumptions and uncertainty</h2>${table("Fixed assumptions")}
+    <h2>Provenance and limitations</h2>${table("Provenance")}</section>`;
+}
+function saveOutcome(kind){
+  const name=`EfD-${DATA.country.name}-outcome-${new Date().toISOString().slice(0,10)}`;
+  if(kind==="csv"){
+    const q=v=>`"${String(v).replace(/"/g,'""')}"`;
+    const csv=["Section,Item,Value,Detail",...outcomeRows().map(r=>[r.sec,r.lbl,r.val,r.unit].map(q).join(","))].join("\r\n");
+    const a=document.createElement("a"),url=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));
+    a.href=url;a.download=name+".csv";document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);return;
+  }
+  const report=outcomeReport();
+  const doc=`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${reportEscape(name)}</title>
+    <style>${document.querySelector("head style:not([media])").textContent}</style>
+    <style>body{background:#fff}#report{display:block;max-width:1000px;margin:20px auto;padding:24px}
+    .printbar{padding:16px;text-align:center}@media print{.printbar{display:none}#report{margin:0;padding:0;max-width:none}}
+    ${REPORT_CSS}</style></head><body>
+    <div class="printbar"><button onclick="print()">Print / Save as PDF</button></div><div id="report">${report}</div></body></html>`;
+  const w=window.open("","_blank");
+  if(w){w.document.open();w.document.write(doc);w.document.close();w.opener=null;w.focus();setTimeout(()=>w.print(),400);return;}
+  document.getElementById("report").innerHTML=report;
+  const title=document.title;document.title=name;
+  window.addEventListener("afterprint",()=>{document.title=title;document.getElementById("report").replaceChildren();},{once:true});
+  window.print();
+}
 
 /* ---------- driver -> did the numbers move? (demo responsiveness) ---------- */
 let _lastRenderedStep=null;
 function render(){
+  const kept=new Map([...document.querySelectorAll('#content details')].map((d,i)=>[d.dataset.keep||String(i),d.open]));
   renderNav();
   $("#content").innerHTML = VIEWS[DATA.steps[state.step-1].key]();
   // Turn contextual explanations into canvas-style progressive disclosure.
@@ -5108,6 +5271,10 @@ function render(){
     link.outerHTML=modalFold(link.dataset.modal,link.textContent.trim());
   });
   $("#content").querySelectorAll('details:not(.more)').forEach(el=>el.classList.add('fold'));
+  if(_lastRenderedStep===state.step)
+    $("#content").querySelectorAll('details').forEach((d,i)=>{
+      const key=d.dataset.keep||String(i); if(kept.has(key)) d.open=kept.get(key);
+    });
   const finder=$("#finder");
   if(finder) finder.addEventListener("change",e=>{selectCountry(e.target.value);render();});
   /* Only jump to the top when the STEP changes. Doing it on every render sent the page
@@ -5121,7 +5288,7 @@ function render(){
 function modalFold(key,label){
   const m=MODALS[key];
   const body=typeof m.body==="function"?m.body():m.body, note=typeof m.note==="function"?m.note():m.note;
-  return `<details class="fold"><summary>${label}</summary>
+  return `<details class="fold" data-keep="${key}"><summary>${label}</summary>
     <div class="fold-body" style="margin-top:10px"><p class="cap">${T(m.lede)}</p>${T(body)}${note?`<div class="note">${T(note)}</div>`:""}</div></details>`;
 }
 function uncCue(){
@@ -5206,6 +5373,7 @@ function renderModal(m){
 function closeModal(){ $("#ovl").hidden=true; }
 
 document.addEventListener("click", e=>{
+  const save=e.target.closest("[data-save]"); if(save){saveOutcome(save.dataset.save);return;}
   const md=e.target.closest("[data-modal]"); if(md){ openModal(md.dataset.modal); return; }
   if(e.target.closest("[data-close]") || e.target.id==="ovl"){ closeModal(); return; }
   const pk=e.target.closest("[data-pick]");
