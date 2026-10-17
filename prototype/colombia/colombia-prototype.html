@@ -765,7 +765,6 @@ button.st{border:0;background:none}.strip button{border:0;background:none;color:
 
 /* Navigation and outcome export follow africa-prototype.html. */
 .actions{flex-wrap:wrap}.actions .back{margin-right:auto}
-.btn.back{background:#fff;color:var(--brand-green-dk);border:1px solid var(--line)}
 .btn.wide{flex:1;justify-content:center}
 .save-box{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px;padding:16px 18px;border:1.5px solid var(--brand-green-dk);border-radius:var(--radius);background:var(--tint)}
 .save-box .txt{flex:1 1 280px;font-size:14px;color:var(--ink-2)}
@@ -4602,14 +4601,26 @@ function regionalUnitModal(regionName){
 }
 
 
+const SSP_SKETCH={ssp119:["M4 24 C30 26 46 38 70 41 S110 42 116 42","#0E5C3F"],
+  ssp126:["M4 24 C34 24 56 32 80 36 S110 39 116 39","#0E5C3F"],
+  ssp245:["M4 24 C40 20 70 21 90 26 S110 32 116 34","#0E5C3F"],
+  ssp370:["M4 24 C40 19 76 11 116 6","#B4531B"],
+  ssp585:["M4 24 C30 17 60 6 116 2","#B4531B"]};
+function sspSketch(id){
+  const k=SSP_SKETCH[id]; if(!k) return "";
+  return `<svg class="sketch" viewBox="0 0 120 44" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M4 43H116" stroke="#DCE2DC" fill="none"/><path d="${k[0]}" stroke="${k[1]}" stroke-width="2.5" fill="none"/></svg>`;
+}
+
 const VIEWS = {
   ssp(){ const d=DATA.ssp;
     return head(3,d.title,`<p class="sub">${d.intro.replace("Shared Socioeconomic Pathways (SSPs)",`<span class="term" tabindex="0" data-tip="Standard what-if pathways combining a socioeconomic storyline with a level of climate forcing.">Shared Socioeconomic Pathways (SSPs)</span>`)}</p>`)+
     `<div class="body"><div class="hover-instruction">↗ Hover over or keyboard-focus a card for a short explanation. Selecting one also opens its own panel — what it assumes, and what it means for ${DATA.country.name}. <span class="info-link" data-modal="ssp" role="button" tabindex="0">Compare all five</span></div>
      <div class="cards">${d.options.map(o=>
        `<div class="card help-card ${o.id===state.ssp?'on':''}" data-ssp="${o.id}" data-tip="${o.desc}" role="button" tabindex="0"><span class="tick">✓</span>
-         <h5>${o.label}</h5><span class="ico">${o.ico}</span>
+         <h5>${o.label}</h5>${sspSketch(o.id)}
         <div class="nm">${o.name}</div><p>${o.tag}</p><p style="margin-top:8px">${o.desc}</p></div>`).join("")}</div>
+     <p class="sketch-note">The small curves sketch the direction of global emissions described on each card; they are not data.</p>
      <div class="note"><span>ⓘ</span><span>${d.note}</span></div>
      <div class="actions">${backBtn(3)}<button class="btn" data-go="4">Continue &nbsp;→</button></div></div>`;
   },

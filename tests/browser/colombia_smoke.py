@@ -31,9 +31,24 @@ def main():
             for number in range(1, 7):
                 step(number)
                 assert page.locator("h1").inner_text()
+                if number == 3:
+                    sketches = page.locator(".card svg.sketch")
+                    assert sketches.count() == 5
+                    assert all(sketch.is_visible() for sketch in sketches.all())
+                    curves = sketches.locator("path:last-child").evaluate_all(
+                        "paths => paths.map(path => path.getAttribute('d'))"
+                    )
+                    assert len(set(curves)) == 5
+                    assert "they are not data" in page.locator(".sketch-note").inner_text()
                 if number > 1:
                     back = page.locator(".actions .back")
                     assert back.get_attribute("data-go") == str(number - 1)
+                    page.mouse.move(0, 0)
+                    assert (
+                        back.evaluate("el => getComputedStyle(el).backgroundColor")
+                        == "rgb(14, 92, 63)"
+                    )
+                    assert back.evaluate("el => getComputedStyle(el).color") == "rgb(255, 255, 255)"
                     back.click()
                     assert page.locator('#stepNav [aria-current="step"]').get_attribute(
                         "data-go"
