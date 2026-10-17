@@ -1950,7 +1950,7 @@ const $ = s => document.querySelector(s);
 DATA.country = DATA.countries.find(c=>c.iso==="NG") || DATA.countries[0];
 const selectCountry = iso => { DATA.country = DATA.countries.find(c=>c.iso===iso) || DATA.country; };
 const state = { step:1, ssp:DATA.ssp.selected, drivers:{}, q:"",
-  // Optional user-set Social Cost of Carbon (US$ per tonne CO₂, constant over time); null = use the model.
+  // Optional user-set Social Cost of Carbon (PPP USD-2025 per tonne CO₂, constant over time); null = use the model.
   sccFixed:null,
 
   sourceMix:{low:{}, fossil:{}} };
@@ -2375,7 +2375,7 @@ function settingsStrip(){
   return `<span class="k">Your settings</span>
     <button type="button" data-go="${STEP.country}"><b>${DATA.country.name}</b></button>${chips}
     <button type="button" class="ssp ${cls("ssp")}" data-go="${STEP.ssp}">SSP <b>${sspLbl}</b>${state.ssp===DATA.ssp.selected?" (default)":""}</button>
-    ${NGA.usesFixedScc()?`<button type="button" class="${cls("scc")}" data-go="${STEP.ssp}">SCC <b>US$${fmtN(state.sccFixed)}</b> (fixed)</button>`:""}
+    ${NGA.usesFixedScc()?`<button type="button" class="${cls("scc")}" data-go="${STEP.ssp}">SCC <b data-scc-summary>${fmtN(state.sccFixed)} PPP USD-2025/t CO₂</b> (fixed)</button>`:""}
     ${hint?`<span class="hint">${hint}</span>`:""}`;
 }
 
@@ -2393,13 +2393,15 @@ function sccSetting(){
     <h3>Optional: set your own Social Cost of Carbon</h3>
     <p class="cap" style="font-size:14px;line-height:1.6;margin:0">Leave this off to value avoided emissions with the
       climate-economy model's Social Cost of Carbon for the scenario you chose.${modelTxt}
-      Turn it on to use one fixed value instead, from US$${SCC_MIN} to US$${fmtN(SCC_MAX)} per tonne of CO&#8322;.</p>
+      Turn it on to use one fixed value instead, from ${SCC_MIN} to ${fmtN(SCC_MAX)} <b>PPP USD-2025 per tonne of CO&#8322;</b>
+      (2025 US dollars at purchasing power parity), matching the model series. Convert values quoted in other dollar years
+      or at market exchange rates to this basis before entering them; this tool does not convert currencies.</p>
     <label class="toggle"><input type="checkbox" data-scc-toggle ${on?"checked":""}> Use a fixed Social Cost of Carbon</label>
     <div class="scc-row ${on?"":"off"}">
-      <input type="range" min="${SCC_MIN}" max="${SCC_MAX}" step="5" value="${v}" data-scc="range" ${on?"":"disabled"}
-        aria-label="Fixed Social Cost of Carbon, US dollars per tonne" style="background:${sccSliderBg(v)}">
-      <span class="scc-num">US$ <input type="number" min="${SCC_MIN}" max="${SCC_MAX}" step="1" value="${v}" data-scc="num" ${on?"":"disabled"}
-        aria-label="Fixed Social Cost of Carbon, US dollars per tonne"> per t CO&#8322;</span></div>
+      <input type="range" min="${SCC_MIN}" max="${SCC_MAX}" step="1" value="${v}" data-scc="range" ${on?"":"disabled"}
+        aria-label="Fixed Social Cost of Carbon, PPP USD-2025 per tonne CO2" style="background:${sccSliderBg(v)}">
+      <span class="scc-num"><input type="number" min="${SCC_MIN}" max="${SCC_MAX}" step="1" value="${v}" data-scc="num" ${on?"":"disabled"}
+        aria-label="Fixed Social Cost of Carbon, PPP USD-2025 per tonne CO2"> PPP USD-2025 per t CO&#8322;</span></div>
     <p class="cap" style="font-size:13px;margin:10px 0 0">The fixed value is applied to every tonne avoided from 2025 to 2100,
       with no rise over time. The present value in 2025 still uses the model's discounting (Ramsey rule, pure time
       preference 0.5%, elasticity 1). The scenario still sets the emissions baseline.</p></div>`;
@@ -2903,14 +2905,14 @@ const VIEWS = {
         cls:cum>=0?"":"warn"},
        {lbl:dmg>=0?"Estimated global climate damage avoided":"Estimated additional global climate damage",
         sub:NGA.usesFixedScc()
-          ? `2025–2100, valued at your fixed Social Cost of Carbon of US$${fmtN(state.sccFixed)} per tonne`
+          ? `2025–2100, valued at your fixed Social Cost of Carbon of ${fmtN(state.sccFixed)} PPP USD-2025 per tonne`
           : "2025–2100, valued using the IAM Social Cost of Carbon",
-        val:"US$"+fmtN(Math.abs(dmg)/1000,2), unit:"trillion, present value in 2025",
+        val:"US$"+fmtN(Math.abs(dmg)/1000,2), unit:"trillion PPP USD-2025, present value in 2025",
         cls:`hero ${dmg>=0?"":"warn"}`}
      ])}
      ${NGA.proxyNote()?`<div class="note"><span>⚠️</span><span>${NGA.proxyNote()}</span></div>`:""}
      ${NGA.usesFixedScc()?`<div class="note"><span>ⓘ</span><span>Damage is valued at <b>your fixed Social Cost of Carbon of
-       US$${fmtN(state.sccFixed)} per tonne</b>, set at step ${STEP.ssp}, instead of the model's value
+       ${fmtN(state.sccFixed)} PPP USD-2025 per tonne</b>, set at step ${STEP.ssp}, instead of the model's value
        (US$${fmtN(NGA.sccModelAt(2025))} in 2025 under ${NGA_DATA.pathwayLabel[NGA.runPath()]}).
        <span class="info-link" data-go="${STEP.ssp}" role="button" tabindex="0">Change or turn off</span></span></div>`:""}
      <div class="panel"><div class="chart-head"><div><h3>${c.title}</h3><p class="cap">${c.unit}</p></div>
@@ -3194,7 +3196,7 @@ function outcomeRows(){
   DATA.drivers.items.forEach(it=>add(S1,it.name,it.fmt(state.drivers[it.id]),it.unit));
   const o=DATA.ssp.options.find(x=>x.id===state.ssp);
   add(S1,"Global scenario",NGA.label()+(o?" — "+o.name:""),state.ssp===DATA.ssp.selected?"default setting":"");
-  add(S1,"Social Cost of Carbon",NGA.usesFixedScc()?"US$"+fmtN(state.sccFixed)+" per t CO₂":"model value",
+  add(S1,"Social Cost of Carbon",NGA.usesFixedScc()?fmtN(state.sccFixed)+" PPP USD-2025 per t CO₂":"model value",
       NGA.usesFixedScc()?"fixed by you, constant 2025–2100":"from the climate-economy model for the chosen scenario");
   const pins=[];
   // Report the share the model actually uses in 2050 (pins are rescaled when they exceed 100% and
@@ -3214,8 +3216,8 @@ function outcomeRows(){
   add(S4,cum>=0?"Cumulative emissions avoided, 2025–2100":"Cumulative additional emissions, 2025–2100",
       fmtN(Math.abs(cum)/1000,2)+" bn t CO₂","against the selected baseline");
   add(S4,dmg>=0?"Global climate damage avoided":"Additional global climate damage",
-      "US$"+fmtN(Math.abs(dmg)/1000,2)+" trillion",NGA.usesFixedScc()
-        ? `present value in 2025, valued at your fixed social cost of carbon of US$${fmtN(state.sccFixed)} per tonne`
+      fmtN(Math.abs(dmg)/1000,2)+" trillion PPP USD-2025",NGA.usesFixedScc()
+        ? `present value in 2025, valued at your fixed social cost of carbon of ${fmtN(state.sccFixed)} PPP USD-2025 per tonne`
         : "present value in 2025, valued with the IAM social cost of carbon");
   add(S4,"Total emissions from electricity generation in 2050",fmtN(NGA.allElectricityCO2(2050),1)+" Mt",
       `grid ${fmtN(NGA.powerNow(2050),1)} Mt + back-up generators ${fmtN(NGA.gensetCO2(2050),1)} Mt (conditional estimate)`);
@@ -3672,7 +3674,12 @@ document.addEventListener("change", e=>{
   const sv=e.target.closest("[data-scc]");
   if(sv){ const v=parseFloat(sv.value);
     state.sccFixed=clampScc(isFinite(v)?v:(state.sccFixed??sccStart()));
-    render(); const again=document.querySelector(`[data-scc="${sv.dataset.scc}"]`); if(again) again.focus({preventScroll:true}); return; }
+    // Preserve the DOM and focus transfer so a blur commit does not swallow the next click.
+    document.querySelectorAll("[data-scc]").forEach(input=>{ input.value=state.sccFixed; });
+    const rg=document.querySelector('[data-scc="range"]'); if(rg) rg.style.background=sccSliderBg(state.sccFixed);
+    const summary=document.querySelector("[data-scc-summary]");
+    if(summary) summary.textContent=`${fmtN(state.sccFixed)} PPP USD-2025/t CO₂`;
+    return; }
   const cb=e.target.closest("[data-pin]"); if(!cb) return;
   const [g,n]=cb.dataset.pin.split("|");
   state.sourceMix[g]=state.sourceMix[g]||{};
