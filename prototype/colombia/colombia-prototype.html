@@ -717,12 +717,6 @@ table.dt tr.sel td{background:#F2F7F4;font-weight:600;color:var(--ink)}
 .actions .back{margin-right:auto}
 .btn{background:var(--brand-green-dk);color:#fff;border:0;border-radius:9px;padding:14px 26px;font-size:16px;font-weight:700;font-family:inherit;display:inline-flex;align-items:center;gap:11px;text-decoration:none;cursor:pointer}
 .btn:hover{background:#0b4a33}
-.policy-benchmark,.policy-gap{grid-column:1/-1;font-size:13px;line-height:1.5}
-.policy-benchmark{padding:10px 14px;border-left:3px solid var(--brand-green-dk);background:var(--tint);border-radius:4px}
-.policy-benchmark b,.policy-benchmark strong,.policy-benchmark span{display:block}
-.policy-benchmark b{color:var(--brand-green-dk);font-size:12px}.policy-benchmark strong{margin:3px 0}
-.policy-benchmark a{display:inline-block;margin-top:4px;color:var(--link)}
-.policy-gap{color:var(--ink-3);margin:0}
 .btn.wide{flex:1;justify-content:center}
 .btn.ghost{background:#fff;color:var(--brand-green-dk);border:1px solid var(--line);font-weight:600;padding:10px 16px;font-size:14px}
 
@@ -768,6 +762,16 @@ button.st{border:0;background:none}.strip button{border:0;background:none;color:
 .modal{max-width:min(900px,94vw)}.dt-wrap{overflow-x:auto}.help-row{display:block}.help-row>.fold{width:100%}
 @media(max-width:900px){.app{margin:0}.driver{grid-template-columns:1fr}.driver .dval{text-align:left}.info-actions{grid-template-columns:1fr}.mapbox svg{height:300px!important}}
 
+
+.mixpanel .mixintro{margin:10px 0 12px;line-height:1.55}
+.mixbar-cap{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);margin-bottom:4px}
+.mixbar{display:flex;height:30px;border-radius:6px;overflow:hidden}
+.mixbar div{display:flex;align-items:center;justify-content:center;font-size:11.5px;white-space:nowrap;overflow:hidden;min-width:0}
+.mixgroups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.mixpanel>summary svg{display:inline-block}
+
+.fold-list>.fold{margin:0}.fold-list>details>summary{margin:0!important}
+@media(max-width:900px){.mixgroups{grid-template-columns:1fr}.mixpanel>summary{flex-wrap:wrap}.mixpanel .badge{white-space:normal}.mixbar-cap{flex-wrap:wrap;gap:4px}}
 
 /* Navigation and outcome export follow africa-prototype.html. */
 .actions{flex-wrap:wrap}.actions .back{margin-right:auto}
@@ -891,7 +895,7 @@ const DATA = {
 
   drivers:{
     title:"How do you see {country}'s future?", icon:"chart",
-    sub:["Set your country pathway by adjusting key drivers.","These choices affect your priorities and ambition."],
+    sub:["Set your country pathway by adjusting key drivers.","These choices mirror your priorities and ambition."],
     items:[
       {id:"mitigation", ico:"🍃", name:"National climate mitigation target",
        desc:"Target for fossil-fuel and industrial carbon dioxide emissions in 2050, expressed as a change from {country}'s 2024 level",
@@ -900,7 +904,7 @@ const DATA = {
        referenceLabel:()=>`${COUNTRY.isColombia()?"Observed 2024":"Illustrative 2024 profile"}: ${fmtN(COUNTRY.mitigationAnchor(),1)} Mt CO₂`,
        ticks:["-100%","-50%","0%","+50%","+100%","+150%"],
        fmt:v=>v===-100?"Net zero":(v>0?"+":"")+v+"%", unit:"relative to 2024"},
-      {id:"gdp", ico:"📈", name:"Wealth (GDP growth)",
+      {id:"gdp", ico:"📈", name:"Income (GDP growth)",
        desc:"Average annual real GDP growth 2025–2050",
        min:0, max:5, step:.5, value:2,
        reference:()=>COUNTRY.isColombia()?COL_GDP_GROWTH_2025:COUNTRY.profile().gdp,
@@ -4065,41 +4069,6 @@ const NDC_TARGETS = {
   }
 };
 
-/* NDC 3.0 (December 2025), verified in the official UNFCCC submission.
-   Repository source: MSc-thesis/02_literature/Colombian policy/colombia_NDC_3.0.pdf.
-   These references use different years/units from the sliders: never map them
-   to slider positions or use them as model inputs. PDF page numbers below are
-   one-based; printed page numbering restarts in the annex. */
-const NDC_BENCHMARKS = {
-  mitigation:{
-    label:"National emissions ceilings",
-    value:"2030: ≤169.44 Mt CO₂e · 2035: ceiling of 155–161 Mt CO₂e",
-    note:"Net national greenhouse gases, including land use. Different scope and years from this slider’s 2050 fossil-and-industrial CO₂ change.",
-    page:69, cite:"Table 1, p. 54 (PDF p. 69)"
-  },
-  elec:{
-    label:"Electric mobility target",
-    value:"600,000 registered electric vehicles by 2030",
-    note:"A transport benchmark, not a target for electricity’s share of total final energy in 2050. No equivalent slider percentage is verified.",
-    page:64, cite:"Transport, p. 49 (PDF p. 64)"
-  },
-  mix:{
-    label:"Electricity-generation mitigation potential",
-    value:"2030: 8.46 Mt CO₂e · 2035: 5.95 Mt CO₂e",
-    note:"Potential emissions reductions from the generation measure, not a low-emission generation share. No equivalent slider percentage is verified.",
-    page:225, cite:"Annex: Generación eléctrica, p. 113 (PDF p. 225)"
-  }
-};
-function ndcBenchmark(id){
-  if(!NDC_TARGETS[DATA.country.iso]) return "";
-  const b=NDC_BENCHMARKS[id];
-  if(!b) return id==="gdp" ? `<p class="policy-gap">NDC 3.0: no verified benchmark for this GDP-growth slider.</p>` : "";
-  return `<aside class="policy-benchmark" aria-label="NDC 3.0 policy benchmark" data-benchmark="${id}">
-    <b>NDC 3.0 · ${b.label}</b><strong>${b.value}</strong><span>${b.note}</span>
-    <a href="${NDC_TARGETS[DATA.country.iso].href}#page=${b.page}" target="_blank" rel="noopener">Source: ${b.cite} ↗</a>
-  </aside>`;
-}
-
 /* One line inside the mitigation slider's own box, opening the NDC material as a
    further depth of information rather than as a panel in the scroll flow.
    Revised from a full-width panel on Per's judgement, 2026-08-24: the panel
@@ -4299,16 +4268,33 @@ function sourceMixPapers(){
            rel="noopener noreferrer" title="Opens the UNECE record in a new tab">digitallibrary.un.org ↗</a></div>`;
 }
 
-/* LAYER 2 entry point. Was a <details> disclosure until 2026-09-01: too easy to miss,
-   and cramped inside the driver row. It is now a labelled button opening a full-size
-   panel, so the per-source sliders get the same room as the drivers themselves. */
+/* The optional source controls follow Nigeria's inline energy-mix disclosure. */
+function mixBar(){
+  const L=100*COUNTRY.powerSharePath(2050,COL_POWER.mix2024,state.drivers.mix), parts=[];
+  const colors={Hydro:"#0E5C3F",Solar:"#3E8E63",Bioenergy:"#627D38",Wind:"#427E72",Gas:"#8C6A52",Coal:"#555", "Other fossil":"#76515B"};
+  ["low","fossil"].forEach(g=>{
+    const res=COUNTRY.resolveGroup(g),share=g==="low"?L:100-L;
+    COL_POWER.groups[g].forEach(n=>parts.push([n,res[n]*share/100]));
+  });
+  const label=parts.map(([n,v])=>`${n} ${v.toFixed(1)}%`).join(", ");
+  return `<div class="mixbar-cap"><span>Colombia's electricity in 2050, by source</span><span>low-emission ${L.toFixed(1)}% · fossil ${(100-L).toFixed(1)}%</span></div>
+    <div class="mixbar" role="img" aria-label="Electricity in 2050: ${label}">${parts.map(([n,v])=>
+      `<div title="${n}: ${v.toFixed(1)}% of electricity" style="width:${v}%;background:${colors[n]};color:#fff">${v>=6?`${n} ${v.toFixed(0)}%`:""}</div>`).join("")}</div>`;
+}
 function sourceMixPanel(){
   if(!COUNTRY.isColombia()) return "";
   const n=["low","fossil"].reduce((a,g)=>a+Object.keys((state.sourceMix||{})[g]||{}).length,0);
-  return `<button type="button" class="btn srcbtn" data-modal="sourceMixEditor"
-    style="margin-top:10px;width:100%;text-align:left;font-size:13.5px;padding:10px 12px">
-    ⚙ &nbsp;Choose which sources grow and which are phased out
-    <span style="opacity:.75">${n?` — ${n} set`:" — optional"}</span></button>`;
+  const count=COL_POWER.groups.low.length+COL_POWER.groups.fossil.length;
+  return `<details class="mixpanel" data-keep="mix">
+    <summary>⚙ Set your energy mix — choose which sources grow and which are phased out
+      <span class="badge">${count} sliders · ${n?n+" set by you":"optional"}</span></summary>
+    <p class="mixintro"><b>Your choice:</b> tick a source, then move its slider to set its share yourself.
+      The slider above fixes how much of Colombia's electricity is low-emission; these sliders decide which sources make up
+      each side of that split. Leave them alone to keep today's proportions within each group.</p>
+    <div id="mixbar">${mixBar()}</div>
+    <div class="mixgroups">${sourceMixGroup("low","Low-emission sources")}${sourceMixGroup("fossil","Fossil sources")}</div>
+    <p><span class="info-link" data-modal="sourceMix" role="button" tabindex="0">ⓘ How the two layers work, and where the source mix comes from</span></p>
+  </details>`;
 }
 
 /* One row per generation source. `live` patches the readouts during a drag without
@@ -4321,7 +4307,7 @@ function sourceMixRow(g,n){
   const ofTotal=resolved*(g==="low"?L:100-L)/100;
   const pct=Math.round(resolved);
   return `<div style="margin:16px 0">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px">
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:5px">
       <input type="checkbox" data-pin="${g}|${n}" ${pinned?"checked":""}
         aria-label="Set ${n} explicitly" style="flex:none">
       <b style="flex:1;font-size:14px">${n}${P.efNote[n]?" *":""}</b>
@@ -4329,7 +4315,7 @@ function sourceMixRow(g,n){
         <b>${resolved.toFixed(1)}%</b> of group · <b>${ofTotal.toFixed(1)}%</b> of electricity</span>
       <span style="font-size:12px;color:var(--ink-3);white-space:nowrap">${(P.ef[n]*1000).toFixed(1)} gCO₂e/kWh</span>
     </div>
-    <input type="range" min="0" max="100" step="1" value="${pct}" data-src="${g}|${n}"
+    <input type="range" min="0" max="100" step="1" value="${pct}" data-src="${g}|${n}" aria-label="${n} share within ${g} sources"
       style="width:100%;background:linear-gradient(90deg,var(--brand-green-dk) ${pct}%,#D9E0E4 ${pct}%)">
   </div>`;
 }
@@ -4343,15 +4329,16 @@ function sourceMixGroup(g,label){
 }
 /* Live patch during a drag: update every readout and every slider EXCEPT the one under
    the pointer, so the residual redistribution is visible without breaking the gesture. */
-function sourceMixLivePatch(activeKey){
+function sourceMixLivePatch(activeKey, root=document){
+  const bar=document.getElementById("mixbar"); if(bar) bar.innerHTML=mixBar();
   const L=100*COUNTRY.powerSharePath(2050,COL_POWER.mix2024,state.drivers.mix);
   ["low","fossil"].forEach(g=>{
     const res=COUNTRY.resolveGroup(g), share=g==="low"?L:100-L;
     COL_POWER.groups[g].forEach(n=>{
       const key=g+"|"+n, v=res[n];
-      const lbl=document.querySelector(`[data-srcval="${key}"]`);
+      const lbl=root.querySelector(`[data-srcval="${key}"]`);
       if(lbl) lbl.innerHTML=`<b>${v.toFixed(1)}%</b> of group · <b>${(v*share/100).toFixed(1)}%</b> of electricity`;
-      const sl=document.querySelector(`[data-src="${key}"]`);
+      const sl=root.querySelector(`[data-src="${key}"]`);
       if(sl && key!==activeKey){ sl.value=Math.round(v);
         sl.style.background=`linear-gradient(90deg,var(--brand-green-dk) ${Math.round(v)}%,#D9E0E4 ${Math.round(v)}%)`; }
       if(sl && key===activeKey)
@@ -4369,6 +4356,7 @@ function driverLivePatch(slider){
   const value=state.drivers[item.id], box=slider.closest(".driver");
   const pct=100*(value-item.min)/(item.max-item.min);
   slider.style.background=`linear-gradient(90deg,var(--brand-green-dk) ${pct}%,#D9E0E4 ${pct}%)`;
+  const bar=document.getElementById("mixbar"); if(bar) bar.innerHTML=mixBar();
   const readout=box.querySelector(".dval b");
   if(readout) readout.textContent=item.fmt(value);
   const nearest=Math.round((value-item.min)/((item.max-item.min)/(item.ticks.length-1)));
@@ -4383,7 +4371,6 @@ function referenceStatus(id){
 
 function driverMore(id){
   const bits=[];
-  if(id==="mix" && COUNTRY.isColombia()) bits.push(sourceMixPanel());
   if(id==="gdp" && COUNTRY.isColombia())
     bits.push(`<span class="info-link" data-modal="energyDemand" role="button" tabindex="0"
       >ⓘ How growth becomes energy demand, and how much that is uncertain</span>`);
@@ -4700,7 +4687,8 @@ const VIEWS = {
      against the UNFCCC registry, so the panel renders for Colombia alone; for
      any other country it is omitted rather than filled with a guess. ---- */
   drivers(){ const d=DATA.drivers;
-    return head(2,d.title,d.sub.map(s=>`<p class="sub">${s}</p>`).join(""))+
+    return head(2,d.title,d.sub.map(s=>`<p class="sub">${s}</p>`).join("")+
+      `<p class="sub" style="font-size:14px;color:var(--ink-3)">The blue mark on each slider shows the latest observed reference for ${DATA.country.name}${COUNTRY.isColombia()?"":" (illustrative profile)"}. Open “About this lever” for its year and source.</p>`)+
     `<div class="body">${d.items.map(it=>{
       const v=state.drivers[it.id], pct=((v-it.min)/(it.max-it.min))*100;
       // highlight the tick nearest the current value (ticks are evenly spaced across min..max)
@@ -4711,17 +4699,17 @@ const VIEWS = {
       const refLabel = typeof it.referenceLabel==="function" ? it.referenceLabel() : it.referenceLabel;
       const refPct = Math.min(Math.max(((ref-it.min)/(it.max-it.min))*100, 0), 100);
       const note = it.inactive ? `<div class="reference-note">${it.inactive}</div>` : "";
-      return `${it.id==="elec"?`<div class="section-label">Energy transition
-        <span>Electrification changes how much electricity ${DATA.country.name} needs. The generation mix determines how clean that electricity is.</span></div>`:""}<div class="driver">
-        <div><div class="dname">${it.name}</div><div class="dshort">${refLabel}</div></div>
+      const short={mitigation:"CO₂ in 2050 against 2024",gdp:"Average annual real growth, 2025–2050",elec:"Share of final energy used as electricity in 2050",mix:"Share of electricity from low-emission sources in 2050"}[it.id];
+      return `<div class="driver">
+        <div><h2 class="dname" style="margin:0">${it.name}</h2><div class="dshort">${short} · ${refLabel}</div></div>
         <div class="range-wrap"><div class="ticks">${it.ticks.map((t,ti)=>`<span class="${ti===near?'cur':''}">${t}</span>`).join("")}</div>
           <input type="range" min="${it.min}" max="${it.max}" step="${it.step}" value="${v}"
             aria-label="${it.name}" data-drv="${it.id}" style="background:linear-gradient(90deg,var(--brand-green-dk) ${pct}%,#D9E0E4 ${pct}%)">
           <span class="reference-mark" style="left:${refPct}%" aria-hidden="true"></span>
           </div>
         <div class="dval"><b>${it.fmt(v)}</b><span>${it.unit}</span></div>
-        ${ndcBenchmark(it.id)}
-        <details class="more" data-keep="driver-${it.id}"><summary>About this lever</summary><p>${T(it.desc)}</p><p class="reference-label">● ${refLabel}</p>${note}${driverMore(it.id)}</details></div>`;
+        <details class="more" data-keep="driver-${it.id}"><summary>About this lever</summary><p>${T(it.desc)}</p><p class="reference-label">● ${refLabel}</p>${note}${driverMore(it.id)}</details>
+        ${it.id==="mix"?sourceMixPanel():""}</div>`;
     }).join("")}
     <div class="actions">${backBtn(2)}<button class="btn" data-go="3">Choose global scenario &nbsp;→</button></div></div>`;
   },
@@ -4781,35 +4769,17 @@ const VIEWS = {
 
     return head(4,d.title,`<p class="sub">${T(d.sub)}</p>`)+
     `<div class="body">
-     <div class="panel">${headline}<div class="chart-head"><div><h3>${c.title}</h3><p class="cap">${c.unit}</p></div>
+     ${headline}<div class="panel"><div class="chart-head"><div><h3>${c.title}</h3><p class="cap">${c.unit}</p></div>
        <div class="legend">
           <span><i class="dotted"></i>${c.observed.kind==="observed"?"National history":"Illustrative profile"} 2005–2024</span>
           <span><i class="dashed"></i>${c.s1}</span>
           ${range?`<span><i class="band"></i>Full range across ${range.models} models</span>`:""}
           <span><i class="solid"></i>${c.s2}</span></div></div>
         ${lineChart(c)}
-       <div class="help-row"><span class="info-link" data-modal="emissionsChart" role="button" tabindex="0">ⓘ What the three lines are, and how this chart is computed</span></div>
-      <p class="cap" style="margin-top:10px">${DATA.country.name}'s ${c.observed.kind==="observed"?"national":"illustrative"} profile is anchored at <b>${fmtN(profile.em2024,1)} Mt</b>
-        of fossil-fuel and industrial carbon dioxide in 2024 and <b>${fmtN(profile.em2005,1)} Mt</b> in 2005.
-        ${COUNTRY.hasColombiaSspBaseline()
-          ? `The dashed grey line is the median of ${range.models} Colombia SSP curves. Each uses Colombian population and GDP per capita, a paired IIASA Latin America (R5) final-energy factor, and that R5 run's fossil/industrial CO₂ per unit of final energy, indexed to 2024, after adding back reported biomass CCS. The pale grey band spans the full available model range. This is an SSP-scaled prototype baseline, not a calibrated or forcing-consistent Colombian forecast. Some adjusted model values remain negative; the available rows do not explain every removal or establish one for Colombia.`
-          : `The dashed grey line follows the relative change in global ${COUNTRY.label()} emissions from the 2024 national anchor.`}
-        The green line reaches the 2050 mitigation target you set at step 2 and continues at the same proportional rate. It does not estimate a technology mix or biomass CCS. Land-use emissions and removals are excluded.</p>
-      ${dataTable(range
-        ? ["Year",c.s1+" (Mt)","Full model range (Mt)",c.s2+" (Mt)","SSP median minus your pathway (Mt)"]
-        : ["Year",c.s1+" (Mt)",c.s2+" (Mt)","Baseline minus your pathway (Mt)"],
-         yrs.map((y,i)=>range
-           ? [y,fmtN(baseline[i],1),`${fmtN(range.min[i],1)}–${fmtN(range.max[i],1)}`,
-              fmtN(p[i],1),signed(baseline[i]-p[i],1)]
-           : [y,fmtN(baseline[i],1),fmtN(p[i],1),signed(baseline[i]-p[i],1)]))}
-      ${dataTable(["Year",DATA.country.name+(c.observed.kind==="observed"?"'s observed emissions (Mt)":"'s illustrative profile (Mt)")],
-         c.observed.years.map((y,i)=>[y,fmtN(c.observed.values[i],1)]),
-         c.observed.kind==="observed"?"Show national history table":"Show illustrative profile table")}
-      ${/* The chart explanation is a third collapsible item beside the two tables
-           (Per, 2026-10-13). It was a caption under the chart, then briefly the
-           opening of the emissionsChart modal; the modal is still reachable from
-           here for the full step-by-step method. */ ""}
-      <details><summary style="cursor:pointer;font-size:13.5px;color:var(--ink-3);margin-top:10px">Show what the three lines are, and how this chart is computed</summary>
+       <div class="fold-list" aria-label="Emissions chart information">
+       ${modalFold("engine","What runs the calculations")}
+       ${modalFold("uncertainty","This is one possible result — what could make it higher or lower")}
+      <details class="fold" data-keep="em-explain"><summary>What the three lines are, and how this chart is computed</summary>
       <p class="cap" style="margin-top:10px">${DATA.country.name}'s ${c.observed.kind==="observed"?"national":"illustrative"} profile is anchored at <b>${fmtN(profile.em2024,1)} Mt</b>
         of fossil-fuel and industrial carbon dioxide in 2024 and <b>${fmtN(profile.em2005,1)} Mt</b> in 2005.
         ${COUNTRY.hasColombiaSspBaseline()
@@ -4820,11 +4790,18 @@ const VIEWS = {
         and removals are not included.</p>
       <div class="help-row" style="justify-content:flex-start;margin:6px 0 4px"><span class="info-link" data-modal="emissionsChart" role="button" tabindex="0">ⓘ The full method, step by step</span></div>
       </details>
-      ${/* The "What runs the calculations" link and the "one possible result" cue sat
-           in a row at the foot of step 4; since 2026-10-13 (Per) they are fold-outs
-           in this list, built from the same MODALS entries other screens still open. */
-        modalFold("uncertainty","Show why this is one possible result, and what could make it higher or lower")}
-      ${modalFold("engine","Show what runs the calculations")}</div>
+      ${dataTable(range
+        ? ["Year",c.s1+" (Mt)","Full model range (Mt)",c.s2+" (Mt)","SSP median minus your pathway (Mt)"]
+        : ["Year",c.s1+" (Mt)",c.s2+" (Mt)","Baseline minus your pathway (Mt)"],
+         yrs.map((y,i)=>range
+           ? [y,fmtN(baseline[i],1),`${fmtN(range.min[i],1)}–${fmtN(range.max[i],1)}`,
+              fmtN(p[i],1),signed(baseline[i]-p[i],1)]
+           : [y,fmtN(baseline[i],1),fmtN(p[i],1),signed(baseline[i]-p[i],1)]))}
+      ${dataTable(["Year",DATA.country.name+(c.observed.kind==="observed"?"'s observed emissions (Mt)":"'s illustrative profile (Mt)")],
+         c.observed.years.map((y,i)=>[y,fmtN(c.observed.values[i],1)]),
+         c.observed.kind==="observed"?"Show national history table":"Show illustrative profile table")}
+
+      </div></div>
      ${(()=>{
        /* ELECTRICITY EMISSIONS — Colombia only. A precomputed IIASA R5 ensemble
           is scaled to a Colombian power anchor; other country cards are unchanged. */
@@ -4868,9 +4845,10 @@ const VIEWS = {
                <span><i class="dashed"></i>${pc.s1}</span>
                <span><i class="solid"></i>${pc.s2}</span></div></div>
            ${lineChart(pc)}
+           <div class="fold-list" aria-label="Electricity chart information">
            ${/* The curve explanation was a caption here; it is the first fold-out in
                 the list below since 2026-10-13 (Per), matching the CO2 chart. */ ""}
-           <details><summary style="cursor:pointer;font-size:13.5px;color:var(--ink-3);margin-top:10px">Show how this curve is computed</summary>
+           <details class="fold" data-keep="el-explain"><summary>What the two lines are, and how this chart is computed</summary>
              <p class="cap" style="margin-top:10px">Ember reports about
                <b>${fmtN(now,1)} Mt</b> life-cycle CO₂e from <b>${fmtN(P.gen2024TWh,2)} TWh</b>
                of Colombian generation in ${a}. The dashed curve uses national SSP population and income,
@@ -4903,7 +4881,7 @@ const VIEWS = {
            ], "Show the inputs and their sources")}
            ${/* The grid-sources explanation is a fold-out in this list (Per, 2026-10-13),
                 matching the CO2 chart's list; its table is a fold-out of its own. */ ""}
-           <details><summary style="cursor:pointer;font-size:13.5px;color:var(--ink-3);margin-top:10px">Show which sources make up this grid, and how to change them</summary>
+           <details class="fold" data-keep="el-sources"><summary>Which sources make up this grid, and how to change them</summary>
              <p class="cap" style="margin-top:10px">The low-emission slider at step 2 sets how much of ${name}'s
                electricity is low-emission in 2050. A second, optional layer sets the split inside each group;
                leave it alone and the mix keeps today's proportions.</p>
@@ -4913,6 +4891,7 @@ const VIEWS = {
                ${name} will build these shares, or that it could. It shows what the emissions arithmetic would be if it did.</p>
            </details>
            ${sourceMixTable("Show the source mix table")}
+           </div>
          </div>`;
        }
        /* NON-COLOMBIA: no panel at all. A method-only version stood here until
@@ -5120,8 +5099,10 @@ const VIEWS = {
          : {lbl:"Regional breakdown", sub:"not available for this country", cls:"nodata",
             val:"—", unit:"Colombia only — see the panel below"}
      ])}
-     <div class="help-row"><span class="info-link" data-modal="ref_regional" role="button" tabindex="0"
-       >ⓘ Where these figures come from</span>${uncCue()}</div>
+     <div class="fold-list" aria-label="Climate impact information">
+       ${modalFold("ref_regional","Where these figures come from")}
+       ${uncCue()}
+       <details class="fold" data-keep="local-conventions"><summary>How to read the maps and their uncertainty</summary>
      <div class="note"><span>◆</span><span><b>One climate product, one uncertainty convention.</b>
        National tiles and regional maps both show the 10th–90th percentile across climate models, from the
        World Bank CCKP CMIP6 ensemble at 0.25°. ${COUNTRY.pathway()==="ssp119"?"<b>For SSP1-1.9 the regional model range is unavailable</b>, because CCKP publishes no individual model runs for that pathway — the regional values below are medians of their units' ensemble medians, shown without a range.":"Regional ranges are computed across the individual model runs CCKP publishes."}
@@ -5130,6 +5111,8 @@ const VIEWS = {
        ${DATA.country.iso==="COL"?"Departments are grouped into five natural regions. Colour shows the region estimate, not a department estimate; select a region for department data."
          :REGION_IDENTITY.has(DATA.country.iso)?"Each map territory is schematic; this country's official regions are its administrative units."
          :`The ${R?R.length:0} map territories are schematic shapes, not administrative boundaries.`}</span></div>
+       </details>
+     </div>
      ${R?`<div class="maprow">${regionalClimatePanel("temp",regions)}${regionalClimatePanel("rain",regions)}</div>
      <div class="panel"><h3 style="margin-top:0">${REGION_SCHEME_NAME[DATA.country.iso]} — selected pathway</h3>
        <p class="cap" style="font-size:14px;line-height:1.65">Each climate model is first summarised across the
@@ -5140,7 +5123,7 @@ const VIEWS = {
          R.map(r=>[r.name, r.units, signed(r.temp,2)+"°C",
            r.tempP10==null?"Not available for SSP1-1.9":`${signed(r.tempP10,2)}°C to ${signed(r.tempP90,2)}°C (${r.tempModels} models)`,
            signed(r.rain,0)+" mm/yr",
-           r.rainP10==null?"Not available for SSP1-1.9":`${signed(r.rainP10,0)} to ${signed(r.rainP90,0)} mm/yr (${r.rainModels} models)`]), true)}</div>`
+           r.rainP10==null?"Not available for SSP1-1.9":`${signed(r.rainP10,0)} to ${signed(r.rainP90,0)} mm/yr (${r.rainModels} models)`]))}</div>`
      :""}
      <div class="panel"><h3 style="margin-top:0">Compare the five pathways</h3>
        <p class="cap" style="font-size:14px;line-height:1.65">
@@ -5323,7 +5306,7 @@ function render(){
     if(link.dataset.modal==='sourceMixEditor') return;
     link.outerHTML=modalFold(link.dataset.modal,link.textContent.trim());
   });
-  $("#content").querySelectorAll('details:not(.more)').forEach(el=>el.classList.add('fold'));
+  $("#content").querySelectorAll('details:not(.more):not(.mixpanel)').forEach(el=>el.classList.add('fold'));
   if(_lastRenderedStep===state.step)
     $("#content").querySelectorAll('details').forEach((d,i)=>{
       const key=d.dataset.keep||String(i); if(kept.has(key)) d.open=kept.get(key);
@@ -5475,8 +5458,10 @@ document.addEventListener("input", e=>{
     state.sourceMix=state.sourceMix||{}; state.sourceMix[g]=state.sourceMix[g]||{};
     if(pin.checked) state.sourceMix[g][n]=+COUNTRY.resolveGroup(g)[n].toFixed(1);
     else delete state.sourceMix[g][n];
-    renderModal(MODALS.sourceMixEditor); render();
-    const a=document.querySelector(`[data-pin="${g}|${n}"]`); if(a) a.focus({preventScroll:true});
+    const inOverlay=!!pin.closest("#ovl");
+    if(inOverlay) renderModal(MODALS.sourceMixEditor);
+    render();
+    const a=(inOverlay?$("#ovl"):$("#content")).querySelector(`[data-pin="${g}|${n}"]`); if(a) a.focus({preventScroll:true});
     return; }
   /* DRAG-SAFE. `input` fires continuously while the pointer is down, so it must NOT
      rebuild the DOM — replacing the element mid-gesture is what made a slider move one
@@ -5488,7 +5473,7 @@ document.addEventListener("input", e=>{
     const [g,n]=src.dataset.src.split("|");
     state.sourceMix=state.sourceMix||{}; state.sourceMix[g]=state.sourceMix[g]||{};
     state.sourceMix[g][n]=parseFloat(src.value);
-    sourceMixLivePatch(g+"|"+n);
+    sourceMixLivePatch(g+"|"+n,src.closest("#ovl")||$("#content"));
     return; }
   const r=e.target.closest("[data-drv]"); if(!r) return;
   state.drivers[r.dataset.drv]=parseFloat(r.value);
@@ -5500,8 +5485,10 @@ document.addEventListener("change", e=>{
   const src=e.target.closest && e.target.closest("[data-src]");
   if(src){
     const key=src.dataset.src;
-    renderModal(MODALS.sourceMixEditor); render();
-    const again=document.querySelector(`[data-src="${key}"]`); if(again) again.focus({preventScroll:true});
+    const inOverlay=!!src.closest("#ovl");
+    if(inOverlay) renderModal(MODALS.sourceMixEditor);
+    render();
+    const again=(inOverlay?$("#ovl"):$("#content")).querySelector(`[data-src="${key}"]`); if(again) again.focus({preventScroll:true});
     return;
   }
   const driver=e.target.closest && e.target.closest("[data-drv]");

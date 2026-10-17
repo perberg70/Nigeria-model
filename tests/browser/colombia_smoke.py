@@ -32,17 +32,23 @@ def main():
                 step(number)
                 assert page.locator("h1").inner_text()
                 if number == 2:
-                    assert page.locator(".policy-benchmark").count() == 3
-                    for key, figure in (
-                        ("mitigation", "169.44"),
-                        ("elec", "600,000"),
-                        ("mix", "8.46"),
-                    ):
-                        benchmark = page.locator(f'[data-benchmark="{key}"]')
-                        assert benchmark.is_visible()
-                        assert figure in benchmark.inner_text()
-                        assert "#page=" in benchmark.locator("a").get_attribute("href")
-                    assert "no verified benchmark" in page.locator(".policy-gap").inner_text()
+                    assert page.locator(".policy-benchmark, .policy-gap").count() == 0
+                    assert page.locator(".driver h2").count() == 4
+                    assert page.locator(".driver > details.more").count() == 4
+                    mix = page.locator(".driver > .mixpanel")
+                    assert mix.is_visible()
+                    assert "Set your energy mix" in mix.inner_text()
+                    mix.locator("summary").first.click()
+                    assert mix.locator("[data-src]").count() == 7
+                    assert mix.locator(".mixbar").is_visible()
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    mix.locator("summary").first.click()
+                if number == 4:
+                    assert page.locator(".body > .tiles").count() == 1
+                    assert page.locator(".fold-list").count() == 2
+                    assert page.locator('[data-keep="em-explain"]').count() == 1
+                    assert page.locator('[data-keep="el-explain"]').count() == 1
+                    assert page.locator(".fold-list details[open]").count() == 0
                 if number == 3:
                     sketches = page.locator(".card svg.sketch")
                     assert sketches.count() == 5
@@ -68,6 +74,17 @@ def main():
                     step(number)
                 assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         page.set_viewport_size({"width": 1440, "height": 1000})
+        step(2)
+        page.locator(".mixpanel > summary").click()
+        pin = page.locator('#content [data-pin="low|Solar"]')
+        pin.check()
+        assert page.locator("#ovl").is_hidden()
+        source = page.locator('#content [data-src="low|Solar"]')
+        source.focus()
+        source.press("ArrowRight")
+        assert page.locator("#ovl").is_hidden()
+        assert page.locator(".mixpanel").get_attribute("open") is not None
+        page.evaluate("state.sourceMix = {}; render()")
         step(4)
         before = page.locator(".tile .val").all_text_contents()
         baseline = page.evaluate("COUNTRY.baselineAt(2050)")
