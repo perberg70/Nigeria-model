@@ -757,7 +757,7 @@ button.st{border:0;background:none}.strip button{border:0;background:none;color:
 .info-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:none;padding:0}
 .info-actions details{min-width:0}.fold>summary{font-size:14px!important;color:var(--link)!important;margin:0!important}
 .fold{margin:10px 0}.fold .dt{font-size:13px}.fold-body{overflow-x:auto}
-.climate-region{cursor:pointer;stroke:#fff;stroke-width:.35}.climate-region:focus{stroke:var(--ink);stroke-width:1;outline:none}
+.climate-region{cursor:pointer;stroke:#fff;stroke-width:.6;transition:filter .12s,opacity .12s}.climate-region path,.climate-region circle{vector-effect:non-scaling-stroke}.climate-region:hover,.climate-region:focus{filter:brightness(.85);opacity:.92}.climate-region:focus{stroke:var(--ink);stroke-width:1;outline:none}
 .mapbox{min-width:0}.mapbox svg{height:350px!important}.mapbig svg{height:420px!important}
 .modal{max-width:min(900px,94vw)}.dt-wrap{overflow-x:auto}.help-row{display:block}.help-row>.fold{width:100%}
 @media(max-width:900px){.app{margin:0}.driver{grid-template-columns:1fr}.driver .dval{text-align:left}.info-actions{grid-template-columns:1fr}.mapbox svg{height:300px!important}}
@@ -4581,23 +4581,26 @@ function regionalClimatePanel(metric, regions){
     /* Colombia has real region polygons; every other country gets a schematic
        cell built around its region's map position. */
     const paths=iso==="COL"?DEPARTMENT_MAP.regions[r.name]:[{d:regionalAreaCell(regions,i,box),name:r.name}];
-    return paths.map(part=>`<path class="climate-region" d="${part.d}" fill="${color(r[metric])}"
-      ${iso==="COL"?"":`clip-path="url(#${clipId})"`} tabindex="0" role="button" aria-label="${part.name}: ${enc}" data-tooltip="${part.name}: ${enc}"
-      data-region="${encodeURIComponent(r.name)}"
+    const shapes=paths.map(part=>`<path d="${part.d}"><title>${part.name}</title></path>`).join("");
+    const inset=iso==="COL" && r.name==="Caribbean"
+      ? `<circle cx="5.2" cy="6" r="2.3"><title>San Andrés, Providencia y Santa Catalina</title></circle>` : "";
+    return `<g class="climate-region" fill="${color(r[metric])}"
+      ${iso==="COL"?"":`clip-path="url(#${clipId})"`} tabindex="0" role="button" aria-label="${enc}" data-tooltip="${enc}"
+      data-region="${encodeURIComponent(r.name)}" aria-controls="region-detail-${encodeURIComponent(r.name)}"
       onmousemove="showTT(event,this.dataset.tooltip)" onmouseleave="hideTT()"
-      onfocus="showFocusTT(event,this.dataset.tooltip)" onblur="hideTT()"><title>${part.name}: ${enc}</title></path>`).join("");
+      onfocus="showFocusTT(event,this.dataset.tooltip)" onblur="hideTT()">${shapes}${inset}</g>`;
   }).join("");
   const legend=regions.map(r=>`<span><i style="background:${color(r[metric])}"></i>${r.name}: <b>${fmt(r[metric])}</b></span>`).join("");
   return `<div class="mapbox"><h4>${title}</h4><p class="yr">${rangeAvailable?"Median across CCKP model runs":REGION_IDENTITY.has(iso)?"CCKP ensemble median":"Median of units' CCKP medians"}, 2080–2099 against 1995–2014</p>
     <svg viewBox="${vb}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:230px"
       role="img" aria-label="${title} across ${DATA.country.name}">
       <defs><clipPath id="${clipId}"><path d="${d}"/></clipPath></defs>
-      ${iso==="COL"?`<rect x=".5" y=".5" width="30" height="11" rx="1.5" fill="none" stroke="#9AA8A1" stroke-width=".3" stroke-dasharray="1 .8"/><circle class="climate-region" cx="5.2" cy="6" r="2.3" fill="${color(regions.find(r=>r.name==='Caribbean')[metric])}" data-region="Caribbean" role="button" tabindex="0" aria-label="San Andrés, Providencia y Santa Catalina — Caribbean region, inset; select for estimates"/><text x="9.5" y="7.4" style="font-size:3.9px;fill:#40525E">San Andrés</text>`:`<path d="${d}" fill="#EDF2EF"/>`}${areas}
+      ${iso==="COL"?`<rect x=".5" y=".5" width="30" height="11" rx="1.5" fill="none" stroke="#9AA8A1" stroke-width=".3" stroke-dasharray="1 .8"/><text x="9.5" y="7.4" style="font-size:3.9px;fill:#40525E">San Andrés</text>`:`<path d="${d}" fill="#EDF2EF"/>`}${areas}
       ${iso==="COL"?"":`<path d="${d}" fill="none" stroke="#708078" stroke-width=".9" vector-effect="non-scaling-stroke"/>`}</svg>
     <div class="legend" style="justify-content:flex-start;align-items:flex-start;gap:7px 14px">${legend}</div>
     <p class="cap" style="margin:9px 0 0;font-size:12.5px">${rangeAvailable
-      ? "Central values are medians across model-specific region results. Colours rank regions within this pathway; hover or focus for the model range, then click or press Enter for unit-level estimates."
-      : "CCKP publishes an SSP1-1.9 ensemble median but no individual-model projections, so a regional model range cannot be derived. Each central value here is instead the median of the units' CCKP ensemble medians. Click or press Enter for unit-level estimates."}</p></div>`;
+      ? "Central values are medians across model-specific region results. Colours rank regions within this pathway; hover or focus for the model range, then click or press Enter to open the department data below."
+      : "CCKP publishes an SSP1-1.9 ensemble median but no individual-model projections, so a regional model range cannot be derived. Each central value here is instead the median of the units' CCKP ensemble medians. Click or press Enter to open the department data below."}</p></div>`;
 }
 
 /* The second layer behind a region: its admin-1 units with their own CCKP
@@ -4622,7 +4625,7 @@ function regionalUnitModal(regionName){
         in rainfall — wider than the differences between the units above.</p>`:""}`,
     note:`These are Admin-1 ensemble medians, not the 10th–90th percentile ranges shown on hover.
       ${identity?"This country's official regions ARE its administrative units, so the region and the unit cover the same area."
-               :"The region is a grouping of these units, and its map shape is schematic."}
+               :"The region is a grouping of these units; colours show regional estimates, not department-level estimates."}
       ${r.tempP10!=null?`The region's figure on the map is the median across the ${r.tempModels} individual model runs CCKP publishes; the figures above are CCKP's own ensemble medians, whose ensemble composition has not been read at source. The two can differ slightly, even where a region is a single unit.`:""}`
   };
 }
@@ -5113,6 +5116,12 @@ const VIEWS = {
        </details>
      </div>
      ${R?`<div class="maprow">${regionalClimatePanel("temp",regions)}${regionalClimatePanel("rain",regions)}</div>
+     <div id="regionDetail" class="fold-list" aria-label="Department climate data by region">${regions.map(r=>{
+       const m=regionalUnitModal(r.name); if(!m) return "";
+       return `<details class="fold" id="region-detail-${encodeURIComponent(r.name)}" data-region-detail="${encodeURIComponent(r.name)}" data-keep="region-${encodeURIComponent(r.name)}">
+         <summary>${T(m.title)}</summary><p>${T(m.lede)}</p>${T(m.body)}<div class="note">${T(m.note)}</div>
+       </details>`;
+     }).join("")}</div>
      ${DATA.country.iso==="COL"?`<details class="fold" data-keep="map-licence"><summary>Map licence</summary><p><a class="paper" href="MAP-LICENSE.txt">Map attribution and licence</a></p></details>`:""}
      <div class="panel"><h3 style="margin-top:0">${REGION_SCHEME_NAME[DATA.country.iso]} — selected pathway</h3>
        <p class="cap" style="font-size:14px;line-height:1.65">Each climate model is first summarised across the
@@ -5383,13 +5392,14 @@ function regionsWithAgreedRainfall(){
 /* Region panels are built on demand rather than registered, because their
    content depends on the pathway currently selected. */
 function openRegionModal(name){
-  const m=regionalUnitModal(name); if(!m) return;
-  let panel=document.getElementById('regionDetail');
-  if(!panel){panel=document.createElement('section');panel.id='regionDetail';panel.className='panel';document.querySelector('.maprow').after(panel);}
-  panel.innerHTML=`<h3 tabindex="-1">${T(m.title)}</h3><p>${T(m.lede)}</p>${T(m.body)}<div class="note">${T(m.note)}</div>`;
-  panel.querySelector('h3').focus({preventScroll:true});
+  const panel=document.getElementById('region-detail-'+encodeURIComponent(name));
+  if(!panel) return;
+  panel.open=true;
+  hideTT();
+  panel.querySelector('summary').focus({preventScroll:true});
   panel.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
 function openModal(key){
   const m=MODALS[key]; if(!m) return;
   renderModal(m);

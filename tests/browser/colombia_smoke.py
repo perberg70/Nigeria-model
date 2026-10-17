@@ -5,7 +5,7 @@ import os
 import tempfile
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -102,11 +102,22 @@ def main():
             page.locator(f'[data-ssp="{scenario}"]').click()
             page.keyboard.press("Escape")
             step(6)
-            assert page.locator(".mapbox .climate-region").count() == 66
+            assert page.locator(".mapbox g.climate-region").count() == 10
+            assert page.locator(".mapbox .climate-region path").count() == 64
+            assert page.locator("#regionDetail details[open]").count() == 0
+            for area in page.locator(".mapbox g.climate-region").all():
+                area.focus()
+                expect(page.locator("#tt")).to_have_css("opacity", "1")
+                assert "median" in page.locator("#tt").inner_text()
+                area.dispatch_event("mousemove", {"clientX": 100, "clientY": 100})
+                assert page.locator("#tt").inner_text() == area.get_attribute("data-tooltip")
             region = page.locator('[data-region="Andean"]').first
             region.focus()
             region.press("Enter")
             assert "Bogotá" in page.locator("#regionDetail").inner_text()
+            assert page.locator("#regionDetail details[open]").count() == 1
+            page.locator("#regionDetail details[open] > summary").click()
+            assert not page.locator("#regionDetail table").first.is_visible()
             assert "NaN" not in page.locator("#content").inner_text()
         step(1)
         page.locator("#finder").select_option("BRA")
