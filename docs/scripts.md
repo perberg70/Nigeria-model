@@ -2,7 +2,7 @@
 
 Every script is run from the repository root, requires `--config <file>` (normally
 `config.yaml`) and exits with status 2 if it is missing. Paths below are the values in
-`config.yaml`.
+`config.yaml` unless a separate configuration is named.
 
 Data gaps found while running are logged to stderr (`[WARNING]` for proxied or zero-filled
 values, `[INFO]` for checked ones); they never enter the written reports.
@@ -47,6 +47,15 @@ Each writes its report to the path under `<section>.report` and echoes it to std
   - Reads `regional_climate.admin_units`, `.state_boundaries`, `.boundary_simplify_deg`,
     `.boundary_source_label`; splices `NIGERIA_ZONE_MAP` (the state outlines the regional maps
     are drawn from) into `regional_climate.prototype_html`.
+
+## Standalone prototype map snapshot
+
+- `scripts/build_department_map.py --config prototype/colombia/map-config.yaml`
+  - Reads `map.boundaries` (frozen canvas SVG coordinates) and `map.expected_units`;
+    replaces the `DEPARTMENT_MAP` block in `map.prototype`.
+  - Runs offline and preserves provenance and licence metadata. This reproduces the
+    committed snapshot; the original geographic simplification inputs remain missing.
+    See `prototype/colombia/README.md` for source details and limitations.
 
 ## Cleanup Utilities
 

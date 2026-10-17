@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Step 6 — Climate impacts for Colombia</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./proto.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#EDEFF1}
+a{color:#1D4ED8}a:hover{color:#0E5C3F}
+.tile.metric-tip::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 8px);transform:translate(-50%,-5px);width:270px;background:#0B3B54;color:#fff;padding:10px 12px;border-radius:8px;font-size:13px;line-height:1.45;font-weight:400;text-align:left;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .12s,transform .12s;z-index:55;box-shadow:0 9px 24px rgba(11,59,84,.24)}
+.tile.metric-tip:hover::after,.tile.metric-tip:focus::after{opacity:1;visibility:visible;transform:translate(-50%,0)}
+</style>
+</helmet>
+<div class="page">
+<div class="app">
+  <header class="hdr">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6C14 10 9 18 10 27c5 1 10-2 13-7 2-4 2-9 1-14z" fill="#7DBE3C"></path><path d="M31 9c-5 6-6 13-4 19 6-1 11-6 12-12 .5-3 0-6-1-9-2 .5-5 1-7 2z" fill="#1E7B3E"></path><path d="M9 29c2 8 9 13 17 13 3 0 6-1 9-2-3-7-10-12-18-12-3 0-6 .3-8 1z" fill="#1D6FB8"></path><path d="M10 27c-1 6 1 11 5 14" stroke="#0B3B54" stroke-width="1.4" fill="none" stroke-linecap="round"></path></svg>
+      <div><div class="logo-txt">EfD Colombia <span class="proto-badge">Prototype</span></div>
+      <div class="tagline">Environment for Development in Latin America</div></div>
+    </div>
+    <nav class="stepbar" aria-label="Steps">
+      <a class="st done" href="Main.dc.html"><span class="pip">✓</span><span class="lbl">Country</span></a>
+      <a class="st done" href="Step2.dc.html"><span class="pip">✓</span><span class="lbl">Your pathway</span></a>
+      <a class="st done" href="Step3.dc.html"><span class="pip">✓</span><span class="lbl">Global scenario</span></a>
+      <span class="sep" aria-hidden="true"></span>
+      <a class="st done" href="Step4.dc.html"><span class="pip">✓</span><span class="lbl">Climate &amp; SCC</span></a>
+      <a class="st done" href="Step5.dc.html"><span class="pip">✓</span><span class="lbl">Air pollution</span></a>
+      <a class="st on" href="Step6.dc.html" aria-current="step"><span class="pip">6</span><span class="lbl">Climate impacts</span></a>
+    </nav>
+    <a class="hdr-link" href="InfoLayers.dc.html">About this tool</a>
+  </header>
+  <div class="strip">
+    <span class="k">Your settings</span>
+    <a href="Main.dc.html"><b>Colombia</b></a>
+    <a href="Step2.dc.html">CO₂ 2050 <b>−60%</b></a>
+    <a href="Step2.dc.html">GDP <b>2.0%</b></a>
+    <a href="Step2.dc.html">Electrification <b>40%</b></a>
+    <a href="Step2.dc.html">Low-emission power <b>90%</b></a>
+    <a class="use ssp" href="Step3.dc.html">SSP <b>SSP2-4.5</b> (default)</a>
+    <span class="hint">Only the global scenario drives this screen</span>
+  </div>
+
+  <section class="content">
+    <div class="title-row">
+      <svg class="title-ico" viewBox="0 0 52 52" aria-hidden="true"><rect x="20" y="6" width="11" height="26" rx="5.5" fill="none" stroke="#0E5C3F" stroke-width="2.4"></rect><circle cx="25.5" cy="38" r="8" fill="none" stroke="#0E5C3F" stroke-width="2.4"></circle><path d="M25.5 20v14" stroke="#0E5C3F" stroke-width="4" stroke-linecap="round"></path><path d="M35 12h6M35 19h4M35 26h6" stroke="#0E5C3F" stroke-width="2" stroke-linecap="round"></path></svg>
+      <div class="title-main">
+        <p class="eyebrow">Step 6 of 6 · Results</p>
+        <h1>Climate impacts for Colombia</h1>
+        <p class="sub">Changes in key climate indicators by the end of the century (2080–2099), against 1995–2014.</p>
+        <p class="pathway-tag"><span class="k">Global pathway</span><b>SSP2-4.5</b></p>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="tiles">
+        <div class="tile metric-tip" tabindex="0" data-tip="10th–90th percentile across climate models: +1.40 °C to +3.12 °C. Median: +2.13 °C." aria-label="National temperature +2.1 °C. 10th to 90th percentile across climate models +1.40 to +3.12 °C.">
+          <div class="lbl">National temperature<small>SSP2-4.5, CCKP ensemble median</small></div>
+          <div class="val">+2.1°C</div>
+          <div class="unit">2080–2099 against 1995–2014</div>
+        </div>
+        <div class="tile metric-tip" tabindex="0" data-tip="10th–90th percentile across climate models: −162.7 to +198.5 mm/year. Median: +38.4 mm/year. The range spans zero." aria-label="National rainfall +38 mm per year. 10th to 90th percentile across climate models −162.7 to +198.5 mm per year; the range spans zero.">
+          <div class="lbl">National rainfall<small>SSP2-4.5, CCKP ensemble median</small></div>
+          <div class="val">+38 mm</div>
+          <div class="unit">per year, 2080–2099 against 1995–2014</div>
+          <div class="unit" style="margin-top: 4px; color: #8A5300; font-weight: 600">Models disagree on the direction</div>
+        </div>
+        <div class="tile word">
+          <div class="lbl">Strongest warming region<small>region median across climate models</small></div>
+          <div class="val">Orinoquia</div>
+          <div class="unit">+2.28 °C, against +1.99 °C in Pacific</div>
+          <div class="unit" style="margin-top: 4px; color: #8A5300; font-weight: 600">The 0.29 °C spread is inside any one region's model range</div>
+        </div>
+      </div>
+      <p class="tip-hint">↗ Hover over or keyboard-focus a national tile to see the CMIP6 model range. On either map, hover a region for its model range, then select it for its departments.</p>
+
+      <div class="fold-list" aria-label="Climate impact information">
+        <details><summary>What these ranges mean, and how the maps are built</summary>
+          <p>Straight from the World Bank's CCKP CMIP6 ensemble at 0.25°. The national figure is the ensemble median for the country. For a region, each climate model is first summarised across the departments in the region, and the median and 10th–90th percentiles are then taken across those model results — so a region's centre and its range come from the same distribution. Departments count equally, so a large, thinly populated department weighs as much as a small, dense one.</p>
+          <p>The maps draw Colombia's 31 mainland departments and Bogotá D.C. from geoBoundaries (boundary year 2017; © OpenStreetMap contributors, ODbL 1.0), simplified for display and shaded by natural region; thick lines are region borders. San Andrés y Providencia sits in the dashed box, off its true position. CCKP's own admin-1 polygons, which produced the numbers, may differ slightly from these.</p>
+          <p>Each department is assigned whole to one region. Antioquia, Cauca, Nariño and Valle del Cauca straddle two natural regions and sit where their defining geography lies, so region borders on the map follow department lines, not the regions' true edges.</p>
+          <p class="cite"><b>Source:</b> World Bank Climate Change Knowledge Portal, CMIP6 collection at 0.25°, retrieved 24 August 2026.</p>
+        </details>
+        <details><summary>This is one possible result — what could make it higher or lower</summary>
+          <p>The rainfall range spans zero for Colombia and for every region on this pathway. The models disagree on whether it gets wetter or drier, so a median is the middle of a disagreement rather than a consensus, and a rainfall figure quoted without its range overstates what is known. SSP1-1.9 has no regional model range, because CCKP publishes no individual model runs for that pathway.</p>
+        </details>
+      </div>
+
+      <div class="maprow">
+        <div class="mapbox">
+          <h4>Regional temperature change</h4>
+          <p class="yr">CCKP median, 2080–2099 against 1995–2014</p>
+          <dc-import name="RegionMap" fills="{{tempFills}}" tips="{{tempTips}}" h="{{mapH}}" label="Regional temperature change across Colombia's five natural regions, SSP2-4.5" hint-size="100%,300px"></dc-import>
+          <div class="legend">
+            <span><i style="background: #F7D08A"></i>Amazonia: <b>+2.00 °C</b></span>
+            <span><i style="background: #B83B20"></i>Andean: <b>+2.21 °C</b></span>
+            <span><i style="background: #F1AE58"></i>Caribbean: <b>+2.06 °C</b></span>
+            <span><i style="background: #8C1F13"></i>Orinoquia: <b>+2.28 °C</b></span>
+            <span><i style="background: #F7D08A"></i>Pacific: <b>+1.99 °C</b></span>
+          </div>
+          <p class="map-cap">Central values are medians across model-specific region results. Colours rank regions within this pathway, but the whole spread is smaller than any region's model range; hover a region for that range.
+            <span>Department boundaries: geoBoundaries COL ADM1, boundary year 2017 (© OpenStreetMap contributors, ODbL 1.0), simplified; thin lines are department borders.</span></p>
+        </div>
+        <div class="mapbox">
+          <h4>Regional yearly rainfall change</h4>
+          <p class="yr">CCKP median, 2080–2099 against 1995–2014</p>
+          <dc-import name="RegionMap" fills="{{rainFills}}" tips="{{rainTips}}" h="{{mapH}}" label="Regional yearly rainfall change across Colombia's five natural regions, SSP2-4.5" hint-size="100%,300px"></dc-import>
+          <div class="legend">
+            <span><i style="background: #E6CFA8"></i>Amazonia: <b>−23 mm/yr</b></span>
+            <span><i style="background: #C6DCE5"></i>Andean: <b>+48 mm/yr</b></span>
+            <span><i style="background: #E6CFA8"></i>Caribbean: <b>−13 mm/yr</b></span>
+            <span><i style="background: #E6CFA8"></i>Orinoquia: <b>−36 mm/yr</b></span>
+            <span><i style="background: #1C6E8C"></i>Pacific: <b>+445 mm/yr</b></span>
+          </div>
+          <div class="scale" aria-hidden="true">
+            <div><i style="background: #8C5A2B"></i>≤ −200</div>
+            <div><i style="background: #C08A4E"></i>−200 to −50</div>
+            <div class="on"><i style="background: #E6CFA8"></i>−50 to −10</div>
+            <div><i style="background: #ECEAE4"></i>−10 to +10</div>
+            <div class="on"><i style="background: #C6DCE5"></i>+10 to +50</div>
+            <div><i style="background: #6AA5BB"></i>+50 to +200</div>
+            <div class="on"><i style="background: #1C6E8C"></i>&gt; +200</div>
+          </div>
+          <p class="map-cap">Colours show the sign and size of the change — brown drier, blue wetter — because Colombia's regions split between drying and wetting. Every regional range spans zero.
+            <span>Same boundaries as the temperature map; mm per year.</span></p>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top: 16px">
+        <h3>Compare the five pathways — national temperature</h3>
+        <p class="cap">CCKP median (dot) and 10th–90th percentile across climate models (band), 2080–2099 against 1995–2014</p>
+        <div class="range-bars" role="img" aria-label="National temperature change by pathway: SSP1-1.9 +0.72 °C (0.44 to 1.05); SSP1-2.6 +1.11 (0.51 to 1.87); SSP2-4.5 +2.13 (1.40 to 3.12), selected; SSP3-7.0 +3.42 (1.74 to 4.67); SSP5-8.5 +4.45 (3.03 to 6.88).">
+          <span class="pw">SSP1-1.9</span>
+          <div class="track"><div style="position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: #DCE2DC"></div><div style="position: absolute; top: 4px; height: 14px; border-radius: 7px; left: 6.29%; width: 8.71%; background: #7C8B94; opacity: .25"></div><div style="position: absolute; top: 5px; width: 12px; height: 12px; border-radius: 50%; left: 10.29%; transform: translateX(-50%); background: #5F7480"></div></div>
+          <span class="v">+0.72 °C · 0.44 to 1.05</span>
+          <span class="pw">SSP1-2.6</span>
+          <div class="track"><div style="position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: #DCE2DC"></div><div style="position: absolute; top: 4px; height: 14px; border-radius: 7px; left: 7.29%; width: 19.43%; background: #7C8B94; opacity: .25"></div><div style="position: absolute; top: 5px; width: 12px; height: 12px; border-radius: 50%; left: 15.86%; transform: translateX(-50%); background: #5F7480"></div></div>
+          <span class="v">+1.11 °C · 0.51 to 1.87</span>
+          <span class="pw sel">SSP2-4.5 ✓</span>
+          <div class="track"><div style="position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: #DCE2DC"></div><div style="position: absolute; top: 2px; height: 18px; border-radius: 9px; left: 20%; width: 24.57%; background: #B4531B; opacity: .22"></div><div style="position: absolute; top: 3px; width: 16px; height: 16px; border-radius: 50%; left: 30.43%; transform: translateX(-50%); background: #B4531B"></div></div>
+          <span class="v" style="color: #0B3B54; font-weight: 700">+2.13 °C · 1.40 to 3.12</span>
+          <span class="pw">SSP3-7.0</span>
+          <div class="track"><div style="position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: #DCE2DC"></div><div style="position: absolute; top: 4px; height: 14px; border-radius: 7px; left: 24.86%; width: 41.86%; background: #7C8B94; opacity: .25"></div><div style="position: absolute; top: 5px; width: 12px; height: 12px; border-radius: 50%; left: 48.86%; transform: translateX(-50%); background: #5F7480"></div></div>
+          <span class="v">+3.42 °C · 1.74 to 4.67</span>
+          <span class="pw">SSP5-8.5</span>
+          <div class="track"><div style="position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: #DCE2DC"></div><div style="position: absolute; top: 4px; height: 14px; border-radius: 7px; left: 43.29%; width: 55%; background: #7C8B94; opacity: .25"></div><div style="position: absolute; top: 5px; width: 12px; height: 12px; border-radius: 50%; left: 63.57%; transform: translateX(-50%); background: #5F7480"></div></div>
+          <span class="v">+4.45 °C · 3.03 to 6.88</span>
+          <span></span>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: #6B7C87"><span>0 °C</span><span>+1</span><span>+2</span><span>+3</span><span>+4</span><span>+5</span><span>+6</span><span>+7 °C</span></div>
+          <span></span>
+        </div>
+        <p class="cap" style="font-size: 14px; line-height: 1.65; margin: 14px 0 0; color: #40525E">Higher-forcing pathways warm Colombia more, and the model range widens with them. Rainfall does not order itself the same way: its range spans zero on every pathway, so the direction of change is not settled by the scenario.</p>
+        <div class="fold-list" style="margin-top: 12px">
+          <details><summary>About the range, and data table</summary>
+            <div class="scroll-x"><table class="dt">
+              <thead><tr><th>Pathway</th><th class="n">Temperature median</th><th class="n">Temperature p10–p90</th><th class="n">Rainfall median</th><th class="n">Rainfall p10–p90</th></tr></thead>
+              <tbody>
+                <tr><td>SSP1-1.9</td><td class="n">+0.72 °C</td><td class="n">+0.44 to +1.05 °C</td><td class="n">+4 mm/yr</td><td class="n">−97 to +101 mm/yr</td></tr>
+                <tr><td>SSP1-2.6</td><td class="n">+1.11 °C</td><td class="n">+0.51 to +1.87 °C</td><td class="n">+60 mm/yr</td><td class="n">−60 to +141 mm/yr</td></tr>
+                <tr class="sel"><td>SSP2-4.5</td><td class="n">+2.13 °C</td><td class="n">+1.40 to +3.12 °C</td><td class="n">+38 mm/yr</td><td class="n">−163 to +199 mm/yr</td></tr>
+                <tr><td>SSP3-7.0</td><td class="n">+3.42 °C</td><td class="n">+1.74 to +4.67 °C</td><td class="n">−56 mm/yr</td><td class="n">−388 to +272 mm/yr</td></tr>
+                <tr><td>SSP5-8.5</td><td class="n">+4.45 °C</td><td class="n">+3.03 to +6.88 °C</td><td class="n">−56 mm/yr</td><td class="n">−447 to +261 mm/yr</td></tr>
+              </tbody>
+            </table></div>
+            <p>World Bank CCKP, CMIP6 at 0.25°, annual anomaly 2080–2099 against 1995–2014. <b>Not on IDEAM's basis:</b> IDEAM's Fourth National Communication reports maximum temperature for 2081–2100 against 1981–2010 — a different variable, window and baseline.</p>
+          </details>
+        </div>
+      </div>
+
+      <div class="fold-list" aria-label="Climate data by region">
+        <details><summary>Colombia's five natural regions — selected pathway</summary>
+          <div class="scroll-x"><table class="dt">
+            <thead><tr><th>Region</th><th class="n">Departments</th><th class="n">Temperature median</th><th class="n">Temperature p10–p90</th><th class="n">Rainfall median</th><th class="n">Rainfall p10–p90</th></tr></thead>
+            <tbody>
+              <tr><td>Amazonia</td><td class="n">6</td><td class="n">+2.00 °C</td><td class="n">+1.38 to +3.61 °C</td><td class="n">−23 mm/yr</td><td class="n">−136 to +195 mm/yr</td></tr>
+              <tr><td>Andean</td><td class="n">11</td><td class="n">+2.21 °C</td><td class="n">+1.30 to +2.98 °C</td><td class="n">+48 mm/yr</td><td class="n">−216 to +220 mm/yr</td></tr>
+              <tr><td>Caribbean</td><td class="n">8</td><td class="n">+2.06 °C</td><td class="n">+1.41 to +2.81 °C</td><td class="n">−13 mm/yr</td><td class="n">−203 to +133 mm/yr</td></tr>
+              <tr><td>Orinoquia</td><td class="n">4</td><td class="n">+2.28 °C</td><td class="n">+1.55 to +3.37 °C</td><td class="n">−36 mm/yr</td><td class="n">−165 to +180 mm/yr</td></tr>
+              <tr><td>Pacific</td><td class="n">4</td><td class="n">+1.99 °C</td><td class="n">+1.28 to +2.80 °C</td><td class="n">+445 mm/yr</td><td class="n">−172 to +727 mm/yr</td></tr>
+            </tbody>
+          </table></div>
+          <p>Medians and ranges across 28 climate models for temperature and 27 for rainfall (CCKP region ensemble). CCKP publishes 29 SSP2-4.5 runs; why one temperature run and two rainfall runs have no region result is not recorded. Select a region on either map to open its departments and their CCKP estimates.</p>
+        </details>
+      </div>
+
+      <div class="save-box">
+        <div class="txt"><b>Save this outcome</b>Your settings and the results of all three results screens — climate and cost (step 4), air pollution (step 5) and climate impacts (step 6) — with their charts and maps and the fixed assumptions behind them, in one document.</div>
+        <div class="btns">
+          <button type="button" class="btn">⤓ Save as PDF</button>
+          <button type="button" class="btn ghost">Download data (CSV)</button>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn" href="Step5.dc.html"><span aria-hidden="true">←</span> Back: Air pollution</a>
+        <a class="btn wide" href="Step2.dc.html">⟳ Explore or change your pathway again</a>
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2150}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const range = (n, a, b, unit, m) => n + ': median ' + a + '; 10th–90th percentile across ' + m + ' climate models ' + b + ' ' + unit;
+    return {
+      mapH: 300,
+      tempFills: { Amazonia: '#F7D08A', Andean: '#B83B20', Caribbean: '#F1AE58', Orinoquia: '#8C1F13', Pacific: '#F7D08A' },
+      tempTips: {
+        Amazonia: range('Amazonia', '+2.00 °C', '+1.38 to +3.61', '°C', 28),
+        Andean: range('Andean', '+2.21 °C', '+1.30 to +2.98', '°C', 28),
+        Caribbean: range('Caribbean', '+2.06 °C', '+1.41 to +2.81', '°C', 28),
+        Orinoquia: range('Orinoquia', '+2.28 °C', '+1.55 to +3.37', '°C', 28),
+        Pacific: range('Pacific', '+1.99 °C', '+1.28 to +2.80', '°C', 28)
+      },
+      rainFills: { Amazonia: '#E6CFA8', Andean: '#C6DCE5', Caribbean: '#E6CFA8', Orinoquia: '#E6CFA8', Pacific: '#1C6E8C' },
+      rainTips: {
+        Amazonia: range('Amazonia', '−23 mm/yr', '−136 to +195', 'mm/yr', 27),
+        Andean: range('Andean', '+48 mm/yr', '−216 to +220', 'mm/yr', 27),
+        Caribbean: range('Caribbean', '−13 mm/yr', '−203 to +133', 'mm/yr', 27),
+        Orinoquia: range('Orinoquia', '−36 mm/yr', '−165 to +180', 'mm/yr', 27),
+        Pacific: range('Pacific', '+445 mm/yr', '−172 to +727', 'mm/yr', 27)
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

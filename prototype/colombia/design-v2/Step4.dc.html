@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Step 4 — Climate and social cost of carbon</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./proto.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#EDEFF1}
+a{color:#1D4ED8}a:hover{color:#0E5C3F}
+</style>
+</helmet>
+<div class="page">
+<div class="app">
+  <header class="hdr">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6C14 10 9 18 10 27c5 1 10-2 13-7 2-4 2-9 1-14z" fill="#7DBE3C"></path><path d="M31 9c-5 6-6 13-4 19 6-1 11-6 12-12 .5-3 0-6-1-9-2 .5-5 1-7 2z" fill="#1E7B3E"></path><path d="M9 29c2 8 9 13 17 13 3 0 6-1 9-2-3-7-10-12-18-12-3 0-6 .3-8 1z" fill="#1D6FB8"></path><path d="M10 27c-1 6 1 11 5 14" stroke="#0B3B54" stroke-width="1.4" fill="none" stroke-linecap="round"></path></svg>
+      <div><div class="logo-txt">EfD Colombia <span class="proto-badge">Prototype</span></div>
+      <div class="tagline">Environment for Development in Latin America</div></div>
+    </div>
+    <nav class="stepbar" aria-label="Steps">
+      <a class="st done" href="Main.dc.html"><span class="pip">✓</span><span class="lbl">Country</span></a>
+      <a class="st done" href="Step2.dc.html"><span class="pip">✓</span><span class="lbl">Your pathway</span></a>
+      <a class="st done" href="Step3.dc.html"><span class="pip">✓</span><span class="lbl">Global scenario</span></a>
+      <span class="sep" aria-hidden="true"></span>
+      <a class="st on" href="Step4.dc.html" aria-current="step"><span class="pip">4</span><span class="lbl">Climate &amp; SCC</span></a>
+      <a class="st" href="Step5.dc.html"><span class="pip">5</span><span class="lbl">Air pollution</span></a>
+      <a class="st" href="Step6.dc.html"><span class="pip">6</span><span class="lbl">Climate impacts</span></a>
+    </nav>
+    <a class="hdr-link" href="InfoLayers.dc.html">About this tool</a>
+  </header>
+  <div class="strip">
+    <span class="k">Your settings</span>
+    <a href="Main.dc.html"><b>Colombia</b></a>
+    <a class="use" href="Step2.dc.html">CO₂ 2050 <b>−60%</b></a>
+    <a class="use" href="Step2.dc.html">GDP <b>2.0%</b></a>
+    <a class="use" href="Step2.dc.html">Electrification <b>40%</b></a>
+    <a class="use" href="Step2.dc.html">Low-emission power <b>90%</b></a>
+    <a class="use ssp" href="Step3.dc.html">SSP <b>SSP2-4.5</b> (default)</a>
+    <span class="hint">Shaded: the settings this screen uses</span>
+  </div>
+
+  <section class="content">
+    <div class="title-row">
+      <svg class="title-ico" viewBox="0 0 52 52" aria-hidden="true"><path d="M8 44V8M8 44h38" stroke="#0E5C3F" stroke-width="2.4" stroke-linecap="round"></path><path d="M12 36l10-10 8 6 12-18" fill="none" stroke="#0E5C3F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M36 14h8v8" fill="none" stroke="#0E5C3F" stroke-width="2.4" stroke-linecap="round"></path></svg>
+      <div class="title-main">
+        <p class="eyebrow">Step 4 of 6 · Results</p>
+        <h1>Climate impact &amp; Social Cost of Carbon</h1>
+        <p class="sub">Your pathway against the SSP2-4.5 baseline for Colombia.</p>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="tiles">
+        <div class="tile">
+          <div class="lbl">Emissions in 2050<small>against 116.7 Mt on the median SSP2-4.5 baseline</small></div>
+          <div class="val">37 Mt</div>
+          <div class="unit outcome good">−68% compared with the baseline</div>
+        </div>
+        <div class="tile">
+          <div class="lbl">Cumulative emissions avoided<small>2025–2100, against the median baseline</small></div>
+          <div class="val">5.32</div>
+          <div class="unit">billion tonnes of carbon dioxide</div>
+        </div>
+        <div class="tile hero">
+          <div class="lbl">Estimated global climate damage avoided<small>2025–2100, valued using the IAM Social Cost of Carbon</small></div>
+          <div class="val">US$2.86</div>
+          <div class="unit">trillion, present value in 2025 (PPP US$ of 2025)</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="chart-head">
+          <div><h3>Colombia's carbon dioxide emissions</h3>
+            <p class="cap">Mt CO₂ per year from fossil fuels and industry, excluding reported biomass CCS — land use is not included</p></div>
+          <div class="legend">
+            <span><i class="dotted"></i>National history 2005–2024</span>
+            <span><i class="dashed"></i>SSP2-4.5 baseline (median)</span>
+            <span><i class="band"></i>Full range across 6 models</span>
+            <span><i class="solid"></i>Your pathway</span>
+          </div>
+        </div>
+        <svg viewBox="0 0 980 320" role="img" aria-label="Colombia's carbon dioxide emissions, 2005 to 2100. Observed 60.3 Mt in 2005 and 92.7 Mt in 2024. In 2050 the SSP2-4.5 baseline median is 116.7 Mt, range 107.0 to 134.5, and your pathway is 37.1 Mt."><line class="gridline" x1="52" y1="278" x2="962" y2="278"></line><text class="axtx" x="42" y="282" text-anchor="end">0</text><line class="gridline" x1="52" y1="212" x2="962" y2="212"></line><text class="axtx" x="42" y="216" text-anchor="end">50</text><line class="gridline" x1="52" y1="146" x2="962" y2="146"></line><text class="axtx" x="42" y="150" text-anchor="end">100</text><line class="gridline" x1="52" y1="80" x2="962" y2="80"></line><text class="axtx" x="42" y="84" text-anchor="end">150</text><line class="gridline" x1="52" y1="14" x2="962" y2="14"></line><text class="axtx" x="42" y="18" text-anchor="end">200</text><line class="axis" x1="52" y1="14" x2="52" y2="278"></line><line class="axis" x1="52" y1="278" x2="962" y2="278"></line><polygon points="234,155.6 243.5,152.0 291.4,136.7 387.2,116.2 483.0,100.5 578.8,101.4 674.6,71.2 770.4,34.3 866.2,15.6 962,79.5 962,208.2 866.2,195.7 770.4,159.7 674.6,144.9 578.8,138.2 483.0,136.7 387.2,144.1 291.4,151.0 243.5,154.3 234,155.6" fill="#7C8B94" opacity=".18"></polygon><polygon points="234,155.6 243.5,153.3 291.4,144.7 387.2,129.5 483.0,123.9 578.8,120.3 674.6,134.4 770.4,156.1 866.2,167.3 962,181.3 962,270.4 866.2,267.0 770.4,262.0 674.6,254.8 578.8,244.3 483.0,229.0 387.2,206.8 291.4,174.6 243.5,153.3 234,155.6" fill="#0A7A48" opacity=".10"></polygon><polyline points="52,198.4 61.5,195.5 71.1,197.9 80.7,189.5 90.3,183.2 99.8,178.4 109.4,178.7 119.0,174.1 128.6,163.8 138.2,156.5 147.7,157.8 157.3,157.1 166.9,167.8 176.5,158.1 186.1,147.3 195.6,156.1 205.2,141.0 214.8,159.9 224.4,159.2 234,155.6" fill="none" stroke="#253746" stroke-width="2.6" stroke-dasharray="0 5" stroke-linejoin="round" stroke-linecap="round"></polyline><polyline points="234,155.6 243.5,153.3 291.4,144.7 387.2,129.5 483.0,123.9 578.8,120.3 674.6,134.4 770.4,156.1 866.2,167.3 962,181.3" fill="none" stroke="#7C8B94" stroke-width="2" stroke-dasharray="8 6"></polyline><polyline points="234,155.6 243.5,153.3 291.4,174.6 387.2,206.8 483.0,229.0 578.8,244.3 674.6,254.8 770.4,262.0 866.2,267.0 962,270.4" fill="none" stroke="#0A7A48" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></polyline><text x="66" y="34" style="font-size:13px;fill:#0A7A48;font-weight:600">Green: emissions avoided</text><text class="axtx" x="52" y="300" text-anchor="middle">2005</text><text class="axtx" x="195.6" y="300" text-anchor="middle">2020</text><text class="axtx" x="387.2" y="300" text-anchor="middle">2040</text><text class="axtx" x="578.8" y="300" text-anchor="middle">2060</text><text class="axtx" x="770.4" y="300" text-anchor="middle">2080</text><text class="axtx" x="962" y="300" text-anchor="middle">2100</text></svg>
+
+        <div class="fold-list" aria-label="Emissions chart information" style="margin-top: 14px">
+          <details><summary>What runs the calculations</summary>
+            <p>The integrated assessment model (IAM) is the calculation engine. It combines scenario data, climate modelling and economic relationships to work out the consequences of the choices you made.</p>
+            <ul class="chain">
+              <li><span class="yr">SSPs</span><span><b>The scenarios you pick from.</b> Five pathways, each pairing a socioeconomic storyline (SSP1 appears twice) with a forcing level in 2100; the starting assumption, not a result. <a class="paper" href="https://doi.org/10.1016/j.gloenvcha.2016.05.009">Riahi et al. (2017) ↗</a></span></li>
+              <li><span class="yr">FaIR</span><span><b>The climate model.</b> Takes emissions and works out temperature — a fast, simplified model calibrated against the large ones. <a class="paper" href="https://doi.org/10.5194/gmd-14-3007-2021">Leach et al. (2021) ↗</a></span></li>
+              <li><span class="yr">DICE</span><span><b>The economy.</b> Projects population, productivity and capital for each scenario — how large the economy is that the damage lands on. <a class="paper" href="https://doi.org/10.1073/pnas.2312030121">Barrage &amp; Nordhaus (2024) ↗</a></span></li>
+              <li><span class="yr">Damage</span><span><b>Warming into cost.</b> The most contested step in the chain; the answer moves a lot with the curve used. <a class="paper" href="https://doi.org/10.1007/s10640-025-01016-7">Howard &amp; Sterner (2025) ↗</a></span></li>
+            </ul>
+          </details>
+          <details><summary>This is one possible result — what could make it higher or lower</summary>
+            <p>Every number on this screen is a single figure from one IAM parameter set. Read it as a pathway comparison, not a precise forecast. Three choices move it most:</p>
+            <ul class="chain">
+              <li><span class="yr">ECS</span><span><b>How strongly the planet responds to CO₂</b> — set to 3 °C per doubling. Sherwood et al. give 2.6–3.9 °C as a 66% range and 2.3–4.7 °C as a 90% range. <a class="paper" href="https://doi.org/10.1029/2019RG000678">Sherwood et al. (2020) ↗</a></span></li>
+              <li><span class="yr">Curve</span><span><b>How damage grows with warming</b> — different published curves give substantially different costs from identical warming. <a class="paper" href="https://doi.org/10.1073/pnas.2410733121">Moore et al. (2024) ↗</a></span></li>
+              <li><span class="yr">Rate</span><span><b>How much the future counts</b> — this tool uses a 0.5% pure time-preference rate; economists disagree about the right rate. <a class="paper" href="https://doi.org/10.1257/pol.20160240">Drupp et al. (2018) ↗</a></span></li>
+            </ul>
+          </details>
+          <details><summary>How the cost of carbon is worked out</summary>
+            <p>One extra tonne of CO₂ is added in 2025, the climate model is run again, and the difference in damage over the following 450 years is added up and discounted by the Ramsey rule (pure time preference 0.5%, elasticity 1). Under SSP2-4.5 this gives <b>US$718 per tonne</b> in 2025, in PPP US$ of 2025.</p>
+            <p>That is high against the range most often quoted in policy: the damage curve used is far steeper than the classic quadratic one, and 0.5% is a low time-preference rate. Both are stated choices.</p>
+          </details>
+          <details><summary>What the three lines are, and how this chart is computed</summary>
+            <p>Colombia's national profile is anchored at <b>92.7 Mt</b> of fossil-fuel and industrial carbon dioxide in 2024 and <b>60.3 Mt</b> in 2005. The dashed grey line is the median of 6 Colombia SSP curves. Each uses Colombian population and GDP per capita, a paired IIASA Latin America (R5) final-energy factor, and that R5 run's indexed fossil/industrial CO₂ after adding back reported biomass CCS. The pale grey band spans the full available model range. Two AIM/CGE baseline rows lack biomass-CCS data and are excluded from the corrected ensemble.</p>
+            <p>This is an SSP-scaled prototype baseline, not a calibrated or forcing-consistent Colombian forecast. Some adjusted model values remain negative; the available rows do not explain every removal or establish one for Colombia. This chart does not respond to the energy sliders. The green line reaches the 2050 mitigation target you set at step 2 and continues at the same proportional rate; it does not estimate a technology mix or biomass CCS. Land-use emissions and removals are excluded. Model spread omits uncertainty in national drivers, elasticities, and the regional transfer.</p>
+          </details>
+          <details><summary>Show data table</summary>
+            <div class="scroll-x"><table class="dt">
+              <thead><tr><th>Year</th><th class="n">SSP2-4.5 baseline, median (Mt)</th><th class="n">Full model range (Mt)</th><th class="n">Your pathway (Mt)</th><th class="n">Median minus yours (Mt)</th></tr></thead>
+              <tbody>
+                <tr><td>2024</td><td class="n">92.7</td><td class="n">92.7–92.7</td><td class="n">92.7</td><td class="n">0.0</td></tr>
+                <tr><td>2025</td><td class="n">94.4</td><td class="n">93.6–95.5</td><td class="n">94.4</td><td class="n">0.0</td></tr>
+                <tr><td>2030</td><td class="n">101.0</td><td class="n">96.2–107.0</td><td class="n">78.3</td><td class="n">+22.6</td></tr>
+                <tr><td>2040</td><td class="n">112.5</td><td class="n">101.4–122.6</td><td class="n">53.9</td><td class="n">+58.6</td></tr>
+                <tr class="sel"><td>2050</td><td class="n">116.7</td><td class="n">107.0–134.5</td><td class="n">37.1</td><td class="n">+79.6</td></tr>
+                <tr><td>2060</td><td class="n">119.5</td><td class="n">105.9–133.8</td><td class="n">25.5</td><td class="n">+94.0</td></tr>
+                <tr><td>2070</td><td class="n">108.8</td><td class="n">100.8–156.6</td><td class="n">17.5</td><td class="n">+91.2</td></tr>
+                <tr><td>2080</td><td class="n">92.3</td><td class="n">89.5–184.6</td><td class="n">12.1</td><td class="n">+80.2</td></tr>
+                <tr><td>2090</td><td class="n">83.9</td><td class="n">62.3–198.8</td><td class="n">8.3</td><td class="n">+75.6</td></tr>
+                <tr><td>2100</td><td class="n">73.2</td><td class="n">52.9–150.3</td><td class="n">5.7</td><td class="n">+67.5</td></tr>
+              </tbody>
+            </table></div>
+          </details>
+          <details><summary>Show national history table</summary>
+            <p>Global Carbon Budget, Colombia fossil-fuel and industrial CO₂ (Mt): 2005 60.3 · 2006 62.5 · 2007 60.7 · 2008 67.0 · 2009 71.8 · 2010 75.4 · 2011 75.2 · 2012 78.7 · 2013 86.4 · 2014 92.0 · 2015 91.0 · 2016 91.6 · 2017 83.5 · 2018 90.8 · 2019 99.0 · 2020 92.3 · 2021 103.7 · 2022 89.4 · 2023 90.0 · 2024 92.7</p>
+          </details>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="chart-head"><div><h3>Emissions from electricity generation in 2050</h3>
+          <p class="cap" style="margin: 0">Grid, life-cycle CO₂e per year — with your 40% electrification and 90% low-emission generation</p>
+          <p class="cap" style="margin: 4px 0 0; color: #40525E">Do not add these to the 37 Mt above: that chart is economy-wide fossil and industrial CO₂; these are life-cycle CO₂e from grid generation, which overlap with it.</p></div></div>
+        <div class="tiles" style="margin-top: 14px">
+          <div class="tile">
+            <div class="lbl">SSP power baseline<small>median across 6 Latin America model runs</small></div>
+            <div class="val" style="color: #0B3B54">39.0 Mt</div>
+            <div class="unit">life-cycle CO₂e per year</div>
+          </div>
+          <div class="tile">
+            <div class="lbl">Your policy pathway<small>with your electricity volume and mix</small></div>
+            <div class="val" style="color: #0B3B54">24.2 Mt</div>
+            <div class="unit">life-cycle CO₂e per year</div>
+          </div>
+          <div class="tile">
+            <div class="lbl">Emissions avoided<small>SSP baseline minus your pathway, 2050</small></div>
+            <div class="val">14.8 Mt</div>
+            <div class="unit">life-cycle CO₂e per year below the baseline</div>
+          </div>
+        </div>
+        <div class="chart-head">
+          <div><h3>Colombia's electricity-generation emissions</h3><p class="cap">Mt life-cycle CO₂e per year, 2024–2100 · yearly totals, not a running sum</p></div>
+          <div class="legend"><span><i class="dashed"></i>SSP baseline median</span><span><i class="solid"></i>Your pathway</span></div>
+        </div>
+        <svg viewBox="0 0 980 320" role="img" aria-label="Colombia's electricity-generation emissions, 2024 to 2100. Both lines start at 26.6 Mt in 2024. In 2050 the SSP baseline median is 39.0 Mt and your pathway 24.2 Mt; in 2100, 49.1 and 23.9 Mt."><line class="gridline" x1="52" y1="278" x2="962" y2="278"></line><text class="axtx" x="42" y="282" text-anchor="end">0</text><line class="gridline" x1="52" y1="225.2" x2="962" y2="225.2"></line><text class="axtx" x="42" y="229.2" text-anchor="end">10</text><line class="gridline" x1="52" y1="172.4" x2="962" y2="172.4"></line><text class="axtx" x="42" y="176.4" text-anchor="end">20</text><line class="gridline" x1="52" y1="119.6" x2="962" y2="119.6"></line><text class="axtx" x="42" y="123.6" text-anchor="end">30</text><line class="gridline" x1="52" y1="66.8" x2="962" y2="66.8"></line><text class="axtx" x="42" y="70.8" text-anchor="end">40</text><line class="gridline" x1="52" y1="14" x2="962" y2="14"></line><text class="axtx" x="42" y="18" text-anchor="end">50</text><line class="axis" x1="52" y1="14" x2="52" y2="278"></line><line class="axis" x1="52" y1="278" x2="962" y2="278"></line><polygon points="52,137.6 63.9,134.0 75.9,131.2 87.9,128.3 99.8,125.4 111.8,122.5 123.8,119.5 135.8,118.0 147.7,116.1 159.7,114.2 171.7,112.3 183.7,110.4 195.6,107.7 207.6,104.7 219.6,101.8 231.6,98.8 243.5,95.8 255.5,93.5 267.5,91.3 279.5,89.0 291.4,86.7 303.4,84.3 315.4,81.9 327.3,79.4 339.3,76.9 351.3,74.4 363.3,71.9 375.2,71.0 387.2,70.1 399.2,69.3 411.2,68.4 423.1,67.4 435.1,64.9 447.1,62.3 459.1,59.7 471.0,57.1 483.0,54.5 495.0,52.7 507,51.9 518.9,51.1 530.9,50.2 542.9,49.3 554.8,48.4 566.8,47.5 578.8,46.6 590.8,45.7 602.7,44.8 614.7,44.9 626.7,45.0 638.7,45.1 650.6,45.2 662.6,45.4 674.6,45.8 686.6,46.2 698.5,46.6 710.5,47.0 722.5,47.4 734.5,45.6 746.4,43.8 758.4,42.1 770.4,40.3 782.3,38.6 794.3,37.0 806.3,35.5 818.3,34.0 830.2,32.5 842.2,31.0 854.2,29.5 866.2,28.0 878.1,26.5 890.1,25.1 902.1,23.6 914.1,21.9 926.0,20.3 938.0,18.6 950.0,18.7 962,18.9 962,151.8 950.0,153.0 938.0,154.2 926.0,155.3 914.1,156.4 902.1,157.4 890.1,158.4 878.1,159.3 866.2,160.2 854.2,161.1 842.2,161.9 830.2,162.8 818.3,163.6 806.3,164.4 794.3,165.2 782.3,165.9 770.4,166.5 758.4,167.1 746.4,167.6 734.5,168.1 722.5,168.5 710.5,168.9 698.5,169.1 686.6,168.7 674.6,168.1 662.6,167.5 650.6,166.9 638.7,166.2 626.7,165.4 614.7,165.4 602.7,165.4 590.8,165.4 578.8,165.3 566.8,165.2 554.8,164.9 542.9,164.6 530.9,164.3 518.9,163.8 507,163.3 495.0,162.7 483.0,162.1 471.0,161.1 459.1,160.0 447.1,158.9 435.1,157.7 423.1,156.4 411.2,155.1 399.2,154.0 387.2,152.8 375.2,151.5 363.3,150.2 351.3,149.1 339.3,147.9 327.3,146.7 315.4,145.5 303.4,144.3 291.4,143.1 279.5,141.9 267.5,140.7 255.5,139.5 243.5,138.3 231.6,137.5 219.6,136.7 207.6,136.0 195.6,135.3 183.7,134.7 171.7,134.2 159.7,133.8 147.7,133.5 135.8,133.4 123.8,133.3 111.8,133.8 99.8,134.4 87.9,135.2 75.9,136.0 63.9,137.0 52,137.5" fill="#0A7A48" opacity=".10"></polygon><polyline points="52,137.6 63.9,134.0 75.9,131.2 87.9,128.3 99.8,125.4 111.8,122.5 123.8,119.5 135.8,118.0 147.7,116.1 159.7,114.2 171.7,112.3 183.7,110.4 195.6,107.7 207.6,104.7 219.6,101.8 231.6,98.8 243.5,95.8 255.5,93.5 267.5,91.3 279.5,89.0 291.4,86.7 303.4,84.3 315.4,81.9 327.3,79.4 339.3,76.9 351.3,74.4 363.3,71.9 375.2,71.0 387.2,70.1 399.2,69.3 411.2,68.4 423.1,67.4 435.1,64.9 447.1,62.3 459.1,59.7 471.0,57.1 483.0,54.5 495.0,52.7 507,51.9 518.9,51.1 530.9,50.2 542.9,49.3 554.8,48.4 566.8,47.5 578.8,46.6 590.8,45.7 602.7,44.8 614.7,44.9 626.7,45.0 638.7,45.1 650.6,45.2 662.6,45.4 674.6,45.8 686.6,46.2 698.5,46.6 710.5,47.0 722.5,47.4 734.5,45.6 746.4,43.8 758.4,42.1 770.4,40.3 782.3,38.6 794.3,37.0 806.3,35.5 818.3,34.0 830.2,32.5 842.2,31.0 854.2,29.5 866.2,28.0 878.1,26.5 890.1,25.1 902.1,23.6 914.1,21.9 926.0,20.3 938.0,18.6 950.0,18.7 962,18.9" fill="none" stroke="#7C8B94" stroke-width="2" stroke-dasharray="8 6"></polyline><polyline points="52,137.5 63.9,137.0 75.9,136.0 87.9,135.2 99.8,134.4 111.8,133.8 123.8,133.3 135.8,133.4 147.7,133.5 159.7,133.8 171.7,134.2 183.7,134.7 195.6,135.3 207.6,136.0 219.6,136.7 231.6,137.5 243.5,138.3 255.5,139.5 267.5,140.7 279.5,141.9 291.4,143.1 303.4,144.3 315.4,145.5 327.3,146.7 339.3,147.9 351.3,149.1 363.3,150.2 375.2,151.5 387.2,152.8 399.2,154.0 411.2,155.1 423.1,156.4 435.1,157.7 447.1,158.9 459.1,160.0 471.0,161.1 483.0,162.1 495.0,162.7 507,163.3 518.9,163.8 530.9,164.3 542.9,164.6 554.8,164.9 566.8,165.2 578.8,165.3 590.8,165.4 602.7,165.4 614.7,165.4 626.7,165.4 638.7,166.2 650.6,166.9 662.6,167.5 674.6,168.1 686.6,168.7 698.5,169.1 710.5,168.9 722.5,168.5 734.5,168.1 746.4,167.6 758.4,167.1 770.4,166.5 782.3,165.9 794.3,165.2 806.3,164.4 818.3,163.6 830.2,162.8 842.2,161.9 854.2,161.1 866.2,160.2 878.1,159.3 890.1,158.4 902.1,157.4 914.1,156.4 926.0,155.3 938.0,154.2 950.0,153.0 962,151.8" fill="none" stroke="#0A7A48" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"></polyline><text x="66" y="34" style="font-size:13px;fill:#0A7A48;font-weight:600">Green: emissions avoided</text><text class="axtx" x="52" y="300" text-anchor="middle">2024</text><text class="axtx" x="243.5" y="300" text-anchor="middle">2040</text><text class="axtx" x="483.0" y="300" text-anchor="middle">2060</text><text class="axtx" x="722.5" y="300" text-anchor="middle">2080</text><text class="axtx" x="962" y="300" text-anchor="middle">2100</text></svg>
+
+        <div class="fold-list" aria-label="Electricity chart information" style="margin-top: 14px">
+          <details><summary>How this curve is computed</summary>
+            <p>Ember reports about <b>26.6 Mt</b> life-cycle CO₂e from <b>89.14 TWh</b> of Colombian generation in 2024. The dashed curve uses national SSP population and income, a normalized regional energy and electricity path, and a regional mix change indexed to Ember's Colombian mix. It is the median of 6 model runs. The range across those runs, in the data table below, is not a probability interval or a published Colombia forecast.</p>
+          </details>
+          <details><summary>Show the inputs and their sources</summary>
+            <div class="scroll-x"><table class="dt">
+              <thead><tr><th>Input</th><th class="n">Value for Colombia</th><th>Source</th></tr></thead>
+              <tbody>
+                <tr><td>Total final energy, 2024</td><td class="n">1,498,690 TJ</td><td>UPME BECO 2024</td></tr>
+                <tr><td>Demand response to income</td><td class="n">exp(0.48 L + 0.065 L²), population scaled</td><td>Burke &amp; Csereklyei Table 5; primary-energy transfer, not estimated for Colombia</td></tr>
+                <tr><td>R5 energy residual, 2050</td><td class="n">92.7% of 2024</td><td>IIASA SSP 2018 R5 paired final energy, GDP and population</td></tr>
+                <tr><td>Final energy in 2050 on your settings</td><td class="n">1,889,057 TJ</td><td>your GDP slider + SSP2 + R5 residual</td></tr>
+                <tr><td>Electricity in final energy, 2024</td><td class="n">282,640 TJ</td><td>UPME BECO 2024 (EE SIN + AUT COG)</td></tr>
+                <tr><td>Electricity share of final energy, 2024</td><td class="n">18.9%</td><td>UPME BECO 2024</td></tr>
+                <tr><td>Low-emission share of generation, 2024</td><td class="n">61.34%</td><td>Ember 2024</td></tr>
+                <tr><td>Your 2050 generation mix</td><td class="n">90.0%</td><td>your slider (99.9% numerical bound)</td></tr>
+                <tr><td>Fossil generation emission factor</td><td class="n">719.4 gCO₂e/kWh</td><td>Ember 2024</td></tr>
+                <tr><td>Low-emission generation factor</td><td class="n">32.9 gCO₂e/kWh</td><td>Ember 2024</td></tr>
+                <tr><td>Generation, 2024</td><td class="n">89.14 TWh</td><td>Ember 2024</td></tr>
+                <tr><td>Published power intensity, 2024</td><td class="n">298.3 gCO₂e/kWh</td><td>Ember 2024</td></tr>
+                <tr><td>SSP baseline, 2050</td><td class="n">39.0 Mt CO₂e</td><td>IIASA SSP 2018 R5 indexed to Ember 2024</td></tr>
+              </tbody>
+            </table></div>
+            <p>The 2024 low-emission share reflects a dry year: 61.3% in 2024 against 77.0% in 2025 on a hydro-dominated grid. Whether to anchor on one year or a multi-year average has not been decided. Step 2's slider marks use the same UPME 2024 workbook: 18.9% electrification and 70.3% low-emission grid generation (hydro, wind and solar over grid plants, excluding self-generation and bioenergy).</p>
+          </details>
+          <details><summary>Which sources make up this grid, and how to change them</summary>
+            <p>The low-emission slider at step 2 fixes the size of each group; the optional source editor sets the split within a group. Wind set to 40% of a 30% low-emission share is 12% of all electricity. Every source carries its own life-cycle factor — bioenergy at 216 g/kWh is not the same "clean" as hydro at 24. <a class="info-link" href="Step2.dc.html">Open the source editor at step 2</a></p>
+          </details>
+          <details><summary>Show data table, with the full model range</summary>
+            <div class="scroll-x"><table class="dt">
+              <thead><tr><th>Year</th><th class="n">SSP baseline median (Mt)</th><th class="n">Full model range (Mt)</th><th class="n">Your pathway (Mt)</th><th class="n">Median minus yours (Mt)</th></tr></thead>
+              <tbody>
+                <tr><td>2024</td><td class="n">26.6</td><td class="n">26.6–26.6</td><td class="n">26.6</td><td class="n">0.0</td></tr>
+                <tr><td>2030</td><td class="n">30.0</td><td class="n">28.8–33.3</td><td class="n">27.4</td><td class="n">+2.6</td></tr>
+                <tr><td>2040</td><td class="n">34.5</td><td class="n">27.9–45.2</td><td class="n">26.4</td><td class="n">+8.0</td></tr>
+                <tr class="sel"><td>2050</td><td class="n">39.0</td><td class="n">18.8–59.5</td><td class="n">24.2</td><td class="n">+14.8</td></tr>
+                <tr><td>2060</td><td class="n">42.3</td><td class="n">11.3–84.3</td><td class="n">22.0</td><td class="n">+20.4</td></tr>
+                <tr><td>2070</td><td class="n">44.2</td><td class="n">9.5–69.7</td><td class="n">21.3</td><td class="n">+22.8</td></tr>
+                <tr><td>2080</td><td class="n">43.7</td><td class="n">10.1–56.9</td><td class="n">20.7</td><td class="n">+22.9</td></tr>
+                <tr><td>2090</td><td class="n">46.8</td><td class="n">11.7–59.1</td><td class="n">22.0</td><td class="n">+24.8</td></tr>
+                <tr><td>2100</td><td class="n">49.1</td><td class="n">13.1–54.3</td><td class="n">23.9</td><td class="n">+25.2</td></tr>
+              </tbody>
+            </table></div>
+          </details>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn back" href="Step3.dc.html"><span aria-hidden="true">←</span> Back: Global scenario (SSP)</a>
+        <a class="btn" href="Step5.dc.html">Next: Air pollution impacts <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Step 1 — Choose country</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./proto.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#EDEFF1}
+a{color:#1D4ED8}a:hover{color:#0E5C3F}
+</style>
+</helmet>
+<div class="page">
+<div class="app">
+  <header class="hdr">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6C14 10 9 18 10 27c5 1 10-2 13-7 2-4 2-9 1-14z" fill="#7DBE3C"></path><path d="M31 9c-5 6-6 13-4 19 6-1 11-6 12-12 .5-3 0-6-1-9-2 .5-5 1-7 2z" fill="#1E7B3E"></path><path d="M9 29c2 8 9 13 17 13 3 0 6-1 9-2-3-7-10-12-18-12-3 0-6 .3-8 1z" fill="#1D6FB8"></path><path d="M10 27c-1 6 1 11 5 14" stroke="#0B3B54" stroke-width="1.4" fill="none" stroke-linecap="round"></path></svg>
+      <div><div class="logo-txt">EfD Colombia <span class="proto-badge">Prototype</span></div>
+      <div class="tagline">Environment for Development in Latin America</div></div>
+    </div>
+    <nav class="stepbar" aria-label="Steps">
+      <a class="st on" href="Main.dc.html" aria-current="step"><span class="pip">1</span><span class="lbl">Country</span></a>
+      <a class="st" href="Step2.dc.html"><span class="pip">2</span><span class="lbl">Your pathway</span></a>
+      <a class="st" href="Step3.dc.html"><span class="pip">3</span><span class="lbl">Global scenario</span></a>
+      <span class="sep" aria-hidden="true"></span>
+      <a class="st" href="Step4.dc.html"><span class="pip">4</span><span class="lbl">Climate &amp; SCC</span></a>
+      <a class="st" href="Step5.dc.html"><span class="pip">5</span><span class="lbl">Air pollution</span></a>
+      <a class="st" href="Step6.dc.html"><span class="pip">6</span><span class="lbl">Climate impacts</span></a>
+    </nav>
+    <a class="hdr-link" href="InfoLayers.dc.html">About this tool</a>
+  </header>
+
+  <section class="content">
+    <div class="title-row">
+      <div class="title-ico" aria-hidden="true"></div>
+      <div class="title-main">
+        <p class="eyebrow">Step 1 of 6 · Settings</p>
+        <h1>Welcome to the climate-economic policy design tool</h1>
+        <p class="sub">Explore climate-economic pathways for your country. You will make assumptions and the model will show the possible outcomes.</p>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="about-row">
+        <details class="fold"><summary><span style="font-weight: 700; color: #1D4ED8">Transparent models</span><span>— published methods, settings stated</span></summary>
+          <p>Some parts are published methods, run with the settings stated in the tool: the SSP scenario database, the FaIR climate model, and a social cost of carbon found by adding one tonne of CO₂ in 2025 and tracing the damage it causes, with the damage function and discounting stated. Other parts are labelled prototype constructions — the Colombian emissions baseline and the air-pollution response — not a Colombia model run.</p>
+        </details>
+        <details class="fold"><summary><span style="font-weight: 700; color: #1D4ED8">Open data</span><span>— public statistics and scenario databases</span></summary>
+          <p>The inputs are public statistics and published datasets: UPME's Colombian energy balance, the Global Carbon Budget, Ember, the World Bank (development indicators and the CCKP climate portal), the WHO, McDuffie et al. surface PM₂.₅, the EMEP/EEA emission-factor guidebook and the IIASA SSP database. Licences differ by source and have not all been checked.</p>
+        </details>
+      </div>
+
+      <div class="info-actions" aria-label="Learn about this tool">
+        <a class="info-action" href="InfoLayers.dc.html"><span class="n">1</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"></path><path d="M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"></path></svg><span>First: learn how to navigate</span></a>
+        <a class="info-action" href="InfoLayers.dc.html"><span class="n">2</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"></path><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path></svg><span>Why the results are based on research and data</span></a>
+        <a class="info-action" href="InfoLayers.dc.html"><span class="n">3</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"></circle><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"></path></svg><span>What runs the calculations</span></a>
+        <a class="info-action" href="InfoLayers.dc.html"><span class="n">4</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l10 10-10 10L2 12z"></path><path d="M12 7l5 5-5 5-5-5z"></path></svg><span>What can make results higher or lower</span></a>
+      </div>
+
+      <div class="section-label">Choose country
+        <span>The 12 sovereign South American states. Select on the map, or use the list.</span></div>
+
+      <div class="picker">
+        <div class="mapbox mapbig">
+          <svg viewBox="18 24 584 642" role="img" aria-label="Map of South America; the selected country is shaded green">
+            <path d="M181 617L185 623L191 633L207 641L224 644L219 651L207 652L201 647L194 646L181 646L181 617ZM315 378L312 385L308 395L308 404L306 406L305 412L304 417L319 425L318 432L325 436L325 441L313 454L295 459L271 461L257 460L260 466L257 474L260 479L252 483L240 484L228 480L223 483L225 494L233 497L240 493L244 499L232 502L223 509L221 520L218 526L206 526L197 532L193 540L205 548L217 551L213 561L198 568L191 582L180 587L174 593L178 606L186 613L181 612L170 610L141 609L136 601L136 592L128 593L124 588L122 575L132 570L136 562L134 557L141 547L145 532L144 525L149 523L148 519L142 517L146 512L141 508L138 496L143 494L141 481L144 470L147 461L154 458L150 448L150 439L160 432L159 424L166 415L166 406L163 404L158 388L165 379L164 370L168 362L176 354L185 348L181 345L184 342L183 328L196 323L201 314L199 312L209 305L225 307L232 313L237 306L251 306L253 308L275 322L285 324L300 330L313 333L314 337L302 350L315 353L328 354L338 353L349 346L351 338L357 336L363 342L363 349L353 354L344 357L331 366L315 378Z" fill="{{f.ARG}}" stroke="{{s.ARG}}" stroke-width="{{w.ARG}}" style="cursor: pointer" onClick="{{pick.ARG}}"><title>Argentina</title></path>
+            <path d="M170 216L179 216L185 216L188 214L198 210L205 207L221 206L219 212L221 215L220 220L233 228L247 229L252 232L260 234L265 236L272 236L280 238L280 243L282 245L283 249L279 249L284 258L307 259L305 263L307 267L313 269L316 274L314 281L311 284L312 289L308 291L308 288L296 284L285 284L264 286L258 294L258 298L253 308L251 306L237 306L232 313L225 307L209 305L199 312L190 314L186 302L179 292L183 284L177 281L175 275L169 269L177 260L171 254L174 251L172 248L177 244L177 237L178 231L180 228L170 216Z" fill="{{f.BOL}}" stroke="{{s.BOL}}" stroke-width="{{w.BOL}}" style="cursor: pointer" onClick="{{pick.BOL}}"><title>Bolivia</title></path>
+            <path d="M366 411L363 406L368 401L361 395L352 390L339 384L335 384L322 377L315 378L331 366L344 357L353 354L363 349L363 342L357 336L351 338L353 333L355 328L355 323L351 322L346 323L342 323L340 320L339 312L337 309L329 307L324 308L311 307L312 295L308 291L312 289L311 284L314 281L316 274L313 269L307 267L305 263L307 259L284 258L279 249L283 249L282 245L280 243L280 238L272 236L265 236L260 234L252 232L247 229L233 228L220 220L221 215L219 212L221 206L205 207L198 210L188 214L185 216L179 216L170 216L163 217L157 216L158 204L148 208L137 208L133 204L125 204L127 200L121 195L116 188L119 187L119 184L126 181L125 177L128 174L129 170L143 165L153 164L154 162L165 163L171 141L171 138L169 133L164 130L164 125L171 124L173 124L174 121L166 120L166 116L190 116L194 113L197 116L200 120L202 119L209 123L218 123L220 120L230 119L235 117L236 114L245 112L244 110L234 109L232 104L232 99L227 97L229 96L238 97L248 99L252 98L260 96L274 93L278 90L277 88L283 88L286 90L284 93L288 94L291 98L288 101L286 107L289 111L290 115L298 119L303 119L305 118L309 117L314 116L318 114L325 114L328 114L334 115L336 113L333 112L335 109L340 110L345 109L352 111L358 112L361 110L364 111L366 113L372 112L376 109L380 104L387 96L391 96L394 100L401 114L408 115L408 121L399 127L403 130L424 131L425 139L434 134L449 136L469 141L475 146L473 150L487 148L511 152L529 152L547 158L563 167L572 169L583 170L587 172L591 182L593 187L588 200L582 205L565 216L557 225L548 232L545 232L542 238L543 254L539 266L538 272L534 275L532 286L520 297L518 306L508 309L505 314L492 314L472 318L464 321L450 324L436 331L426 339L424 346L426 351L424 360L421 364L412 369L399 385L388 392L380 397L374 406L366 411Z" fill="{{f.BRA}}" stroke="{{s.BRA}}" stroke-width="{{w.BRA}}" style="cursor: pointer" onClick="{{pick.BRA}}"><title>Brazil</title></path>
+            <path d="M181 617L181 646L194 646L201 647L197 652L186 657L180 656L173 655L164 651L152 649L136 641L124 634L107 619L117 622L134 631L150 636L157 630L161 620L172 615L181 617ZM169 269L175 275L177 281L183 284L179 292L186 302L190 314L199 312L201 314L196 323L183 328L184 342L181 345L185 348L176 354L168 362L164 370L165 379L158 388L163 404L166 406L166 415L159 424L160 432L150 439L150 448L154 458L147 461L144 470L141 481L143 494L138 496L141 508L146 512L142 517L148 519L149 523L144 525L145 532L141 547L134 557L136 562L132 570L122 575L124 588L128 593L136 592L136 601L141 609L170 610L181 612L171 612L165 615L154 620L152 632L147 633L133 628L119 619L104 612L100 604L104 596L97 588L96 568L101 556L114 547L95 544L107 534L111 516L125 519L131 497L123 494L119 508L111 506L115 491L119 472L125 465L121 455L120 444L126 443L133 428L141 412L146 398L144 384L147 377L146 366L153 355L155 338L159 320L163 301L162 287L160 276L166 274L169 269Z" fill="{{f.CHL}}" stroke="{{s.CHL}}" stroke-width="{{w.CHL}}" style="cursor: pointer" onClick="{{pick.CHL}}"><title>Chile</title></path>
+            <path d="M99 130L100 136L96 141L83 150L69 153L61 159L59 165L52 168L47 164L42 163L37 164L37 161L40 159L39 156L45 150L42 146L38 150L31 147L33 144L31 137L35 136L38 131L42 126L41 123L48 121L56 118L68 123L71 122L74 126L84 127L87 126L93 128L99 130Z" fill="{{f.ECU}}" stroke="{{s.ECU}}" stroke-width="{{w.ECU}}" style="cursor: pointer" onClick="{{pick.ECU}}"><title>Ecuador</title></path>
+            <path d="M328 114L325 114L318 114L314 116L309 117L305 118L303 119L298 119L290 115L289 111L286 107L288 101L291 98L288 94L284 93L286 90L283 88L277 88L268 82L272 80L272 76L279 75L282 74L278 71L279 68L289 63L297 66L304 71L304 75L309 75L316 79L320 82L318 89L311 91L312 93L310 97L315 103L319 103L320 107L328 114Z" fill="{{f.GUY}}" stroke="{{s.GUY}}" stroke-width="{{w.GUY}}" style="cursor: pointer" onClick="{{pick.GUY}}"><title>Guyana</title></path>
+            <path d="M308 291L312 295L311 307L324 308L329 307L337 309L339 312L340 320L342 323L346 323L351 322L355 323L355 328L353 333L351 338L349 346L338 353L328 354L315 353L302 350L314 337L313 333L300 330L285 324L275 322L253 308L258 298L258 294L264 286L285 284L296 284L308 288L308 291Z" fill="{{f.PRY}}" stroke="{{s.PRY}}" stroke-width="{{w.PRY}}" style="cursor: pointer" onClick="{{pick.PRY}}"><title>Paraguay</title></path>
+            <path d="M165 163L154 162L153 164L143 165L129 170L128 174L125 177L126 181L119 184L119 187L116 188L121 195L127 200L125 204L133 204L137 208L148 208L158 204L157 216L163 217L170 216L180 228L178 231L177 237L177 244L172 248L174 251L171 254L177 260L169 269L166 274L160 276L147 271L146 267L122 259L100 250L91 245L86 239L88 236L78 226L66 211L54 195L49 192L45 186L36 180L27 177L31 174L25 166L29 161L39 156L40 159L37 161L37 164L42 163L47 164L52 168L59 165L61 159L69 153L83 150L96 141L100 136L99 130L102 130L110 133L114 137L120 139L127 147L136 148L142 146L147 147L154 147L163 150L156 158L159 159L165 163Z" fill="{{f.PER}}" stroke="{{s.PER}}" stroke-width="{{w.PER}}" style="cursor: pointer" onClick="{{pick.PER}}"><title>Peru</title></path>
+            <path d="M352 111L345 109L340 110L335 109L333 112L336 113L334 115L328 114L320 107L319 103L315 103L310 97L312 93L311 91L318 89L320 82L335 84L336 82L346 82L359 84L353 90L354 96L359 101L356 104L355 108L352 111Z" fill="{{f.SUR}}" stroke="{{s.SUR}}" stroke-width="{{w.SUR}}" style="cursor: pointer" onClick="{{pick.SUR}}"><title>Suriname</title></path>
+            <path d="M315 378L322 377L335 384L339 384L352 390L361 395L368 401L363 406L366 411L361 417L347 422L338 420L332 421L320 417L312 418L305 412L306 406L308 404L308 395L312 385L315 378Z" fill="{{f.URY}}" stroke="{{s.URY}}" stroke-width="{{w.URY}}" style="cursor: pointer" onClick="{{pick.URY}}"><title>Uruguay</title></path>
+            <path d="M277 88L278 90L274 93L260 96L252 98L248 99L238 97L229 96L227 97L232 99L232 104L234 109L244 110L245 112L236 114L235 117L230 119L220 120L218 123L209 123L202 119L198 111L195 109L191 107L197 103L196 101L193 99L190 94L191 88L194 85L196 81L192 80L185 81L176 80L171 81L163 74L156 73L140 74L137 71L134 71L134 69L135 66L134 63L132 61L130 57L124 57L127 52L129 46L132 44L137 41L140 37L148 36L148 38L140 39L144 42L144 46L139 51L143 58L149 57L151 51L148 48L147 42L162 39L160 35L165 33L169 38L178 39L186 43L186 46L197 46L210 45L217 48L226 50L233 47L233 45L248 44L263 44L252 47L257 50L266 51L276 55L278 61L284 61L289 63L279 68L278 71L282 74L279 75L272 76L272 80L268 82L277 88Z" fill="{{f.VEN}}" stroke="{{s.VEN}}" stroke-width="{{w.VEN}}" style="cursor: pointer" onClick="{{pick.VEN}}"><title>Venezuela</title></path>
+            <path d="M202 119L200 120L197 116L194 113L190 116L166 116L166 120L174 121L173 124L171 124L164 125L164 130L169 133L171 138L171 141L165 163L159 159L156 158L163 150L154 147L147 147L142 146L136 148L127 147L120 139L114 137L110 133L102 130L99 130L93 128L87 126L84 127L74 126L71 122L68 123L56 118L55 116L59 115L59 111L62 108L68 108L73 103L77 99L73 97L75 92L72 85L75 83L73 76L68 72L70 68L74 69L76 66L73 62L74 61L81 61L90 55L95 54L95 52L97 45L104 42L112 41L113 40L122 40L132 36L137 34L143 31L147 31L150 33L148 36L140 37L137 41L132 44L129 46L127 52L124 57L130 57L132 61L134 63L135 66L134 69L134 71L137 71L140 74L156 73L163 74L171 81L176 80L185 81L192 80L196 81L194 85L191 88L190 94L193 99L196 101L197 103L191 107L195 109L198 111L202 119Z" fill="{{f.COL}}" stroke="{{s.COL}}" stroke-width="{{w.COL}}" style="cursor: pointer" onClick="{{pick.COL}}"><title>Colombia</title></path>
+          </svg>
+        </div>
+        <div>
+          <div class="countrybar">
+            <sc-if value="{{isCol}}" hint-placeholder-val="{{ true }}">
+              <span class="aflag" aria-hidden="true"><svg viewBox="0 0 60 40"><rect width="60" height="20" fill="#FCD116"></rect><rect y="20" width="60" height="10" fill="#003893"></rect><rect y="30" width="60" height="10" fill="#CE1126"></rect></svg></span>
+            </sc-if>
+            <sc-if value="{{notCol}}" hint-placeholder-val="{{ false }}">
+              <span class="aflag" aria-hidden="true">{{iso2}}</span>
+            </sc-if>
+            <div><div class="nm">{{name}}</div><div class="meta">South America<br>Population {{pop}} million (2025 estimate)</div></div>
+          </div>
+          <label for="finder" class="picker-label">Or pick from the list</label>
+          <select class="search" id="finder" value="{{iso}}" onChange="{{onSelect}}">
+            <option value="ARG">Argentina</option>
+            <option value="BOL">Bolivia</option>
+            <option value="BRA">Brazil</option>
+            <option value="CHL">Chile</option>
+            <option value="COL">Colombia</option>
+            <option value="ECU">Ecuador</option>
+            <option value="GUY">Guyana</option>
+            <option value="PRY">Paraguay</option>
+            <option value="PER">Peru</option>
+            <option value="SUR">Suriname</option>
+            <option value="URY">Uruguay</option>
+            <option value="VEN">Venezuela</option>
+          </select>
+          <p class="ph">Population estimates: World Bank SP.POP.TOTL, 2025. Colombia carries national data, some of it transferred from regional or cross-country sources; the other eleven countries use rounded illustrative profiles.</p>
+        </div>
+      </div>
+
+      <div class="actions"><a class="btn" href="Step2.dc.html">Continue <span aria-hidden="true">→</span></a></div>
+    </div>
+  </section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1420}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { iso: 'COL' };
+  }
+  renderVals() {
+    const C = {
+      ARG: ['Argentina', '45.85', 'AR'], BOL: ['Bolivia', '12.58', 'BO'], BRA: ['Brazil', '212.81', 'BR'],
+      CHL: ['Chile', '19.86', 'CL'], COL: ['Colombia', '53.43', 'CO'], ECU: ['Ecuador', '18.29', 'EC'],
+      GUY: ['Guyana', '0.84', 'GY'], PRY: ['Paraguay', '7.01', 'PY'], PER: ['Peru', '34.58', 'PE'],
+      SUR: ['Suriname', '0.64', 'SR'], URY: ['Uruguay', '3.38', 'UY'], VEN: ['Venezuela', '28.52', 'VE']
+    };
+    const iso = this.state.iso;
+    const f = {}, s = {}, w = {}, pick = {};
+    Object.keys(C).forEach(k => {
+      const on = k === iso;
+      f[k] = on ? '#0A7A48' : '#DCE6E1';
+      s[k] = on ? '#0B3B2C' : '#FCFCFB';
+      w[k] = on ? '1.6' : '0.7';
+      pick[k] = () => this.setState({ iso: k });
+    });
+    return {
+      f, s, w, pick, iso,
+      name: C[iso][0], pop: C[iso][1], iso2: C[iso][2],
+      isCol: iso === 'COL', notCol: iso !== 'COL',
+      onSelect: e => this.setState({ iso: e.target.value })
+    };
+  }
+}
+</script>
+</body>
+</html>

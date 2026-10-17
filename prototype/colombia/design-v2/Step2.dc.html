@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Step 2 — Your pathway</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./proto.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#EDEFF1}
+a{color:#1D4ED8}a:hover{color:#0E5C3F}
+</style>
+</helmet>
+<div class="page">
+<div class="app">
+  <header class="hdr">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6C14 10 9 18 10 27c5 1 10-2 13-7 2-4 2-9 1-14z" fill="#7DBE3C"></path><path d="M31 9c-5 6-6 13-4 19 6-1 11-6 12-12 .5-3 0-6-1-9-2 .5-5 1-7 2z" fill="#1E7B3E"></path><path d="M9 29c2 8 9 13 17 13 3 0 6-1 9-2-3-7-10-12-18-12-3 0-6 .3-8 1z" fill="#1D6FB8"></path><path d="M10 27c-1 6 1 11 5 14" stroke="#0B3B54" stroke-width="1.4" fill="none" stroke-linecap="round"></path></svg>
+      <div><div class="logo-txt">EfD Colombia <span class="proto-badge">Prototype</span></div>
+      <div class="tagline">Environment for Development in Latin America</div></div>
+    </div>
+    <nav class="stepbar" aria-label="Steps">
+      <a class="st done" href="Main.dc.html"><span class="pip">✓</span><span class="lbl">Country</span></a>
+      <a class="st on" href="Step2.dc.html" aria-current="step"><span class="pip">2</span><span class="lbl">Your pathway</span></a>
+      <a class="st" href="Step3.dc.html"><span class="pip">3</span><span class="lbl">Global scenario</span></a>
+      <span class="sep" aria-hidden="true"></span>
+      <a class="st" href="Step4.dc.html"><span class="pip">4</span><span class="lbl">Climate &amp; SCC</span></a>
+      <a class="st" href="Step5.dc.html"><span class="pip">5</span><span class="lbl">Air pollution</span></a>
+      <a class="st" href="Step6.dc.html"><span class="pip">6</span><span class="lbl">Climate impacts</span></a>
+    </nav>
+    <a class="hdr-link" href="InfoLayers.dc.html">About this tool</a>
+  </header>
+
+  <section class="content">
+    <div class="title-row">
+      <svg class="title-ico" viewBox="0 0 52 52" aria-hidden="true"><circle cx="16" cy="12" r="5" fill="none" stroke="#0E5C3F" stroke-width="2"></circle><path d="M8 44V30M18 44V22M28 44V26M38 44V16" stroke="#0E5C3F" stroke-width="3.4" stroke-linecap="round"></path><path d="M34 10l4-4M42 14h5M40 6l2-3" stroke="#0E5C3F" stroke-width="2" stroke-linecap="round"></path></svg>
+      <div class="title-main">
+        <p class="eyebrow">Step 2 of 6 · Settings</p>
+        <h1>How do you see Colombia's future?</h1>
+        <p class="sub">Set your country pathway by adjusting key drivers.</p>
+        <p class="sub">These choices mirror your priorities and ambition.</p>
+        <p class="lead-line">The blue mark on each slider is Colombia's latest observed level (2023 to 2025; each lever's fold says which year).</p>
+      </div>
+    </div>
+
+    <div class="body" style="margin-top: 12px">
+
+      <div class="driver">
+        <div><h2 class="dname">National climate mitigation target</h2><div class="dshort">CO₂ in 2050 against 2024 · 2024: 92.7 Mt</div></div>
+        <div class="range-wrap">
+          <div class="ticks"><sc-for list="{{mit.ticks}}" as="t" hint-placeholder-count="6"><span class="{{t.cls}}">{{t.label}}</span></sc-for></div>
+          <input type="range" min="-100" max="150" step="1" value="{{mit.v}}" onChange="{{mit.set}}" aria-label="National climate mitigation target, percent change in 2050 against 2024" style="background: linear-gradient(90deg, #0E5C3F {{mit.pct}}%, #D9E0E4 {{mit.pct}}%)">
+          <span class="reference-mark" style="left: 40%" aria-hidden="true"></span>
+        </div>
+        <div class="dval"><b>{{mit.disp}}</b><span>relative to 2024</span></div>
+        <details class="more"><summary>About this lever</summary>
+          <p>Target for fossil-fuel and industrial carbon dioxide emissions in 2050, expressed as a change from Colombia's 2024 level. Land use is not part of this target.</p>
+          <p>● Observed 2024: 92.7 Mt CO₂ (Global Carbon Budget)</p>
+          <div class="fold-list" style="margin-top: 10px">
+            <details><summary>What has Colombia already committed to?</summary>
+              <p>Colombia's NDC sets two absolute limits on net national emissions of all six greenhouse gases, including agriculture, forestry and other land use:</p>
+              <ul class="chain">
+                <li><span class="yr">2030</span><span>At most <b>169.44 Mt CO₂eq</b> — ratified from NDC 2.0 (2020).</span></li>
+                <li><span class="yr">2035</span><span>At most <b>155 to 161 Mt CO₂eq</b> — new in NDC 3.0.</span></li>
+              </ul>
+              <p><b>Not on this slider's basis.</b> The slider covers fossil-fuel and industrial CO₂ only, in 2050. The NDC covers all gases and land use, in 2030 and 2035. Gas coverage, sector coverage and target year all differ, so neither figure can be read off the other.</p>
+              <p class="cite"><b>Source:</b> as quoted in the v2 prototype from NDC 3.0 — Transformaciones para la Vida (República de Colombia), Table 1, p. 54; not re-read for this design. <a class="paper" href="https://unfccc.int/sites/default/files/2025-12/NDC%203.0%20Transformaciones%20para%20la%20Vida%20(Colombia).pdf">UNFCCC NDC registry ↗</a></p>
+            </details>
+            <details><summary>Where this figure comes from</summary>
+              <span class="src-chip derived">◆ Derived from a sourced series</span>
+              <p>The archived 2024 observation is 92.6594 Mt, rounded to 92.7 Mt in the label. It marks the 2024 level on the slider; the 2050 target is a percentage change from it. The marker is historical context, not a 2050 SSP baseline or a recommended target.</p>
+              <p class="cite"><b>Source:</b> Global Carbon Budget via Our World in Data, archived annual Colombia fossil-fuel and industrial CO₂ series, 2024.</p>
+            </details>
+          </div>
+        </details>
+      </div>
+
+      <div class="driver">
+        <div><h2 class="dname">Wealth (GDP growth)</h2><div class="dshort">Real growth 2025–2050 · observed 2025: 2.6%</div></div>
+        <div class="range-wrap">
+          <div class="ticks"><sc-for list="{{gdp.ticks}}" as="t" hint-placeholder-count="6"><span class="{{t.cls}}">{{t.label}}</span></sc-for></div>
+          <input type="range" min="0" max="5" step="0.5" value="{{gdp.v}}" onChange="{{gdp.set}}" aria-label="Average annual real GDP growth 2025 to 2050" style="background: linear-gradient(90deg, #0E5C3F {{gdp.pct}}%, #D9E0E4 {{gdp.pct}}%)">
+          <span class="reference-mark" style="left: 52.8%" aria-hidden="true"></span>
+        </div>
+        <div class="dval"><b>{{gdp.disp}}</b><span>per year</span></div>
+        <details class="more"><summary>About this lever</summary>
+          <p>Average annual real GDP growth 2025–2050. Growth raises energy demand, which feeds the electricity and air-pollution results.</p>
+          <p>● Observed 2025 GDP growth: 2.6% (World Bank)</p>
+          <div class="fold-list" style="margin-top: 10px">
+            <details><summary>Where this figure comes from</summary>
+              <span class="src-chip">✓ Sourced</span>
+              <p>World Bank WDI reports 2.6420% real GDP growth in 2025; the blue label rounds it to 2.6%. It does not use the selected SSP. One annual rate can differ from a sustained 2025–2050 average, so the mark is context rather than a forecast or a recommended setting.</p>
+              <p class="cite"><b>Source:</b> World Bank, World Development Indicators, NY.GDP.MKTP.KD.ZG; 2025 value from the edition dated 13 July 2026, retrieved 24 August 2026.</p>
+            </details>
+          </div>
+          <div class="fold-list" style="margin-top: 10px">
+            <details><summary>How growth becomes energy demand, and how uncertain that is</summary>
+              <p>Growth does not raise energy use one-for-one. Population is divided out first; income per person is then converted at Colombia's own long-run elasticity — a 1% rise raises energy use per head by 0.64% (standard error 0.14), estimated on Colombian data for 1971–2017. At 2.0% growth that makes 2050 energy demand 1.42× its 2025 level.</p>
+              <p>The elasticity's range, 0.37 to 0.91, puts that between 1.27× and 1.58× — a parameter range, not a forecast interval. The study measured primary energy; this tool tracks final energy. Step 4 uses a different value, 0.48 (Burke &amp; Csereklyei), which was not estimated for Colombia.</p>
+              <p class="cite"><b>Source:</b> Patiño, Padilla, Alcántara &amp; Raymond (2020), Atmosphere 11(8), 778, Table 3. <a class="paper" href="https://doi.org/10.3390/atmos11080778">doi ↗</a></p>
+            </details>
+          </div>
+        </details>
+      </div>
+
+      <div class="section-label">Energy transition
+        <span>Electrification changes how much electricity Colombia needs. The generation mix determines how clean that electricity is.</span></div>
+
+      <div class="driver">
+        <div><h2 class="dname">Electrification of final energy</h2><div class="dshort">Share of all energy used as electricity · 2024: 18.9%</div></div>
+        <div class="range-wrap">
+          <div class="ticks"><sc-for list="{{elec.ticks}}" as="t" hint-placeholder-count="7"><span class="{{t.cls}}">{{t.label}}</span></sc-for></div>
+          <input type="range" min="10" max="100" step="2" value="{{elec.v}}" onChange="{{elec.set}}" aria-label="Electrification of final energy in 2050" style="background: linear-gradient(90deg, #0E5C3F {{elec.pct}}%, #D9E0E4 {{elec.pct}}%)">
+          <span class="reference-mark" style="left: 9.9%" aria-hidden="true"></span>
+        </div>
+        <div class="dval"><b>{{elec.disp}}</b><span>of final energy in 2050</span></div>
+        <details class="more"><summary>About this lever</summary>
+          <p>Share of energy used by households, transport, services and industry that is supplied as electricity in 2050. The top of the range is an arithmetic bound, not a pathway: high-temperature industrial heat, feedstocks, aviation and shipping cannot all be electrified.</p>
+          <p>● Colombia 2024: 18.9% of final energy (UPME energy balance)</p>
+          <div class="fold-list" style="margin-top: 10px">
+            <details><summary>Where this figure comes from</summary>
+              <span class="src-chip">✓ Sourced — recomputed from the 2024 workbook</span>
+              <p>Grid electricity plus self- and co-generation, 282,640 TJ, divided by total final energy consumption, 1,498,690 TJ, giving 18.86% in 2024 (18.36% in 2023). This is electricity as a share of all final energy, which is lower than figures usually quoted for electricity access or for household energy. It matches the step 4 inputs table.</p>
+              <p class="cite"><b>Source:</b> UPME, Balance Energético Colombiano, BECO_VER_01_1975_2024.xlsx (revised through August 2026), sheet BECO_Datos 2006-2024, recomputed with the thesis repository's BECO reader; workbook SHA-256 6cd7674e….</p>
+            </details>
+          </div>
+        </details>
+      </div>
+
+      <div class="driver">
+        <div><h2 class="dname">Low-emission electricity generation</h2><div class="dshort">Share of grid electricity · 2024: 70.3%</div></div>
+        <div class="range-wrap">
+          <div class="ticks"><sc-for list="{{mix.ticks}}" as="t" hint-placeholder-count="6"><span class="{{t.cls}}">{{t.label}}</span></sc-for></div>
+          <input type="range" min="50" max="100" step="2" value="{{mix.v}}" onChange="{{mix.set}}" aria-label="Low-emission share of electricity in 2050" style="background: linear-gradient(90deg, #0E5C3F {{mix.pct}}%, #D9E0E4 {{mix.pct}}%)">
+          <span class="reference-mark" style="left: 40.6%" aria-hidden="true"></span>
+        </div>
+        <div class="dval"><b>{{mix.disp}}</b><span>of electricity in 2050</span></div>
+        <details class="more"><summary>About this lever</summary>
+          <p>Share of electricity generated from renewable and other low-emission sources in 2050.</p>
+          <p>● Colombia 2024: 70.3% of grid electricity (UPME energy balance; 2024 was a dry year)</p>
+          <div class="fold-list" style="margin-top: 10px">
+            <details><summary>Where this figure comes from</summary>
+              <span class="src-chip">✓ Sourced — recomputed from the 2024 workbook; definition stated</span>
+              <p>Definition: hydro, wind and solar as a share of grid generation (hydro, thermal, wind and solar plants). In 2024 they supplied 208,355 of 296,486 TJ, giving 70.3%; in 2023, 220,470 of 287,639 TJ, giving 76.6%. Counting self- and co-generation in the denominator lowers 2024 to 60.3%. Hydro dominates, so the share moves with rainfall: 2024 was dry.</p>
+              <p>Step 4 uses Ember's 2024 low-emission share of generation, 61.34%, which includes bioenergy and self-generation. Whether the baseline anchors on one year or a multi-year average has not been decided.</p>
+              <p class="cite"><b>Source:</b> UPME, Balance Energético Colombiano, BECO_VER_01_1975_2024.xlsx (revised through August 2026), sheet BECO_Datos 2006-2024, recomputed with the thesis repository's BECO reader; workbook SHA-256 6cd7674e….</p>
+            </details>
+          </div>
+        </details>
+        <details class="mixpanel"><summary><span>Set your energy mix — choose which sources grow and which are phased out</span><span class="badge">7 sources · optional</span></summary>
+          <p style="margin: 10px 0 0; line-height: 1.55">Leave this alone and each group keeps today's proportions. A share set here is a share <b>within</b> its group; the slider above still fixes the size of each group.</p>
+          <div class="mixbar-cap"><span>Your 2050 electricity, at {{mix.disp}} low-emission</span><span>share of all electricity</span></div>
+          <div class="mixbar" role="img" aria-label="{{mixAria}}">
+            <div style="width: {{bar.hydro}}%; background: #0E5C3F; color: #fff">Hydro</div>
+            <div style="width: {{bar.solar}}%; background: #3E8E63; color: #fff"></div>
+            <div style="width: {{bar.bio}}%; background: #8CC3A2; color: #0B3B54"></div>
+            <div style="width: {{bar.wind}}%; background: #5FA67F"></div>
+            <div style="width: {{bar.gas}}%; background: #B4531B; color: #fff"></div>
+            <div style="width: {{bar.coal}}%; background: #6E3A1A"></div>
+            <div style="width: {{bar.oth}}%; background: #D9A07A"></div>
+          </div>
+          <table class="dt">
+            <thead><tr><th>Source</th><th class="n">g CO₂e/kWh</th><th class="n">Share today, within group</th><th class="n">Of all electricity, yours</th></tr></thead>
+            <tbody>
+              <tr><td>Hydro</td><td class="n">23.7</td><td class="n">89.39%</td><td class="n">{{tab.hydro}}</td></tr>
+              <tr><td>Solar</td><td class="n">46.6</td><td class="n">6.27%</td><td class="n">{{tab.solar}}</td></tr>
+              <tr><td>Bioenergy</td><td class="n">216.2</td><td class="n">4.06%</td><td class="n">{{tab.bio}}</td></tr>
+              <tr><td>Wind</td><td class="n">7.8</td><td class="n">0.27%</td><td class="n">{{tab.wind}}</td></tr>
+              <tr><td>Gas</td><td class="n">641.7</td><td class="n">57.43%</td><td class="n">{{tab.gas}}</td></tr>
+              <tr><td>Coal</td><td class="n">875.1</td><td class="n">32.53%</td><td class="n">{{tab.coal}}</td></tr>
+              <tr><td>Other fossil</td><td class="n">659.0</td><td class="n">10.04%</td><td class="n">{{tab.oth}}</td></tr>
+            </tbody>
+          </table>
+          <p class="cite">Factors are life-cycle intensities from Ember's Colombian 2024 generation and emissions; wind uses a UNECE-region factor. Bioenergy at 216 is not the same "clean" as hydro at 24.</p>
+        </details>
+      </div>
+
+      <div class="actions">
+        <a class="btn back" href="Main.dc.html"><span aria-hidden="true">←</span> Back: Choose country</a>
+        <a class="btn" href="Step3.dc.html">Continue <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1360}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { mit: -60, gdp: 2, elec: 40, mix: 90 };
+  }
+  lever(key, min, max, labels, fmt) {
+    const v = this.state[key];
+    const span = (max - min) / (labels.length - 1);
+    const near = Math.round((v - min) / span);
+    return {
+      v,
+      disp: fmt(v),
+      pct: (((v - min) / (max - min)) * 100).toFixed(1),
+      ticks: labels.map((label, i) => ({ label, cls: i === near ? 'cur' : '' })),
+      set: e => this.setState({ [key]: Number(e.target.value) })
+    };
+  }
+  renderVals() {
+    const pctFmt = v => v + '%';
+    const L = this.state.mix / 100;
+    const within = { hydro: 89.39, solar: 6.27, bio: 4.06, wind: 0.27 };
+    const fossil = { gas: 57.43, coal: 32.53, oth: 10.04 };
+    const bar = {}, tab = {};
+    Object.keys(within).forEach(k => { bar[k] = (within[k] * L).toFixed(2); tab[k] = (within[k] * L).toFixed(1) + '%'; });
+    Object.keys(fossil).forEach(k => { bar[k] = (fossil[k] * (1 - L)).toFixed(2); tab[k] = (fossil[k] * (1 - L)).toFixed(1) + '%'; });
+    return {
+      mit: this.lever('mit', -100, 150, ['-100%', '-50%', '2024 level', '+50%', '+100%', '+150%'],
+        v => v === 0 ? '2024 level' : (v > 0 ? '+' : '') + v + '%'),
+      gdp: this.lever('gdp', 0, 5, ['0%', '1%', '2%', '3%', '4%', '5%+'], v => v.toFixed(1) + '%'),
+      elec: this.lever('elec', 10, 100, ['10%', '25%', '40%', '55%', '70%', '85%', '100%'], pctFmt),
+      mix: this.lever('mix', 50, 100, ['50%', '60%', '70%', '80%', '90%', '100%'], pctFmt),
+      bar, tab,
+      mixAria: 'Hydro ' + tab.hydro + ', solar ' + tab.solar + ', bioenergy ' + tab.bio + ', wind ' + tab.wind +
+        ', gas ' + tab.gas + ', coal ' + tab.coal + ', other fossil ' + tab.oth + ' of all electricity in 2050'
+    };
+  }
+}
+</script>
+</body>
+</html>
