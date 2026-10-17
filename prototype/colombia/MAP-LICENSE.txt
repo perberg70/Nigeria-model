@@ -1,0 +1,46 @@
+Colombia department map — attribution and data licence
+
+The adapted department-boundary dataset is made available under the
+Open Data Commons Open Database License (ODbL) v1.0:
+https://opendatacommons.org/licenses/odbl/1-0/
+
+© OpenStreetMap contributors
+https://www.openstreetmap.org/copyright
+
+Source: geoBoundaries gbOpen COL ADM1, boundary ID COL-ADM1-13589884.
+Upstream credits: OpenStreetMap, Wambacher.
+Boundaries represent 2017; geoBoundaries build date: 2023-12-12.
+Metadata verified 2026-10-17:
+https://www.geoboundaries.org/api/current/gbOpen/COL/ADM1/
+Upstream simplified boundary download:
+https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/COL/ADM1/geoBoundaries-COL-ADM1_simplified.geojson
+
+Scope
+The ODbL notice covers department-boundaries.json and its boundary geometry
+embedded in colombia-prototype.html and design-v2/RegionMap.dc.html.
+It does not relicense the application code, thesis text or independently
+sourced climate/health data.
+
+Adaptations and complete data offer
+The complete adapted boundary dataset used for these maps is provided free
+of charge, without registration or additional restrictions, in the adjacent
+department-boundaries.json file. It contains all 32 displayed mainland
+department/district paths, their names, regional grouping and SVG viewBox.
+The same file is distributed alongside the deployed prototype and linked
+from each department map.
+
+The canvas simplified and rounded the geometry, omitted small polygons,
+normalised some names and grouped departments into five natural regions.
+San Andrés is represented by a labelled schematic circle, not an island
+boundary; its display coordinates are also included in the JSON.
+SVG coordinates are display coordinates, not longitude and latitude.
+The original one-off simplification script was not archived. Providing the
+entire adapted dataset is the chosen access route under ODbL section 4.6(a);
+this offer does not depend on reproducing the original transformation.
+
+Reuse
+Keep the attribution and licence notices when redistributing this dataset.
+Publicly shared adaptations of the dataset must follow ODbL's share-alike
+and data-access terms. Consult the licence linked above for the full terms.
+We treat the adapted boundary collection as a Derivative Database and meet
+those obligations instead of relying on an exemption for rendered maps.

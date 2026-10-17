@@ -10,8 +10,9 @@ top step bar, settings strip, fold-out information layers, result tiles and a de
 regional map. The owner's canvas link is https://claude.ai/artifact/2YxRn7cQpoRG1w2ab9RgEq (private).
 
 **Not published.** Each `.dc.html` file loads `./support.js`, which only the Design canvas
-provides, so the files do not render as standalone pages. The Pages workflow copies only
-`../colombia-prototype.html`; nothing in this folder reaches the public site.
+provides, so the files do not render as standalone pages. The Pages workflow copies
+`../colombia-prototype.html`, the adapted boundary JSON and its map licence notice;
+none of these artboards reaches the public site.
 
 | File | Contents |
 |---|---|
@@ -63,13 +64,16 @@ Two deliberate departures from v2, both from the review below:
   paths in `../department-boundaries.json` and embeds them with
   `scripts/build_department_map.py --config prototype/colombia/map-config.yaml`. This
   reproduces the snapshot, not its original geographic simplification.
-- **Licence.** The department geometry in `RegionMap.dc.html` is derived from OpenStreetMap
-  data via geoBoundaries and is made available under the Open Database License 1.0
-  (https://opendatacommons.org/licenses/odbl/1-0/), © OpenStreetMap contributors. That notice
-  covers the geometry only, not the rest of this folder. Whether simplified polygons embedded in
-  a page count as a derivative database or a produced work has not been settled; the notice takes
-  the cautious reading, because this repository is public and the branch already distributes
-  the file.
+- **Licence and data access.** The adapted boundary collection is distributed as a
+  Derivative Database under [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/),
+  © OpenStreetMap contributors, via geoBoundaries (source: OpenStreetMap, Wambacher).
+  The complete machine-readable dataset is [../department-boundaries.json](../department-boundaries.json),
+  including mainland paths and schematic inset coordinates. It is also deployed
+  alongside the runtime prototype, with a free download link on each map.
+  [../MAP-LICENSE.txt](../MAP-LICENSE.txt) records scope, source links, alterations
+  and the complete-data offer. This addresses distribution in this public repository
+  as well as the eventual Pages site; it does not relicense the surrounding code
+  or independently sourced model data.
 
 ## Inconsistencies recorded when the canvas was created
 

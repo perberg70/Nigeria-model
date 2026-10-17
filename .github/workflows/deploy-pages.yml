@@ -34,6 +34,8 @@ jobs:
           cp prototype/africa-prototype.html _site/nigeria/index.html
           mkdir -p _site/colombia
           cp prototype/colombia/colombia-prototype.html _site/colombia/index.html
+          cp prototype/colombia/department-boundaries.json _site/colombia/
+          cp prototype/colombia/MAP-LICENSE.txt _site/colombia/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

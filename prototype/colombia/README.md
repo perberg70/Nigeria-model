@@ -27,7 +27,9 @@ fixes are retained. Canvas numbers are not pasted over computed results.
 `.github/workflows/deploy-pages.yml` assembles the existing Nigeria page and this
 file into `_site/nigeria/index.html` and `_site/colombia/index.html`. The landing
 page links to both. A missing Colombia entry point now fails assembly rather than
-silently publishing a broken link. No design-canvas files are deployed.
+silently publishing a broken link. The complete adapted boundary JSON and
+map licence notice are also deployed beside the prototype. No design-canvas
+artboards are deployed.
 
 After PR #24 is merged to `main`, its push triggers the Pages workflow. The expected
 URL is <https://perberg70.github.io/Nigeria-model/colombia/>. This change does not
@@ -45,7 +47,11 @@ Providencia y Santa Catalina is represented by the labelled inset. The geometry
 comes from geoBoundaries gbOpen COL ADM1, boundary ID `COL-ADM1-13589884`, with
 OpenStreetMap/Wambacher provenance (2017 boundaries; canvas retrieval 2026-10-16).
 Geometry is distributed under ODbL 1.0, © OpenStreetMap contributors. Attribution
-and the licence link are also displayed on each map.
+and the licence link are also displayed on each map, together with a free download
+of the complete adapted boundary dataset. See [MAP-LICENSE.txt](MAP-LICENSE.txt)
+for the scoped ODbL licence, upstream links and data-access offer. We treat the
+adapted boundary collection as a Derivative Database and distribute it under
+ODbL 1.0; application code and independent model data are outside that notice.
 
 Regenerate the embedded snapshot from the repository root:
 
