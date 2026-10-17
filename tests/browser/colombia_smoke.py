@@ -153,7 +153,7 @@ def main():
             report.on("pageerror", lambda error: errors.append(str(error)))
             report.wait_for_selector("#report h1")
             assert report.locator("#report svg").count() >= 4
-            assert report.locator('#report a[href*="opendatacommons"]').count() >= 2
+            assert report.locator('#report a[href$="MAP-LICENSE.txt"]').count() == 1
             for values in expected.values():
                 assert all(value in report.locator("#report").inner_text() for value in values)
             report.pdf(path=str(Path(tmp) / "outcome.pdf"), print_background=True)

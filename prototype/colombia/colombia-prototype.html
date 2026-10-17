@@ -4594,7 +4594,6 @@ function regionalClimatePanel(metric, regions){
       <defs><clipPath id="${clipId}"><path d="${d}"/></clipPath></defs>
       ${iso==="COL"?`<rect x=".5" y=".5" width="30" height="11" rx="1.5" fill="none" stroke="#9AA8A1" stroke-width=".3" stroke-dasharray="1 .8"/><circle class="climate-region" cx="5.2" cy="6" r="2.3" fill="${color(regions.find(r=>r.name==='Caribbean')[metric])}" data-region="Caribbean" role="button" tabindex="0" aria-label="San Andrés, Providencia y Santa Catalina — Caribbean region, inset; select for estimates"/><text x="9.5" y="7.4" style="font-size:3.9px;fill:#40525E">San Andrés</text>`:`<path d="${d}" fill="#EDF2EF"/>`}${areas}
       ${iso==="COL"?"":`<path d="${d}" fill="none" stroke="#708078" stroke-width=".9" vector-effect="non-scaling-stroke"/>`}</svg>
-    ${iso==="COL"?'<p class="cap">Simplified department boundaries; San Andrés inset is not to scale. © <a class="paper" href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> via geoBoundaries. Adapted boundary data: <a class="paper" href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>. <a class="paper" href="department-boundaries.json" download>Download complete boundary data (JSON)</a> · <a class="paper" href="MAP-LICENSE.txt">Map licence and source details</a>. Frozen canvas geometry; original simplification inputs are not archived.</p>':''}
     <div class="legend" style="justify-content:flex-start;align-items:flex-start;gap:7px 14px">${legend}</div>
     <p class="cap" style="margin:9px 0 0;font-size:12.5px">${rangeAvailable
       ? "Central values are medians across model-specific region results. Colours rank regions within this pathway; hover or focus for the model range, then click or press Enter for unit-level estimates."
@@ -5114,6 +5113,7 @@ const VIEWS = {
        </details>
      </div>
      ${R?`<div class="maprow">${regionalClimatePanel("temp",regions)}${regionalClimatePanel("rain",regions)}</div>
+     ${DATA.country.iso==="COL"?`<details class="fold" data-keep="map-licence"><summary>Map licence</summary><p><a class="paper" href="MAP-LICENSE.txt">Map attribution and licence</a></p></details>`:""}
      <div class="panel"><h3 style="margin-top:0">${REGION_SCHEME_NAME[DATA.country.iso]} — selected pathway</h3>
        <p class="cap" style="font-size:14px;line-height:1.65">Each climate model is first summarised across the
        units in a region; the median and the 10th–90th percentiles are then taken across those
