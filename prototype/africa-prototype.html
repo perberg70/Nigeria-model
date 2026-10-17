@@ -203,6 +203,14 @@ h1{margin:0;font-size:31px;line-height:1.15;color:var(--ink);letter-spacing:-.4p
 .default-line{display:flex;align-items:center;gap:10px;margin:14px 0 0;padding:10px 14px;border-radius:10px;background:#E6EFF6;color:#123E5C;font-size:14px}
 .card .sketch{width:100%;height:40px;margin:2px 0 10px}
 .sketch-note{font-size:12px;color:var(--ink-3);margin:-8px 0 0}
+.scc-set{margin-top:22px}
+.scc-set h3{margin:0 0 4px}
+.scc-set .toggle{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;margin:12px 0 0;cursor:pointer}
+.scc-set .scc-row{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;margin-top:14px}
+.scc-set .scc-row.off{opacity:.45}
+.scc-set .scc-num{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-2)}
+.scc-set .scc-num input{width:84px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:15px;text-align:right}
+@media (max-width:560px){.scc-set .scc-row{grid-template-columns:1fr}}
 @media(max-width:900px){.driver{grid-template-columns:1fr}.mixgroups,.about-row{grid-template-columns:1fr}}
 .ticks{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-3);margin-bottom:5px}
 .ticks .cur{color:var(--brand-green-dk);font-weight:700}
@@ -1942,6 +1950,8 @@ const $ = s => document.querySelector(s);
 DATA.country = DATA.countries.find(c=>c.iso==="NG") || DATA.countries[0];
 const selectCountry = iso => { DATA.country = DATA.countries.find(c=>c.iso===iso) || DATA.country; };
 const state = { step:1, ssp:DATA.ssp.selected, drivers:{}, q:"",
+  // Optional user-set Social Cost of Carbon (PPP USD-2025 per tonne CO₂, constant over time); null = use the model.
+  sccFixed:null,
 
   sourceMix:{low:{}, fossil:{}} };
 DATA.drivers.items.forEach(d => state.drivers[d.id] = d.value);
@@ -1998,13 +2008,17 @@ const NGA = {
   proxyNote(){ return this.usesRunProxy()
     ? `The <b>cost of carbon and the discounting</b> shown here are taken from the <b>${NGA_DATA.pathwayLabel[this.runPath()]}</b> run as a stated proxy — no ${this.label()} valuation run has been carried into this prototype yet. Everything else on this screen is ${this.label()}'s own: the emissions pathway, the temperature change, and the hot-day counts.`
     : null; },
-  sccNow(){ const p=this.runPath(); return p ? NGA_DATA.scc[p][2025] : null; },
-  scc2050(){ const p=this.runPath(); return p ? NGA_DATA.scc[p][2050] : null; },
+  usesFixedScc(){ return state.sccFixed!=null; },
+  sccModelAt(year){ const p=this.runPath(); return p ? NGA_DATA.scc[p][year] : null; },
+  sccNow(){ return this.usesFixedScc() ? state.sccFixed : this.sccModelAt(2025); },
+  scc2050(){ return this.usesFixedScc() ? state.sccFixed : this.sccModelAt(2050); },
 
+  // Present value in 2025 of one tonne avoided in year y. A fixed SCC replaces the model's
+  // year-by-year value; the run's Ramsey discount factors still bring it back to 2025.
   pvPerTonne(y){
     const p=this.runPath(); if(!p) return null;
     const xs=Object.keys(NGA_DATA.scc[p]).map(Number).sort((a,b)=>a-b);
-    const m=xs.map(k=>NGA_DATA.scc[p][k]*NGA_DATA.beta[p][k]);
+    const m=xs.map(k=>(this.usesFixedScc()?state.sccFixed:NGA_DATA.scc[p][k])*NGA_DATA.beta[p][k]);
     return this.interp(y, xs, m);
   },
 
@@ -2348,7 +2362,7 @@ function renderNav(){
     `${s.n===STEP.climate?'<span class="sep" aria-hidden="true"></span>':''}<button type="button" class="st ${s.n===state.step?'on':s.n<state.step?'done':''}" data-go="${s.n}"${s.n===state.step?' aria-current="step"':''} title="${T(s.nav)}"><span class="pip">${s.n<state.step?'✓':s.n}</span><span class="lbl">${T(s.short||s.nav)}</span></button>`).join("");
 }
 
-const STRIP_USES={climate:["mitigation","gdp","elec","mix","ssp"], air:["gdp","elec","cooking","ssp"], local:["ssp"]};
+const STRIP_USES={climate:["mitigation","gdp","elec","mix","ssp","scc"], air:["gdp","elec","cooking","ssp"], local:["ssp"]};
 const STRIP_LABEL={mitigation:"CO₂ 2050", gdp:"GDP", elec:"Electrification", mix:"Low-emission power", cooking:"Clean cooking"};
 function settingsStrip(){
   if(state.step<STEP.ssp) return "";
@@ -2361,7 +2375,36 @@ function settingsStrip(){
   return `<span class="k">Your settings</span>
     <button type="button" data-go="${STEP.country}"><b>${DATA.country.name}</b></button>${chips}
     <button type="button" class="ssp ${cls("ssp")}" data-go="${STEP.ssp}">SSP <b>${sspLbl}</b>${state.ssp===DATA.ssp.selected?" (default)":""}</button>
+    ${NGA.usesFixedScc()?`<button type="button" class="${cls("scc")}" data-go="${STEP.ssp}">SCC <b data-scc-summary>${fmtN(state.sccFixed)} PPP USD-2025/t CO₂</b> (fixed)</button>`:""}
     ${hint?`<span class="hint">${hint}</span>`:""}`;
+}
+
+const SCC_MIN=5, SCC_MAX=1500;
+const clampScc=v=>Math.min(SCC_MAX,Math.max(SCC_MIN,Math.round(v)));
+function sccSliderBg(v){ const pct=((v-SCC_MIN)/(SCC_MAX-SCC_MIN))*100;
+  return `linear-gradient(90deg,var(--brand-green-dk) ${pct}%,#D9E0E4 ${pct}%)`; }
+// Starting value when the box is ticked: the model's 2025 value for the chosen pathway.
+function sccStart(){ const m=NGA.sccModelAt(2025); return clampScc(m==null?190:Math.round(m/5)*5); }
+function sccSetting(){
+  const on=NGA.usesFixedScc(), v=on?state.sccFixed:sccStart(), m=NGA.sccModelAt(2025);
+  const modelTxt = m==null ? "" :
+    ` Under ${NGA_DATA.pathwayLabel[NGA.runPath()]} the model gives <b>US$${fmtN(m)}</b> per tonne in 2025, rising to <b>US$${fmtN(NGA.sccModelAt(2100))}</b> by 2100.`;
+  return `<div class="panel scc-set">
+    <h3>Optional: set your own Social Cost of Carbon</h3>
+    <p class="cap" style="font-size:14px;line-height:1.6;margin:0">Leave this off to value avoided emissions with the
+      climate-economy model's Social Cost of Carbon for the scenario you chose.${modelTxt}
+      Turn it on to use one fixed value instead, from ${SCC_MIN} to ${fmtN(SCC_MAX)} <b>PPP USD-2025 per tonne of CO&#8322;</b>
+      (2025 US dollars at purchasing power parity), matching the model series. Convert values quoted in other dollar years
+      or at market exchange rates to this basis before entering them; this tool does not convert currencies.</p>
+    <label class="toggle"><input type="checkbox" data-scc-toggle ${on?"checked":""}> Use a fixed Social Cost of Carbon</label>
+    <div class="scc-row ${on?"":"off"}">
+      <input type="range" min="${SCC_MIN}" max="${SCC_MAX}" step="1" value="${v}" data-scc="range" ${on?"":"disabled"}
+        aria-label="Fixed Social Cost of Carbon, PPP USD-2025 per tonne CO2" style="background:${sccSliderBg(v)}">
+      <span class="scc-num"><input type="number" min="${SCC_MIN}" max="${SCC_MAX}" step="1" value="${v}" data-scc="num" ${on?"":"disabled"}
+        aria-label="Fixed Social Cost of Carbon, PPP USD-2025 per tonne CO2"> PPP USD-2025 per t CO&#8322;</span></div>
+    <p class="cap" style="font-size:13px;margin:10px 0 0">The fixed value is applied to every tonne avoided from 2025 to 2100,
+      with no rise over time. The present value in 2025 still uses the model's discounting (Ramsey rule, pure time
+      preference 0.5%, elasticity 1). The scenario still sets the emissions baseline.</p></div>`;
 }
 
 function listLabels(){
@@ -2717,6 +2760,7 @@ const VIEWS = {
         <h5>${o.label}</h5>${sspSketch(o.id)}
         <div class="nm">${o.name}</div><p>${o.tag}</p><p style="margin-top:8px">${o.desc}</p></div>`).join("")}</div>
      <p class="sketch-note">The small curves sketch the direction of global emissions described on each card; they are not data.</p>
+     ${sccSetting()}
      <div class="actions">${backBtn(STEP.ssp)}<button class="btn" data-go="${STEP.ssp+1}">See results &nbsp;→</button></div></div>`;
   },
 
@@ -2860,11 +2904,17 @@ const VIEWS = {
         unit:Math.abs(cum)>=1000?"billion tonnes of carbon dioxide":"million tonnes of carbon dioxide",
         cls:cum>=0?"":"warn"},
        {lbl:dmg>=0?"Estimated global climate damage avoided":"Estimated additional global climate damage",
-        sub:"2025–2100, valued using the IAM Social Cost of Carbon",
-        val:"US$"+fmtN(Math.abs(dmg)/1000,2), unit:"trillion, present value in 2025",
+        sub:NGA.usesFixedScc()
+          ? `2025–2100, valued at your fixed Social Cost of Carbon of ${fmtN(state.sccFixed)} PPP USD-2025 per tonne`
+          : "2025–2100, valued using the IAM Social Cost of Carbon",
+        val:"US$"+fmtN(Math.abs(dmg)/1000,2), unit:"trillion PPP USD-2025, present value in 2025",
         cls:`hero ${dmg>=0?"":"warn"}`}
      ])}
      ${NGA.proxyNote()?`<div class="note"><span>⚠️</span><span>${NGA.proxyNote()}</span></div>`:""}
+     ${NGA.usesFixedScc()?`<div class="note"><span>ⓘ</span><span>Damage is valued at <b>your fixed Social Cost of Carbon of
+       ${fmtN(state.sccFixed)} PPP USD-2025 per tonne</b>, set at step ${STEP.ssp}, instead of the model's value
+       (US$${fmtN(NGA.sccModelAt(2025))} in 2025 under ${NGA_DATA.pathwayLabel[NGA.runPath()]}).
+       <span class="info-link" data-go="${STEP.ssp}" role="button" tabindex="0">Change or turn off</span></span></div>`:""}
      <div class="panel"><div class="chart-head"><div><h3>${c.title}</h3><p class="cap">${c.unit}</p></div>
        <div class="legend">
          <span><i class="dotted"></i>National history 2005–2024</span>
@@ -3146,6 +3196,8 @@ function outcomeRows(){
   DATA.drivers.items.forEach(it=>add(S1,it.name,it.fmt(state.drivers[it.id]),it.unit));
   const o=DATA.ssp.options.find(x=>x.id===state.ssp);
   add(S1,"Global scenario",NGA.label()+(o?" — "+o.name:""),state.ssp===DATA.ssp.selected?"default setting":"");
+  add(S1,"Social Cost of Carbon",NGA.usesFixedScc()?fmtN(state.sccFixed)+" PPP USD-2025 per t CO₂":"model value",
+      NGA.usesFixedScc()?"fixed by you, constant 2025–2100":"from the climate-economy model for the chosen scenario");
   const pins=[];
   // Report the share the model actually uses in 2050 (pins are rescaled when they exceed 100% and
   // hydro/wind are capped at resource limits), plus the value set where the two differ.
@@ -3164,7 +3216,9 @@ function outcomeRows(){
   add(S4,cum>=0?"Cumulative emissions avoided, 2025–2100":"Cumulative additional emissions, 2025–2100",
       fmtN(Math.abs(cum)/1000,2)+" bn t CO₂","against the selected baseline");
   add(S4,dmg>=0?"Global climate damage avoided":"Additional global climate damage",
-      "US$"+fmtN(Math.abs(dmg)/1000,2)+" trillion","present value in 2025, valued with the IAM social cost of carbon");
+      fmtN(Math.abs(dmg)/1000,2)+" trillion PPP USD-2025",NGA.usesFixedScc()
+        ? `present value in 2025, valued at your fixed social cost of carbon of ${fmtN(state.sccFixed)} PPP USD-2025 per tonne`
+        : "present value in 2025, valued with the IAM social cost of carbon");
   add(S4,"Total emissions from electricity generation in 2050",fmtN(NGA.allElectricityCO2(2050),1)+" Mt",
       `grid ${fmtN(NGA.powerNow(2050),1)} Mt + back-up generators ${fmtN(NGA.gensetCO2(2050),1)} Mt (conditional estimate)`);
   add(S4,"If today's electricity mix stayed",fmtN(NGA.allElectricityIfUnchanged(2050),1)+" Mt","in 2050, same electricity");
@@ -3581,6 +3635,19 @@ document.addEventListener("input", e=>{
     return;
   }
 
+  const sv=e.target.closest("[data-scc]");
+  if(sv){ const v=parseFloat(sv.value);
+    if(!isFinite(v)) return;
+    // Typing in the box may pass through out-of-range values; clamp only on "change".
+    if(sv.dataset.scc==="range" || (v>=SCC_MIN && v<=SCC_MAX)){
+      state.sccFixed=clampScc(v);
+      const other=document.querySelector(`[data-scc="${sv.dataset.scc==="range"?"num":"range"}"]`);
+      if(other) other.value=state.sccFixed;
+      const rg=document.querySelector('[data-scc="range"]'); if(rg) rg.style.background=sccSliderBg(state.sccFixed);
+      $("#strip").innerHTML=settingsStrip();
+    }
+    return; }
+
   const sc=e.target.closest("[data-src]");
   if(sc){ const [g,n]=sc.dataset.src.split("|");
     state.sourceMix[g]=state.sourceMix[g]||{};
@@ -3601,6 +3668,18 @@ document.addEventListener("input", e=>{
 document.addEventListener("change", e=>{
   const r=e.target.closest("[data-drv]");
   if(r){ render(); const again=document.querySelector(`[data-drv="${r.dataset.drv}"]`); if(again) again.focus({preventScroll:true}); return; }
+  if(e.target.closest("[data-scc-toggle]")){
+    state.sccFixed = e.target.checked ? sccStart() : null;
+    render(); const t=document.querySelector("[data-scc-toggle]"); if(t) t.focus({preventScroll:true}); return; }
+  const sv=e.target.closest("[data-scc]");
+  if(sv){ const v=parseFloat(sv.value);
+    state.sccFixed=clampScc(isFinite(v)?v:(state.sccFixed??sccStart()));
+    // Preserve the DOM and focus transfer so a blur commit does not swallow the next click.
+    document.querySelectorAll("[data-scc]").forEach(input=>{ input.value=state.sccFixed; });
+    const rg=document.querySelector('[data-scc="range"]'); if(rg) rg.style.background=sccSliderBg(state.sccFixed);
+    const summary=document.querySelector("[data-scc-summary]");
+    if(summary) summary.textContent=`${fmtN(state.sccFixed)} PPP USD-2025/t CO₂`;
+    return; }
   const cb=e.target.closest("[data-pin]"); if(!cb) return;
   const [g,n]=cb.dataset.pin.split("|");
   state.sourceMix[g]=state.sourceMix[g]||{};
