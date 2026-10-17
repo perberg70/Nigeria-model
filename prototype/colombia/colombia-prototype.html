@@ -717,6 +717,12 @@ table.dt tr.sel td{background:#F2F7F4;font-weight:600;color:var(--ink)}
 .actions .back{margin-right:auto}
 .btn{background:var(--brand-green-dk);color:#fff;border:0;border-radius:9px;padding:14px 26px;font-size:16px;font-weight:700;font-family:inherit;display:inline-flex;align-items:center;gap:11px;text-decoration:none;cursor:pointer}
 .btn:hover{background:#0b4a33}
+.policy-benchmark,.policy-gap{grid-column:1/-1;font-size:13px;line-height:1.5}
+.policy-benchmark{padding:10px 14px;border-left:3px solid var(--brand-green-dk);background:var(--tint);border-radius:4px}
+.policy-benchmark b,.policy-benchmark strong,.policy-benchmark span{display:block}
+.policy-benchmark b{color:var(--brand-green-dk);font-size:12px}.policy-benchmark strong{margin:3px 0}
+.policy-benchmark a{display:inline-block;margin-top:4px;color:var(--link)}
+.policy-gap{color:var(--ink-3);margin:0}
 .btn.wide{flex:1;justify-content:center}
 .btn.ghost{background:#fff;color:var(--brand-green-dk);border:1px solid var(--line);font-weight:600;padding:10px 16px;font-size:14px}
 
@@ -4059,6 +4065,41 @@ const NDC_TARGETS = {
   }
 };
 
+/* NDC 3.0 (December 2025), verified in the official UNFCCC submission.
+   Repository source: MSc-thesis/02_literature/Colombian policy/colombia_NDC_3.0.pdf.
+   These references use different years/units from the sliders: never map them
+   to slider positions or use them as model inputs. PDF page numbers below are
+   one-based; printed page numbering restarts in the annex. */
+const NDC_BENCHMARKS = {
+  mitigation:{
+    label:"National emissions ceilings",
+    value:"2030: ≤169.44 Mt CO₂e · 2035: ceiling of 155–161 Mt CO₂e",
+    note:"Net national greenhouse gases, including land use. Different scope and years from this slider’s 2050 fossil-and-industrial CO₂ change.",
+    page:69, cite:"Table 1, p. 54 (PDF p. 69)"
+  },
+  elec:{
+    label:"Electric mobility target",
+    value:"600,000 registered electric vehicles by 2030",
+    note:"A transport benchmark, not a target for electricity’s share of total final energy in 2050. No equivalent slider percentage is verified.",
+    page:64, cite:"Transport, p. 49 (PDF p. 64)"
+  },
+  mix:{
+    label:"Electricity-generation mitigation potential",
+    value:"2030: 8.46 Mt CO₂e · 2035: 5.95 Mt CO₂e",
+    note:"Potential emissions reductions from the generation measure, not a low-emission generation share. No equivalent slider percentage is verified.",
+    page:225, cite:"Annex: Generación eléctrica, p. 113 (PDF p. 225)"
+  }
+};
+function ndcBenchmark(id){
+  if(!NDC_TARGETS[DATA.country.iso]) return "";
+  const b=NDC_BENCHMARKS[id];
+  if(!b) return id==="gdp" ? `<p class="policy-gap">NDC 3.0: no verified benchmark for this GDP-growth slider.</p>` : "";
+  return `<aside class="policy-benchmark" aria-label="NDC 3.0 policy benchmark" data-benchmark="${id}">
+    <b>NDC 3.0 · ${b.label}</b><strong>${b.value}</strong><span>${b.note}</span>
+    <a href="${NDC_TARGETS[DATA.country.iso].href}#page=${b.page}" target="_blank" rel="noopener">Source: ${b.cite} ↗</a>
+  </aside>`;
+}
+
 /* One line inside the mitigation slider's own box, opening the NDC material as a
    further depth of information rather than as a panel in the scroll flow.
    Revised from a full-width panel on Per's judgement, 2026-08-24: the panel
@@ -4679,6 +4720,7 @@ const VIEWS = {
           <span class="reference-mark" style="left:${refPct}%" aria-hidden="true"></span>
           </div>
         <div class="dval"><b>${it.fmt(v)}</b><span>${it.unit}</span></div>
+        ${ndcBenchmark(it.id)}
         <details class="more" data-keep="driver-${it.id}"><summary>About this lever</summary><p>${T(it.desc)}</p><p class="reference-label">● ${refLabel}</p>${note}${driverMore(it.id)}</details></div>`;
     }).join("")}
     <div class="actions">${backBtn(2)}<button class="btn" data-go="3">Choose global scenario &nbsp;→</button></div></div>`;

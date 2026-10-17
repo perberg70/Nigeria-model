@@ -31,6 +31,18 @@ def main():
             for number in range(1, 7):
                 step(number)
                 assert page.locator("h1").inner_text()
+                if number == 2:
+                    assert page.locator(".policy-benchmark").count() == 3
+                    for key, figure in (
+                        ("mitigation", "169.44"),
+                        ("elec", "600,000"),
+                        ("mix", "8.46"),
+                    ):
+                        benchmark = page.locator(f'[data-benchmark="{key}"]')
+                        assert benchmark.is_visible()
+                        assert figure in benchmark.inner_text()
+                        assert "#page=" in benchmark.locator("a").get_attribute("href")
+                    assert "no verified benchmark" in page.locator(".policy-gap").inner_text()
                 if number == 3:
                     sketches = page.locator(".card svg.sketch")
                     assert sketches.count() == 5
@@ -81,6 +93,8 @@ def main():
             assert "NaN" not in page.locator("#content").inner_text()
         step(1)
         page.locator("#finder").select_option("BRA")
+        step(2)
+        assert page.locator(".policy-benchmark, .policy-gap").count() == 0
         step(6)
         assert "Brazil" in page.locator("h1").inner_text()
         step(1)
