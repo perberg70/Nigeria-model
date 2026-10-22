@@ -37,13 +37,18 @@ module docstring of `builder.py`.
 - R10 electrification residual: `T_el(y, ref) = [s(y)/s(ref)] / exp(bs L + qs L²)`, all Africa
   R10, with `s = Secondary Energy|Electricity / Final Energy`. Until 2026-10-22 the share took
   R10's index `s(y)/s(base)` as it stood, which carried R10's faster income growth.
-  - Income is counted once only as the transferred law measures it. The law explains a quarter
-    to two-fifths of R10's share growth to 2050, so `T_el` carries most of it, including any
-    income response IMAGE has beyond the law.
+  - Income is counted once only as the transferred law measures it. The law explains 24–44% of
+    R10's log share growth to 2050, so `T_el` carries most of it, including any income response
+    IMAGE has beyond the law.
   - The law peaks at `L` = 1.67 and is past the paper's 75th percentile at `L` = 2.0, where the
     paper stops reporting elasticities. Once R10's income passes the peak, removing its income
     growth raises `T_el`, and by 2100 the shares exceed the raw index in all markers but
     SSP3-7.0.
+  - A steeper share law lowers the baseline share, because R10's income grows faster than
+    Nigeria's; the gap notes give each flagged elasticity's effect in share points.
+  - The sector-conversion K is measured from this baseline's electrification, while the
+    efficiency residual R holds IMAGE's conversion at IMAGE's own electrification (caveat in
+    `SECTOR_CONVERSION.md` section 7).
   - The script prints each share's three factors, the law's part of R10's share growth and the
     year each income path passes `L` = 2.0, and logs a warning for each such path. Sizes and
     gaps: `config.yaml`, `ssp_baseline.demand.electricity_elasticity`.
@@ -82,9 +87,10 @@ notes in the file.
 folders does not reach them. Edit them by hand in the same commit, or extend the splice.]
 
 The prototype's prose on the baseline electrification (the Scenario Compass source entry and the
-source-mix explanation) states by hand that the law explains "a quarter to two-fifths" of R10's
-rise by 2050. That is the "law's part" column `run_ssp_baseline.py` prints (24–44% on the
-2026-10-22 inputs); update the prose when it moves.
+source-mix explanation) states by hand that the law explains "less than half" of R10's rise by
+2050. That rests on the "law's part" column `run_ssp_baseline.py` prints (24–44% of the log
+growth on the 2026-10-22 inputs, 16–41% of the proportional rise); update the prose if it
+reaches half.
 
 ## References
 

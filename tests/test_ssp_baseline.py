@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import dataclasses
 import math
+import re
 
 import pytest
 
@@ -72,7 +73,8 @@ def test_electrification_starts_at_the_anchor(params, block_text):
 
 @pytest.mark.parametrize("log_income", [-0.3, 0.5, 2.5])
 def test_share_law_times_final_energy_law_is_the_electricity_law(params, log_income):
-    # Electricity = share x final energy, so the income effect is counted once.
+    # Electricity = share x final energy, so the income effect is counted once, as the
+    # transferred laws measure it.
     L = log_income
     final_energy = math.exp(params.elasticity * L + params.elasticity_q * L * L)
     electricity = math.exp(params.elec_elasticity * L + params.elec_elasticity_q * L * L)
@@ -115,15 +117,39 @@ def test_income_span_is_the_papers_25th_to_75th_percentile(params):
 def test_electricity_law_is_required(config, key):
     demand = {k: v for k, v in config["ssp_baseline"]["demand"].items() if k != key}
     cfg = {**config, "ssp_baseline": {**config["ssp_baseline"], "demand": demand}}
-    with pytest.raises(ConfigError, match=key):
+    with pytest.raises(ConfigError, match=re.escape(f"'ssp_baseline.demand.{key}'")):
         BaselineParams.from_config(cfg)
 
 
-def test_share_law_past_the_papers_range_is_logged(params, caplog):
+@pytest.mark.parametrize("key", ["b25", "b75", "eta"])
+def test_percentile_span_is_required(config, key):
+    t5 = config["parameters"]["burke_csereklyei_2016"]["table5"]
+    total = {k: v for k, v in t5["total"].items() if k != key}
+    paper = {**config["parameters"]["burke_csereklyei_2016"], "table5": {**t5, "total": total}}
+    cfg = {**config, "parameters": {**config["parameters"], "burke_csereklyei_2016": paper}}
+    dotted = f"parameters.burke_csereklyei_2016.table5.total.{key}"
+    with pytest.raises(ConfigError, match=re.escape(f"'{dotted}'")):
+        BaselineParams.from_config(cfg)
+
+
+def _warnings(caplog):
+    return [r.getMessage() for r in caplog.records if r.levelname == "WARNING"]
+
+
+@pytest.mark.parametrize(("span", "logged"), [(-1.0, True), (100.0, False)])
+def test_share_law_past_the_papers_range_warns(params, caplog, span, logged):
+    caplog.set_level("WARNING", logger="ssp_baseline.builder")
+    build_baseline(dataclasses.replace(params, income_span_log=span))
+    warned = _warnings(caplog)
+    for pid in params.markers:
+        for who in ("R10", params.region_name):
+            assert any(m.startswith(f"{pid}: {who} ") for m in warned) == logged
+
+
+def test_share_law_warning_follows_the_income_paths(params, caplog):
     caplog.set_level("WARNING", logger="ssp_baseline.builder")
     result = build_baseline(params)
-    warned = [r.getMessage() for r in caplog.records if r.levelname == "WARNING"]
-    assert warned
+    warned = _warnings(caplog)
     for pid, rec in result.block.items():
         for who, key in (("R10", "r10IncomeLog"), (params.region_name, "incomeLog")):
             past = max(rec[key]) >= params.income_span_log

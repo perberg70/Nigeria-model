@@ -50,8 +50,8 @@ Nigeria's own observed values:
   Csereklyei's electricity law (Table 6 col. 6, `0.66L − 0.025L²`) less the total-energy law below.
   Nigeria's share is its 2023 value times the same law on Nigeria's own income times this residual
   (`r10_electrification()` in `src/ssp_baseline/builder.py`). R10's raw share index was used until
-  then; it carried R10's faster income growth into Nigeria's share. The law explains only a quarter
-  to two-fifths of R10's share growth to 2050, so the residual carries most of it, including any
+  then; it carried R10's faster income growth into Nigeria's share. The law explains only 24–44%
+  of R10's log share growth to 2050, so the residual carries most of it, including any
   income response IMAGE has beyond the law. Past the law's peak, the residual rises as R10's income
   grows (gap notes in `config.yaml`);
 - an **efficiency residual**, as an efficiency, structure and fuel-switching factor in the

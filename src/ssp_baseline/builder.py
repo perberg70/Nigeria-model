@@ -60,7 +60,9 @@ WHAT THE BASELINE DOES *NOT* CARRY, and why:
     comparison, not to the baseline.
 
 All observed anchors, elasticities and envelope limits are read from the
-``ssp_baseline`` section of the configuration, where each carries its source.
+``ssp_baseline`` section of the configuration, where each carries its source;
+the paper's 25th-to-75th percentile income span comes from
+``parameters.burke_csereklyei_2016.table5.total``.
 """
 
 from __future__ import annotations
@@ -664,7 +666,9 @@ def build_baseline(params: BaselineParams) -> BaselineResult:
                 LOGGER.warning(
                     "%s: %s income per head passes the paper's 75th percentile (%.2f log units "
                     "above %d) in %d; the electrification share law runs beyond the "
-                    "elasticities the paper reports from then on",
+                    "elasticities the paper reports from then on, and past the law's peak "
+                    "removing R10's income growth raises the share (gap note at "
+                    "ssp_baseline.demand.electricity_elasticity in config.yaml)",
                     pid,
                     who,
                     p.income_span_log,
