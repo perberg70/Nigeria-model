@@ -88,3 +88,20 @@ def test_baseline_law_is_table5_total_at_the_25th_percentile(config):
     demand = require(config, "ssp_baseline.demand")
     assert demand["elasticity"] == total["b25"]
     assert demand["elasticity_quadratic"] == total["eta"] / 2
+
+
+def test_electrification_law_is_table6_electricity_at_the_25th_percentile(config):
+    electricity = require(config, "parameters.burke_csereklyei_2016.table6_electricity_total")
+    demand = require(config, "ssp_baseline.demand")
+    assert demand["electricity_elasticity"] == electricity["b25"]
+    assert demand["electricity_elasticity_quadratic"] == electricity["eta"] / 2
+
+
+def test_table6_percentiles_sit_at_table5_incomes(config):
+    # Both tables are demeaned over the same 463-observation sample, so Table 5's
+    # percentile deviations, (b - beta) / eta, reproduce Table 6's printed percentile values.
+    total = require(config, "parameters.burke_csereklyei_2016.table5.total")
+    electricity = require(config, "parameters.burke_csereklyei_2016.table6_electricity_total")
+    for b in ("b25", "b75"):
+        d = (total[b] - total["beta"]) / total["eta"]
+        assert round(electricity["beta"] + electricity["eta"] * d, 2) == electricity[b]

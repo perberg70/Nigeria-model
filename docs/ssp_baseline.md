@@ -28,6 +28,17 @@ module docstring of `builder.py`.
   `time_horizon.anchor_year`.
 - R10 efficiency residual: `T(y, ref) = [FE(y)/FE(ref)] / [P(y)/P(ref) × exp(b L + q L²)]`,
   all Africa R10, so the income effect is not counted twice.
+- Electrification share (generation / final energy, since 2026-10-22):
+  `s(t) = s_base × exp(bs L + qs L²) × T_el(t, base_year)`, `L = ln(y_t / y_base)`. The share
+  law is the electricity law less the final-energy law, `bs = be − b` and `qs = qe − q` (0.30 and
+  −0.09), with `be = ssp_baseline.demand.electricity_elasticity` and
+  `qe = ssp_baseline.demand.electricity_elasticity_quadratic` (Burke & Csereklyei 2016, Table 6
+  col. 6; transferred). Electricity = share × final energy then follows the electricity law.
+- R10 electrification residual: `T_el(y, ref) = [s(y)/s(ref)] / exp(bs L + qs L²)`, all Africa
+  R10. Until 2026-10-22 the share took R10's index `s(y)/s(base)` as it stood, which carried
+  R10's faster income growth. The script prints, per marker, the share's three factors and the
+  year each income path passes the paper's 75th percentile (`L` = 2.0), beyond which the paper
+  reports no elasticity.
 - Fossil split: back-up generators' share of fossil generation `k = k0 × e0/e`.
 - Clean-cooking index: `(income per head_t / income per head_base) ** cooking_elasticity`.
 

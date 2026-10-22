@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+import math
 
 import pytest
 
@@ -57,6 +58,23 @@ def test_anchor_year_emissions_reproduced(params, block_text):
         )
     energy = block_series(block_text, "ssp245", "energyTJ")
     assert energy[0] == pytest.approx(params.tfe_tj, rel=1e-9)
+
+
+def test_electrification_starts_at_the_anchor(params, block_text):
+    for pid in params.markers:
+        share = block_series(block_text, pid, "elecShare")
+        assert share[params.years.index(params.base_year)] == pytest.approx(
+            params.elec_base, abs=1e-6
+        )
+
+
+@pytest.mark.parametrize("log_income", [-0.3, 0.5, 2.5])
+def test_share_law_times_final_energy_law_is_the_electricity_law(params, log_income):
+    # Electricity = share x final energy, so the income effect is counted once.
+    L = log_income
+    final_energy = math.exp(params.elasticity * L + params.elasticity_q * L * L)
+    electricity = math.exp(params.elec_elasticity * L + params.elec_elasticity_q * L * L)
+    assert params.share_income_factor(L) * final_energy == pytest.approx(electricity)
 
 
 def test_markers_carry_model_and_scenario(params):

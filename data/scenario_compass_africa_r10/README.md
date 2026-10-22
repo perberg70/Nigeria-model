@@ -43,8 +43,14 @@ Energy EJ/yr; emissions Mt CO₂/yr; population million; GDP billion USD_2010/yr
 Nigeria is not in this dataset, so only **relative changes** are transferred, anchored to
 Nigeria's own observed values:
 
-- electrification share of final energy and the low-emission share of electricity (power-sector
-  baseline);
+- the low-emission share of electricity (power-sector baseline);
+- an **electrification residual** (power-sector baseline, since 2026-10-22): R10's electrification
+  share (`Secondary Energy|Electricity / Final Energy`) divided by what R10's own income per head
+  gives through the share law `0.30L − 0.09L²`, which is Burke & Csereklyei's electricity law
+  (Table 6 col. 6, `0.66L − 0.025L²`) less the total-energy law below. Nigeria's share is its 2023
+  value times the same law on Nigeria's own income times this residual (`r10_electrification()` in
+  `src/ssp_baseline/builder.py`). R10's raw share index was used until then; it carried R10's
+  faster income growth into Nigeria's share;
 - an **efficiency residual**, as an efficiency, structure and fuel-switching factor in the
   economy-wide CO₂ baseline and in final-energy demand (baseline and the user's pathway). It is
   R10's final-energy path divided by what R10's own population and income per head give through the

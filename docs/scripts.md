@@ -14,8 +14,9 @@ values, `[INFO]` for checked ones); they never enter the written reports.
     `inputs.iea` and `inputs.iea_generation_lines` (anchor cross-check).
   - Writes `data/scenario_compass_africa_r10/nigeria_baseline_block.js`; with
     `--update-prototype` also splices its four blocks into `prototype/africa-prototype.html`.
-  - Prints self-checks, the resource envelope at its caps and the four candidate fossil-split
-    rules to stdout.
+  - Prints self-checks, the electrification share's three factors (with the year each income
+    path passes the paper's 75th percentile), the resource envelope at its caps and the four
+    candidate fossil-split rules to stdout.
 
 ## Demand analyses
 

@@ -84,6 +84,11 @@ parameters:
     # Table 5 decade effects for total energy (annual growth units), 1981-2010,
     # relative to the 1970 base.
     table5_decade_effects_total: [-0.021, -0.025, -0.029, -0.029]
+    # Table 6 (p. 21), column 6: the same 10-year growth-rates model for per capita FINAL
+    # electricity use, all sectors; keys as table5. Same 463-observation sample and
+    # demeaning (its notes: "As per Table 5"), so its 25th and 75th percentiles are
+    # table5's incomes. The interaction is not significant (SE 0.08).
+    table6_electricity_total: {beta: 0.61, eta: -0.05, theta: 0.022, kappa: -0.024, b25: 0.66, b75: 0.56, lr: 0.94}
     # Table 2 col. 7 (2010 cross-section levels, log income NOT demeaned):
     # elasticity = B1 + 2*B2*lnY, 0.63 at the 25th percentile (p. 14).
     table2_col7: {b1: -1.20, b2: 0.11, e25: 0.63}
@@ -143,6 +148,38 @@ ssp_baseline:
     # parameters...table5.total.b25 and table5.total.eta / 2 (tests/test_config.py).
     elasticity: 0.36
     elasticity_quadratic: 0.065
+    # Electrification share (BLOCK 2 elecShare), option 3A, decided 2026-10-22:
+    # Burke & Csereklyei (2016) Table 6, column 6, the 10-year elasticity of FINAL
+    # electricity use, at the same 25th-percentile start as `elasticity`
+    # (0.61 + -0.05 x -0.923 = 0.66), integrated as ln(El/El0) = 0.66 L - 0.025 L^2.
+    # The builder takes the SHARE law as this law minus the final-energy law above,
+    #   ln(s/s0) = (0.66 - 0.36) L + (-0.025 - 0.065) L^2 = 0.30 L - 0.09 L^2,
+    # so electricity = share x final energy follows the electricity law and income is
+    # counted once; R10's share path is stripped through the same law (the
+    # electrification residual in builder.py). The paper reads the gap between the two
+    # elasticities as electrification of the energy mix (pp. 20-21). TRANSFERRED: a
+    # cross-country estimate applied to Nigeria.
+    # [GAP: BOUNDARY: a final-electricity elasticity less a primary-energy one (see
+    # `elasticity`); if the final-energy law changes, the share law changes with it. The
+    # share counts back-up generator output (anchors.genset_gwh), which the paper's IEA
+    # electricity data may not record.]
+    # [GAP: the interaction -0.05 is not significant (SE 0.08); used as published, as
+    # table5's is.]
+    # [GAP: the share elasticity, 0.30 - 0.18 L, reaches the paper's own -0.06
+    # (0.56 - 0.62) at its 75th percentile, L = 2.0; beyond it the paper reports no
+    # value and the linear interaction carries the law. run_ssp_baseline.py prints the
+    # year each income path passes it.]
+    # [GAP: the 0.36 holds the sample's average biomass switching, not Nigeria's: biofuels
+    # and waste are 49.7% of Nigeria's 2023 final energy (IEA, current release). If that
+    # exceeds the sample's 25th-percentile countries, Nigeria's share rises faster with
+    # income than 0.30 implies; not checked. A fuel-weighted law (Option D) is not built,
+    # and cooking_elasticity below is a levels estimate that cannot enter this 10-year law.]
+    # [GAP: Nigeria's 25th-percentile placement is approximate; a lower placement raises
+    # the share elasticity (CONVERSION_FACTORS.md section B).]
+    # Must equal parameters...table6_electricity_total.b25 and its eta / 2
+    # (tests/test_config.py).
+    electricity_elasticity: 0.66
+    electricity_elasticity_quadratic: -0.025
     # Burke & Csereklyei (2016), CAMA WP 45/2016, Table 3 Panel C col. 1, SE 0.22:
     # the GDP elasticity of residential primary solid-biofuel use per head in a 2010
     # cross-section of up to 132 countries. TRANSFERRED to Nigeria and applied as a

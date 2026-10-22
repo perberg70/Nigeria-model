@@ -22,6 +22,10 @@ counted twice. R10 carbon intensity is not transferred to
 Nigeria. R10 continues to supply the separate power-sector baseline and the
 SSP marker mapping. This deliberately avoids presenting an unverified
 regional carbon-intensity path as a Nigerian carbon-intensity forecast.
+Within the power-sector baseline, the electrification share makes the same
+move (2026-10-22): Nigeria's own income effect through the share law (Burke &
+Csereklyei's electricity law less the final-energy law) and an R10
+electrification residual, rather than R10's share index as it stands.
 
 `scripts/run_ssp_baseline.py --update-prototype` copies the four generated
 blocks (js_block.py) into the standalone prototype/africa-prototype.html file
@@ -106,6 +110,9 @@ class BaselineParams:
     # --- demand relation ----------------------------------------------------
     elasticity: float
     elasticity_q: float
+    elec_elasticity: float
+    elec_elasticity_q: float
+    income_span_log: float  # log income per head from the paper's 25th to its 75th percentile
     cook_elasticity: float
     # --- physical envelope --------------------------------------------------
     hydro_ceiling_gw: float
@@ -118,6 +125,7 @@ class BaselineParams:
         a = "ssp_baseline.anchors"
         d = "ssp_baseline.demand"
         e = "ssp_baseline.envelope"
+        t5 = "parameters.burke_csereklyei_2016.table5.total"
         generation = dict(require(config, f"{a}.generation_gwh"))
         if set(generation) != set(ALLS):
             raise ConfigError(
@@ -155,6 +163,10 @@ class BaselineParams:
             anchor_mt=require(config, f"{a}.emissions_mt"),
             elasticity=require(config, f"{d}.elasticity"),
             elasticity_q=require(config, f"{d}.elasticity_quadratic"),
+            elec_elasticity=require(config, f"{d}.electricity_elasticity"),
+            elec_elasticity_q=require(config, f"{d}.electricity_elasticity_quadratic"),
+            income_span_log=(require(config, f"{t5}.b75") - require(config, f"{t5}.b25"))
+            / require(config, f"{t5}.eta"),
             cook_elasticity=require(config, f"{d}.cooking_elasticity"),
             hydro_ceiling_gw=require(config, f"{e}.hydro_ceiling_gw"),
             wind_ceiling_gw=require(config, f"{e}.wind_ceiling_gw"),
@@ -187,6 +199,18 @@ class BaselineParams:
         recorded at all, stays in total final energy (see the genset_gwh note in config.yaml).
         """
         return self.all_gwh * TJ_PER_GWH / self.tfe_tj
+
+    def share_income_factor(self, log_income: float) -> float:
+        """The share law, exp(bs L + qs L^2), L = log income per head against the base year.
+
+        The electrification share is electricity over final energy, so its income law is the
+        electricity law less the final-energy law: bs = 0.66 - 0.36 = 0.30 and
+        qs = -0.025 - 0.065 = -0.09. Electricity = share x final energy then follows the
+        electricity law, and income is counted once. Population cancels in a share.
+        """
+        bs = self.elec_elasticity - self.elasticity
+        qs = self.elec_elasticity_q - self.elasticity_q
+        return math.exp(bs * log_income + qs * log_income * log_income)
 
     @property
     def low_base(self) -> float:
@@ -312,6 +336,14 @@ def cook_index(
     return (income(year) / income(base_year)) ** elasticity
 
 
+def log_income_ratio(
+    year: int, ref: int, gdp: Mapping[int, float], pop: Mapping[int, float]
+) -> float:
+    """ln(income per head at `year` / income per head at `ref`), GDP and population each
+    linearly interpolated on their own grid."""
+    return math.log((interp(year, gdp) / interp(year, pop)) / (interp(ref, gdp) / interp(ref, pop)))
+
+
 def apply_envelope(params: BaselineParams, lowmix_series, low_twh_series):
     """The region's resource envelope, applied to the whole trajectory at once.
 
@@ -416,6 +448,21 @@ def build_baseline(params: BaselineParams) -> BaselineResult:
             )
             return fr / (pr * math.exp(elasticity * L + elasticity_q * L * L))
 
+        # R10 ELECTRIFICATION RESIDUAL, the same move for the electrification share
+        # s = generation / final energy (2026-10-22). Until then Nigeria's share took
+        # R10's share index as it stood, which carried R10's faster income growth
+        # into it. The factor kept is the part of R10's share path that R10's own
+        # income per head, run through the SHARE law (share_income_factor), does
+        # not explain:
+        #   T_el(y, ref) = [s(y)/s(ref)] / exp(bs L + qs L^2),  all Africa R10.
+        # It still carries R10's technology, structure and, under the SSP1 markers,
+        # climate policy. Times r10_efficiency it is R10's electricity path over
+        # what R10's population and income give through the electricity law, so
+        # no income effect is counted twice.
+        def r10_electrification(y, ref, scen=scen, g=gen_over_fe):
+            L = log_income_ratio(y, ref, r10_gdp[scen], r10_pop[scen])
+            return (interp(y, g) / interp(ref, g)) / p.share_income_factor(L)
+
         # LAYER 1 IS A TWO-WAY SPLIT, so its denominator must be low+fossil only.
         # `Other` is IAMC's own catch-all -- "sources that do not fit any other
         # category" (common-definitions tag_secondary_electricity_sources.yaml)
@@ -438,7 +485,6 @@ def build_baseline(params: BaselineParams) -> BaselineResult:
             for n in LOW
         }
 
-        g0 = interp(base_year, gen_over_fe)  # regional electrification at the base year
         l0 = interp(base_year, low_frac)  # regional low share at the base year
 
         rec = {
@@ -455,6 +501,12 @@ def build_baseline(params: BaselineParams) -> BaselineResult:
             "lowMix": {n: [] for n in LOW},
             "popN": [],
             "gensetFossil": [],
+            # diagnostics only, not emitted: the parts of elecShare and the two
+            # income paths against the base year
+            "elecIncomeFactor": [],
+            "r10ElectrificationFactor": [],
+            "incomeLog": [],
+            "r10IncomeLog": [],
         }
         p0, y0 = pop[narrative][base_year], (gdp[narrative][base_year] / pop[narrative][base_year])
         p_anchor = interp(anchor_year, pop[narrative])
@@ -485,8 +537,18 @@ def build_baseline(params: BaselineParams) -> BaselineResult:
             rec["incomeElasticity"].append(round(marginal_beta, 6))
             rec["emisMt"].append(round(max(0.0, p.anchor_mt * demand_factor * r10_factor), 3))
 
-            # 2. ELECTRIFICATION -- index on the generation basis, both sides.
-            rec["elecShare"].append(round(min(1.0, elec_base * interp(y, gen_over_fe) / g0), 6))
+            # 2. ELECTRIFICATION -- on the generation basis, both sides: the
+            #    base-year share x the share law on Nigeria's own income per head
+            #    x the R10 electrification residual (see r10_electrification).
+            #    Until 2026-10-22 it was elec_base x R10's share index.
+            log_income_base = math.log(yt / y0)
+            elec_income = p.share_income_factor(log_income_base)
+            r10_elec = r10_electrification(y, base_year)
+            rec["elecShare"].append(round(min(1.0, elec_base * elec_income * r10_elec), 6))
+            rec["elecIncomeFactor"].append(elec_income)
+            rec["r10ElectrificationFactor"].append(r10_elec)
+            rec["incomeLog"].append(log_income_base)
+            rec["r10IncomeLog"].append(log_income_ratio(y, base_year, r10_gdp[scen], r10_pop[scen]))
 
             # 3. LAYER 1 -- low-emission share of all electricity, index-transferred.
             rec["lowShare"].append(round(min(1.0, low_base * interp(y, low_frac) / l0), 6))
@@ -621,6 +683,46 @@ def print_diagnostics(result: BaselineResult) -> None:
         "%s anchors reproduced: elec %.6f  low %.6f  hydro %.6f  k0 %.6f"
         % (p.region_name, p.elec_base, p.low_base, p.lowmix_base["Hydro"], p.k0)
     )
+    print()
+    print(
+        "ELECTRIFICATION  share law ln(s/s0) = %.2f L %+.3f L^2: electricity %.2f L %+.3f L^2"
+        " less final energy %.2f L %+.3f L^2"
+        % (
+            p.elec_elasticity - p.elasticity,
+            p.elec_elasticity_q - p.elasticity_q,
+            p.elec_elasticity,
+            p.elec_elasticity_q,
+            p.elasticity,
+            p.elasticity_q,
+        )
+    )
+    print(
+        "%-8s share = %d share x income factor x R10 residual, %d and %d   |  first year income"
+        " per head is %.2f log units above %d (the paper's 75th percentile): R10 / %s"
+        % ("marker", b, mid, end, p.income_span_log, b, p.region_name)
+    )
+    for pid in p.markers:
+        r = block[pid]
+
+        def parts(yr, r=r):
+            i = years.index(yr)
+            return "%5.1f%% = %.2f%% x %.3f x %.3f" % (
+                100 * r["elecShare"][i],
+                100 * p.elec_base,
+                r["elecIncomeFactor"][i],
+                r["r10ElectrificationFactor"][i],
+            )
+
+        def past_p75(key, r=r):
+            return next(
+                (str(yr) for yr, li in zip(years, r[key], strict=True) if li >= p.income_span_log),
+                "none",
+            )
+
+        print(
+            "%-8s %s   %s   |  %s / %s"
+            % (pid, parts(mid), parts(end), past_p75("r10IncomeLog"), past_p75("incomeLog"))
+        )
     print()
     print(
         "ENVELOPE  hydro ceiling %.1f TWh (%s GW x %.3f)   wind ceiling %.1f TWh (%s GW x %.2f)"

@@ -216,15 +216,17 @@ technology choices:
 
      | Slider | K | Final electricity, one-for-one | Final electricity, converted | Final energy |
      |---|---:|---:|---:|---:|
-     | 20% | 0.958 | 154 TWh | 147 TWh | 5.13 → 4.91 EJ |
-     | 40% | 0.807 | 307 TWh | 248 TWh | 5.13 → 4.14 EJ |
-     | 67% | 0.665 | 515 TWh | 342 TWh | 5.13 → 3.41 EJ |
+     | 20% | 0.949 | 154 TWh | 146 TWh | 5.13 → 4.87 EJ |
+     | 40% | 0.800 | 307 TWh | 246 TWh | 5.13 → 4.10 EJ |
+     | 67% | 0.659 | 515 TWh | 339 TWh | 5.13 → 3.38 EJ |
 
      The slider's share is mapped to a final-electricity share by the 2023 ratio of 0.539. The
      prototype itself displays gross generation including generators, which is about 1.9 times
      these figures on the 2023 definition. The 5.13 EJ baseline is from this repository's
      baseline block, on the IEA current release since 2026-10-09 (5.16 EJ on the older release;
-     K is a ratio and moved by under 0.002).
+     K is a ratio and moved by under 0.002). The baseline's own electrification here is 14.6%
+     since 2026-10-22, when the baseline took Nigeria's own income effect on the share and an R10
+     electrification residual; it was 15.5%, and K moved by under 0.01.
 3. **P/F** is needed only to report primary energy, or to convert the TPES elasticity (point
    above). Take it from the chosen power mix and allocation, not as a constant.
 
