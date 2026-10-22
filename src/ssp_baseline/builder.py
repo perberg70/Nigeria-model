@@ -68,7 +68,7 @@ from __future__ import annotations
 import csv
 import logging
 import math
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -204,9 +204,11 @@ class BaselineParams:
         """The share law, exp(bs L + qs L^2), L = log income per head against the base year.
 
         The electrification share is electricity over final energy, so its income law is the
-        electricity law less the final-energy law: bs = 0.66 - 0.36 = 0.30 and
-        qs = -0.025 - 0.065 = -0.09. Electricity = share x final energy then follows the
-        electricity law, and income is counted once. Population cancels in a share.
+        electricity law less the final-energy law (bs = be - b, qs = qe - q). Electricity =
+        share x final energy then follows the electricity law, so income is counted once AS
+        THAT TRANSFERRED LAW MEASURES IT; whatever income response the region's model has
+        beyond it stays in the R10 residual (see r10_electrification). Population cancels in
+        a share.
         """
         bs = self.elec_elasticity - self.elasticity
         qs = self.elec_elasticity_q - self.elasticity_q
@@ -344,6 +346,11 @@ def log_income_ratio(
     return math.log((interp(year, gdp) / interp(year, pop)) / (interp(ref, gdp) / interp(ref, pop)))
 
 
+def first_year_past(years: Sequence[int], log_incomes: Sequence[float], limit: float) -> int | None:
+    """The first year whose log income per head (against the base year) reaches `limit`."""
+    return next((y for y, li in zip(years, log_incomes, strict=True) if li >= limit), None)
+
+
 def apply_envelope(params: BaselineParams, lowmix_series, low_twh_series):
     """The region's resource envelope, applied to the whole trajectory at once.
 
@@ -426,7 +433,6 @@ def build_baseline(params: BaselineParams) -> BaselineResult:
         scen, narrative = marker.key, marker.narrative
         # --- regional series, all on sum(parts) where a share is involved ----
         sumparts = {y: sum(parts[n][scen][y] for n in ALLS) for y in tot[scen]}
-        gen_over_fe = {y: tot[scen][y] / fe[scen][y] for y in tot[scen]}
 
         # R10 EFFICIENCY RESIDUAL. Africa R10's Final Energy/GDP falls for two
         # reasons: energy grows more slowly than income (the income effect the
@@ -442,26 +448,32 @@ def build_baseline(params: BaselineParams) -> BaselineResult:
         def r10_efficiency(y, ref, scen=scen):
             fr = interp(y, fe[scen]) / interp(ref, fe[scen])
             pr = interp(y, r10_pop[scen]) / interp(ref, r10_pop[scen])
-            L = math.log(
-                (interp(y, r10_gdp[scen]) / interp(y, r10_pop[scen]))
-                / (interp(ref, r10_gdp[scen]) / interp(ref, r10_pop[scen]))
-            )
+            L = log_income_ratio(y, ref, r10_gdp[scen], r10_pop[scen])
             return fr / (pr * math.exp(elasticity * L + elasticity_q * L * L))
 
         # R10 ELECTRIFICATION RESIDUAL, the same move for the electrification share
         # s = generation / final energy (2026-10-22). Until then Nigeria's share took
         # R10's share index as it stood, which carried R10's faster income growth
-        # into it. The factor kept is the part of R10's share path that R10's own
+        # into it. The factor kept is the part of R10's share index that R10's own
         # income per head, run through the SHARE law (share_income_factor), does
         # not explain:
-        #   T_el(y, ref) = [s(y)/s(ref)] / exp(bs L + qs L^2),  all Africa R10.
-        # It still carries R10's technology, structure and, under the SSP1 markers,
-        # climate policy. Times r10_efficiency it is R10's electricity path over
-        # what R10's population and income give through the electricity law, so
-        # no income effect is counted twice.
-        def r10_electrification(y, ref, scen=scen, g=gen_over_fe):
+        #   T_el(y, ref) = [s(y)/s(ref)] / exp(bs L + qs L^2),  all Africa R10,
+        # with s = interp(generation) / interp(final energy), so that times
+        # r10_efficiency it is exactly R10's electricity path over what R10's
+        # population and income give through the electricity law. Income is
+        # counted once only as that transferred law measures it: T_el is most of
+        # R10's share growth (print_diagnostics shows how much), and any income
+        # response IMAGE has beyond the law stays in it with R10's technology,
+        # structure and, under the SSP1 markers, climate policy, reaching Nigeria
+        # at R10's pace. Past the law's peak (L = -bs / 2qs) the law falls with
+        # income, so stripping R10's further income growth RAISES T_el; see the
+        # warning below and config.yaml.
+        def r10_electrification(y, ref, scen=scen):
+            def s(t):
+                return interp(t, tot[scen]) / interp(t, fe[scen])
+
             L = log_income_ratio(y, ref, r10_gdp[scen], r10_pop[scen])
-            return (interp(y, g) / interp(ref, g)) / p.share_income_factor(L)
+            return (s(y) / s(ref)) / p.share_income_factor(L)
 
         # LAYER 1 IS A TWO-WAY SPLIT, so its denominator must be low+fossil only.
         # `Other` is IAMC's own catch-all -- "sources that do not fit any other
@@ -641,6 +653,24 @@ def build_baseline(params: BaselineParams) -> BaselineResult:
         anchor_index = years.index(anchor_year)
         if abs(rec["emisMt"][anchor_index] - p.anchor_mt) > 0.001:
             raise ValueError("%s: %d emissions anchor is not reproduced" % (scen, anchor_year))
+
+        # THE SHARE LAW PAST THE PAPER'S RANGE. The paper reports its elasticities up to its
+        # 75th percentile, income_span_log above the 25th-percentile start that Nigeria and,
+        # by assumption, R10 are given; past it the linear interaction alone carries the law
+        # (gap note at ssp_baseline.demand.electricity_elasticity in config.yaml).
+        for who, key in (("R10", "r10IncomeLog"), (p.region_name, "incomeLog")):
+            year = first_year_past(years, rec[key], p.income_span_log)
+            if year is not None:
+                LOGGER.warning(
+                    "%s: %s income per head passes the paper's 75th percentile (%.2f log units "
+                    "above %d) in %d; the electrification share law runs beyond the "
+                    "elasticities the paper reports from then on",
+                    pid,
+                    who,
+                    p.income_span_log,
+                    base_year,
+                    year,
+                )
         block[pid] = rec
 
         # --- self-checks, printed not asserted away ------------------------
@@ -697,9 +727,10 @@ def print_diagnostics(result: BaselineResult) -> None:
         )
     )
     print(
-        "%-8s share = %d share x income factor x R10 residual, %d and %d   |  first year income"
-        " per head is %.2f log units above %d (the paper's 75th percentile): R10 / %s"
-        % ("marker", b, mid, end, p.income_span_log, b, p.region_name)
+        "%-8s share = %d share x income factor x R10 residual, %d and %d  |  the law's part of"
+        " R10's log share growth, %d / %d  |  year income per head passes the paper's 75th"
+        " percentile (%.2f log units above %d): R10 / %s"
+        % ("marker", b, mid, end, mid, end, p.income_span_log, b, p.region_name)
     )
     for pid in p.markers:
         r = block[pid]
@@ -713,15 +744,27 @@ def print_diagnostics(result: BaselineResult) -> None:
                 r["r10ElectrificationFactor"][i],
             )
 
-        def past_p75(key, r=r):
-            return next(
-                (str(yr) for yr, li in zip(years, r[key], strict=True) if li >= p.income_span_log),
-                "none",
-            )
+        def law_part(yr, r=r):
+            i = years.index(yr)
+            law = math.log(p.share_income_factor(r["r10IncomeLog"][i]))
+            growth = law + math.log(r["r10ElectrificationFactor"][i])
+            return "%4.0f%%" % (100 * law / growth) if abs(growth) > 1e-9 else " n/a"
+
+        def past(key, r=r):
+            year = first_year_past(years, r[key], p.income_span_log)
+            return "none" if year is None else str(year)
 
         print(
-            "%-8s %s   %s   |  %s / %s"
-            % (pid, parts(mid), parts(end), past_p75("r10IncomeLog"), past_p75("incomeLog"))
+            "%-8s %s   %s  |  %s / %s  |  %s / %s"
+            % (
+                pid,
+                parts(mid),
+                parts(end),
+                law_part(mid),
+                law_part(end),
+                past("r10IncomeLog"),
+                past("incomeLog"),
+            )
         )
     print()
     print(

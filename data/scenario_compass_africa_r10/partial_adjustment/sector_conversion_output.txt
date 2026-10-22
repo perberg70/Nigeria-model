@@ -158,9 +158,9 @@
   Approximation: 2050 has 2023's sector-carrier structure; prototype shares map to
   final-electricity shares by the 2023 ratio 0.539. TWh are final electricity.
   slider (prototype %)        1:1 TWh converted TWh     final EJ          K
-  20%                             154          146         4.87      0.949
+  20%                             154          146         4.87      0.950
   40%                             307          246         4.10      0.800
-  67%                             515          339         3.38      0.659
+  67%                             515          339         3.38      0.660
   K = final energy at the user's electrification / at the baseline's, same service,
   IMAGE allocation, central rho. The prototype applies K = 1.
 

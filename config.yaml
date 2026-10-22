@@ -148,34 +148,50 @@ ssp_baseline:
     # parameters...table5.total.b25 and table5.total.eta / 2 (tests/test_config.py).
     elasticity: 0.36
     elasticity_quadratic: 0.065
-    # Electrification share (BLOCK 2 elecShare), option 3A, decided 2026-10-22:
-    # Burke & Csereklyei (2016) Table 6, column 6, the 10-year elasticity of FINAL
-    # electricity use, at the same 25th-percentile start as `elasticity`
+    # Electrification share (BLOCK 2 elecShare), decided 2026-10-22 in place of R10's raw
+    # share index: Burke & Csereklyei (2016) Table 6, column 6, the 10-year elasticity of
+    # FINAL electricity use, at the same 25th-percentile start as `elasticity`
     # (0.61 + -0.05 x -0.923 = 0.66), integrated as ln(El/El0) = 0.66 L - 0.025 L^2.
     # The builder takes the SHARE law as this law minus the final-energy law above,
     #   ln(s/s0) = (0.66 - 0.36) L + (-0.025 - 0.065) L^2 = 0.30 L - 0.09 L^2,
-    # so electricity = share x final energy follows the electricity law and income is
-    # counted once; R10's share path is stripped through the same law (the
-    # electrification residual in builder.py). The paper reads the gap between the two
-    # elasticities as electrification of the energy mix (pp. 20-21). TRANSFERRED: a
-    # cross-country estimate applied to Nigeria.
-    # [GAP: BOUNDARY: a final-electricity elasticity less a primary-energy one (see
-    # `elasticity`); if the final-energy law changes, the share law changes with it. The
-    # share counts back-up generator output (anchors.genset_gwh), which the paper's IEA
-    # electricity data may not record.]
+    # so electricity = share x final energy follows the electricity law, and strips R10's
+    # share index through the same law on R10's own income (the electrification residual
+    # in builder.py). The paper reads the gap between the two elasticities as
+    # electrification of the energy mix (pp. 20-21). TRANSFERRED: a cross-country
+    # estimate applied to Nigeria. Sizes below are from run_ssp_baseline.py on the
+    # 2026-10-22 inputs; it prints them on every run.
+    # [GAP: RESIDUAL CONTENT. Income is counted once only as this transferred law measures
+    # it. The law explains 24-44% of R10's log share growth to 2050 (-4% to 27% to 2100);
+    # the rest is treated as technology, structure and, under SSP1, climate policy, and
+    # reaches Nigeria at R10's pace, including any income response IMAGE has beyond the
+    # law. 2050 shares: 11.6-22.7% with the law; 11.9-24.2% with the raw index (until
+    # 2026-10-22); 11.1-15.9% if all of R10's share growth were income, applied at R10's
+    # implied elasticity to Nigeria's own income.]
+    # [GAP: PAST THE PAPER'S RANGE. The share elasticity, 0.30 - 0.18 L, peaks the law at
+    # L = 1.67 and reaches the paper's own -0.06 (0.56 - 0.62) at its 75th percentile,
+    # L = 2.0; beyond that the paper reports no value and the linear interaction carries
+    # the law. Once the law falls, stripping R10's income growth RAISES the residual: the
+    # shares exceed the raw index from 2059 (SSP5-8.5), 2066 (SSP1) and 2078 (SSP2-4.5),
+    # and in 2100 by 3.3-10.4 points (SSP3-7.0: 1.1 lower). R10 is given Nigeria's start
+    # percentile, though in 2023 it is 0.084 log units poorer on another data vintage
+    # (CONVERSION_FACTORS.md section B). run_ssp_baseline.py warns when a path passes
+    # L = 2.0. The law is not truncated there.]
+    # [GAP: BOUNDARY. A final-electricity elasticity less a primary-energy one (see
+    # `elasticity`); with a final-energy law (b25 0.28-0.30, CONVERSION_FACTORS.md
+    # section C) the share elasticity would be about 0.37. The law, a growth rate of final
+    # consumption, is applied to generation including grid losses and back-up generator
+    # output (anchors.genset_gwh), so their ratio to final consumption is held constant.]
     # [GAP: the interaction -0.05 is not significant (SE 0.08); used as published, as
     # table5's is.]
-    # [GAP: the share elasticity, 0.30 - 0.18 L, reaches the paper's own -0.06
-    # (0.56 - 0.62) at its 75th percentile, L = 2.0; beyond it the paper reports no
-    # value and the linear interaction carries the law. run_ssp_baseline.py prints the
-    # year each income path passes it.]
-    # [GAP: the 0.36 holds the sample's average biomass switching, not Nigeria's: biofuels
-    # and waste are 49.7% of Nigeria's 2023 final energy (IEA, current release). If that
-    # exceeds the sample's 25th-percentile countries, Nigeria's share rises faster with
-    # income than 0.30 implies; not checked. A fuel-weighted law (Option D) is not built,
-    # and cooking_elasticity below is a levels estimate that cannot enter this 10-year law.]
-    # [GAP: Nigeria's 25th-percentile placement is approximate; a lower placement raises
-    # the share elasticity (CONVERSION_FACTORS.md section B).]
+    # [GAP: BIOMASS. The 0.36 holds the sample's average biomass switching, not Nigeria's:
+    # biofuels and waste are 49.7% of Nigeria's 2023 final energy (IEA, current release).
+    # The paper's Sub-Saharan Africa estimates (Table 7, a subsample without the income
+    # interaction) give 0.73 - 0.16 = 0.57, pointing to a faster-rising share. A law
+    # weighted by Nigeria's own fuel mix is not built; cooking_elasticity below is a
+    # levels estimate that cannot enter this 10-year law.]
+    # [GAP: PLACEMENT. Nigeria's 25th-percentile start is approximate. At deviation d the
+    # share elasticity is 0.13 - 0.18 d, so the lower placements of CONVERSION_FACTORS.md
+    # section B give 0.32-0.45.]
     # Must equal parameters...table6_electricity_total.b25 and its eta / 2
     # (tests/test_config.py).
     electricity_elasticity: 0.66

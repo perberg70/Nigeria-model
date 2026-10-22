@@ -45,12 +45,15 @@ Nigeria's own observed values:
 
 - the low-emission share of electricity (power-sector baseline);
 - an **electrification residual** (power-sector baseline, since 2026-10-22): R10's electrification
-  share (`Secondary Energy|Electricity / Final Energy`) divided by what R10's own income per head
-  gives through the share law `0.30L − 0.09L²`, which is Burke & Csereklyei's electricity law
-  (Table 6 col. 6, `0.66L − 0.025L²`) less the total-energy law below. Nigeria's share is its 2023
-  value times the same law on Nigeria's own income times this residual (`r10_electrification()` in
-  `src/ssp_baseline/builder.py`). R10's raw share index was used until then; it carried R10's
-  faster income growth into Nigeria's share;
+  share index (`Secondary Energy|Electricity / Final Energy`, relative to 2023) divided by what
+  R10's own income per head gives through the share law `0.30L − 0.09L²`. That law is Burke &
+  Csereklyei's electricity law (Table 6 col. 6, `0.66L − 0.025L²`) less the total-energy law below.
+  Nigeria's share is its 2023 value times the same law on Nigeria's own income times this residual
+  (`r10_electrification()` in `src/ssp_baseline/builder.py`). R10's raw share index was used until
+  then; it carried R10's faster income growth into Nigeria's share. The law explains only a quarter
+  to two-fifths of R10's share growth to 2050, so the residual carries most of it, including any
+  income response IMAGE has beyond the law. Past the law's peak, the residual rises as R10's income
+  grows (gap notes in `config.yaml`);
 - an **efficiency residual**, as an efficiency, structure and fuel-switching factor in the
   economy-wide CO₂ baseline and in final-energy demand (baseline and the user's pathway). It is
   R10's final-energy path divided by what R10's own population and income per head give through the

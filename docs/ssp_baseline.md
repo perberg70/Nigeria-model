@@ -35,10 +35,18 @@ module docstring of `builder.py`.
   `qe = ssp_baseline.demand.electricity_elasticity_quadratic` (Burke & Csereklyei 2016, Table 6
   col. 6; transferred). Electricity = share × final energy then follows the electricity law.
 - R10 electrification residual: `T_el(y, ref) = [s(y)/s(ref)] / exp(bs L + qs L²)`, all Africa
-  R10. Until 2026-10-22 the share took R10's index `s(y)/s(base)` as it stood, which carried
-  R10's faster income growth. The script prints, per marker, the share's three factors and the
-  year each income path passes the paper's 75th percentile (`L` = 2.0), beyond which the paper
-  reports no elasticity.
+  R10, with `s = Secondary Energy|Electricity / Final Energy`. Until 2026-10-22 the share took
+  R10's index `s(y)/s(base)` as it stood, which carried R10's faster income growth.
+  - Income is counted once only as the transferred law measures it. The law explains a quarter
+    to two-fifths of R10's share growth to 2050, so `T_el` carries most of it, including any
+    income response IMAGE has beyond the law.
+  - The law peaks at `L` = 1.67 and is past the paper's 75th percentile at `L` = 2.0, where the
+    paper stops reporting elasticities. Once R10's income passes the peak, removing its income
+    growth raises `T_el`, and by 2100 the shares exceed the raw index in all markers but
+    SSP3-7.0.
+  - The script prints each share's three factors, the law's part of R10's share growth and the
+    year each income path passes `L` = 2.0, and logs a warning for each such path. Sizes and
+    gaps: `config.yaml`, `ssp_baseline.demand.electricity_elasticity`.
 - Fossil split: back-up generators' share of fossil generation `k = k0 × e0/e`.
 - Clean-cooking index: `(income per head_t / income per head_base) ** cooking_elasticity`.
 
@@ -48,7 +56,9 @@ module docstring of `builder.py`.
 emissions), `ssp_baseline.demand`, `ssp_baseline.envelope`,
 `ssp_baseline.cumulative_start_year` (start of BLOCK 1's `cum`, the prototype's 2025–2100
 window) and `ssp_baseline.diagnostics_year` (stdout only), plus `scenarios`, `time_horizon`,
-`inputs`. Each value carries its source and gap notes in the file.
+`inputs` and `parameters.burke_csereklyei_2016.table5.total` (its 25th and 75th percentiles
+set the income span the electrification warning uses). Each value carries its source and gap
+notes in the file.
 
 ## Outputs
 
@@ -70,6 +80,11 @@ window) and `ssp_baseline.diagnostics_year` (stdout only), plus `scenarios`, `ti
 
 [GAP: the hand-written blocks are not regenerated, so a change to `config.yaml` or to the data
 folders does not reach them. Edit them by hand in the same commit, or extend the splice.]
+
+The prototype's prose on the baseline electrification (the Scenario Compass source entry and the
+source-mix explanation) states by hand that the law explains "a quarter to two-fifths" of R10's
+rise by 2050. That is the "law's part" column `run_ssp_baseline.py` prints (24–44% on the
+2026-10-22 inputs); update the prose when it moves.
 
 ## References
 

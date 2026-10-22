@@ -7,10 +7,11 @@ python scripts/run_ssp_baseline.py --config config.yaml [--update-prototype]
 ```
 
 Reads the ``ssp_baseline`` section (anchors, demand relation, envelope) plus
-``scenarios``, ``time_horizon`` and ``inputs``. Writes the generated JavaScript to
+``scenarios``, ``time_horizon``, ``inputs`` and
+``parameters.burke_csereklyei_2016.table5.total``. Writes the generated JavaScript to
 ``ssp_baseline.output_block``; with ``--update-prototype`` it also copies the
-four blocks into ``ssp_baseline.prototype_html``. Self-checks and the envelope
-and candidate-rule tables are printed to stdout.
+four blocks into ``ssp_baseline.prototype_html``. Self-checks and the
+electrification, envelope and candidate-rule tables are printed to stdout.
 """
 
 from __future__ import annotations

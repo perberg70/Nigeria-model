@@ -8,6 +8,7 @@ import math
 import pytest
 
 from config_paths import ConfigError
+from scenario_data import interp, read_series
 from ssp_baseline import (
     BaselineParams,
     block_series,
@@ -17,6 +18,7 @@ from ssp_baseline import (
     update_prototype_html,
     write_prototype,
 )
+from ssp_baseline.builder import log_income_ratio
 
 
 @pytest.fixture(scope="module")
@@ -75,6 +77,57 @@ def test_share_law_times_final_energy_law_is_the_electricity_law(params, log_inc
     final_energy = math.exp(params.elasticity * L + params.elasticity_q * L * L)
     electricity = math.exp(params.elec_elasticity * L + params.elec_elasticity_q * L * L)
     assert params.share_income_factor(L) * final_energy == pytest.approx(electricity)
+
+
+def test_block_electricity_is_the_electricity_law_times_r10_residual(params, block_text):
+    # Nigeria's electricity index (share x final energy, from the block) equals its
+    # population and the electricity law times R10's electricity path over R10's population
+    # and the same law, both R10 residuals together, rebuilt from the raw series.
+    years, b = params.years, params.base_year
+    result = build_baseline(params)
+    r10_elec = read_series(params.image_dir, "Secondary Energy - Electricity.csv")
+    r10_gdp = read_series(params.image_dir, "GDP - PPP.csv")
+    r10_pop = read_series(params.image_dir, "Population.csv")
+
+    def law(L):
+        return math.exp(params.elec_elasticity * L + params.elec_elasticity_q * L * L)
+
+    for pid, marker in params.markers.items():
+        share = block_series(block_text, pid, "elecShare")
+        energy = block_series(block_text, pid, "energyTJ")
+        gdp, pop = result.gdp[marker.narrative], result.pop[marker.narrative]
+        rg, rp, re = r10_gdp[marker.key], r10_pop[marker.key], r10_elec[marker.key]
+        for y in (2030, 2050, 2077, 2100):
+            i, i0 = years.index(y), years.index(b)
+            got = share[i] * energy[i] / (share[i0] * energy[i0])
+            nga = interp(y, pop) / interp(b, pop) * law(log_income_ratio(y, b, gdp, pop))
+            r10 = (interp(y, re) / interp(b, re)) / (
+                interp(y, rp) / interp(b, rp) * law(log_income_ratio(y, b, rg, rp))
+            )
+            assert got == pytest.approx(nga * r10, rel=1e-4)
+
+
+def test_income_span_is_the_papers_25th_to_75th_percentile(params):
+    assert params.income_span_log == pytest.approx(2.0)
+
+
+@pytest.mark.parametrize("key", ["electricity_elasticity", "electricity_elasticity_quadratic"])
+def test_electricity_law_is_required(config, key):
+    demand = {k: v for k, v in config["ssp_baseline"]["demand"].items() if k != key}
+    cfg = {**config, "ssp_baseline": {**config["ssp_baseline"], "demand": demand}}
+    with pytest.raises(ConfigError, match=key):
+        BaselineParams.from_config(cfg)
+
+
+def test_share_law_past_the_papers_range_is_logged(params, caplog):
+    caplog.set_level("WARNING", logger="ssp_baseline.builder")
+    result = build_baseline(params)
+    warned = [r.getMessage() for r in caplog.records if r.levelname == "WARNING"]
+    assert warned
+    for pid, rec in result.block.items():
+        for who, key in (("R10", "r10IncomeLog"), (params.region_name, "incomeLog")):
+            past = max(rec[key]) >= params.income_span_log
+            assert past == any(m.startswith(f"{pid}: {who} ") for m in warned)
 
 
 def test_markers_carry_model_and_scenario(params):

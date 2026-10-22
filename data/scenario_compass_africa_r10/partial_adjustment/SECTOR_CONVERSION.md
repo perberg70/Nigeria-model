@@ -212,13 +212,17 @@ technology choices:
    rule.
    - K is measured from the baseline's own electrification, not from 2023. It therefore adds only
      the user's deviation and does not double-count what R holds.
+   - Caveat since 2026-10-22: R holds IMAGE's conversion at IMAGE's own electrification, but the
+     baseline's electrification no longer follows IMAGE's transferred index (14.6% against 15.5%
+     here; up to about 10 points apart by 2100). K is measured from the new baseline, so that gap
+     is in neither K nor R. The prototype applies K = 1, so no number moves.
    - SSP2-4.5 in 2050 (IMAGE allocation, central ρ; 2050 assumed to have the 2023 structure):
 
      | Slider | K | Final electricity, one-for-one | Final electricity, converted | Final energy |
      |---|---:|---:|---:|---:|
-     | 20% | 0.949 | 154 TWh | 146 TWh | 5.13 → 4.87 EJ |
+     | 20% | 0.950 | 154 TWh | 146 TWh | 5.13 → 4.87 EJ |
      | 40% | 0.800 | 307 TWh | 246 TWh | 5.13 → 4.10 EJ |
-     | 67% | 0.659 | 515 TWh | 339 TWh | 5.13 → 3.38 EJ |
+     | 67% | 0.660 | 515 TWh | 339 TWh | 5.13 → 3.38 EJ |
 
      The slider's share is mapped to a final-electricity share by the 2023 ratio of 0.539. The
      prototype itself displays gross generation including generators, which is about 1.9 times

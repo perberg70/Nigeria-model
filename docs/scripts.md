@@ -11,7 +11,10 @@ values, `[INFO]` for checked ones); they never enter the written reports.
 
 - `scripts/run_ssp_baseline.py --config config.yaml [--update-prototype]`
   - Reads `ssp_baseline`, `scenarios`, `time_horizon`, `inputs.image_dir`, `inputs.iiasa`,
-    `inputs.iea` and `inputs.iea_generation_lines` (anchor cross-check).
+    `inputs.iea`, `inputs.iea_generation_lines` (anchor cross-check) and
+    `parameters.burke_csereklyei_2016.table5.total` (the paper's 25th-to-75th percentile span).
+  - Logs a warning for each scenario income path that passes the paper's 75th percentile, beyond
+    which the electrification share law runs past the elasticities the paper reports.
   - Writes `data/scenario_compass_africa_r10/nigeria_baseline_block.js`; with
     `--update-prototype` also splices its four blocks into `prototype/africa-prototype.html`.
   - Prints self-checks, the electrification share's three factors (with the year each income
