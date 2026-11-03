@@ -56,8 +56,12 @@ electricity a growing share of it, so it captures neither layer.
 - **Source:** the IEA's own 2023 sector-by-fuel table (Data Browser, "Last updated 28 Sep
   2026"), copied from MSc-thesis into `../../iea_nigeria_2023/`.
 - **Finer split from UNSD:** the IEA table has five fuels. UNSD 2023 splits each IEA cell into
-  wood vs charcoal, and into LPG, kerosene, petrol, diesel, jet fuel and fuel oil. The IEA cell
-  sets the level; UNSD sets only the shares within it.
+  wood, crop and plant residues, and charcoal, and into LPG, kerosene, petrol, diesel, jet fuel
+  and fuel oil. The IEA cell sets the level; UNSD sets only the shares within it.
+- **Residues are not wood:** UNSD 5150, "Other vegetal material and residues" (straw, husks, nut
+  shells), was mapped to wood until 2026-11-03. It is 576 of the 921 PJ of residential biomass;
+  fuelwood is 323 PJ and charcoal 22 PJ. Residues take wood's cooking ratio, an **assumption**:
+  no residue-stove test is held.
 - **Match between the sources:** UNSD alone gives nearly the same matrix. Biomass: residential 935
   vs 921 PJ, commercial 119 vs 120, industry 178 vs 178. Total: 2,477 vs 2,451 PJ. The UNSD codes
   1234 and 1235 are labelled by matching them to IEA rows.

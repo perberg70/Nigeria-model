@@ -1,14 +1,14 @@
 1. NIGERIA 2023 FINAL ENERGY BY SECTOR AND CARRIER (IEA current release, PJ;
    UNSD 2023 splits each IEA fuel cell into carriers)
-                   wood charcoal      lpg kerosene      gas     coal fuel_oil gasoline   diesel      jet other_oi electric    total
-  residential     899.4     21.8     50.1     26.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0     61.8   1059.2
-  commercial       98.0     22.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0     28.6    148.6
-  industry        177.1      0.5      0.1      0.0    117.2     27.2     19.1      0.0      0.2      0.0      0.0     29.1    370.6
-  transport         0.0      0.0      0.0      0.0      0.0      0.0      0.0    602.4    181.1      9.6      0.0      0.0    793.1
-  agriculture       0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.2      0.0      0.0      0.0      0.2
-  other             0.0      0.0      0.0      7.6      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      7.6
-  non_energy        0.0      0.0      0.0      0.0     66.4      0.0      0.0      0.0      0.0      0.0      4.9      0.0     71.3
-  total          1174.5     44.3     50.2     33.7    183.6     27.2     19.1    602.4    181.5      9.6      4.9    119.5   2450.5
+                   wood residues charcoal      lpg kerosene      gas     coal fuel_oil gasoline   diesel      jet other_oi electric    total
+  residential     323.4    576.0     21.8     50.1     26.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0     61.8   1059.2
+  commercial       98.0      0.0     22.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0     28.6    148.6
+  industry        177.1      0.0      0.5      0.1      0.0    117.2     27.2     19.1      0.0      0.2      0.0      0.0     29.1    370.6
+  transport         0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0    602.4    181.1      9.6      0.0      0.0    793.1
+  agriculture       0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.2      0.0      0.0      0.0      0.2
+  other             0.0      0.0      0.0      0.0      7.6      0.0      0.0      0.0      0.0      0.0      0.0      0.0      0.0      7.6
+  non_energy        0.0      0.0      0.0      0.0      0.0     66.4      0.0      0.0      0.0      0.0      0.0      4.9      0.0     71.3
+  total           598.4    576.0     44.3     50.2     33.7    183.6     27.2     19.1    602.4    181.5      9.6      4.9    119.5   2450.5
   check, sector totals PJ (UNSD / IEA current release):
    resid 1075/1059  comme 148/149  indus 386/371  trans 781/793  agric 0/0  other 8/8  non_e 78/71
    biomass by sector (UNSD / IEA): resid 935/921  comme 119/120  indus 178/178
@@ -55,6 +55,7 @@
     switch fuels one-for-one, heat pumps included (rho = 1), so they give no basis either.
   Ranges used (low / central / high):
     household, wood           4.0  6.0 10.0
+    household, residues       4.0  6.0 10.0
     household, charcoal       2.0  3.0  4.0
     household, lpg            1.2  1.5  2.0
     household, kerosene       1.5  2.0  3.0
