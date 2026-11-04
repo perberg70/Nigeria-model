@@ -2348,8 +2348,8 @@ const MODALS = {
       <p>Deaths are only attributed above a counterfactual concentration — the level below
       which no further benefit is counted. It is published as a range rather than a value,
       <b>${A.tmrelLow}–${A.tmrelHigh} µg/m³</b>, and taking each end gives
-      <b>${fmtN(Math.abs(Math.round(Math.min(D.counterfactual.low,D.counterfactual.high))))}</b>
-      to <b>${fmtN(Math.abs(Math.round(Math.max(D.counterfactual.low,D.counterfactual.high))))}</b>
+      <b>${fmtN(Math.round(Math.min(Math.abs(D.counterfactual.low),Math.abs(D.counterfactual.high))))}</b>
+      to <b>${fmtN(Math.round(Math.max(Math.abs(D.counterfactual.low),Math.abs(D.counterfactual.high))))}</b>
       deaths. A <i>lower</i> counterfactual attributes more of the burden at every
       concentration, which makes a given reduction a smaller share of it.</p>
       <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">Counterfactual and apportionment:</span>
@@ -4979,7 +4979,7 @@ const VIEWS = {
         val:signed(Math.round(-avoidedPct))+"%",unit:avoidedPct>=0?"lower under your pathway":"higher under your pathway"},
        {lbl:improves?"Premature deaths avoided in 2050":"Additional premature deaths in 2050",
         sub:COUNTRY.isColombia()&&y2050.avoidedLow!=null
-          ? `ambient PM₂.₅ — ${fmtN(Math.abs(Math.round(Math.min(y2050.avoidedLow,y2050.avoidedHigh))))}–${fmtN(Math.abs(Math.round(Math.max(y2050.avoidedLow,y2050.avoidedHigh))))} across the published counterfactual range`
+          ? `ambient PM₂.₅ — ${fmtN(Math.round(Math.min(Math.abs(y2050.avoidedLow),Math.abs(y2050.avoidedHigh))))}–${fmtN(Math.round(Math.max(Math.abs(y2050.avoidedLow),Math.abs(y2050.avoidedHigh))))} across the published counterfactual range`
           : "ambient PM₂.₅ and nitrogen oxides",
         val:fmtN(Math.abs(Math.round(y2050.avoided))),unit:"lives per year"},
        {lbl:improves?"Estimated annual health benefit":"Estimated annual health loss",
