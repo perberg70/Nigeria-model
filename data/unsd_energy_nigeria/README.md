@@ -36,6 +36,14 @@ Code lists: `https://data.un.org/WS/rest/datastructure/UNSD/DSD_ENERGY/?referenc
 
 Commodity `7000` = electricity (GWh); `3000` = natural gas (TJ); `4xxx` = oil products.
 
+Solid biofuels (names from the API's own code list, `CL_COMMODITY_NRG`, read 2026-11-03):
+`5110` Fuelwood (thousand m³), `5120` Bagasse, `5130` Animal waste, `5140` Black liquor,
+`5150` Other Vegetal Material and Residues, `5160` Charcoal (thousand t). The definition of 5150
+is IRES (UN, 2018), SIEC 515: "straw, vegetable husks, ground nut shells, pruning brushwood, olive
+pomace and other wastes arising from the maintenance, cropping and processing of plants". Nigeria
+reports 5150 for households only, as 584,709 TJ in 2023 with no physical quantity — more than
+fuelwood's 328 PJ. It is not firewood.
+
 ## Findings, 2023
 
 - Electricity output totals 40,959.6 GWh (combustible fuels 31,640.8, hydro 9,107.2, solar 211.6),
