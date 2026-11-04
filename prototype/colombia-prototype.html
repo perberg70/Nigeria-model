@@ -4932,7 +4932,7 @@ const VIEWS = {
     const c={title:"Premature deaths attributable to ambient air pollution",
       unit:"Deaths per year under the reference and selected energy pathways",
       years:health.years, baseline:rows.map(r=>r.refDeaths), pathway:rows.map(r=>r.policyDeaths),
-      yMax:Math.max(1,Math.ceil(Math.max(...rows.map(r=>r.refDeaths))/(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100))*(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100)),
+      yMax:Math.max(1,Math.ceil(Math.max(...rows.map(r=>Math.max(r.refDeaths,r.policyDeaths)))/(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100))*(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100)),
       s1:"Reference energy pathway",s2:"Your energy pathway", tipUnit:"deaths",
       fill:improves?"Premature deaths avoided":"Additional premature deaths",
       fillNoun:"premature deaths"};
