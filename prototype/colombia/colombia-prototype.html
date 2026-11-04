@@ -1871,13 +1871,11 @@ const MODALS = {
      so this reads correctly for whichever country is selected. Nothing here is
      hardcoded to a specific country. */
   emissionsChart:{
-    title:"How the emissions chart is built",
+    title:"Understanding the emissions chart",
     /* {country} is substituted by T() at render time. A template literal here would
        be evaluated once when MODALS is built and would freeze whichever country was
        selected at page load. */
-    lede:"The chart shows {country}'s 2005–2024 profile, one selected SSP baseline, and where your "
-      +"2050 target puts it. The shaded area between the baseline "
-      +"and your target is what your target avoids, or adds.",
+    lede:"The chart compares {country}'s historical emissions profile with a scenario baseline and the pathway implied by your 2050 target. Values are million tonnes of CO₂ per year from fossil fuels and industrial processes; land-use emissions and removals are excluded.",
     body:()=>{
       const b=COUNTRY.baseline(), i50=b?b.years.indexOf(2050):-1;
       const prof=COUNTRY.profile(), name=DATA.country.name;
@@ -1888,6 +1886,42 @@ const MODALS = {
       const target=anchor*(1+tgtPct/100), cum=COUNTRY.cumulativeDifference();
       const obs=COUNTRY.observedSeries();
       const annual=obs.years.length>1 && obs.years.every((y,i)=>i===0||y-obs.years[i-1]===1);
+      if(national) return `
+      <ul class="chain">
+        <li><div class="ico">1</div><div><b>The dotted line: Colombia's historical emissions</b>
+          <span>The dotted line shows annual emissions estimates for 2005–2024 from the Global Carbon Budget, provided through Our World in Data. Each year has its own value in the dataset. The line connects these annual values; the years between the endpoints are not filled in by interpolation.
+          Emissions were <b>${fmtN(COL_DATA.observed[2005],1)} Mt CO₂ in 2005</b> and <b>${fmtN(COL_DATA.observed[2024],1)} Mt CO₂ in 2024</b>. The 2024 estimate is the reference level for the scenario calculations and your 2050 target.</span></div></li>
+        <li><div class="ico">2</div><div><b>The dashed grey line: a baseline for the selected scenario</b>
+          <span>The baseline shows how emissions could develop under assumptions associated with the selected Shared Socioeconomic Pathway (SSP), ${COUNTRY.label()}. It is constructed for this prototype rather than taken from a published Colombian emissions forecast.</span>
+          <p>The calculation starts with Colombia's 2024 emissions and combines Colombia's projected population and income per person, an assumed relationship between income and energy use, and changes in energy use and emissions intensity from Latin American scenario models.</p>
+          <p>The regional energy factor represents changes in efficiency and economic structure after removing the population and income effects already represented separately. This prevents those effects from being counted twice. The emissions-intensity factor represents changes in CO₂ per unit of final energy, including regional fuel and fossil-carbon-capture assumptions.</p>
+          <p>A separate Colombian curve is calculated for each eligible regional model run, keeping that run's energy and emissions assumptions together. The dashed line is the equal-weight median across <b>${nationalRec.models.length} model runs</b> in each year, rather than one individual model's trajectory. In 2050, the median is <b>${fmtN(b.mt[i50],1)} Mt CO₂</b>.</p></div></li>
+        <li><div class="ico">3</div><div><b>The pale grey band: the spread across models</b>
+          <span>The band extends from the lowest to the highest calculated value in each year. In 2050, the range is <b>${fmtN(nationalRec.mtMin[i50],1)}&ndash;${fmtN(nationalRec.mtMax[i50],1)} Mt CO₂</b>.
+          It is not a probability interval or a complete measure of uncertainty. It does not include the full uncertainty in national population and income projections, the income–energy relationship, or the transfer of regional trends to Colombia.</span>
+          <p>Included model runs: ${nationalRec.models.join(', ')}.</p></div></li>
+        <li><div class="ico">4</div><div><b>The green line: the pathway implied by your target</b>
+          <span>Your mitigation setting defines emissions in 2050 as a percentage change from Colombia's <b>2024 level of ${fmtN(anchor,1)} Mt CO₂</b>. A setting of 0% means that same emissions level in 2050; −50% means half that level. Your current setting of <b>${tgtPct>0?'+':''}${tgtPct}%</b> gives a target of <b>${fmtN(Math.max(0,target),1)} Mt CO₂</b>.</span>
+          <p>The green line follows the selected baseline through 2025. It then changes by the same percentage each year to reach your target in 2050. That annual percentage change continues through 2100.</p>
+          <p>This mathematical pathway does not calculate the policies, technologies or investments needed to deliver the target, or assess whether the transition is feasible. For the −100% setting, the calculation uses 0.01 Mt CO₂ in 2050, so the pathway approaches zero rather than reaching exactly zero.</p></div></li>
+        <li><div class="ico">5</div><div><b>The coloured area: emissions avoided or added</b>
+          <span>Green shading marks years when your pathway is below the baseline; red shading marks years when it is above. Where the lines cross, the shading changes colour.</span>
+          <p>The cumulative result above the chart combines the differences over <b>2025–2100</b>. Years with lower emissions offset years with higher emissions, giving the net amount avoided or added relative to the baseline. The calculation uses annual values and averages the differences at the beginning and end of each one-year interval.</p>
+          <p>The climate-damage figure values these emissions differences using the model's Social Cost of Carbon and discounting assumptions. It estimates the change in <b>global climate damage</b>, expressed as a present value in 2025.</p></div></li>
+        <li><div class="ico">6</div><div><b>Which settings change this chart?</b>
+          <span>The <b>SSP choice</b> changes the baseline and model range. It can also change the green pathway's starting level in 2025, but your 2050 target remains tied to the same 2024 reference value. The <b>mitigation target</b> changes the green pathway and comparison results.</span>
+          <p>The GDP-growth, electrification and electricity-generation settings do not change these economy-wide emissions curves. The baseline uses the selected SSP's income assumptions, while the green pathway is set directly by your mitigation target. The energy settings are used in the separate energy calculations.</p></div></li>
+      </ul>
+      <h3>Assumptions and limitations</h3>
+      <p>The baseline uses Colombia's 2024 emissions and Colombian population and income projections. Future changes in energy use and emissions intensity are taken from Latin American scenario models. This assumes that Colombia follows those regional trends, although its electricity mix, transport fuels and industrial structure differ from the regional aggregate. The effect of those differences on the projected emissions has not been quantified here.</p>
+      <p>The income–energy relationship comes from Burke and Csereklyei's cross-country research on primary energy use (Table 5, ten-year within-country specification). Its 0.48 starting response and 0.13 income interaction are transferred to final energy and integrated across decades as prototype assumptions; they are not estimated specifically for Colombia.</p>
+      <p>The calculation adds back the CO₂ removal attributed to biomass carbon capture and storage in each regional model. Two AIM/CGE baseline rows lack the required biomass-CCS data and are excluded. Some GCAM4 low-forcing values remain negative after this adjustment. The available data do not fully explain those values, so they should not be interpreted as demonstrated carbon-removal potential for Colombia or as a gross atmospheric-emissions estimate.</p>
+      <p>The baseline combines different editions of national and regional SSP datasets. Selecting an SSP does not establish that the resulting Colombian curve is consistent with that scenario's global warming or radiative-forcing outcome. Land-use emissions and removals are excluded throughout this chart.</p>
+      <h3>Data sources</h3>
+      <p>Historical emissions: Global Carbon Budget via Our World in Data, annual Colombian CO₂ emissions for 2005–2024.
+        <a class="paper" href="https://ourworldindata.org/grapher/annual-co2-emissions-per-country" target="_blank" rel="noopener noreferrer">Our World in Data ↗</a></p>
+      <p>Population and income: IIASA-WiC population projections and OECD ENV-Growth GDP projections, 2025 editions. Regional energy and emissions assumptions: IIASA SSP 2018 scenarios for Latin America (R5).
+        <a class="paper" href="https://ssp.apps.ece.iiasa.ac.at/" target="_blank" rel="noopener noreferrer">IIASA SSP explorer ↗</a></p>`;
       return `
       <ul class="chain">
         <li><div class="ico">1</div><div><b>The dark dotted line is ${obs.kind==="observed"?name+"'s recorded history":"an illustrative profile bridge"}</b>
@@ -4722,12 +4756,10 @@ const VIEWS = {
           <span><i class="solid"></i>${c.s2}</span></div></div>
         ${lineChart(c)}
        <div class="help-row"><span class="info-link" data-modal="emissionsChart" role="button" tabindex="0">ⓘ What the three lines are, and how this chart is computed</span></div>
-      <p class="cap" style="margin-top:10px">${DATA.country.name}'s ${c.observed.kind==="observed"?"national":"illustrative"} profile is anchored at <b>${fmtN(profile.em2024,1)} Mt</b>
-        of fossil-fuel and industrial carbon dioxide in 2024 and <b>${fmtN(profile.em2005,1)} Mt</b> in 2005.
-        ${COUNTRY.hasColombiaSspBaseline()
-          ? `The dashed grey line is the median of ${range.models} Colombia SSP curves. Each uses Colombian population and GDP per capita, a paired IIASA Latin America (R5) final-energy factor, and that R5 run's fossil/industrial CO₂ per unit of final energy, indexed to 2024, after adding back reported biomass CCS. The pale grey band spans the full available model range. This is an SSP-scaled prototype baseline, not a calibrated or forcing-consistent Colombian forecast. Some adjusted model values remain negative; the available rows do not explain every removal or establish one for Colombia.`
-          : `The dashed grey line follows the relative change in global ${COUNTRY.label()} emissions from the 2024 national anchor.`}
-        The green line reaches the 2050 mitigation target you set at step 2 and continues at the same proportional rate. It does not estimate a technology mix or biomass CCS. Land-use emissions and removals are excluded.</p>
+      <p class="cap" style="margin-top:10px">${COUNTRY.isColombia()
+        ? `Colombia's historical series contains an emissions estimate for every year from 2005 to 2024. The 2024 estimate of <b>${fmtN(COL_DATA.observed[2024],1)} Mt CO₂</b> provides the reference level for the baseline and your 2050 target.`
+        : `${DATA.country.name}'s historical profile is illustrative. Its 2024 value provides the reference level for the baseline and your 2050 target.`}
+        The dashed grey line shows the selected scenario baseline; the green line shows the pathway implied by your target. Open the explanation for the calculation, model range and assumptions.</p>
       ${dataTable(range
         ? ["Year",c.s1+" (Mt)","Full model range (Mt)",c.s2+" (Mt)","SSP median minus your pathway (Mt)"]
         : ["Year",c.s1+" (Mt)",c.s2+" (Mt)","Baseline minus your pathway (Mt)"],
@@ -4742,17 +4774,7 @@ const VIEWS = {
            (Per, 2026-10-13). It was a caption under the chart, then briefly the
            opening of the emissionsChart modal; the modal is still reachable from
            here for the full step-by-step method. */ ""}
-      <details><summary style="cursor:pointer;font-size:13.5px;color:var(--ink-3);margin-top:10px">Show what the three lines are, and how this chart is computed</summary>
-      <p class="cap" style="margin-top:10px">${DATA.country.name}'s ${c.observed.kind==="observed"?"national":"illustrative"} profile is anchored at <b>${fmtN(profile.em2024,1)} Mt</b>
-        of fossil-fuel and industrial carbon dioxide in 2024 and <b>${fmtN(profile.em2005,1)} Mt</b> in 2005.
-        ${COUNTRY.hasColombiaSspBaseline()
-          ? `The dashed grey line is the median of ${range.models} Colombia SSP curves. Each uses Colombian population and GDP per capita, a paired IIASA Latin America (R5) final-energy factor, and that R5 run's fossil/industrial CO₂ per unit of final energy, indexed to 2024, after adding back reported biomass CCS. The pale grey band shows the full model range. These are SSP-scaled prototype baselines, not calibrated Colombian forecasts or emissions pathways consistent with the SSP forcing labels. Some adjusted model values remain negative; the available rows do not explain every removal or establish one for Colombia.`
-          : `The dashed grey line follows the relative change in global ${COUNTRY.label()} emissions from the 2024 national anchor.`}
-        The green line reaches the 2050 mitigation target you set at step 2 and continues at the same proportional rate. It does not estimate a technology mix or biomass CCS.
-        This chart does not respond to the energy sliders: the SSP choice moves the grey line and the mitigation target moves the green one. Land-use emissions
-        and removals are not included.</p>
-      <div class="help-row" style="justify-content:flex-start;margin:6px 0 4px"><span class="info-link" data-modal="emissionsChart" role="button" tabindex="0">ⓘ The full method, step by step</span></div>
-      </details>
+      ${modalFold("emissionsChart","Show what the three lines are, and how this chart is computed")}
       ${/* The "What runs the calculations" link and the "one possible result" cue sat
            in a row at the foot of step 4; since 2026-10-13 (Per) they are fold-outs
            in this list, built from the same MODALS entries other screens still open. */
