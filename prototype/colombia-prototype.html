@@ -3117,7 +3117,12 @@ const COUNTRY = {
      left in the proportions they hold today, so "leave the others alone" means
      "keep their current relative standing", not "freeze their absolute share".
      If pins exceed 100 they are scaled back proportionally rather than rejected —
-     layer 1 is never touched to accommodate layer 2. */
+     layer 1 is never touched to accommodate layer 2. When EVERY source in a group is
+     pinned, nothing is left to absorb a shortfall, so pins totalling under 100 are
+     scaled up the same way (a review finding of 2026-11-04: the shortfall used to be
+     dropped and so counted as emission-free generation). Pins that all total zero
+     carry no mix to scale; the group then keeps today's split, as the source-mix
+     explanation states. */
   resolveGroup(g){ return this.resolveGroupFor(g,true); },
   /* usePins=false gives the untouched mix, which is what the REFERENCE pathway on
      the health screen needs: the user's per-source choices belong to their own
@@ -3127,7 +3132,9 @@ const COUNTRY = {
     const names=COL_POWER.groups[g];
     const pinned=names.filter(n=>pins[n]!=null), free=names.filter(n=>pins[n]==null);
     let sum=pinned.reduce((a,n)=>a+pins[n],0);
-    const out={}, over=sum>100;
+    const out={};
+    if(!free.length && sum<=0){ names.forEach(n=>out[n]=cur[n]); return out; }
+    const over=sum>100 || (!free.length && sum<100);
     pinned.forEach(n=> out[n]= over ? pins[n]*100/sum : pins[n]);
     const resid=over?0:100-sum, key=free.reduce((a,n)=>a+cur[n],0);
     free.forEach(n=> out[n]= key>0 ? resid*cur[n]/key : (free.length?resid/free.length:0));
@@ -3855,9 +3862,14 @@ function lineChart(c){
     <text class="axtx" x="${L-10}" y="${y(v)+4}" text-anchor="end">${v}</text>`; }
   const tickYears=c.xTicks||c.years;
   const xt=tickYears.map(yr=>`<text class="axtx" x="${xYear(yr)}" y="${Tp+ih+22}" text-anchor="middle">${yr}</text>`).join("");
+  /* Tooltip names and units come from the chart's own s1/s2 and tipUnit (default Mt),
+     not the emissions chart's wording: step 5's deaths chart reuses this renderer and
+     showed deaths as "Mt" against an "SSP baseline" (review finding, 2026-11-04). */
+  const tipU=c.tipUnit||"Mt", tipV=v=>c.tipUnit?fmtN(v):v,
+        tipL=s=>String(s||"").replace(/<[^>]*>/g,"").replace(/'/g,"\\'").replace(/"/g,"&quot;");
   const dots=c.years.map((yr,i)=>
     `<circle cx="${xYear(yr)}" cy="${y(c.pathway[i])}" r="9" fill="transparent"
-       onmousemove="showTT(event,'<b>${yr}</b><br>Your pathway: ${c.pathway[i]} Mt<br>SSP baseline: ${c.baseline[i]} Mt${c.range?`<br>Model range: ${fmtN(c.range.min[i],1)}–${fmtN(c.range.max[i],1)} Mt`:""}')"
+       onmousemove="showTT(event,'<b>${yr}</b><br>${tipL(c.s2||"Your pathway")}: ${tipV(c.pathway[i])} ${tipU}<br>${tipL(c.s1||"Baseline")}: ${tipV(c.baseline[i])} ${tipU}${c.range?`<br>Model range: ${fmtN(c.range.min[i],1)}–${fmtN(c.range.max[i],1)} ${tipU}`:""}')"
        onmouseleave="hideTT()"/>`).join("");
   /* Hover targets on the observed history, matched to africa-prototype 2026-09-01.
      Invisible by design: transparent, no visible marker, so the history still reads
@@ -4210,7 +4222,8 @@ function sourceMixChain(w){
           <span>Whatever is left in a group is divided among the untouched sources in the proportions
           they hold today. Leaving a source alone means keeping its <i>relative</i> position, not
           freezing its absolute share. Set shares above 100% in one group and they are scaled back
-          proportionally &mdash; ${w.sliderLc} is never adjusted to accommodate them.</span></div></li>
+          proportionally; set every source in a group to less than 100% in total and they are
+          scaled up the same way, or keep today's split if they total zero &mdash; ${w.sliderLc} is never adjusted to accommodate them.</span></div></li>
         <li><div class="ico">3</div><div><b>Every source carries its own emission factor</b>
           <span>These are life-cycle greenhouse-gas intensities, in grams of carbon dioxide
           equivalent per kilowatt-hour, so they include fuel supply and construction, not just what
@@ -4917,7 +4930,7 @@ const VIEWS = {
       unit:"Deaths per year under the reference and selected energy pathways",
       years:health.years, baseline:rows.map(r=>r.refDeaths), pathway:rows.map(r=>r.policyDeaths),
       yMax:Math.max(1,Math.ceil(Math.max(...rows.map(r=>r.refDeaths))/(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100))*(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100)),
-      s1:"Reference energy pathway",s2:"Your energy pathway",
+      s1:"Reference energy pathway",s2:"Your energy pathway", tipUnit:"deaths",
       fill:improves?"Premature deaths avoided":"Additional premature deaths",
       fillNoun:"premature deaths"};
     /* v2: each bar carries its own points-to-lives conversion on hover and

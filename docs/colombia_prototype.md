@@ -17,6 +17,10 @@ canvas runtime, external JavaScript, fonts, or data downloads are needed to use 
 - The applied design includes the top step bar, live settings strip, expandable
   lever/source/uncertainty explanations, result tiles, department maps and inline
   regional drill-down. The canvas files remain reference artboards, not runtime pages.
+- Post-import fixes, applied here and in the source on 2026-11-04 (MSc-thesis
+  `086a202`, from the Codex review of PR #24): a source group whose every source is
+  pinned now totals 100% (previously a shortfall counted as emission-free), and chart
+  tooltips use each chart's own series names and unit (step 5 showed deaths as "Mt").
 - The imported calculations and embedded data are preserved. This is a deployment
   snapshot, not a migration of the thesis repository's Python model or raw research
   datasets. Future model updates should come from that source with its provenance.
