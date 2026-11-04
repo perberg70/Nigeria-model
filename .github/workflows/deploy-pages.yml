@@ -7,7 +7,8 @@ on:
       - .github/workflows/deploy-pages.yml
       - site/**
       - prototype/africa-prototype.html
-      - prototype/colombia/**
+      - prototype/colombia-prototype.html
+      - data/colombia_department_boundaries/**
   workflow_dispatch:
 
 permissions:
@@ -33,7 +34,9 @@ jobs:
           cp site/index.html _site/index.html
           cp prototype/africa-prototype.html _site/nigeria/index.html
           mkdir -p _site/colombia
-          cp prototype/colombia/colombia-prototype.html _site/colombia/index.html
+          cp prototype/colombia-prototype.html _site/colombia/index.html
+          cp data/colombia_department_boundaries/department-boundaries.json _site/colombia/
+          cp data/colombia_department_boundaries/MAP-LICENSE.txt _site/colombia/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

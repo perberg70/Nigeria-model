@@ -90,7 +90,10 @@
 
   Figures are quoted from Colombia's official submission to the UNFCCC NDC
   registry: "NDC 3.0 — Transformaciones para la Vida" (República de Colombia),
-  Tabla 1 "Objetivo nacional de mitigación de emisiones de GEI", p. 54,
+  Tabla 1 "Objetivo nacional de mitigación de emisiones de GEI", printed p. 54
+  (PDF p. 69; coverage rows on p. 55). Re-read 2026-11-04 from the archived copy,
+  MSc-thesis 02_literature/Colombian policy/colombia_NDC_3.0.pdf (source record
+  colombia_2025_ndc3); both quotations below match it,
   retrieved 2026-08-24 from
   https://unfccc.int/sites/default/files/2025-12/NDC%203.0%20Transformaciones%20para%20la%20Vida%20(Colombia).pdf
     - 2030 (ratified from NDC 2.0, 2020): "En 2030 Colombia emitirá como máximo
@@ -757,10 +760,32 @@ button.st{border:0;background:none}.strip button{border:0;background:none;color:
 .info-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));background:none;padding:0}
 .info-actions details{min-width:0}.fold>summary{font-size:14px!important;color:var(--link)!important;margin:0!important}
 .fold{margin:10px 0}.fold .dt{font-size:13px}.fold-body{overflow-x:auto}
-.climate-region{cursor:pointer;stroke:#fff;stroke-width:.35}.climate-region:focus{stroke:var(--ink);stroke-width:1;outline:none}
+.climate-region{cursor:pointer;stroke:#fff;stroke-width:.6;transition:filter .12s,opacity .12s}.climate-region path,.climate-region circle{vector-effect:non-scaling-stroke}.climate-region:hover,.climate-region:focus{filter:brightness(.85);opacity:.92}.climate-region:focus{stroke:var(--ink);stroke-width:1;outline:none}
 .mapbox{min-width:0}.mapbox svg{height:350px!important}.mapbig svg{height:420px!important}
 .modal{max-width:min(900px,94vw)}.dt-wrap{overflow-x:auto}.help-row{display:block}.help-row>.fold{width:100%}
 @media(max-width:900px){.app{margin:0}.driver{grid-template-columns:1fr}.driver .dval{text-align:left}.info-actions{grid-template-columns:1fr}.mapbox svg{height:300px!important}}
+
+
+.mixpanel .mixintro{margin:10px 0 12px;line-height:1.55}
+.mixbar-cap{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3);margin-bottom:4px}
+.mixbar{display:flex;height:30px;border-radius:6px;overflow:hidden}
+.mixbar div{display:flex;align-items:center;justify-content:center;font-size:11.5px;white-space:nowrap;overflow:hidden;min-width:0}
+.mixgroups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.mixpanel>summary svg{display:inline-block}
+
+.fold-list>.fold{margin:0}.fold-list>details>summary{margin:0!important}
+@media(max-width:900px){.mixgroups{grid-template-columns:1fr}.mixpanel>summary{flex-wrap:wrap}.mixpanel .badge{white-space:normal}.mixbar-cap{flex-wrap:wrap;gap:4px}}
+
+/* Navigation and outcome export follow africa-prototype.html. */
+.actions{flex-wrap:wrap}.actions .back{margin-right:auto}
+.btn.wide{flex:1;justify-content:center}
+.save-box{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px;padding:16px 18px;border:1.5px solid var(--brand-green-dk);border-radius:var(--radius);background:var(--tint)}
+.save-box .txt{flex:1 1 280px;font-size:14px;color:var(--ink-2)}
+.save-box .txt b{display:block;color:var(--ink);font-size:16px;margin-bottom:2px}
+.save-box .btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn.ghost{background:#fff;color:var(--brand-green-dk);border:1px solid var(--line);font-weight:600;padding:10px 16px;font-size:14px}
+#report{display:none}
+@media(max-width:600px){.actions .btn,.save-box .btns,.save-box .btn{width:100%}.actions .btn{justify-content:center}}
 
 </style>
 </head>
@@ -784,6 +809,7 @@ button.st{border:0;background:none}.strip button{border:0;background:none;color:
   </div>
 </div>
 
+<div id="report"></div>
 <div class="tt" id="tt"></div>
 <div class="ovl" id="ovl" hidden><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
@@ -872,7 +898,7 @@ const DATA = {
 
   drivers:{
     title:"How do you see {country}'s future?", icon:"chart",
-    sub:["Set your country pathway by adjusting key drivers.","These choices affect your priorities and ambition."],
+    sub:["Set your country pathway by adjusting key drivers.","These choices mirror your priorities and ambition."],
     items:[
       {id:"mitigation", ico:"🍃", name:"National climate mitigation target",
        desc:"Target for fossil-fuel and industrial carbon dioxide emissions in 2050, expressed as a change from {country}'s 2024 level",
@@ -881,7 +907,7 @@ const DATA = {
        referenceLabel:()=>`${COUNTRY.isColombia()?"Observed 2024":"Illustrative 2024 profile"}: ${fmtN(COUNTRY.mitigationAnchor(),1)} Mt CO₂`,
        ticks:["-100%","-50%","0%","+50%","+100%","+150%"],
        fmt:v=>v===-100?"Net zero":(v>0?"+":"")+v+"%", unit:"relative to 2024"},
-      {id:"gdp", ico:"📈", name:"Wealth (GDP growth)",
+      {id:"gdp", ico:"📈", name:"Income (GDP growth)",
        desc:"Average annual real GDP growth 2025–2050",
        min:0, max:5, step:.5, value:2,
        reference:()=>COUNTRY.isColombia()?COL_GDP_GROWTH_2025:COUNTRY.profile().gdp,
@@ -2356,8 +2382,8 @@ const MODALS = {
       <p>Deaths are only attributed above a counterfactual concentration — the level below
       which no further benefit is counted. It is published as a range rather than a value,
       <b>${A.tmrelLow}–${A.tmrelHigh} µg/m³</b>, and taking each end gives
-      <b>${fmtN(Math.abs(Math.round(Math.min(D.counterfactual.low,D.counterfactual.high))))}</b>
-      to <b>${fmtN(Math.abs(Math.round(Math.max(D.counterfactual.low,D.counterfactual.high))))}</b>
+      <b>${fmtN(Math.round(Math.min(Math.abs(D.counterfactual.low),Math.abs(D.counterfactual.high))))}</b>
+      to <b>${fmtN(Math.round(Math.max(Math.abs(D.counterfactual.low),Math.abs(D.counterfactual.high))))}</b>
       deaths. A <i>lower</i> counterfactual attributes more of the burden at every
       concentration, which makes a given reduction a smaller share of it.</p>
       <div class="paperrow"><span aria-hidden="true">📄</span> <span class="lbl2">Counterfactual and apportionment:</span>
@@ -3128,7 +3154,12 @@ const COUNTRY = {
      left in the proportions they hold today, so "leave the others alone" means
      "keep their current relative standing", not "freeze their absolute share".
      If pins exceed 100 they are scaled back proportionally rather than rejected —
-     layer 1 is never touched to accommodate layer 2. */
+     layer 1 is never touched to accommodate layer 2. When EVERY source in a group is
+     pinned, nothing is left to absorb a shortfall, so pins totalling under 100 are
+     scaled up the same way (a review finding of 2026-11-04: the shortfall used to be
+     dropped and so counted as emission-free generation). Pins that all total zero
+     carry no mix to scale; the group then keeps today's split, as the source-mix
+     explanation states. */
   resolveGroup(g){ return this.resolveGroupFor(g,true); },
   /* usePins=false gives the untouched mix, which is what the REFERENCE pathway on
      the health screen needs: the user's per-source choices belong to their own
@@ -3138,7 +3169,9 @@ const COUNTRY = {
     const names=COL_POWER.groups[g];
     const pinned=names.filter(n=>pins[n]!=null), free=names.filter(n=>pins[n]==null);
     let sum=pinned.reduce((a,n)=>a+pins[n],0);
-    const out={}, over=sum>100;
+    const out={};
+    if(!free.length && sum<=0){ names.forEach(n=>out[n]=cur[n]); return out; }
+    const over=sum>100 || (!free.length && sum<100);
     pinned.forEach(n=> out[n]= over ? pins[n]*100/sum : pins[n]);
     const resid=over?0:100-sum, key=free.reduce((a,n)=>a+cur[n],0);
     free.forEach(n=> out[n]= key>0 ? resid*cur[n]/key : (free.length?resid/free.length:0));
@@ -3866,9 +3899,14 @@ function lineChart(c){
     <text class="axtx" x="${L-10}" y="${y(v)+4}" text-anchor="end">${v}</text>`; }
   const tickYears=c.xTicks||c.years;
   const xt=tickYears.map(yr=>`<text class="axtx" x="${xYear(yr)}" y="${Tp+ih+22}" text-anchor="middle">${yr}</text>`).join("");
+  /* Tooltip names and units come from the chart's own s1/s2 and tipUnit (default Mt),
+     not the emissions chart's wording: step 5's deaths chart reuses this renderer and
+     showed deaths as "Mt" against an "SSP baseline" (review finding, 2026-11-04). */
+  const tipU=c.tipUnit||"Mt", tipV=v=>c.tipUnit?fmtN(v):v,
+        tipL=s=>String(s||"").replace(/<[^>]*>/g,"").replace(/'/g,"\\'").replace(/"/g,"&quot;");
   const dots=c.years.map((yr,i)=>
     `<circle cx="${xYear(yr)}" cy="${y(c.pathway[i])}" r="9" fill="transparent"
-       onmousemove="showTT(event,'<b>${yr}</b><br>Your pathway: ${c.pathway[i]} Mt<br>SSP baseline: ${c.baseline[i]} Mt${c.range?`<br>Model range: ${fmtN(c.range.min[i],1)}–${fmtN(c.range.max[i],1)} Mt`:""}')"
+       onmousemove="showTT(event,'<b>${yr}</b><br>${tipL(c.s2||"Your pathway")}: ${tipV(c.pathway[i])} ${tipU}<br>${tipL(c.s1||"Baseline")}: ${tipV(c.baseline[i])} ${tipU}${c.range?`<br>Model range: ${fmtN(c.range.min[i],1)}–${fmtN(c.range.max[i],1)} ${tipU}`:""}')"
        onmouseleave="hideTT()"/>`).join("");
   /* Hover targets on the observed history, matched to africa-prototype 2026-09-01.
      Invisible by design: transparent, no visible marker, so the history still reads
@@ -4075,7 +4113,7 @@ const NDC_TARGETS = {
   COL:{
     year2030:"169.44", year2035:"155–161",
     basis:"absolute fixed-level limits on net national emissions of all six greenhouse gases (CO₂, CH₄, N₂O, HFCs, PFCs, SF₆), including agriculture, forestry and other land use",
-    src:"NDC 3.0 — Transformaciones para la Vida (República de Colombia), Table 1, p. 54",
+    src:"NDC 3.0 — Transformaciones para la Vida (República de Colombia, 2025), Tabla 1, printed pp. 54–55 (PDF pp. 69–70); both targets read from the archived PDF on 4 November 2026",
     href:"https://unfccc.int/sites/default/files/2025-12/NDC%203.0%20Transformaciones%20para%20la%20Vida%20(Colombia).pdf"
   }
 };
@@ -4221,7 +4259,8 @@ function sourceMixChain(w){
           <span>Whatever is left in a group is divided among the untouched sources in the proportions
           they hold today. Leaving a source alone means keeping its <i>relative</i> position, not
           freezing its absolute share. Set shares above 100% in one group and they are scaled back
-          proportionally &mdash; ${w.sliderLc} is never adjusted to accommodate them.</span></div></li>
+          proportionally; set every source in a group to less than 100% in total and they are
+          scaled up the same way, or keep today's split if they total zero &mdash; ${w.sliderLc} is never adjusted to accommodate them.</span></div></li>
         <li><div class="ico">3</div><div><b>Every source carries its own emission factor</b>
           <span>These are life-cycle greenhouse-gas intensities, in grams of carbon dioxide
           equivalent per kilowatt-hour, so they include fuel supply and construction, not just what
@@ -4279,16 +4318,33 @@ function sourceMixPapers(){
            rel="noopener noreferrer" title="Opens the UNECE record in a new tab">digitallibrary.un.org ↗</a></div>`;
 }
 
-/* LAYER 2 entry point. Was a <details> disclosure until 2026-09-01: too easy to miss,
-   and cramped inside the driver row. It is now a labelled button opening a full-size
-   panel, so the per-source sliders get the same room as the drivers themselves. */
+/* The optional source controls follow Nigeria's inline energy-mix disclosure. */
+function mixBar(){
+  const L=100*COUNTRY.powerSharePath(2050,COL_POWER.mix2024,state.drivers.mix), parts=[];
+  const colors={Hydro:"#0E5C3F",Solar:"#3E8E63",Bioenergy:"#627D38",Wind:"#427E72",Gas:"#8C6A52",Coal:"#555", "Other fossil":"#76515B"};
+  ["low","fossil"].forEach(g=>{
+    const res=COUNTRY.resolveGroup(g),share=g==="low"?L:100-L;
+    COL_POWER.groups[g].forEach(n=>parts.push([n,res[n]*share/100]));
+  });
+  const label=parts.map(([n,v])=>`${n} ${v.toFixed(1)}%`).join(", ");
+  return `<div class="mixbar-cap"><span>Colombia's electricity in 2050, by source</span><span>low-emission ${L.toFixed(1)}% · fossil ${(100-L).toFixed(1)}%</span></div>
+    <div class="mixbar" role="img" aria-label="Electricity in 2050: ${label}">${parts.map(([n,v])=>
+      `<div title="${n}: ${v.toFixed(1)}% of electricity" style="width:${v}%;background:${colors[n]};color:#fff">${v>=6?`${n} ${v.toFixed(0)}%`:""}</div>`).join("")}</div>`;
+}
 function sourceMixPanel(){
   if(!COUNTRY.isColombia()) return "";
   const n=["low","fossil"].reduce((a,g)=>a+Object.keys((state.sourceMix||{})[g]||{}).length,0);
-  return `<button type="button" class="btn srcbtn" data-modal="sourceMixEditor"
-    style="margin-top:10px;width:100%;text-align:left;font-size:13.5px;padding:10px 12px">
-    ⚙ &nbsp;Choose which sources grow and which are phased out
-    <span style="opacity:.75">${n?` — ${n} set`:" — optional"}</span></button>`;
+  const count=COL_POWER.groups.low.length+COL_POWER.groups.fossil.length;
+  return `<details class="mixpanel" data-keep="mix">
+    <summary>⚙ Set your energy mix — choose which sources grow and which are phased out
+      <span class="badge">${count} sliders · ${n?n+" set by you":"optional"}</span></summary>
+    <p class="mixintro"><b>Your choice:</b> tick a source, then move its slider to set its share yourself.
+      The slider above fixes how much of Colombia's electricity is low-emission; these sliders decide which sources make up
+      each side of that split. Leave them alone to keep today's proportions within each group.</p>
+    <div id="mixbar">${mixBar()}</div>
+    <div class="mixgroups">${sourceMixGroup("low","Low-emission sources")}${sourceMixGroup("fossil","Fossil sources")}</div>
+    <p><span class="info-link" data-modal="sourceMix" role="button" tabindex="0">ⓘ How the two layers work, and where the source mix comes from</span></p>
+  </details>`;
 }
 
 /* One row per generation source. `live` patches the readouts during a drag without
@@ -4301,7 +4357,7 @@ function sourceMixRow(g,n){
   const ofTotal=resolved*(g==="low"?L:100-L)/100;
   const pct=Math.round(resolved);
   return `<div style="margin:16px 0">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px">
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:5px">
       <input type="checkbox" data-pin="${g}|${n}" ${pinned?"checked":""}
         aria-label="Set ${n} explicitly" style="flex:none">
       <b style="flex:1;font-size:14px">${n}${P.efNote[n]?" *":""}</b>
@@ -4309,7 +4365,7 @@ function sourceMixRow(g,n){
         <b>${resolved.toFixed(1)}%</b> of group · <b>${ofTotal.toFixed(1)}%</b> of electricity</span>
       <span style="font-size:12px;color:var(--ink-3);white-space:nowrap">${(P.ef[n]*1000).toFixed(1)} gCO₂e/kWh</span>
     </div>
-    <input type="range" min="0" max="100" step="1" value="${pct}" data-src="${g}|${n}"
+    <input type="range" min="0" max="100" step="1" value="${pct}" data-src="${g}|${n}" aria-label="${n} share within ${g} sources"
       style="width:100%;background:linear-gradient(90deg,var(--brand-green-dk) ${pct}%,#D9E0E4 ${pct}%)">
   </div>`;
 }
@@ -4323,15 +4379,16 @@ function sourceMixGroup(g,label){
 }
 /* Live patch during a drag: update every readout and every slider EXCEPT the one under
    the pointer, so the residual redistribution is visible without breaking the gesture. */
-function sourceMixLivePatch(activeKey){
+function sourceMixLivePatch(activeKey, root=document){
+  const bar=document.getElementById("mixbar"); if(bar) bar.innerHTML=mixBar();
   const L=100*COUNTRY.powerSharePath(2050,COL_POWER.mix2024,state.drivers.mix);
   ["low","fossil"].forEach(g=>{
     const res=COUNTRY.resolveGroup(g), share=g==="low"?L:100-L;
     COL_POWER.groups[g].forEach(n=>{
       const key=g+"|"+n, v=res[n];
-      const lbl=document.querySelector(`[data-srcval="${key}"]`);
+      const lbl=root.querySelector(`[data-srcval="${key}"]`);
       if(lbl) lbl.innerHTML=`<b>${v.toFixed(1)}%</b> of group · <b>${(v*share/100).toFixed(1)}%</b> of electricity`;
-      const sl=document.querySelector(`[data-src="${key}"]`);
+      const sl=root.querySelector(`[data-src="${key}"]`);
       if(sl && key!==activeKey){ sl.value=Math.round(v);
         sl.style.background=`linear-gradient(90deg,var(--brand-green-dk) ${Math.round(v)}%,#D9E0E4 ${Math.round(v)}%)`; }
       if(sl && key===activeKey)
@@ -4349,6 +4406,7 @@ function driverLivePatch(slider){
   const value=state.drivers[item.id], box=slider.closest(".driver");
   const pct=100*(value-item.min)/(item.max-item.min);
   slider.style.background=`linear-gradient(90deg,var(--brand-green-dk) ${pct}%,#D9E0E4 ${pct}%)`;
+  const bar=document.getElementById("mixbar"); if(bar) bar.innerHTML=mixBar();
   const readout=box.querySelector(".dval b");
   if(readout) readout.textContent=item.fmt(value);
   const nearest=Math.round((value-item.min)/((item.max-item.min)/(item.ticks.length-1)));
@@ -4363,7 +4421,6 @@ function referenceStatus(id){
 
 function driverMore(id){
   const bits=[];
-  if(id==="mix" && COUNTRY.isColombia()) bits.push(sourceMixPanel());
   if(id==="gdp" && COUNTRY.isColombia())
     bits.push(`<span class="info-link" data-modal="energyDemand" role="button" tabindex="0"
       >ⓘ How growth becomes energy demand, and how much that is uncertain</span>`);
@@ -4548,7 +4605,7 @@ function regionalAreaCell(regions,index,box){
    region prints its value in the legend and carries the full range in its
    accessible label. */
 // BEGIN DEPARTMENT_MAP
-const DEPARTMENT_MAP = {"viewBox":"-1 -1 102 139.64","regions":{"Amazonia":[{"name":"Amazonas","d":"M38 107.3L38.1 108.8L39.2 109.5L38.6 110L39 110.8L41 111L42.3 112.9L44.3 113.2L45.7 115.7L45 116.8L46.8 117.8L47.6 117.2L48.2 117.6L48.9 120L48.1 121.2L48.9 122.2L49.8 122L50 123L51.2 122.4L52 123L52.4 122.2L54.6 123.3L56.4 123.2L57.3 122L58.3 122.4L59.8 120.4L59.9 121.1L61.6 121.3L61.8 122.2L62.1 121.5L62.6 122.6L66.9 121.1L68.6 122.2L68.9 123.2L69.4 122.7L71.6 123.4L71.2 123.9L72.1 123.8L73 125L73.4 124.6L73.5 125.8L68.2 134.1L69.8 134.7L71.8 134.3L74.5 137.6L79.1 114L78.8 111.6L78.4 112.7L77.4 112.2L76.9 112.9L76.6 111.4L74.5 111.8L74.9 110.7L74 110.5L72.7 111.9L72.5 110.9L71.6 110.7L72.3 110L71.4 107.4L72.4 106.4L70.3 106.8L69.8 105.7L68 105.1L67.3 105.7L66.1 102.8L63.2 101.8L60.1 103.4L59.7 104.8L57.3 104.9L55.6 107.8L54.1 107.4L53.1 108.6L51.5 107.3L50.1 107.8L49.2 107.1L47.8 107.9L46.7 106.9L44.8 107L43.5 105.9L42.5 106Z"},{"name":"Caquetá","d":"M63.2 101.8L62.6 101.2L61.5 101.7L59.6 99.7L58.9 99.9L57.4 97.3L55.8 96.9L53.9 93.8L52.3 93L50.6 93.2L50.5 94.3L48.3 95.2L46.2 93.3L44 89.4L41.4 89.5L39.4 88.2L36.5 87.5L36.3 84.6L35.2 84L36.1 80.1L35.6 78.9L33.5 78.8L31.8 80.3L31.5 82L26.9 88L24.4 89.8L23.4 89.7L22.3 93L24.1 94L25.4 94.2L26.7 95.8L27.7 95.5L30.8 96.8L31.1 98.7L33.1 99.3L32.9 100.5L35.6 101.4L35.6 103.2L38.3 103.6L42.5 106L43.5 105.9L44.8 107L46.7 106.9L47.8 107.9L49.2 107.1L50.1 107.8L51.5 107.3L53.1 108.6L54.1 107.4L55.6 107.8L57.3 104.9L59.7 104.8L60.1 103.4Z"},{"name":"Guainía","d":"M69.9 79.8L66.5 81.6L67.9 81.8L70 84.3L73.7 83.8L74.1 84.5L73.2 85.6L72.7 87.3L75.4 88.6L89.2 88.5L88.2 87.6L88.9 86L91.4 87.8L92.1 86.5L94.2 85.8L95.5 84.3L96 86.7L97.5 87.6L98.1 93.1L100 92.6L97.9 85.3L97 84.2L97.2 83.3L94.1 80.8L93.7 79.6L91.7 79.7L96.2 74.9L94.7 71.7L93.6 71.5L92.9 69.4L91.3 70.5L90.3 69.7L89.9 70.3L87.7 69.8L87.3 71L84.3 71.5L83.7 72.5L82.9 71.9L81.8 72.7L80 72L79.9 72.7L79.8 72.1L77.5 72.4L77.5 73.3L76.2 73.1L75.4 73.4L75.6 74.1L75 73.6L74.5 74.8L73.1 74.7L73 76.4L71.5 77.3L71.8 78.5Z"},{"name":"Guaviare","d":"M44 89.4L46.2 93.3L48.3 95.2L50.5 94.3L50.6 93.2L52.3 93L53.9 93.8L55.8 96.9L57.4 97.3L61.3 93.2L61.9 93.6L61.3 92.2L62.7 88.4L63.8 89L66.8 86.8L68.9 87L73.2 85.6L74.1 84.5L73.7 83.8L70 84.3L67.9 81.8L66.5 81.6L69.9 79.8L68.7 79.2L68.2 80.2L65.2 79L63.2 78.6L60.5 79.5L59.6 78.8L59.5 79.5L59.1 79L57.8 79.6L56.5 78.9L56.1 79.9L55.5 79.5L53.2 80.5L52.8 81.4L50.9 81.2L48.1 83.2L44.4 83.1Z"},{"name":"Putumayo","d":"M42.5 106L38.3 103.6L35.6 103.2L35.6 101.4L32.9 100.5L33.1 99.3L31.1 98.7L30.8 96.8L27.7 95.5L26.7 95.8L25.4 94.2L24.1 94L21.2 94.8L20.2 94.2L19.4 90.7L17.2 91.6L15.5 92.7L16.3 94.4L15 97.5L15.6 99.7L15.9 100.4L19.9 100.9L21.4 100.8L21.4 99.6L22.5 99.1L24.7 100.3L26.3 102.3L30.7 103.8L31.5 103.1L33.9 104.7L34.7 104.3L35.2 105.6L38 107.3Z"},{"name":"Vaupés","d":"M78.8 111.6L77.2 108.9L77.3 106.9L73.7 104.3L73.7 98.1L76.8 97.2L77.3 97.7L78.5 96.7L79.4 97.7L80.7 97.7L81.4 97.4L80.8 96.6L81.2 95.5L79.7 93.8L75.4 93.9L75.4 88.6L72.7 87.3L73.2 85.6L68.9 87L66.8 86.8L63.8 89L62.7 88.4L61.3 92.2L61.9 93.6L61.3 93.2L57.4 97.3L58.9 99.9L59.6 99.7L61.5 101.7L62.6 101.2L63.2 101.8L66.1 102.8L67.3 105.7L68 105.1L69.8 105.7L70.3 106.8L72.4 106.4L71.4 107.4L72.3 110L71.6 110.7L72.5 110.9L72.7 111.9L74 110.5L74.9 110.7L74.5 111.8L76.6 111.4L76.9 112.9L77.4 112.2L78.4 112.7Z"}],"Andean":[{"name":"Antioquia","d":"M35.8 55.1L36.9 51L38.2 49.9L37.9 48.4L42.1 45L41.9 42.5L39.2 45L38.3 44.9L37.8 43.3L38.4 41.5L37.8 41.2L37.2 42.2L36.3 41.2L37.4 39L36.9 37.5L34.4 35.1L33.5 36.1L31.1 36.3L28 40.2L26.7 40L26.1 42L21.6 41.8L20.6 40.4L20.7 38.8L22.1 34.5L23.2 33.5L21.3 29.4L17 32.2L18.5 33.5L18.6 37.4L17.1 37.4L18.1 35.7L17.1 36L16.7 34.7L16.9 36.4L15.5 38.5L20.8 43.9L20 45.2L17.9 45L18.2 46.1L16.8 46.5L16.8 47.6L18.4 49.3L18.8 51.8L22.9 51.6L23.4 53.2L24.2 53.4L24.7 56.8L25.8 57.5L27 56.9L28.3 57.2L28 55.4L29.9 56L30.7 58L33 55.6L34.8 55.8Z"},{"name":"Bogotá, D.C.","d":"M40 69.7L40.3 66.2L41.2 64.8L41.2 63.1L40.5 62.9L39.4 64.4L39.5 67.8L39.1 69L38.5 68.7L37.6 72L37.8 71.9Z"},{"name":"Boyacá","d":"M35.8 55.3L38.4 54.6L39.1 57.5L41 58.5L42.8 56.8L44.5 58.2L45.5 60.3L45 62.4L46.1 62.5L47.6 64.2L49 63.7L50.4 58.5L51.1 58.2L51.9 59.2L55.3 56.5L55.5 55L54.4 54.7L55 54.2L55 52.6L54.2 51.7L54.6 50.7L56.6 49L58.1 44.9L57.2 44.7L55.4 44.9L54.5 46L53.5 45.8L53.2 49.2L52.3 49.7L51 48.6L51.7 49.5L51.5 51.4L49.3 53.5L47.8 53.2L47.8 54.6L46.4 54.3L46.2 55.3L45.5 54.8L46.4 53.2L45.3 52.4L44.1 55.6L43.5 55.1L41.3 55.6L39.7 54L39 54.7L39.1 52.7L38.1 52.9L36.9 51L35.8 55.1Z"},{"name":"Caldas","d":"M25.8 57.5L25.9 58.4L27.7 58.9L26.2 59.3L25.6 61.8L26.3 62.2L26.8 61.1L29.9 63.1L30.6 60.4L33.5 58.9L35.2 59.1L35.8 55.3L35.8 55.1L34.8 55.8L33 55.6L30.7 58L29.9 56L28 55.4L28.3 57.2L27 56.9Z"},{"name":"Cundinamarca","d":"M35.2 59.1L35.4 61.7L33.9 67.4L36.9 67.8L36.8 71L37.6 72L38.5 68.7L39.1 69L39.5 67.8L39.4 64.4L40.5 62.9L41.2 63.1L41.2 64.8L40.3 66.2L40 69.7L43.3 68.1L42.7 66.4L44.3 65.1L45 67.2L48.3 68L49 63.7L47.6 64.2L46.1 62.5L45 62.4L45.5 60.3L44.5 58.2L42.8 56.8L41 58.5L39.1 57.5L38.4 54.6L35.8 55.3Z"},{"name":"Huila","d":"M37.8 71.9L37.6 72L36.8 71L33.7 75.6L32.4 75.5L32.6 74.5L30 74.6L28.6 75.4L27.8 78L26.2 79L24.5 78.5L26.8 80.1L26.3 82.2L25.7 82.7L24.9 82.1L23.9 82.9L23.5 84.6L21.7 83.9L19.6 86.5L21.6 89L23.4 89.7L24.4 89.8L26.9 88L31.5 82L31.8 80.3L33.5 78.8L35.7 76.3L36 74.1Z"},{"name":"Norte de Santander","d":"M44.2 38.8L46.5 40.5L49.6 39.9L50.8 42L50.8 44.2L53.5 45.8L54.5 46L55.4 44.9L57.2 44.7L56 41.8L54 41.7L53.7 41L53.6 37.2L54.8 36.7L54.7 35.4L54.4 33.8L52.3 31.7L51.3 27.6L49.9 27.8L49.3 26.1L47.4 27.2L46.5 26.8L45.9 27.6L46 30.4L44.7 32.6L45.8 34L46.4 33.1L45.8 35.5L47.1 37.2L45.8 39.3Z"},{"name":"Quindío","d":"M29.8 63.8L27.1 63.9L25.9 64.7L25.6 66.2L26.4 66.5L26.1 68.9L26.8 69.1Z"},{"name":"Risaralda","d":"M25.8 57.5L24.7 56.8L23 58.6L24.2 60.4L23.9 61.2L25.6 62.7L25.4 63.5L27.1 63.9L29.8 63.8L29.9 63.1L26.8 61.1L26.3 62.2L25.6 61.8L26.2 59.3L27.7 58.9L25.9 58.4Z"},{"name":"Santander","d":"M36.9 51L38.1 52.9L39.1 52.7L39 54.7L39.7 54L41.3 55.6L43.5 55.1L44.1 55.6L45.3 52.4L46.4 53.2L45.5 54.8L46.2 55.3L46.4 54.3L47.8 54.6L47.8 53.2L49.3 53.5L51.5 51.4L51.7 49.5L51 48.6L52.3 49.7L53.2 49.2L53.5 45.8L50.8 44.2L50.8 42L49.6 39.9L46.5 40.5L44.2 38.8L43.1 38.7L43.9 37.4L43 35.6L42.3 36.4L42.9 39.6L41.9 41L41.9 42.5L42.1 45L37.9 48.4L38.2 49.9Z"},{"name":"Tolima","d":"M29.9 63.1L29.8 63.8L26.8 69.1L24.8 72.7L24.3 76.2L23.9 77.1L24.5 78.5L26.2 79L27.8 78L28.6 75.4L30 74.6L32.6 74.5L32.4 75.5L33.7 75.6L36.8 71L36.9 67.8L33.9 67.4L35.4 61.7L35.2 59.1L33.5 58.9L30.6 60.4Z"}],"Caribbean":[{"name":"Atlántico","d":"M31.1 13.7L30.9 16.3L33.7 18.2L35.2 15.3L35.3 12.8L34.2 11.1Z"},{"name":"Bolívar","d":"M41.9 42.5L41.9 41L42.9 39.6L42.3 36.4L43 35.6L43.2 32.9L42.3 29.2L34.6 24.8L34 20.8L34.7 20.2L33.4 19.3L33.7 18.2L30.9 16.3L31.1 13.7L28.7 15.6L28.8 17.8L27.2 19.1L28.5 18.2L28.3 19.3L28.9 19L29 21.1L30.3 21.2L29.9 23.3L31.6 23.2L32.7 24.7L33.9 24.9L33.7 26.9L36.5 29.7L36.8 33.2L35.8 34.4L34.7 34.5L34.4 35.1L36.9 37.5L37.4 39L36.3 41.2L37.2 42.2L37.8 41.2L38.4 41.5L37.8 43.3L38.3 44.9L39.2 45Z"},{"name":"Cesar","d":"M43 35.6L43.9 37.4L43.1 38.7L44.2 38.8L45.8 39.3L47.1 37.2L45.8 35.5L46.4 33.1L45.8 34L44.7 32.6L46 30.4L45.9 27.6L46.5 26.8L49.9 21.6L49.4 20.9L50.3 16.7L48.2 17L48.8 15L47.1 14.3L47 13.2L44.5 13.4L44.8 16.1L41.8 17.2L40.5 19.7L42.8 22.8L40 24.4L41.4 25.3L41.5 27L42.9 28L42.3 29.2L43.2 32.9Z"},{"name":"Córdoba","d":"M34.4 35.1L34.7 34.5L33.5 32.7L31.5 33.5L30.4 32.8L29.9 29.7L31.3 29.2L31.3 28.2L27.2 25.1L25.2 24.9L21.3 29.4L23.2 33.5L22.1 34.5L20.7 38.8L20.6 40.4L21.6 41.8L26.1 42L26.7 40L28 40.2L31.1 36.3L33.5 36.1Z"},{"name":"La Guajira","d":"M50.3 16.7L53.5 11.3L55.6 10.9L57.9 6.7L62.8 5.3L64.8 3.8L64 1.3L60.2 0.1L60.2 0.8L58 1.5L58.8 2L58.2 2.5L58 1.6L56.2 2L56.5 2.9L55.7 4.8L51.3 6.4L47.1 9.7L44.8 9.9L44 10.9L44.5 13.4L47 13.2L47.1 14.3L48.8 15L48.2 17Z"},{"name":"Magdalena","d":"M33.7 18.2L33.4 19.3L34.7 20.2L34 20.8L34.6 24.8L42.3 29.2L42.9 28L41.5 27L41.4 25.3L40 24.4L42.8 22.8L40.5 19.7L41.8 17.2L44.8 16.1L44.5 13.4L44 10.9L44.8 9.9L40 9.2L39.2 10.2L39.4 11.4L38.3 12.2L34.2 11.1L35.3 12.8L35.2 15.3Z"},{"name":"Sucre","d":"M28.3 19.3L27.2 22.8L27.9 22.8L28.3 23.8L27.2 25.1L31.3 28.2L31.3 29.2L29.9 29.7L30.4 32.8L31.5 33.5L33.5 32.7L34.7 34.5L35.8 34.4L36.8 33.2L36.5 29.7L33.7 26.9L33.9 24.9L32.7 24.7L31.6 23.2L29.9 23.3L30.3 21.2L29 21.1L28.9 19Z"}],"Orinoquia":[{"name":"Arauca","d":"M78.8 52.4L73.1 45.2L71.5 45.5L68.5 44.1L65.7 45.2L59.6 44.5L58.1 44.9L56.6 49L54.6 50.7L56.5 52.7L64 50.8L68.1 51.5L72.8 50.8L75.5 52.9Z"},{"name":"Casanare","d":"M65.2 62.1L68.5 58.3L71.2 56.6L73 56.4L75.5 52.9L72.8 50.8L68.1 51.5L64 50.8L56.5 52.7L54.6 50.7L54.2 51.7L55 52.6L55 54.2L54.4 54.7L55.5 55L55.3 56.5L51.9 59.2L51.1 58.2L50.4 58.5L49 63.7L51.9 67.4L55.7 66.2L57.8 66.6L59.2 64.9Z"},{"name":"Meta","d":"M33.5 78.8L35.6 78.9L36.1 80.1L35.2 84L36.3 84.6L36.5 87.5L39.4 88.2L41.4 89.5L44 89.4L44.4 83.1L48.1 83.2L50.9 81.2L52.8 81.4L53.2 80.5L55.5 79.5L56.1 79.9L56.5 78.9L57.8 79.6L59.1 79L59.5 79.5L59.6 78.8L60.5 79.5L63.2 78.6L65.2 79L65.2 62.1L59.2 64.9L57.8 66.6L55.7 66.2L51.9 67.4L49 63.7L48.3 68L45 67.2L44.3 65.1L42.7 66.4L43.3 68.1L40 69.7L37.8 71.9L36 74.1L35.7 76.3Z"},{"name":"Vichada","d":"M65.2 79L68.2 80.2L68.7 79.2L69.9 79.8L71.8 78.5L71.5 77.3L73 76.4L73.1 74.7L74.5 74.8L75 73.6L75.6 74.1L75.4 73.4L76.2 73.1L77.5 73.3L77.5 72.4L79.8 72.1L79.9 72.7L80 72L81.8 72.7L82.9 71.9L83.7 72.5L84.3 71.5L87.3 71L87.7 69.8L89.9 70.3L90.3 69.7L91.3 70.5L92.9 69.4L91.7 65.4L91.8 59L93.6 57.6L93.9 54.7L95.4 53.4L94.9 51.5L92.1 50.6L90.3 51.6L85.2 52.2L81.9 51.4L80.4 52.6L78.8 52.4L75.5 52.9L73 56.4L71.2 56.6L68.5 58.3L65.2 62.1Z"}],"Pacific":[{"name":"Cauca","d":"M24.3 76.2L20.9 75.3L20.5 77L19.8 77.2L18.4 76.1L17 77L15.7 76.5L14.6 77.1L13 75.9L12.1 76.2L10.7 78.2L11 79.2L10 80L10.2 80.9L8.9 81L9.6 84.8L12.5 84.6L12.7 83.9L13.9 84.4L13.8 85.8L14.8 86.7L13.8 88.9L17 88.5L17.8 89.3L17.2 91.6L19.4 90.7L20.2 94.2L21.2 94.8L24.1 94L22.3 93L23.4 89.7L21.6 89L19.6 86.5L21.7 83.9L23.5 84.6L23.9 82.9L24.9 82.1L25.7 82.7L26.3 82.2L26.8 80.1L24.5 78.5L23.9 77.1Z"},{"name":"Chocó","d":"M16.7 34.7L13.2 31.4L12.8 32.9L15.4 37.1L13.8 37.6L11.9 40.8L10.5 39.2L10.8 40.8L9.8 41.1L9.2 43.2L10.9 44.7L10.7 46.3L13.8 48.7L12.6 51.7L14.6 55.2L12.1 57.5L13.3 57.9L14.2 63.6L13.8 66.2L12.2 67.6L12.9 69.1L14.4 67.8L15.6 68.9L19.9 70L21.1 68.3L20.2 66.5L21.8 65.7L22.2 63.5L23.6 62.8L23.9 61.2L24.2 60.4L23 58.6L24.7 56.8L24.2 53.4L23.4 53.2L22.9 51.6L18.8 51.8L18.4 49.3L16.8 47.6L16.8 46.5L18.2 46.1L17.9 45L20 45.2L20.8 43.9L15.5 38.5L16.9 36.4Z"},{"name":"Nariño","d":"M17.2 91.6L17.8 89.3L17 88.5L13.8 88.9L14.8 86.7L13.8 85.8L13.9 84.4L12.7 83.9L12.5 84.6L9.6 84.8L8.9 81L8 80.9L7.9 81.7L7 80.6L6.8 81.4L6.3 80.8L4.6 81.3L2.4 84.8L3.7 88.2L1.4 87.8L0 89.2L3.2 92.5L4.8 93.3L5.7 92.9L6.8 95L8.8 96L11.1 96L11 96.9L12.6 97.3L12.2 99.4L15.6 99.7L15 97.5L16.3 94.4L15.5 92.7Z"},{"name":"Valle del Cauca","d":"M26.8 69.1L26.1 68.9L26.4 66.5L25.6 66.2L25.9 64.7L27.1 63.9L25.4 63.5L25.6 62.7L23.9 61.2L23.6 62.8L22.2 63.5L21.8 65.7L20.2 66.5L21.1 68.3L19.9 70L15.6 68.9L14.4 67.8L12.9 69.1L13.6 70.3L14.2 69.2L15 69.3L13.9 70.2L14.2 71.1L16.1 70.5L14.9 71.8L15.3 72.7L14 73.3L12.1 76.2L13 75.9L14.6 77.1L15.7 76.5L17 77L18.4 76.1L19.8 77.2L20.5 77L20.9 75.3L24.3 76.2L24.8 72.7Z"}]},"source":"geoBoundaries gbOpen COL ADM1, COL-ADM1-13589884; frozen simplified canvas geometry, 2017 boundaries, retrieved 2026-10-16","license":"ODbL 1.0, © OpenStreetMap contributors","upstream_gap":"Original geographic boundary file and original simplification script were not archived. This file preserves the canvas SVG coordinates; rebuilding the original geographic simplification is not possible from this snapshot."};
+const DEPARTMENT_MAP = {"viewBox":"-1 -1 102 139.64","regions":{"Amazonia":[{"name":"Amazonas","d":"M38 107.3L38.1 108.8L39.2 109.5L38.6 110L39 110.8L41 111L42.3 112.9L44.3 113.2L45.7 115.7L45 116.8L46.8 117.8L47.6 117.2L48.2 117.6L48.9 120L48.1 121.2L48.9 122.2L49.8 122L50 123L51.2 122.4L52 123L52.4 122.2L54.6 123.3L56.4 123.2L57.3 122L58.3 122.4L59.8 120.4L59.9 121.1L61.6 121.3L61.8 122.2L62.1 121.5L62.6 122.6L66.9 121.1L68.6 122.2L68.9 123.2L69.4 122.7L71.6 123.4L71.2 123.9L72.1 123.8L73 125L73.4 124.6L73.5 125.8L68.2 134.1L69.8 134.7L71.8 134.3L74.5 137.6L79.1 114L78.8 111.6L78.4 112.7L77.4 112.2L76.9 112.9L76.6 111.4L74.5 111.8L74.9 110.7L74 110.5L72.7 111.9L72.5 110.9L71.6 110.7L72.3 110L71.4 107.4L72.4 106.4L70.3 106.8L69.8 105.7L68 105.1L67.3 105.7L66.1 102.8L63.2 101.8L60.1 103.4L59.7 104.8L57.3 104.9L55.6 107.8L54.1 107.4L53.1 108.6L51.5 107.3L50.1 107.8L49.2 107.1L47.8 107.9L46.7 106.9L44.8 107L43.5 105.9L42.5 106Z"},{"name":"Caquetá","d":"M63.2 101.8L62.6 101.2L61.5 101.7L59.6 99.7L58.9 99.9L57.4 97.3L55.8 96.9L53.9 93.8L52.3 93L50.6 93.2L50.5 94.3L48.3 95.2L46.2 93.3L44 89.4L41.4 89.5L39.4 88.2L36.5 87.5L36.3 84.6L35.2 84L36.1 80.1L35.6 78.9L33.5 78.8L31.8 80.3L31.5 82L26.9 88L24.4 89.8L23.4 89.7L22.3 93L24.1 94L25.4 94.2L26.7 95.8L27.7 95.5L30.8 96.8L31.1 98.7L33.1 99.3L32.9 100.5L35.6 101.4L35.6 103.2L38.3 103.6L42.5 106L43.5 105.9L44.8 107L46.7 106.9L47.8 107.9L49.2 107.1L50.1 107.8L51.5 107.3L53.1 108.6L54.1 107.4L55.6 107.8L57.3 104.9L59.7 104.8L60.1 103.4Z"},{"name":"Guainía","d":"M69.9 79.8L66.5 81.6L67.9 81.8L70 84.3L73.7 83.8L74.1 84.5L73.2 85.6L72.7 87.3L75.4 88.6L89.2 88.5L88.2 87.6L88.9 86L91.4 87.8L92.1 86.5L94.2 85.8L95.5 84.3L96 86.7L97.5 87.6L98.1 93.1L100 92.6L97.9 85.3L97 84.2L97.2 83.3L94.1 80.8L93.7 79.6L91.7 79.7L96.2 74.9L94.7 71.7L93.6 71.5L92.9 69.4L91.3 70.5L90.3 69.7L89.9 70.3L87.7 69.8L87.3 71L84.3 71.5L83.7 72.5L82.9 71.9L81.8 72.7L80 72L79.9 72.7L79.8 72.1L77.5 72.4L77.5 73.3L76.2 73.1L75.4 73.4L75.6 74.1L75 73.6L74.5 74.8L73.1 74.7L73 76.4L71.5 77.3L71.8 78.5Z"},{"name":"Guaviare","d":"M44 89.4L46.2 93.3L48.3 95.2L50.5 94.3L50.6 93.2L52.3 93L53.9 93.8L55.8 96.9L57.4 97.3L61.3 93.2L61.9 93.6L61.3 92.2L62.7 88.4L63.8 89L66.8 86.8L68.9 87L73.2 85.6L74.1 84.5L73.7 83.8L70 84.3L67.9 81.8L66.5 81.6L69.9 79.8L68.7 79.2L68.2 80.2L65.2 79L63.2 78.6L60.5 79.5L59.6 78.8L59.5 79.5L59.1 79L57.8 79.6L56.5 78.9L56.1 79.9L55.5 79.5L53.2 80.5L52.8 81.4L50.9 81.2L48.1 83.2L44.4 83.1Z"},{"name":"Putumayo","d":"M42.5 106L38.3 103.6L35.6 103.2L35.6 101.4L32.9 100.5L33.1 99.3L31.1 98.7L30.8 96.8L27.7 95.5L26.7 95.8L25.4 94.2L24.1 94L21.2 94.8L20.2 94.2L19.4 90.7L17.2 91.6L15.5 92.7L16.3 94.4L15 97.5L15.6 99.7L15.9 100.4L19.9 100.9L21.4 100.8L21.4 99.6L22.5 99.1L24.7 100.3L26.3 102.3L30.7 103.8L31.5 103.1L33.9 104.7L34.7 104.3L35.2 105.6L38 107.3Z"},{"name":"Vaupés","d":"M78.8 111.6L77.2 108.9L77.3 106.9L73.7 104.3L73.7 98.1L76.8 97.2L77.3 97.7L78.5 96.7L79.4 97.7L80.7 97.7L81.4 97.4L80.8 96.6L81.2 95.5L79.7 93.8L75.4 93.9L75.4 88.6L72.7 87.3L73.2 85.6L68.9 87L66.8 86.8L63.8 89L62.7 88.4L61.3 92.2L61.9 93.6L61.3 93.2L57.4 97.3L58.9 99.9L59.6 99.7L61.5 101.7L62.6 101.2L63.2 101.8L66.1 102.8L67.3 105.7L68 105.1L69.8 105.7L70.3 106.8L72.4 106.4L71.4 107.4L72.3 110L71.6 110.7L72.5 110.9L72.7 111.9L74 110.5L74.9 110.7L74.5 111.8L76.6 111.4L76.9 112.9L77.4 112.2L78.4 112.7Z"}],"Andean":[{"name":"Antioquia","d":"M35.8 55.1L36.9 51L38.2 49.9L37.9 48.4L42.1 45L41.9 42.5L39.2 45L38.3 44.9L37.8 43.3L38.4 41.5L37.8 41.2L37.2 42.2L36.3 41.2L37.4 39L36.9 37.5L34.4 35.1L33.5 36.1L31.1 36.3L28 40.2L26.7 40L26.1 42L21.6 41.8L20.6 40.4L20.7 38.8L22.1 34.5L23.2 33.5L21.3 29.4L17 32.2L18.5 33.5L18.6 37.4L17.1 37.4L18.1 35.7L17.1 36L16.7 34.7L16.9 36.4L15.5 38.5L20.8 43.9L20 45.2L17.9 45L18.2 46.1L16.8 46.5L16.8 47.6L18.4 49.3L18.8 51.8L22.9 51.6L23.4 53.2L24.2 53.4L24.7 56.8L25.8 57.5L27 56.9L28.3 57.2L28 55.4L29.9 56L30.7 58L33 55.6L34.8 55.8Z"},{"name":"Bogotá, D.C.","d":"M40 69.7L40.3 66.2L41.2 64.8L41.2 63.1L40.5 62.9L39.4 64.4L39.5 67.8L39.1 69L38.5 68.7L37.6 72L37.8 71.9Z"},{"name":"Boyacá","d":"M35.8 55.3L38.4 54.6L39.1 57.5L41 58.5L42.8 56.8L44.5 58.2L45.5 60.3L45 62.4L46.1 62.5L47.6 64.2L49 63.7L50.4 58.5L51.1 58.2L51.9 59.2L55.3 56.5L55.5 55L54.4 54.7L55 54.2L55 52.6L54.2 51.7L54.6 50.7L56.6 49L58.1 44.9L57.2 44.7L55.4 44.9L54.5 46L53.5 45.8L53.2 49.2L52.3 49.7L51 48.6L51.7 49.5L51.5 51.4L49.3 53.5L47.8 53.2L47.8 54.6L46.4 54.3L46.2 55.3L45.5 54.8L46.4 53.2L45.3 52.4L44.1 55.6L43.5 55.1L41.3 55.6L39.7 54L39 54.7L39.1 52.7L38.1 52.9L36.9 51L35.8 55.1Z"},{"name":"Caldas","d":"M25.8 57.5L25.9 58.4L27.7 58.9L26.2 59.3L25.6 61.8L26.3 62.2L26.8 61.1L29.9 63.1L30.6 60.4L33.5 58.9L35.2 59.1L35.8 55.3L35.8 55.1L34.8 55.8L33 55.6L30.7 58L29.9 56L28 55.4L28.3 57.2L27 56.9Z"},{"name":"Cundinamarca","d":"M35.2 59.1L35.4 61.7L33.9 67.4L36.9 67.8L36.8 71L37.6 72L38.5 68.7L39.1 69L39.5 67.8L39.4 64.4L40.5 62.9L41.2 63.1L41.2 64.8L40.3 66.2L40 69.7L43.3 68.1L42.7 66.4L44.3 65.1L45 67.2L48.3 68L49 63.7L47.6 64.2L46.1 62.5L45 62.4L45.5 60.3L44.5 58.2L42.8 56.8L41 58.5L39.1 57.5L38.4 54.6L35.8 55.3Z"},{"name":"Huila","d":"M37.8 71.9L37.6 72L36.8 71L33.7 75.6L32.4 75.5L32.6 74.5L30 74.6L28.6 75.4L27.8 78L26.2 79L24.5 78.5L26.8 80.1L26.3 82.2L25.7 82.7L24.9 82.1L23.9 82.9L23.5 84.6L21.7 83.9L19.6 86.5L21.6 89L23.4 89.7L24.4 89.8L26.9 88L31.5 82L31.8 80.3L33.5 78.8L35.7 76.3L36 74.1Z"},{"name":"Norte de Santander","d":"M44.2 38.8L46.5 40.5L49.6 39.9L50.8 42L50.8 44.2L53.5 45.8L54.5 46L55.4 44.9L57.2 44.7L56 41.8L54 41.7L53.7 41L53.6 37.2L54.8 36.7L54.7 35.4L54.4 33.8L52.3 31.7L51.3 27.6L49.9 27.8L49.3 26.1L47.4 27.2L46.5 26.8L45.9 27.6L46 30.4L44.7 32.6L45.8 34L46.4 33.1L45.8 35.5L47.1 37.2L45.8 39.3Z"},{"name":"Quindío","d":"M29.8 63.8L27.1 63.9L25.9 64.7L25.6 66.2L26.4 66.5L26.1 68.9L26.8 69.1Z"},{"name":"Risaralda","d":"M25.8 57.5L24.7 56.8L23 58.6L24.2 60.4L23.9 61.2L25.6 62.7L25.4 63.5L27.1 63.9L29.8 63.8L29.9 63.1L26.8 61.1L26.3 62.2L25.6 61.8L26.2 59.3L27.7 58.9L25.9 58.4Z"},{"name":"Santander","d":"M36.9 51L38.1 52.9L39.1 52.7L39 54.7L39.7 54L41.3 55.6L43.5 55.1L44.1 55.6L45.3 52.4L46.4 53.2L45.5 54.8L46.2 55.3L46.4 54.3L47.8 54.6L47.8 53.2L49.3 53.5L51.5 51.4L51.7 49.5L51 48.6L52.3 49.7L53.2 49.2L53.5 45.8L50.8 44.2L50.8 42L49.6 39.9L46.5 40.5L44.2 38.8L43.1 38.7L43.9 37.4L43 35.6L42.3 36.4L42.9 39.6L41.9 41L41.9 42.5L42.1 45L37.9 48.4L38.2 49.9Z"},{"name":"Tolima","d":"M29.9 63.1L29.8 63.8L26.8 69.1L24.8 72.7L24.3 76.2L23.9 77.1L24.5 78.5L26.2 79L27.8 78L28.6 75.4L30 74.6L32.6 74.5L32.4 75.5L33.7 75.6L36.8 71L36.9 67.8L33.9 67.4L35.4 61.7L35.2 59.1L33.5 58.9L30.6 60.4Z"}],"Caribbean":[{"name":"Atlántico","d":"M31.1 13.7L30.9 16.3L33.7 18.2L35.2 15.3L35.3 12.8L34.2 11.1Z"},{"name":"Bolívar","d":"M41.9 42.5L41.9 41L42.9 39.6L42.3 36.4L43 35.6L43.2 32.9L42.3 29.2L34.6 24.8L34 20.8L34.7 20.2L33.4 19.3L33.7 18.2L30.9 16.3L31.1 13.7L28.7 15.6L28.8 17.8L27.2 19.1L28.5 18.2L28.3 19.3L28.9 19L29 21.1L30.3 21.2L29.9 23.3L31.6 23.2L32.7 24.7L33.9 24.9L33.7 26.9L36.5 29.7L36.8 33.2L35.8 34.4L34.7 34.5L34.4 35.1L36.9 37.5L37.4 39L36.3 41.2L37.2 42.2L37.8 41.2L38.4 41.5L37.8 43.3L38.3 44.9L39.2 45Z"},{"name":"Cesar","d":"M43 35.6L43.9 37.4L43.1 38.7L44.2 38.8L45.8 39.3L47.1 37.2L45.8 35.5L46.4 33.1L45.8 34L44.7 32.6L46 30.4L45.9 27.6L46.5 26.8L49.9 21.6L49.4 20.9L50.3 16.7L48.2 17L48.8 15L47.1 14.3L47 13.2L44.5 13.4L44.8 16.1L41.8 17.2L40.5 19.7L42.8 22.8L40 24.4L41.4 25.3L41.5 27L42.9 28L42.3 29.2L43.2 32.9Z"},{"name":"Córdoba","d":"M34.4 35.1L34.7 34.5L33.5 32.7L31.5 33.5L30.4 32.8L29.9 29.7L31.3 29.2L31.3 28.2L27.2 25.1L25.2 24.9L21.3 29.4L23.2 33.5L22.1 34.5L20.7 38.8L20.6 40.4L21.6 41.8L26.1 42L26.7 40L28 40.2L31.1 36.3L33.5 36.1Z"},{"name":"La Guajira","d":"M50.3 16.7L53.5 11.3L55.6 10.9L57.9 6.7L62.8 5.3L64.8 3.8L64 1.3L60.2 0.1L60.2 0.8L58 1.5L58.8 2L58.2 2.5L58 1.6L56.2 2L56.5 2.9L55.7 4.8L51.3 6.4L47.1 9.7L44.8 9.9L44 10.9L44.5 13.4L47 13.2L47.1 14.3L48.8 15L48.2 17Z"},{"name":"Magdalena","d":"M33.7 18.2L33.4 19.3L34.7 20.2L34 20.8L34.6 24.8L42.3 29.2L42.9 28L41.5 27L41.4 25.3L40 24.4L42.8 22.8L40.5 19.7L41.8 17.2L44.8 16.1L44.5 13.4L44 10.9L44.8 9.9L40 9.2L39.2 10.2L39.4 11.4L38.3 12.2L34.2 11.1L35.3 12.8L35.2 15.3Z"},{"name":"Sucre","d":"M28.3 19.3L27.2 22.8L27.9 22.8L28.3 23.8L27.2 25.1L31.3 28.2L31.3 29.2L29.9 29.7L30.4 32.8L31.5 33.5L33.5 32.7L34.7 34.5L35.8 34.4L36.8 33.2L36.5 29.7L33.7 26.9L33.9 24.9L32.7 24.7L31.6 23.2L29.9 23.3L30.3 21.2L29 21.1L28.9 19Z"}],"Orinoquia":[{"name":"Arauca","d":"M78.8 52.4L73.1 45.2L71.5 45.5L68.5 44.1L65.7 45.2L59.6 44.5L58.1 44.9L56.6 49L54.6 50.7L56.5 52.7L64 50.8L68.1 51.5L72.8 50.8L75.5 52.9Z"},{"name":"Casanare","d":"M65.2 62.1L68.5 58.3L71.2 56.6L73 56.4L75.5 52.9L72.8 50.8L68.1 51.5L64 50.8L56.5 52.7L54.6 50.7L54.2 51.7L55 52.6L55 54.2L54.4 54.7L55.5 55L55.3 56.5L51.9 59.2L51.1 58.2L50.4 58.5L49 63.7L51.9 67.4L55.7 66.2L57.8 66.6L59.2 64.9Z"},{"name":"Meta","d":"M33.5 78.8L35.6 78.9L36.1 80.1L35.2 84L36.3 84.6L36.5 87.5L39.4 88.2L41.4 89.5L44 89.4L44.4 83.1L48.1 83.2L50.9 81.2L52.8 81.4L53.2 80.5L55.5 79.5L56.1 79.9L56.5 78.9L57.8 79.6L59.1 79L59.5 79.5L59.6 78.8L60.5 79.5L63.2 78.6L65.2 79L65.2 62.1L59.2 64.9L57.8 66.6L55.7 66.2L51.9 67.4L49 63.7L48.3 68L45 67.2L44.3 65.1L42.7 66.4L43.3 68.1L40 69.7L37.8 71.9L36 74.1L35.7 76.3Z"},{"name":"Vichada","d":"M65.2 79L68.2 80.2L68.7 79.2L69.9 79.8L71.8 78.5L71.5 77.3L73 76.4L73.1 74.7L74.5 74.8L75 73.6L75.6 74.1L75.4 73.4L76.2 73.1L77.5 73.3L77.5 72.4L79.8 72.1L79.9 72.7L80 72L81.8 72.7L82.9 71.9L83.7 72.5L84.3 71.5L87.3 71L87.7 69.8L89.9 70.3L90.3 69.7L91.3 70.5L92.9 69.4L91.7 65.4L91.8 59L93.6 57.6L93.9 54.7L95.4 53.4L94.9 51.5L92.1 50.6L90.3 51.6L85.2 52.2L81.9 51.4L80.4 52.6L78.8 52.4L75.5 52.9L73 56.4L71.2 56.6L68.5 58.3L65.2 62.1Z"}],"Pacific":[{"name":"Cauca","d":"M24.3 76.2L20.9 75.3L20.5 77L19.8 77.2L18.4 76.1L17 77L15.7 76.5L14.6 77.1L13 75.9L12.1 76.2L10.7 78.2L11 79.2L10 80L10.2 80.9L8.9 81L9.6 84.8L12.5 84.6L12.7 83.9L13.9 84.4L13.8 85.8L14.8 86.7L13.8 88.9L17 88.5L17.8 89.3L17.2 91.6L19.4 90.7L20.2 94.2L21.2 94.8L24.1 94L22.3 93L23.4 89.7L21.6 89L19.6 86.5L21.7 83.9L23.5 84.6L23.9 82.9L24.9 82.1L25.7 82.7L26.3 82.2L26.8 80.1L24.5 78.5L23.9 77.1Z"},{"name":"Chocó","d":"M16.7 34.7L13.2 31.4L12.8 32.9L15.4 37.1L13.8 37.6L11.9 40.8L10.5 39.2L10.8 40.8L9.8 41.1L9.2 43.2L10.9 44.7L10.7 46.3L13.8 48.7L12.6 51.7L14.6 55.2L12.1 57.5L13.3 57.9L14.2 63.6L13.8 66.2L12.2 67.6L12.9 69.1L14.4 67.8L15.6 68.9L19.9 70L21.1 68.3L20.2 66.5L21.8 65.7L22.2 63.5L23.6 62.8L23.9 61.2L24.2 60.4L23 58.6L24.7 56.8L24.2 53.4L23.4 53.2L22.9 51.6L18.8 51.8L18.4 49.3L16.8 47.6L16.8 46.5L18.2 46.1L17.9 45L20 45.2L20.8 43.9L15.5 38.5L16.9 36.4Z"},{"name":"Nariño","d":"M17.2 91.6L17.8 89.3L17 88.5L13.8 88.9L14.8 86.7L13.8 85.8L13.9 84.4L12.7 83.9L12.5 84.6L9.6 84.8L8.9 81L8 80.9L7.9 81.7L7 80.6L6.8 81.4L6.3 80.8L4.6 81.3L2.4 84.8L3.7 88.2L1.4 87.8L0 89.2L3.2 92.5L4.8 93.3L5.7 92.9L6.8 95L8.8 96L11.1 96L11 96.9L12.6 97.3L12.2 99.4L15.6 99.7L15 97.5L16.3 94.4L15.5 92.7Z"},{"name":"Valle del Cauca","d":"M26.8 69.1L26.1 68.9L26.4 66.5L25.6 66.2L25.9 64.7L27.1 63.9L25.4 63.5L25.6 62.7L23.9 61.2L23.6 62.8L22.2 63.5L21.8 65.7L20.2 66.5L21.1 68.3L19.9 70L15.6 68.9L14.4 67.8L12.9 69.1L13.6 70.3L14.2 69.2L15 69.3L13.9 70.2L14.2 71.1L16.1 70.5L14.9 71.8L15.3 72.7L14 73.3L12.1 76.2L13 75.9L14.6 77.1L15.7 76.5L17 77L18.4 76.1L19.8 77.2L20.5 77L20.9 75.3L24.3 76.2L24.8 72.7Z"}]},"source":"geoBoundaries gbOpen COL ADM1, COL-ADM1-13589884; frozen simplified canvas geometry, 2017 boundaries, retrieved 2026-10-16","license":"ODbL 1.0, © OpenStreetMap contributors","upstream_gap":"Original geographic boundary file and original simplification script were not archived. This file preserves the canvas SVG coordinates; rebuilding the original geographic simplification is not possible from this snapshot.","license_url":"https://opendatacommons.org/licenses/odbl/1-0/","attribution":"© OpenStreetMap contributors; geoBoundaries gbOpen; source: OpenStreetMap, Wambacher","attribution_url":"https://www.openstreetmap.org/copyright","source_metadata_url":"https://www.geoboundaries.org/api/current/gbOpen/COL/ADM1/","upstream_simplified_geometry_url":"https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/COL/ADM1/geoBoundaries-COL-ADM1_simplified.geojson","distribution_notice":"This complete adapted boundary dataset is made available under ODbL 1.0. See MAP-LICENSE.txt. No additional restrictions apply.","coordinate_system":"SVG display coordinates, not geographic coordinates","inset":{"name":"San Andrés, Providencia y Santa Catalina","region":"Caribbean","shape":"schematic circle, not a boundary","cx":5.2,"cy":6,"r":2.3}};
 // END DEPARTMENT_MAP
 
 function regionalClimatePanel(metric, regions){
@@ -4574,24 +4631,26 @@ function regionalClimatePanel(metric, regions){
     /* Colombia has real region polygons; every other country gets a schematic
        cell built around its region's map position. */
     const paths=iso==="COL"?DEPARTMENT_MAP.regions[r.name]:[{d:regionalAreaCell(regions,i,box),name:r.name}];
-    return paths.map(part=>`<path class="climate-region" d="${part.d}" fill="${color(r[metric])}"
-      ${iso==="COL"?"":`clip-path="url(#${clipId})"`} tabindex="0" role="button" aria-label="${part.name}: ${enc}" data-tooltip="${part.name}: ${enc}"
-      data-region="${encodeURIComponent(r.name)}"
+    const shapes=paths.map(part=>`<path d="${part.d}"><title>${part.name}</title></path>`).join("");
+    const inset=iso==="COL" && r.name==="Caribbean"
+      ? `<circle cx="5.2" cy="6" r="2.3"><title>San Andrés, Providencia y Santa Catalina</title></circle>` : "";
+    return `<g class="climate-region" fill="${color(r[metric])}"
+      ${iso==="COL"?"":`clip-path="url(#${clipId})"`} tabindex="0" role="button" aria-label="${enc}" data-tooltip="${enc}"
+      data-region="${encodeURIComponent(r.name)}" aria-controls="region-detail-${encodeURIComponent(r.name)}"
       onmousemove="showTT(event,this.dataset.tooltip)" onmouseleave="hideTT()"
-      onfocus="showFocusTT(event,this.dataset.tooltip)" onblur="hideTT()"><title>${part.name}: ${enc}</title></path>`).join("");
+      onfocus="showFocusTT(event,this.dataset.tooltip)" onblur="hideTT()">${shapes}${inset}</g>`;
   }).join("");
   const legend=regions.map(r=>`<span><i style="background:${color(r[metric])}"></i>${r.name}: <b>${fmt(r[metric])}</b></span>`).join("");
   return `<div class="mapbox"><h4>${title}</h4><p class="yr">${rangeAvailable?"Median across CCKP model runs":REGION_IDENTITY.has(iso)?"CCKP ensemble median":"Median of units' CCKP medians"}, 2080–2099 against 1995–2014</p>
     <svg viewBox="${vb}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:230px"
       role="img" aria-label="${title} across ${DATA.country.name}">
       <defs><clipPath id="${clipId}"><path d="${d}"/></clipPath></defs>
-      ${iso==="COL"?`<rect x=".5" y=".5" width="30" height="11" rx="1.5" fill="none" stroke="#9AA8A1" stroke-width=".3" stroke-dasharray="1 .8"/><circle class="climate-region" cx="5.2" cy="6" r="2.3" fill="${color(regions.find(r=>r.name==='Caribbean')[metric])}" data-region="Caribbean" role="button" tabindex="0" aria-label="San Andrés, Providencia y Santa Catalina — Caribbean region, inset; select for estimates"/><text x="9.5" y="7.4" style="font-size:3.9px;fill:#40525E">San Andrés</text>`:`<path d="${d}" fill="#EDF2EF"/>`}${areas}
+      ${iso==="COL"?`<rect x=".5" y=".5" width="30" height="11" rx="1.5" fill="none" stroke="#9AA8A1" stroke-width=".3" stroke-dasharray="1 .8"/><text x="9.5" y="7.4" style="font-size:3.9px;fill:#40525E">San Andrés</text>`:`<path d="${d}" fill="#EDF2EF"/>`}${areas}
       ${iso==="COL"?"":`<path d="${d}" fill="none" stroke="#708078" stroke-width=".9" vector-effect="non-scaling-stroke"/>`}</svg>
-    ${iso==="COL"?'<p class="cap">Simplified department boundaries; San Andrés inset is not to scale. © OpenStreetMap contributors via geoBoundaries, <a class="paper" href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>. Frozen canvas geometry; original simplification inputs are not archived.</p>':''}
     <div class="legend" style="justify-content:flex-start;align-items:flex-start;gap:7px 14px">${legend}</div>
     <p class="cap" style="margin:9px 0 0;font-size:12.5px">${rangeAvailable
-      ? "Central values are medians across model-specific region results. Colours rank regions within this pathway; hover or focus for the model range, then click or press Enter for unit-level estimates."
-      : "CCKP publishes an SSP1-1.9 ensemble median but no individual-model projections, so a regional model range cannot be derived. Each central value here is instead the median of the units' CCKP ensemble medians. Click or press Enter for unit-level estimates."}</p></div>`;
+      ? "Central values are medians across model-specific region results. Colours rank regions within this pathway; hover or focus for the model range, then click or press Enter to open the department data below."
+      : "CCKP publishes an SSP1-1.9 ensemble median but no individual-model projections, so a regional model range cannot be derived. Each central value here is instead the median of the units' CCKP ensemble medians. Click or press Enter to open the department data below."}</p></div>`;
 }
 
 /* The second layer behind a region: its admin-1 units with their own CCKP
@@ -4616,11 +4675,22 @@ function regionalUnitModal(regionName){
         in rainfall — wider than the differences between the units above.</p>`:""}`,
     note:`These are Admin-1 ensemble medians, not the 10th–90th percentile ranges shown on hover.
       ${identity?"This country's official regions ARE its administrative units, so the region and the unit cover the same area."
-               :"The region is a grouping of these units, and its map shape is schematic."}
+               :"The region is a grouping of these units; colours show regional estimates, not department-level estimates."}
       ${r.tempP10!=null?`The region's figure on the map is the median across the ${r.tempModels} individual model runs CCKP publishes; the figures above are CCKP's own ensemble medians, whose ensemble composition has not been read at source. The two can differ slightly, even where a region is a single unit.`:""}`
   };
 }
 
+
+const SSP_SKETCH={ssp119:["M4 24 C30 26 46 38 70 41 S110 42 116 42","#0E5C3F"],
+  ssp126:["M4 24 C34 24 56 32 80 36 S110 39 116 39","#0E5C3F"],
+  ssp245:["M4 24 C40 20 70 21 90 26 S110 32 116 34","#0E5C3F"],
+  ssp370:["M4 24 C40 19 76 11 116 6","#B4531B"],
+  ssp585:["M4 24 C30 17 60 6 116 2","#B4531B"]};
+function sspSketch(id){
+  const k=SSP_SKETCH[id]; if(!k) return "";
+  return `<svg class="sketch" viewBox="0 0 120 44" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M4 43H116" stroke="#DCE2DC" fill="none"/><path d="${k[0]}" stroke="${k[1]}" stroke-width="2.5" fill="none"/></svg>`;
+}
 
 const VIEWS = {
   ssp(){ const d=DATA.ssp;
@@ -4628,10 +4698,11 @@ const VIEWS = {
     `<div class="body"><div class="hover-instruction">↗ Hover over or keyboard-focus a card for a short explanation. Selecting one also opens its own panel — what it assumes, and what it means for ${DATA.country.name}. <span class="info-link" data-modal="ssp" role="button" tabindex="0">Compare all five</span></div>
      <div class="cards">${d.options.map(o=>
        `<div class="card help-card ${o.id===state.ssp?'on':''}" data-ssp="${o.id}" data-tip="${o.desc}" role="button" tabindex="0"><span class="tick">✓</span>
-         <h5>${o.label}</h5><span class="ico">${o.ico}</span>
+         <h5>${o.label}</h5>${sspSketch(o.id)}
         <div class="nm">${o.name}</div><p>${o.tag}</p><p style="margin-top:8px">${o.desc}</p></div>`).join("")}</div>
+     <p class="sketch-note">The small curves sketch the direction of global emissions described on each card; they are not data.</p>
      <div class="note"><span>ⓘ</span><span>${d.note}</span></div>
-     <div class="actions"><button class="btn" data-go="4">Continue &nbsp;→</button></div></div>`;
+     <div class="actions">${backBtn(3)}<button class="btn" data-go="4">Continue &nbsp;→</button></div></div>`;
   },
 
   country(){
@@ -4668,7 +4739,8 @@ const VIEWS = {
      against the UNFCCC registry, so the panel renders for Colombia alone; for
      any other country it is omitted rather than filled with a guess. ---- */
   drivers(){ const d=DATA.drivers;
-    return head(2,d.title,d.sub.map(s=>`<p class="sub">${s}</p>`).join(""))+
+    return head(2,d.title,d.sub.map(s=>`<p class="sub">${s}</p>`).join("")+
+      `<p class="sub" style="font-size:14px;color:var(--ink-3)">The blue mark on each slider shows the latest observed reference for ${DATA.country.name}${COUNTRY.isColombia()?"":" (illustrative profile)"}. Open “About this lever” for its year and source.</p>`)+
     `<div class="body">${d.items.map(it=>{
       const v=state.drivers[it.id], pct=((v-it.min)/(it.max-it.min))*100;
       // highlight the tick nearest the current value (ticks are evenly spaced across min..max)
@@ -4679,18 +4751,19 @@ const VIEWS = {
       const refLabel = typeof it.referenceLabel==="function" ? it.referenceLabel() : it.referenceLabel;
       const refPct = Math.min(Math.max(((ref-it.min)/(it.max-it.min))*100, 0), 100);
       const note = it.inactive ? `<div class="reference-note">${it.inactive}</div>` : "";
-      return `${it.id==="elec"?`<div class="section-label">Energy transition
-        <span>Electrification changes how much electricity ${DATA.country.name} needs. The generation mix determines how clean that electricity is.</span></div>`:""}<div class="driver">
-        <div><div class="dname">${it.name}</div><div class="dshort">${refLabel}</div></div>
+      const short={mitigation:"CO₂ in 2050 against 2024",gdp:"Average annual real growth, 2025–2050",elec:"Share of final energy used as electricity in 2050",mix:"Share of electricity from low-emission sources in 2050"}[it.id];
+      return `<div class="driver">
+        <div><h2 class="dname" style="margin:0">${it.name}</h2><div class="dshort">${short} · ${refLabel}</div></div>
         <div class="range-wrap"><div class="ticks">${it.ticks.map((t,ti)=>`<span class="${ti===near?'cur':''}">${t}</span>`).join("")}</div>
           <input type="range" min="${it.min}" max="${it.max}" step="${it.step}" value="${v}"
             aria-label="${it.name}" data-drv="${it.id}" style="background:linear-gradient(90deg,var(--brand-green-dk) ${pct}%,#D9E0E4 ${pct}%)">
           <span class="reference-mark" style="left:${refPct}%" aria-hidden="true"></span>
           </div>
         <div class="dval"><b>${it.fmt(v)}</b><span>${it.unit}</span></div>
-        <details class="more"><summary>About this lever</summary><p>${T(it.desc)}</p><p class="reference-label">● ${refLabel}</p>${note}${driverMore(it.id)}</details></div>`;
+        <details class="more" data-keep="driver-${it.id}"><summary>About this lever</summary><p>${T(it.desc)}</p><p class="reference-label">● ${refLabel}</p>${note}${driverMore(it.id)}</details>
+        ${it.id==="mix"?sourceMixPanel():""}</div>`;
     }).join("")}
-    <div class="actions"><button class="btn" data-go="3">Choose global scenario &nbsp;→</button></div></div>`;
+    <div class="actions">${backBtn(2)}<button class="btn" data-go="3">Choose global scenario &nbsp;→</button></div></div>`;
   },
 
   climate(){ const d=DATA.climate;
@@ -4748,18 +4821,20 @@ const VIEWS = {
 
     return head(4,d.title,`<p class="sub">${T(d.sub)}</p>`)+
     `<div class="body">
-     <div class="panel">${headline}<div class="chart-head"><div><h3>${c.title}</h3><p class="cap">${c.unit}</p></div>
+     ${headline}<div class="panel"><div class="chart-head"><div><h3>${c.title}</h3><p class="cap">${c.unit}</p></div>
        <div class="legend">
           <span><i class="dotted"></i>${c.observed.kind==="observed"?"National history":"Illustrative profile"} 2005–2024</span>
           <span><i class="dashed"></i>${c.s1}</span>
           ${range?`<span><i class="band"></i>Full range across ${range.models} models</span>`:""}
           <span><i class="solid"></i>${c.s2}</span></div></div>
         ${lineChart(c)}
-       <div class="help-row"><span class="info-link" data-modal="emissionsChart" role="button" tabindex="0">ⓘ What the three lines are, and how this chart is computed</span></div>
-      <p class="cap" style="margin-top:10px">${COUNTRY.isColombia()
-        ? `Colombia's historical series contains an emissions estimate for every year from 2005 to 2024. The 2024 estimate of <b>${fmtN(COL_DATA.observed[2024],1)} Mt CO₂</b> provides the reference level for the baseline and your 2050 target.`
-        : `${DATA.country.name}'s historical profile is illustrative. Its 2024 value provides the reference level for the baseline and your 2050 target.`}
-        The dashed grey line shows the selected scenario baseline; the green line shows the pathway implied by your target. Open the explanation for the calculation, model range and assumptions.</p>
+       <div class="fold-list" aria-label="Emissions chart information">
+       ${modalFold("engine","What runs the calculations")}
+       ${modalFold("uncertainty","This is one possible result — what could make it higher or lower")}
+      <details class="fold" data-keep="em-explain"><summary>What the three lines are, and how this chart is computed</summary>
+        <p>${T(MODALS.emissionsChart.lede)}</p>${MODALS.emissionsChart.body()}
+        <div class="note">${T(MODALS.emissionsChart.note())}</div>
+        </details>
       ${dataTable(range
         ? ["Year",c.s1+" (Mt)","Full model range (Mt)",c.s2+" (Mt)","SSP median minus your pathway (Mt)"]
         : ["Year",c.s1+" (Mt)",c.s2+" (Mt)","Baseline minus your pathway (Mt)"],
@@ -4770,16 +4845,8 @@ const VIEWS = {
       ${dataTable(["Year",DATA.country.name+(c.observed.kind==="observed"?"'s observed emissions (Mt)":"'s illustrative profile (Mt)")],
          c.observed.years.map((y,i)=>[y,fmtN(c.observed.values[i],1)]),
          c.observed.kind==="observed"?"Show national history table":"Show illustrative profile table")}
-      ${/* The chart explanation is a third collapsible item beside the two tables
-           (Per, 2026-10-13). It was a caption under the chart, then briefly the
-           opening of the emissionsChart modal; the modal is still reachable from
-           here for the full step-by-step method. */ ""}
-      ${modalFold("emissionsChart","Show what the three lines are, and how this chart is computed")}
-      ${/* The "What runs the calculations" link and the "one possible result" cue sat
-           in a row at the foot of step 4; since 2026-10-13 (Per) they are fold-outs
-           in this list, built from the same MODALS entries other screens still open. */
-        modalFold("uncertainty","Show why this is one possible result, and what could make it higher or lower")}
-      ${modalFold("engine","Show what runs the calculations")}</div>
+
+      </div></div>
      ${(()=>{
        /* ELECTRICITY EMISSIONS — Colombia only. A precomputed IIASA R5 ensemble
           is scaled to a Colombian power anchor; other country cards are unchanged. */
@@ -4823,9 +4890,10 @@ const VIEWS = {
                <span><i class="dashed"></i>${pc.s1}</span>
                <span><i class="solid"></i>${pc.s2}</span></div></div>
            ${lineChart(pc)}
+           <div class="fold-list" aria-label="Electricity chart information">
            ${/* The curve explanation was a caption here; it is the first fold-out in
                 the list below since 2026-10-13 (Per), matching the CO2 chart. */ ""}
-           <details><summary style="cursor:pointer;font-size:13.5px;color:var(--ink-3);margin-top:10px">Show how this curve is computed</summary>
+           <details class="fold" data-keep="el-explain"><summary>What the two lines are, and how this chart is computed</summary>
              <p class="cap" style="margin-top:10px">Ember reports about
                <b>${fmtN(now,1)} Mt</b> life-cycle CO₂e from <b>${fmtN(P.gen2024TWh,2)} TWh</b>
                of Colombian generation in ${a}. The dashed curve uses national SSP population and income,
@@ -4858,7 +4926,7 @@ const VIEWS = {
            ], "Show the inputs and their sources")}
            ${/* The grid-sources explanation is a fold-out in this list (Per, 2026-10-13),
                 matching the CO2 chart's list; its table is a fold-out of its own. */ ""}
-           <details><summary style="cursor:pointer;font-size:13.5px;color:var(--ink-3);margin-top:10px">Show which sources make up this grid, and how to change them</summary>
+           <details class="fold" data-keep="el-sources"><summary>Which sources make up this grid, and how to change them</summary>
              <p class="cap" style="margin-top:10px">The low-emission slider at step 2 sets how much of ${name}'s
                electricity is low-emission in 2050. A second, optional layer sets the split inside each group;
                leave it alone and the mix keeps today's proportions.</p>
@@ -4868,6 +4936,7 @@ const VIEWS = {
                ${name} will build these shares, or that it could. It shows what the emissions arithmetic would be if it did.</p>
            </details>
            ${sourceMixTable("Show the source mix table")}
+           </div>
          </div>`;
        }
        /* NON-COLOMBIA: no panel at all. A method-only version stood here until
@@ -4878,7 +4947,7 @@ const VIEWS = {
           and the unresolved source-reconciliation question for Colombia itself, are
           recorded in 03_models/2026-09-01_electricity-panel-open-questions.md. */
        return ""; })()}
-      <div class="actions"><button class="btn" data-go="5">Next: Air pollution impacts &nbsp;→</button></div></div>`;
+      <div class="actions">${backBtn(4)}<button class="btn" data-go="5">Next: Air pollution impacts &nbsp;→</button></div></div>`;
   },
 
   air(){ const d=DATA.air;
@@ -4890,8 +4959,8 @@ const VIEWS = {
     const c={title:"Premature deaths attributable to ambient air pollution",
       unit:"Deaths per year under the reference and selected energy pathways",
       years:health.years, baseline:rows.map(r=>r.refDeaths), pathway:rows.map(r=>r.policyDeaths),
-      yMax:Math.max(1,Math.ceil(Math.max(...rows.map(r=>r.refDeaths))/(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100))*(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100)),
-      s1:"Reference energy pathway",s2:"Your energy pathway",
+      yMax:Math.max(1,Math.ceil(Math.max(...rows.map(r=>Math.max(r.refDeaths,r.policyDeaths)))/(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100))*(health.air.whoDeaths>10000?5000:health.air.whoDeaths>1000?500:100)),
+      s1:"Reference energy pathway",s2:"Your energy pathway", tipUnit:"deaths",
       fill:improves?"Premature deaths avoided":"Additional premature deaths",
       fillNoun:"premature deaths"};
     /* v2: each bar carries its own points-to-lives conversion on hover and
@@ -4937,7 +5006,7 @@ const VIEWS = {
         val:signed(Math.round(-avoidedPct))+"%",unit:avoidedPct>=0?"lower under your pathway":"higher under your pathway"},
        {lbl:improves?"Premature deaths avoided in 2050":"Additional premature deaths in 2050",
         sub:COUNTRY.isColombia()&&y2050.avoidedLow!=null
-          ? `ambient PM₂.₅ — ${fmtN(Math.abs(Math.round(Math.min(y2050.avoidedLow,y2050.avoidedHigh))))}–${fmtN(Math.abs(Math.round(Math.max(y2050.avoidedLow,y2050.avoidedHigh))))} across the published counterfactual range`
+          ? `ambient PM₂.₅ — ${fmtN(Math.round(Math.min(Math.abs(y2050.avoidedLow),Math.abs(y2050.avoidedHigh))))}–${fmtN(Math.round(Math.max(Math.abs(y2050.avoidedLow),Math.abs(y2050.avoidedHigh))))} across the published counterfactual range`
           : "ambient PM₂.₅ and nitrogen oxides",
         val:fmtN(Math.abs(Math.round(y2050.avoided))),unit:"lives per year"},
        {lbl:improves?"Estimated annual health benefit":"Estimated annual health loss",
@@ -5046,7 +5115,7 @@ const VIEWS = {
        <p class="cap" style="margin-top:10px">The ${DATA.country.name} profile starts at <b>${fmtN(health.air.whoDeaths)} ambient air-pollution-attributable deaths</b> in 2021 (${fmtN(health.air.whoLow)}–${fmtN(health.air.whoHigh)}), with population-weighted PM₂.₅ exposure of <b>${fmtN(health.air.pm25,1)} µg/m³</b>.</p>
        ${dataTable(["Year","Electrification, yours","Low-emission generation, yours","Deaths, reference","Deaths, yours","Reference minus yours"],
          rows.map(r=>[r.year,fmtN(r.policy.es*100,1)+"%",fmtN(r.policy.cs*100,1)+"%",fmtN(Math.round(r.refDeaths)),fmtN(Math.round(r.policyDeaths)),fmtN(Math.round(r.avoided))]))}</div>
-     <div class="actions"><button class="btn" data-go="6">Next: Local climate impacts &nbsp;→</button></div></div>`;
+     <div class="actions">${backBtn(5)}<button class="btn" data-go="6">Next: Local climate impacts &nbsp;→</button></div></div>`;
   },
 
   /* SCREEN 6 REWRITTEN 2026-08-24 onto CCKP. Every figure here is now that
@@ -5075,8 +5144,10 @@ const VIEWS = {
          : {lbl:"Regional breakdown", sub:"not available for this country", cls:"nodata",
             val:"—", unit:"Colombia only — see the panel below"}
      ])}
-     <div class="help-row"><span class="info-link" data-modal="ref_regional" role="button" tabindex="0"
-       >ⓘ Where these figures come from</span>${uncCue()}</div>
+     <div class="fold-list" aria-label="Climate impact information">
+       ${modalFold("ref_regional","Where these figures come from")}
+       ${uncCue()}
+       <details class="fold" data-keep="local-conventions"><summary>How to read the maps and their uncertainty</summary>
      <div class="note"><span>◆</span><span><b>One climate product, one uncertainty convention.</b>
        National tiles and regional maps both show the 10th–90th percentile across climate models, from the
        World Bank CCKP CMIP6 ensemble at 0.25°. ${COUNTRY.pathway()==="ssp119"?"<b>For SSP1-1.9 the regional model range is unavailable</b>, because CCKP publishes no individual model runs for that pathway — the regional values below are medians of their units' ensemble medians, shown without a range.":"Regional ranges are computed across the individual model runs CCKP publishes."}
@@ -5085,7 +5156,16 @@ const VIEWS = {
        ${DATA.country.iso==="COL"?"Departments are grouped into five natural regions. Colour shows the region estimate, not a department estimate; select a region for department data."
          :REGION_IDENTITY.has(DATA.country.iso)?"Each map territory is schematic; this country's official regions are its administrative units."
          :`The ${R?R.length:0} map territories are schematic shapes, not administrative boundaries.`}</span></div>
+       </details>
+     </div>
      ${R?`<div class="maprow">${regionalClimatePanel("temp",regions)}${regionalClimatePanel("rain",regions)}</div>
+     <div id="regionDetail" class="fold-list" aria-label="Department climate data by region">${regions.map(r=>{
+       const m=regionalUnitModal(r.name); if(!m) return "";
+       return `<details class="fold" id="region-detail-${encodeURIComponent(r.name)}" data-region-detail="${encodeURIComponent(r.name)}" data-keep="region-${encodeURIComponent(r.name)}">
+         <summary>${T(m.title)}</summary><p>${T(m.lede)}</p>${T(m.body)}<div class="note">${T(m.note)}</div>
+       </details>`;
+     }).join("")}</div>
+     ${DATA.country.iso==="COL"?`<details class="fold" data-keep="map-licence"><summary>Map licence</summary><p><a class="paper" href="MAP-LICENSE.txt">Map attribution and licence</a></p></details>`:""}
      <div class="panel"><h3 style="margin-top:0">${REGION_SCHEME_NAME[DATA.country.iso]} — selected pathway</h3>
        <p class="cap" style="font-size:14px;line-height:1.65">Each climate model is first summarised across the
        units in a region; the median and the 10th–90th percentiles are then taken across those
@@ -5095,7 +5175,7 @@ const VIEWS = {
          R.map(r=>[r.name, r.units, signed(r.temp,2)+"°C",
            r.tempP10==null?"Not available for SSP1-1.9":`${signed(r.tempP10,2)}°C to ${signed(r.tempP90,2)}°C (${r.tempModels} models)`,
            signed(r.rain,0)+" mm/yr",
-           r.rainP10==null?"Not available for SSP1-1.9":`${signed(r.rainP10,0)} to ${signed(r.rainP90,0)} mm/yr (${r.rainModels} models)`]), true)}</div>`
+           r.rainP10==null?"Not available for SSP1-1.9":`${signed(r.rainP10,0)} to ${signed(r.rainP90,0)} mm/yr (${r.rainModels} models)`]))}</div>`
      :""}
      <div class="panel"><h3 style="margin-top:0">Compare the five pathways</h3>
        <p class="cap" style="font-size:14px;line-height:1.65">
@@ -5115,13 +5195,162 @@ const VIEWS = {
        conventional grouping used in regional-development work, not a published standard — weaker evidence than
        the schemes used for the other eleven countries.`:""}</p></div>
 
-     <div class="actions"><button class="btn wide" data-go="1">⟳ &nbsp;Explore or change your pathway again</button></div></div>`;
+     <div class="save-box">
+       <div class="txt"><b>Save this outcome</b>Your settings and all three results screens — climate and cost, air pollution and climate impacts — with charts, maps, data and assumptions.</div>
+       <div class="btns"><button class="btn" data-save="pdf">⤓ &nbsp;Save as PDF</button>
+       <button class="btn ghost" data-save="csv">Download data (CSV)</button></div>
+       <p class="cap">PDF opens a report for your browser’s Print / Save as PDF dialog.</p>
+     </div>
+     <div class="actions">${backBtn(6)}<button class="btn wide" data-go="2">⟳ &nbsp;Explore or change your pathway again</button></div></div>`;
   }
 };
+
+/* Shared navigation and export pattern from the Africa prototype. Export the
+   current Colombia views, so no parallel calculation or Nigeria assumption is introduced. */
+function backBtn(n){
+  const previous=DATA.steps[n-2];
+  return `<button class="btn back" data-go="${previous.n}">← &nbsp;Back: ${T(previous.nav)}</button>`;
+}
+function exportText(node){
+  return (node?.textContent||"").replace(/\s+/g," ").trim();
+}
+function exportSections(){
+  return ["climate","air","local"].map(key=>{
+    const node=document.createElement("div"); node.innerHTML=VIEWS[key]();
+    return {key,title:exportText(node.querySelector("h1")),node};
+  });
+}
+function outcomeRows(sections=exportSections()){
+  const rows=[],add=(sec,lbl,val,unit="")=>rows.push({sec,lbl,val:String(val),unit});
+  add("Your settings","Country",DATA.country.name);
+  DATA.drivers.items.forEach(d=>add("Your settings",d.name,d.fmt(state.drivers[d.id]),d.unit));
+  add("Your settings","Global scenario",COUNTRY.label());
+  if(COUNTRY.isColombia()){
+    ["low","fossil"].forEach(group=>{
+      const resolved=COUNTRY.resolveGroup(group);
+      Object.entries(resolved).forEach(([name,share])=>add("Your settings",
+        `${name} — ${group} group`,fmtN(share,2)+"%",
+        (state.sourceMix?.[group]?.[name]!=null?"User-pinned; ":"Unpinned; ")+"resolved share within group in 2050"));
+    });
+  }
+  for(const {title,node} of sections){
+    node.querySelectorAll(".tile").forEach(tile=>{
+      const label=tile.querySelector(".lbl")?.cloneNode(true);
+      const detail=exportText(label?.querySelector("small"));
+      label?.querySelectorAll("small").forEach(n=>n.remove());
+      add(title,exportText(label),exportText(tile.querySelector(".val")),
+        [detail,exportText(tile.querySelector(".unit"))].filter(Boolean).join("; "));
+    });
+    node.querySelectorAll("table").forEach((table,index)=>{
+      const headers=[...table.querySelectorAll("thead th")].map(exportText);
+      table.querySelectorAll("tbody tr").forEach(tr=>{
+        const cells=[...tr.querySelectorAll("td")].map(exportText);
+        if(cells.length) add(title+" — data table "+(index+1),cells[0],cells[1]||"",
+          cells.slice(2).map((v,i)=>(headers[i+2]||"Column "+(i+3))+": "+v).join("; "));
+      });
+    });
+    node.querySelectorAll(".note").forEach(note=>add(title,"Caveat",exportText(note)));
+  }
+  const h=COUNTRY.healthData();
+  add("Fixed assumptions","Value per statistical life","US$"+fmtN(h.valuation.vsl),
+    h.valuation.priceYear+" USD; transferred value, valuation basis unresolved");
+  add("Fixed assumptions","Health reference electrification",h.energy.referenceElectrification2050+"%",
+    "Held fixed; differs from the revised BECO context marker");
+  add("Fixed assumptions","Health reference low-emission share",h.energy.referenceCleanShare2050+"%",
+    "Held fixed; differs from the revised BECO context marker");
+  add("Fixed assumptions","SCC pathway",NGA_DATA.pathwayLabel[COUNTRY.sccPath()]||COUNTRY.sccPath(),
+    COUNTRY.sccPath()!==COUNTRY.pathway()?"Declared proxy for selected SSP":"Selected SSP");
+  const assumption=document.createElement("div");
+  const m=MODALS.uncertainty;
+  assumption.innerHTML=T(typeof m.body==="function"?m.body():m.body);
+  assumption.querySelectorAll("li").forEach((li,i)=>add("Fixed assumptions","Uncertainty "+(i+1),exportText(li)));
+  add("Provenance","Interpretation","Conditional prototype results, not forecasts",
+    COUNTRY.isColombia()?"Ambient and household burdens overlap: do not add them. Regional ranges are model percentiles, not confidence intervals.":"Includes illustrative/transferred country profiles; not a calibrated national model.");
+  add("Provenance","Model source","MSc-thesis e25546bbd08e5b3ed527fc42c0f6a3b66317cb5e",
+    "05_ui_design/prototypes/colombia-prototype-v2.html");
+  add("Provenance","Department map","© OpenStreetMap contributors via geoBoundaries; ODbL 1.0",
+    "https://opendatacommons.org/licenses/odbl/1-0/ ; complete adapted data: https://perberg70.github.io/Nigeria-model/colombia/department-boundaries.json");
+  return rows;
+}
+const REPORT_CSS=`@page{size:A4;margin:16mm 14mm}
+#report{color:#0B3B54;font:10pt/1.45 "Segoe UI",system-ui,sans-serif}
+#report h1{font-size:20pt}#report h2{font-size:16pt;color:#0E5C3F}
+#report h3{font-size:12pt}#report .meta{font-size:9pt;color:#40525E}
+#report .body{margin:0}#report .title-row{display:none}
+#report table{width:100%;border-collapse:collapse;font-size:8.5pt;table-layout:fixed}
+#report td,#report th{padding:4pt;border-bottom:1px solid #E3E8EB;overflow-wrap:anywhere}
+#report .report-section{break-before:page}
+#report .tile,#report .mapbox,#report svg,#report tr{break-inside:avoid}
+#report h2,#report h3{break-after:avoid}
+#report .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+#report .maprow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+#report .tile .val{font-size:23pt}#report .tile .lbl,#report .tile .unit{font-size:9pt}
+#report .fold-body,#report .panel,#report details{overflow:visible}
+#report .mapbox svg{height:260px!important}
+#report .metric-tip::after{display:none}
+#report *{-webkit-print-color-adjust:exact;print-color-adjust:exact}`;
+document.head.insertAdjacentHTML("beforeend",`<style media="print">
+body:has(#report:not(:empty))>*:not(#report){display:none!important}
+#report:not(:empty){display:block!important}
+${REPORT_CSS}</style>`);
+function reportSection({key,title,node}){
+  node.querySelectorAll(".actions,.save-box,.help-row,.info-link,button,input,select").forEach(n=>n.remove());
+  node.querySelectorAll("details").forEach(n=>n.open=true);
+  node.querySelectorAll("*").forEach(n=>[...n.attributes].forEach(a=>{
+    if(/^on/.test(a.name)||a.name==="tabindex"||a.name.startsWith("data-")) n.removeAttribute(a.name);
+  }));
+  const ids=new Map();
+  node.querySelectorAll("[id]").forEach(n=>{const old=n.id;n.id="report-"+key+"-"+old;ids.set(old,n.id);});
+  node.querySelectorAll("*").forEach(n=>[...n.attributes].forEach(a=>{
+    if(a.value.includes("url(#")) n.setAttribute(a.name,a.value.replace(/url\(#([^)]*)\)/g,(all,id)=>ids.has(id)?`url(#${ids.get(id)})`:all));
+  }));
+  node.querySelectorAll('a[href="department-boundaries.json"],a[href="MAP-LICENSE.txt"]').forEach(a=>{
+    a.href="https://perberg70.github.io/Nigeria-model/colombia/"+a.getAttribute("href");
+    a.removeAttribute("download");
+  });
+  return `<section class="report-section"><h2>${reportEscape(title)}</h2>${node.innerHTML}</section>`;
+}
+function reportEscape(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function outcomeReport(){
+  const sections=exportSections(),rows=outcomeRows(sections);
+  const table=sec=>`<table><tbody>${rows.filter(r=>r.sec===sec).map(r=>`<tr><td>${reportEscape(r.lbl)}</td><td>${reportEscape(r.val)}</td><td>${reportEscape(r.unit)}</td></tr>`).join("")}</tbody></table>`;
+  return `<h1>Saved outcome — ${reportEscape(DATA.country.name)}</h1>
+    <p class="meta">EfD climate-economic policy design tool (prototype) · ${new Date().toISOString()}</p>
+    <h2>Your settings</h2>${table("Your settings")}
+    ${sections.map(reportSection).join("")}
+    <section class="report-section"><h2>Fixed assumptions and uncertainty</h2>${table("Fixed assumptions")}
+    <h2>Provenance and limitations</h2>${table("Provenance")}</section>`;
+}
+function saveOutcome(kind){
+  const name=`EfD-${DATA.country.name}-outcome-${new Date().toISOString().slice(0,10)}`;
+  if(kind==="csv"){
+    const q=v=>`"${String(v).replace(/"/g,'""')}"`;
+    const csv=["Section,Item,Value,Detail",...outcomeRows().map(r=>[r.sec,r.lbl,r.val,r.unit].map(q).join(","))].join("\r\n");
+    const a=document.createElement("a"),url=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));
+    a.href=url;a.download=name+".csv";document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);return;
+  }
+  const report=outcomeReport();
+  const doc=`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${reportEscape(name)}</title>
+    <style>${document.querySelector("head style:not([media])").textContent}</style>
+    <style>body{background:#fff}#report{display:block;max-width:1000px;margin:20px auto;padding:24px}
+    .printbar{padding:16px;text-align:center}@media print{.printbar{display:none}#report{margin:0;padding:0;max-width:none}}
+    ${REPORT_CSS}</style></head><body>
+    <div class="printbar"><button onclick="print()">Print / Save as PDF</button></div><div id="report">${report}</div></body></html>`;
+  const w=window.open("","_blank");
+  if(w){w.document.open();w.document.write(doc);w.document.close();w.opener=null;w.focus();setTimeout(()=>w.print(),400);return;}
+  document.getElementById("report").innerHTML=report;
+  const title=document.title;document.title=name;
+  window.addEventListener("afterprint",()=>{document.title=title;document.getElementById("report").replaceChildren();},{once:true});
+  window.print();
+}
 
 /* ---------- driver -> did the numbers move? (demo responsiveness) ---------- */
 let _lastRenderedStep=null;
 function render(){
+  const kept=new Map([...document.querySelectorAll('#content details')].map((d,i)=>[d.dataset.keep||String(i),d.open]));
   renderNav();
   $("#content").innerHTML = VIEWS[DATA.steps[state.step-1].key]();
   // Turn contextual explanations into canvas-style progressive disclosure.
@@ -5129,7 +5358,11 @@ function render(){
     if(link.dataset.modal==='sourceMixEditor') return;
     link.outerHTML=modalFold(link.dataset.modal,link.textContent.trim());
   });
-  $("#content").querySelectorAll('details:not(.more)').forEach(el=>el.classList.add('fold'));
+  $("#content").querySelectorAll('details:not(.more):not(.mixpanel)').forEach(el=>el.classList.add('fold'));
+  if(_lastRenderedStep===state.step)
+    $("#content").querySelectorAll('details').forEach((d,i)=>{
+      const key=d.dataset.keep||String(i); if(kept.has(key)) d.open=kept.get(key);
+    });
   const finder=$("#finder");
   if(finder) finder.addEventListener("change",e=>{selectCountry(e.target.value);render();});
   /* Only jump to the top when the STEP changes. Doing it on every render sent the page
@@ -5143,7 +5376,7 @@ function render(){
 function modalFold(key,label){
   const m=MODALS[key];
   const body=typeof m.body==="function"?m.body():m.body, note=typeof m.note==="function"?m.note():m.note;
-  return `<details class="fold"><summary>${label}</summary>
+  return `<details class="fold" data-keep="${key}"><summary>${label}</summary>
     <div class="fold-body" style="margin-top:10px"><p class="cap">${T(m.lede)}</p>${T(body)}${note?`<div class="note">${T(note)}</div>`:""}</div></details>`;
 }
 function uncCue(){
@@ -5202,13 +5435,14 @@ function regionsWithAgreedRainfall(){
 /* Region panels are built on demand rather than registered, because their
    content depends on the pathway currently selected. */
 function openRegionModal(name){
-  const m=regionalUnitModal(name); if(!m) return;
-  let panel=document.getElementById('regionDetail');
-  if(!panel){panel=document.createElement('section');panel.id='regionDetail';panel.className='panel';document.querySelector('.maprow').after(panel);}
-  panel.innerHTML=`<h3 tabindex="-1">${T(m.title)}</h3><p>${T(m.lede)}</p>${T(m.body)}<div class="note">${T(m.note)}</div>`;
-  panel.querySelector('h3').focus({preventScroll:true});
+  const panel=document.getElementById('region-detail-'+encodeURIComponent(name));
+  if(!panel) return;
+  panel.open=true;
+  hideTT();
+  panel.querySelector('summary').focus({preventScroll:true});
   panel.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
 function openModal(key){
   const m=MODALS[key]; if(!m) return;
   renderModal(m);
@@ -5228,6 +5462,7 @@ function renderModal(m){
 function closeModal(){ $("#ovl").hidden=true; }
 
 document.addEventListener("click", e=>{
+  const save=e.target.closest("[data-save]"); if(save){saveOutcome(save.dataset.save);return;}
   const md=e.target.closest("[data-modal]"); if(md){ openModal(md.dataset.modal); return; }
   if(e.target.closest("[data-close]") || e.target.id==="ovl"){ closeModal(); return; }
   const pk=e.target.closest("[data-pick]");
@@ -5276,8 +5511,10 @@ document.addEventListener("input", e=>{
     state.sourceMix=state.sourceMix||{}; state.sourceMix[g]=state.sourceMix[g]||{};
     if(pin.checked) state.sourceMix[g][n]=+COUNTRY.resolveGroup(g)[n].toFixed(1);
     else delete state.sourceMix[g][n];
-    renderModal(MODALS.sourceMixEditor); render();
-    const a=document.querySelector(`[data-pin="${g}|${n}"]`); if(a) a.focus({preventScroll:true});
+    const inOverlay=!!pin.closest("#ovl");
+    if(inOverlay) renderModal(MODALS.sourceMixEditor);
+    render();
+    const a=(inOverlay?$("#ovl"):$("#content")).querySelector(`[data-pin="${g}|${n}"]`); if(a) a.focus({preventScroll:true});
     return; }
   /* DRAG-SAFE. `input` fires continuously while the pointer is down, so it must NOT
      rebuild the DOM — replacing the element mid-gesture is what made a slider move one
@@ -5289,7 +5526,7 @@ document.addEventListener("input", e=>{
     const [g,n]=src.dataset.src.split("|");
     state.sourceMix=state.sourceMix||{}; state.sourceMix[g]=state.sourceMix[g]||{};
     state.sourceMix[g][n]=parseFloat(src.value);
-    sourceMixLivePatch(g+"|"+n);
+    sourceMixLivePatch(g+"|"+n,src.closest("#ovl")||$("#content"));
     return; }
   const r=e.target.closest("[data-drv]"); if(!r) return;
   state.drivers[r.dataset.drv]=parseFloat(r.value);
@@ -5301,8 +5538,10 @@ document.addEventListener("change", e=>{
   const src=e.target.closest && e.target.closest("[data-src]");
   if(src){
     const key=src.dataset.src;
-    renderModal(MODALS.sourceMixEditor); render();
-    const again=document.querySelector(`[data-src="${key}"]`); if(again) again.focus({preventScroll:true});
+    const inOverlay=!!src.closest("#ovl");
+    if(inOverlay) renderModal(MODALS.sourceMixEditor);
+    render();
+    const again=(inOverlay?$("#ovl"):$("#content")).querySelector(`[data-src="${key}"]`); if(again) again.focus({preventScroll:true});
     return;
   }
   const driver=e.target.closest && e.target.closest("[data-drv]");

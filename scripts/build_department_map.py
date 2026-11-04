@@ -1,4 +1,14 @@
-"""Embed the frozen canvas boundary snapshot; require an explicit --config."""
+"""Embed the frozen canvas boundary snapshot in the Colombia prototype.
+
+Usage
+-----
+```bash
+python scripts/build_department_map.py --config config.yaml
+```
+
+Offline. Reads ``colombia_department_map`` (``boundaries``, ``expected_units``,
+``prototype_html``) and replaces the ``DEPARTMENT_MAP`` block in the prototype.
+"""
 
 from __future__ import annotations
 
@@ -16,11 +26,13 @@ def main() -> int:
     add_config_argument(parser)
     args = parser.parse_args()
     config = load_config(args.config)
-    geometry = json.loads(require_path(config, "map.boundaries").read_text(encoding="utf-8"))
+    geometry = json.loads(
+        require_path(config, "colombia_department_map.boundaries").read_text(encoding="utf-8")
+    )
     count = sum(len(units) for units in geometry["regions"].values())
-    if count != int(require(config, "map.expected_units")):
+    if count != int(require(config, "colombia_department_map.expected_units")):
         raise ValueError(f"Expected configured boundary count, got {count}")
-    path = require_path(config, "map.prototype")
+    path = require_path(config, "colombia_department_map.prototype_html")
     block = (
         "// BEGIN DEPARTMENT_MAP\nconst DEPARTMENT_MAP = "
         + json.dumps(geometry, ensure_ascii=False, separators=(",", ":"))

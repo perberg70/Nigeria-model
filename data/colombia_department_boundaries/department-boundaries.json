@@ -142,5 +142,20 @@
   },
   "source": "geoBoundaries gbOpen COL ADM1, COL-ADM1-13589884; frozen simplified canvas geometry, 2017 boundaries, retrieved 2026-10-16",
   "license": "ODbL 1.0, © OpenStreetMap contributors",
-  "upstream_gap": "Original geographic boundary file and original simplification script were not archived. This file preserves the canvas SVG coordinates; rebuilding the original geographic simplification is not possible from this snapshot."
+  "upstream_gap": "Original geographic boundary file and original simplification script were not archived. This file preserves the canvas SVG coordinates; rebuilding the original geographic simplification is not possible from this snapshot.",
+  "license_url": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "attribution": "© OpenStreetMap contributors; geoBoundaries gbOpen; source: OpenStreetMap, Wambacher",
+  "attribution_url": "https://www.openstreetmap.org/copyright",
+  "source_metadata_url": "https://www.geoboundaries.org/api/current/gbOpen/COL/ADM1/",
+  "upstream_simplified_geometry_url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/COL/ADM1/geoBoundaries-COL-ADM1_simplified.geojson",
+  "distribution_notice": "This complete adapted boundary dataset is made available under ODbL 1.0. See MAP-LICENSE.txt. No additional restrictions apply.",
+  "coordinate_system": "SVG display coordinates, not geographic coordinates",
+  "inset": {
+    "name": "San Andrés, Providencia y Santa Catalina",
+    "region": "Caribbean",
+    "shape": "schematic circle, not a boundary",
+    "cx": 5.2,
+    "cy": 6,
+    "r": 2.3
+  }
 }

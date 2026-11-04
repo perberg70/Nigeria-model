@@ -189,6 +189,7 @@ UNSD_FLOWS = ("gas_to_power", "thermal_output", "wood_to_kilns", "charcoal_outpu
 # are configuration (sector_conversion.unsd).
 CARRIERS = [
     "wood",
+    "residues",
     "charcoal",
     "lpg",
     "kerosene",
@@ -273,6 +274,7 @@ IEA_FUEL = {
 }
 FUEL_GROUP = {
     "wood": "bio",
+    "residues": "bio",
     "charcoal": "bio",
     "lpg": "oil",
     "kerosene": "oil",
@@ -301,7 +303,7 @@ def iea_current(p: SectorConversionParams, u):
     """IEA current-release 2023 final consumption, {sector: {carrier: TJ}}.
     The IEA table has five fuels; each cell is split into the carriers of
     CARRIERS in proportion to the UNSD 2023 split of the same sector and fuel
-    group (wood vs charcoal; LPG, kerosene, petrol, diesel, jet, fuel oil).
+    group (wood, residues, charcoal; LPG, kerosene, petrol, diesel, jet, fuel oil).
     The IEA cell sets the level, UNSD only the within-cell shares.
 
     A blank IEA cell is read as 0 only if the row's non-blank cells add up to
@@ -406,11 +408,13 @@ def section1(p: SectorConversionParams):
         )
     )
 
+    bio_carriers = [c for c in CARRIERS if FUEL_GROUP[c] == "bio"]
+
     def ub(s):
-        return (u[s]["wood"] + u[s]["charcoal"]) / 1000.0
+        return sum(u[s][c] for c in bio_carriers) / 1000.0
 
     def mb(s):
-        return (m[s]["wood"] + m[s]["charcoal"]) / 1000.0
+        return sum(m[s][c] for c in bio_carriers) / 1000.0
 
     print(
         "   biomass by sector (UNSD / IEA): "
@@ -420,7 +424,7 @@ def section1(p: SectorConversionParams):
         )
     )
     print("   total %.0f / %.0f PJ" % (sum(sum(u[s].values()) for s in SECTORS) / 1e3, tot / 1e3))
-    bio = sum(m[s]["wood"] + m[s]["charcoal"] for s in SECTORS)
+    bio = sum(m[s][c] for s in SECTORS for c in bio_carriers)
     print(
         "  biomass (wood, residues, charcoal) %.0f PJ = %.1f%% of final energy; residential"
         % (bio / 1e3, 100 * bio / tot)
@@ -428,7 +432,7 @@ def section1(p: SectorConversionParams):
     print(
         "  %.0f PJ of it; electricity %.2f%% of final energy"
         % (
-            (m["residential"]["wood"] + m["residential"]["charcoal"]) / 1e3,
+            mb("residential"),
             100 * col["electricity"] / tot,
         )
     )
@@ -551,13 +555,15 @@ def rho_for(rho, sector, carrier, case):
         key = ("transport", "road")
     elif (
         g == "industry"
-        and carrier not in ("wood", "charcoal")
+        and FUEL_GROUP[carrier] != "bio"
         or g == "household"
         and carrier in ("gasoline", "diesel", "fuel_oil", "coal")
     ):
         key = ("industry", "fossil")
     else:
         key = (g, carrier)
+    if key not in rho:
+        raise ValueError(f"sector_conversion.rho has no {key[0]}.{key[1]} range ({sector})")
     return rho[key][case]
 
 
