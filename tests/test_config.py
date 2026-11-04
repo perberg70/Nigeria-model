@@ -16,7 +16,7 @@ SCRIPTS = sorted(p.name for p in (ROOT / "scripts").glob("*.py") if not p.name.s
 
 def test_every_script_is_listed():
     assert "__init__.py" not in SCRIPTS
-    assert len(SCRIPTS) == 8
+    assert len(SCRIPTS) == 9
 
 
 @pytest.mark.parametrize("script", SCRIPTS)

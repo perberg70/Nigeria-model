@@ -373,3 +373,12 @@ regional_climate:
   # Douglas-Peucker tolerance, degrees of latitude, applied to each shared border once.
   boundary_simplify_deg: 0.02
   prototype_html: prototype/africa-prototype.html
+
+colombia_department_map:
+  # Frozen design-canvas department outlines (SVG display coordinates, not lon/lat) for the
+  # Colombia prototype's regional maps; provenance, ODbL licence and the upstream gap in the
+  # boundaries README. scripts/build_department_map.py splices DEPARTMENT_MAP into the prototype.
+  boundaries: data/colombia_department_boundaries/department-boundaries.json
+  # 31 mainland departments and Bogota D.C.; San Andres is a labelled inset, not counted.
+  expected_units: 32
+  prototype_html: prototype/colombia-prototype.html

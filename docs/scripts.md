@@ -48,6 +48,13 @@ Each writes its report to the path under `<section>.report` and echoes it to std
     `.boundary_source_label`; splices `NIGERIA_ZONE_MAP` (the state outlines the regional maps
     are drawn from) into `regional_climate.prototype_html`.
 
+- `scripts/build_department_map.py --config config.yaml`
+  - Reads `colombia_department_map.boundaries` (frozen canvas SVG coordinates) and
+    `.expected_units`; replaces the `DEPARTMENT_MAP` block in `.prototype_html`.
+  - Runs offline and preserves provenance and licence metadata. This reproduces the
+    committed snapshot; the original geographic simplification inputs remain missing.
+    See `data/colombia_department_boundaries/README.md` for source details and limitations.
+
 ## Cleanup Utilities
 
 - `python clean_cache.py` removes the `__pycache__`, `.pytest_cache` and `.ruff_cache` directories
