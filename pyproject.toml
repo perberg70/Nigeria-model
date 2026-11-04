@@ -33,6 +33,7 @@ where = ["src"]
 [tool.pytest.ini_options]
 markers = [
     "network: tests that download external data (e.g. the CCKP climate API); deselect with -m 'not network'",
+    "browser: tests that drive a prototype in headless Chromium via Playwright; deselect with -m 'not browser'",
 ]
 
 [tool.ruff]

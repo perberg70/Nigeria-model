@@ -4,6 +4,8 @@
 
 This repository contains the data build and analysis code behind the Africa (Nigeria) energy,
 emissions and climate-impact decision-support prototype (`prototype/africa-prototype.html`).
+It also hosts the published Colombia prototype (`prototype/colombia-prototype.html`), a
+deployment snapshot of the MSc-thesis model documented in `docs/colombia_prototype.md`.
 Its layout and rules follow the TRA420 Western Balkans model (`TRA420_Modeling_2025`): preserve
 its config-driven, region-agnostic architecture.
 

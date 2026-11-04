@@ -17,7 +17,8 @@ https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/COL/ADM
 
 Scope
 The ODbL notice covers department-boundaries.json and its boundary geometry
-embedded in colombia-prototype.html and design-v2/RegionMap.dc.html.
+embedded in colombia-prototype.html, and the design-canvas artboard
+RegionMap.dc.html (perberg70/MSc-thesis, 05_ui_design/mock-ups/colombia-v2-design-canvas/).
 It does not relicense the application code, thesis text or independently
 sourced climate/health data.
 

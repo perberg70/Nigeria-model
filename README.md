@@ -13,9 +13,10 @@ describes its structure; data sources are documented in `data/` and `data_source
 ## Browser link for external users
 
 The GitHub Pages workflow in `.github/workflows/deploy-pages.yml` publishes a small
-landing page and the Nigeria prototype. It copies only `site/index.html` and
-`prototype/africa-prototype.html` into the public site artifact; the repository's
-research data and scripts are not part of the website.
+landing page and the Nigeria and Colombia prototypes. It copies only `site/index.html`,
+the two files in `prototype/`, and the Colombia map's boundary JSON and licence notice
+(`data/colombia_department_boundaries/`) into the public site artifact; the rest of the
+repository's research data and its scripts are not part of the website.
 
 To activate it, merge the publishing change into `main`, then in the GitHub
 repository open **Settings → Pages** and set **Build and deployment → Source**
@@ -26,8 +27,7 @@ run after enabling Pages publishes the site. The browser links will be:
 
 - Landing page: `https://perberg70.github.io/Nigeria-model/`
 - Nigeria model: `https://perberg70.github.io/Nigeria-model/nigeria/`
-- Colombia model (once `prototype/colombia/colombia-prototype.html` exists):
-  `https://perberg70.github.io/Nigeria-model/colombia/`
+- Colombia model: `https://perberg70.github.io/Nigeria-model/colombia/`
 
 These links are public. Check the embedded model content and source-data licences
 before enabling Pages. For a future model, add its HTML file to the repository,
@@ -41,11 +41,11 @@ the layout and tooling of the TRA420 Western Balkans model (`TRA420_Modeling_202
 
 | Path | Contents |
 |---|---|
-| `prototype/` | The Nigeria prototype, `africa-prototype.html`; `colombia/` holds the Colombia prototype (placeholder, see its `README.md`) |
+| `prototype/` | The prototypes: `africa-prototype.html` (Nigeria) and `colombia-prototype.html` (Colombia; see `docs/colombia_prototype.md`) |
 | `config.yaml` | Every modelling value the scripts use, with its source; all scripts require `--config` |
 | `src/` | Library packages (one doc each in `docs/`): `scenario_data`, `ssp_baseline`, `demand_analysis`, `etp_extraction`, `regional_climate`, plus `config_paths.py` and `units.py` |
-| `scripts/` | Thin command-line entry points (`run_*.py`, `fetch_regional_climate.py`, `build_zone_map.py`) |
-| `tests/` | Regression tests against the committed outputs, and unit tests |
+| `scripts/` | Thin command-line entry points (`run_*.py`, `fetch_regional_climate.py`, `build_zone_map.py`, `build_department_map.py`) |
+| `tests/` | Regression tests against the committed outputs, unit tests, and a browser check of the Colombia prototype (marker `browser`) |
 | `data/` | One folder per dataset, each with a `README.md` describing source, retrieval and processing. Generated outputs (the baseline block, analysis reports, ETP CSVs) and their research memos sit beside the data they come from |
 | `data_sources/` | Index of every external source, with URLs |
 | `docs/` | Module documentation and the script overview (`docs/scripts.md`) |
@@ -76,6 +76,7 @@ python scripts/run_carbon_intensity.py --config config.yaml
 python scripts/run_etp_extraction.py --config config.yaml --output-dir /tmp/etp
 python scripts/fetch_regional_climate.py --config config.yaml        # network required
 python scripts/build_zone_map.py --config config.yaml
+python scripts/build_department_map.py --config config.yaml
 ```
 
 What each script reads and writes is in `docs/scripts.md`. `run_sector_conversion.py` reads the

@@ -5226,7 +5226,7 @@ function outcomeRows(sections=exportSections()){
   add("Provenance","Model source","MSc-thesis e25546bbd08e5b3ed527fc42c0f6a3b66317cb5e",
     "05_ui_design/prototypes/colombia-prototype-v2.html");
   add("Provenance","Department map","© OpenStreetMap contributors via geoBoundaries; ODbL 1.0",
-    "https://opendatacommons.org/licenses/odbl/1-0/ ; complete adapted data: https://github.com/perberg70/Nigeria-model/blob/claude/epic-dirac-itqmpi/prototype/colombia/department-boundaries.json");
+    "https://opendatacommons.org/licenses/odbl/1-0/ ; complete adapted data: https://perberg70.github.io/Nigeria-model/colombia/department-boundaries.json");
   return rows;
 }
 const REPORT_CSS=`@page{size:A4;margin:16mm 14mm}
@@ -5262,7 +5262,7 @@ function reportSection({key,title,node}){
     if(a.value.includes("url(#")) n.setAttribute(a.name,a.value.replace(/url\(#([^)]*)\)/g,(all,id)=>ids.has(id)?`url(#${ids.get(id)})`:all));
   }));
   node.querySelectorAll('a[href="department-boundaries.json"],a[href="MAP-LICENSE.txt"]').forEach(a=>{
-    a.href="https://github.com/perberg70/Nigeria-model/blob/claude/epic-dirac-itqmpi/prototype/colombia/"+a.getAttribute("href");
+    a.href="https://perberg70.github.io/Nigeria-model/colombia/"+a.getAttribute("href");
     a.removeAttribute("download");
   });
   return `<section class="report-section"><h2>${reportEscape(title)}</h2>${node.innerHTML}</section>`;

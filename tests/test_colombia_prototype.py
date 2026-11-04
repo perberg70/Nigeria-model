@@ -1,26 +1,43 @@
-"""Run with Python and Playwright installed; CHROMIUM_PATH selects the browser."""
+"""Browser check of the Colombia prototype: all six screens, exports and navigation.
+
+Needs Playwright and a Chromium build; CHROMIUM_PATH selects the browser (default
+/usr/bin/chromium). Skipped when either is missing. Deselect with -m 'not browser'.
+"""
+
+from __future__ import annotations
 
 import csv
 import os
 import tempfile
 from pathlib import Path
 
-from playwright.sync_api import expect, sync_playwright
+import pytest
 
-ROOT = Path(__file__).resolve().parents[2]
+from config_paths import require_path
+
+sync_api = pytest.importorskip("playwright.sync_api")
+expect, sync_playwright = sync_api.expect, sync_api.sync_playwright
+
+CHROMIUM = os.environ.get("CHROMIUM_PATH", "/usr/bin/chromium")
+
+pytestmark = [
+    pytest.mark.browser,
+    pytest.mark.skipif(not Path(CHROMIUM).exists(), reason=f"no Chromium at {CHROMIUM}"),
+]
 
 
-def main():
+def test_colombia_prototype_in_browser(config):
+    prototype = require_path(config, "colombia_department_map.prototype_html")
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(
-            executable_path=os.environ.get("CHROMIUM_PATH", "/usr/bin/chromium"),
+            executable_path=CHROMIUM,
             headless=True,
             args=["--no-sandbox"],
         )
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.set_content((ROOT / "prototype/colombia/colombia-prototype.html").read_text())
+        page.set_content(prototype.read_text(encoding="utf-8"))
 
         def step(number):
             page.locator(f'#stepNav [data-go="{number}"]').click()
@@ -186,11 +203,3 @@ def main():
         assert page.locator('#stepNav [aria-current="step"]').get_attribute("data-go") == "2"
         assert not errors, errors
         browser.close()
-        print(
-            "PASS: six screens, mobile layout, live slider, baseline isolation, "
-            "five SSPs, keyboard map drilldown, country switching, back navigation, PDF/CSV exports"
-        )
-
-
-if __name__ == "__main__":
-    main()
